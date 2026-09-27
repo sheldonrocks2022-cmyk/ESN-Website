@@ -34,7 +34,7 @@ const SERVICES = [
 ]
 
 const SHOWCASE_EXTRAS = [
-  ['Website Creation', 'Web Projects', 'Website and digital-project work handled through ES Network. Exact scope and pricing depend on the project.'],
+  ['Website Creation', 'Web Projects', 'Website Creation includes Basic, Startup, and Enterprise options. ES Tools also includes the previously surfaced $180 starter and $320 multi-page starting estimates; final scope is confirmed through ESN.'],
   ['Memberships', 'Community', 'Existing ESN membership offers preserved from the current Service Showcase. Exact current tiers and prices will only be migrated once verified.'],
   ['Hashtag Packs', 'Creator Growth', 'Existing hashtag-pack offers preserved from the current Service Showcase without inventing package details.'],
   ['Stream Branding', 'Creator Branding', 'Branding work for streams and creator channels, preserved as an existing ESN showcase category.'],
@@ -49,8 +49,20 @@ const LEADERS = [
   ['caelian_', 'Founder'],
   ['69isdabest', 'Co-Founder'],
   ['kidrocks1313', 'Co-Founder'],
+]
+
+const ADMINISTRATION = [
   ['lala.s.2', 'Administrator'],
   ['Dr.crows', 'Administrator'],
+]
+
+const LANDON_RESPONSIBILITIES = [
+  'Business Operations',
+  'Website & Service Infrastructure',
+  'Creator Editing (Gaming, Anime, TV & Movie)',
+  'ES Network Discord Ticket Support',
+  'Marketing Strategy',
+  'Brand Development',
 ]
 
 const STORE_PRODUCTS = [
@@ -517,19 +529,52 @@ function About() {
 function Leadership() {
   return (
     <>
-      <PageHero eyebrow="ES Network Leadership" title="Meet the team" text="The founders, co-founders, and administrators behind ES Network." />
+      <PageHero eyebrow="ES Network Team" title="Leadership & administration" text="Founders and co-founders are shown separately from the administration team so roles are clear." />
       <section className="section">
-        <div className="shell team-grid">
-          {LEADERS.map(([name, title], index) => (
-            <article className="leader-tile" key={name}>
-              <div className="avatar-placeholder">{name.charAt(0).toUpperCase()}</div>
-              <div>
-                <span className="eyebrow">{title}</span>
-                <h3>{name}</h3>
-                {index === 0 ? <p>Founder and CEO of ES Network.</p> : <p>ES Network leadership team.</p>}
-              </div>
-            </article>
-          ))}
+        <div className="shell">
+          <div className="section-heading">
+            <div>
+              <span className="eyebrow">Leadership</span>
+              <h2>Founders & co-founders</h2>
+            </div>
+          </div>
+          <div className="team-grid">
+            {LEADERS.map(([name, title]) => (
+              <article className="leader-tile" key={name}>
+                <div className="avatar-placeholder">{name.charAt(0).toUpperCase()}</div>
+                <div>
+                  <span className="eyebrow">{title}</span>
+                  <h3>{name}</h3>
+                  {name === 'Landon' ? (
+                    <ul className="role-list">
+                      {LANDON_RESPONSIBILITIES.map((item) => <li key={item}>{item}</li>)}
+                    </ul>
+                  ) : null}
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+      <section className="section dark-section">
+        <div className="shell">
+          <div className="section-heading">
+            <div>
+              <span className="eyebrow">Administration</span>
+              <h2>ES Network administrators</h2>
+            </div>
+          </div>
+          <div className="team-grid">
+            {ADMINISTRATION.map(([name, title]) => (
+              <article className="leader-tile" key={name}>
+                <div className="avatar-placeholder">{name.charAt(0).toUpperCase()}</div>
+                <div>
+                  <span className="eyebrow">{title}</span>
+                  <h3>{name}</h3>
+                </div>
+              </article>
+            ))}
+          </div>
         </div>
       </section>
     </>
