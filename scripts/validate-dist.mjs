@@ -42,6 +42,11 @@ for (const route of routes) {
   if (!html.includes('name="description"')) failures.push(`Missing description in ${file}`)
 }
 
+const notFoundFile = path.join('dist', '404.html')
+if (!fs.existsSync(notFoundFile)) {
+  failures.push('Missing built 404.html')
+}
+
 if (failures.length) {
   console.error('Built route validation failed:')
   for (const failure of failures) console.error(`- ${failure}`)
