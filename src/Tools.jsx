@@ -49,8 +49,9 @@ export default function ESToolsSuite() {
   const randomPick=()=>{ const list=entries.split('\n').map(x=>x.trim()).filter(Boolean); setPicked(list.length?list[Math.floor(Math.random()*list.length)]:'Add at least one option.') }
 
   return <>
-    <section className="page-hero"><div className="shell narrow"><span className="eyebrow">ES TOOLS</span><h1>Free creator & gaming utilities</h1><p>Rebuilt from the tool categories previously used on ESN: challenges, timers, prompt generation, randomizers, virtual coin/dice tools, and website service estimates.</p></div></section>
-    <section className="section"><div className="shell tools-grid">
+    <section className="page-hero tools-hero"><div className="shell page-hero-inner"><div className="page-hero-copy"><span className="eyebrow">ES TOOLS</span><h1>Free utilities. No account wall.</h1><p>Fast browser tools for players and creators — challenges, focus, prompts, randomizers, quick rolls, and service estimates.</p></div><div className="page-hero-mark" aria-hidden="true"><span>ES</span><small>TOOLS</small></div></div></section>
+    <section className="section compact-section"><div className="shell network-stat-grid tools-stat-grid"><div><strong>6</strong><span>Interactive utilities</span></div><div><strong>Free</strong><span>No paid tool access</span></div><div><strong>No account</strong><span>Open and use</span></div><div><strong>Browser</strong><span>Built for quick access</span></div></div></section>
+    <section className="section tools-section"><div className="shell"><div className="section-heading"><div><span className="eyebrow">Utility Deck</span><h2>Pick a tool and get moving.</h2></div></div><div className="tools-grid">
       <ToolCard eyebrow="CHALLENGE GENERATOR" title="Fortnite / Creator Challenge">
         <div className="segmented"><button className={challengeType==='fortnite'?'active':''} onClick={()=>setChallengeType('fortnite')}>Fortnite</button><button className={challengeType==='creator'?'active':''} onClick={()=>setChallengeType('creator')}>Creator</button></div>
         <div className="tool-output">{challenge}</div><button className="button primary" onClick={generateChallenge}>Generate challenge</button>
@@ -75,6 +76,6 @@ export default function ESToolsSuite() {
         <div className="segmented"><button className={siteType==='starter'?'active':''} onClick={()=>setSiteType('starter')}>Starter</button><button className={siteType==='multi'?'active':''} onClick={()=>setSiteType('multi')}>Multi-page</button></div>
         <div className="estimate"><span>Estimated starting price</span><strong>{siteType==='starter'?'$180':'$320'}</strong></div>
       </ToolCard>
-    </div></section>
+    </div></div></section>
   </>
 }
