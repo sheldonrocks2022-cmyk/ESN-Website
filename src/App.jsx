@@ -7,6 +7,7 @@ import MinesGame from './arcade/Mines'
 import MotoGame from './arcade/Moto'
 import TowerGame from './arcade/Tower'
 import TowerDefenseGame from './arcade/TowerDefense'
+import { useArcadeProfile } from './arcade/profile'
 
 const DISCORD_URL = 'https://discord.gg/3gxA66KZ8'
 const SMP_HOST = 'esn.ggwp.cc'
@@ -156,7 +157,13 @@ const META = {
   '/leadership': ['ES Network Leadership | Meet the Team', 'Meet the founders, co-founders, and administrators behind ES Network.'],
   '/faq': ['ES Network FAQ | Services, Ordering & Support', 'Answers about ES Network services, SMP purchases, support, community access, and tools.'],
   '/testimonials': ['ES Network Customer Testimonials', 'Customer and community feedback for ES Network services and projects.'],
-  '/arcade': ['ESN Arcade | Browser Games', 'Play and explore ES Network browser games including ES Clicker, ES Factory, ES Mines, ES MOTO, ES Tower, and ES Tower Defense.'],
+  '/arcade': ['ESN Arcade 2.0 | Browser Games', 'Play ES Network browser games with a shared local ES Coin profile and saved progression.'],
+  '/esclicker': ['ES Clicker: Overdrive | ESN Arcade', 'Tap, automate, upgrade, and grow your shared ES Arcade profile.'],
+  '/esfactory': ['ES Factory: Neon Grid | ESN Arcade', 'Build machines and production upgrades in the ESN Arcade factory.'],
+  '/esmines': ['ES Mines: Riftfield | ESN Arcade', 'Play a virtual ES Coin risk-and-cash-out grid with no real-money wagering.'],
+  '/esmoto': ['ES MOTO: Hyperlane | ESN Arcade', 'Race across 1,000 generated tracks with touch controls, hazards, and saved best times.'],
+  '/estower': ['ES Tower: Skyline | ESN Arcade', 'Build a precision tower and chase higher stacking scores.'],
+  '/estowerdefense': ['ES Tower Defense: Rift Siege | ESN Arcade', 'Defend three lanes with turret upgrades, waves, and ES Coin rewards.'],
 }
 
 function MetaManager() {
@@ -815,25 +822,41 @@ function SMPStore() {
 }
 
 function ArcadeHub() {
+  const { profile } = useArcadeProfile()
+
   return (
     <>
-      <PageHero eyebrow="ESN Arcade" title="Six upgraded ES Network games" text="A rebuilt ESN Arcade with playable browser games, shared ES Coins, saved progress, mobile controls, and deeper progression." />
+      <PageHero eyebrow="ESN Arcade 2.0" title="Six games. One shared profile." text="The rebuilt ESN Arcade connects every game through local ES Coins, XP, levels, and device-saved progression." />
       <section className="section">
-        <div className="shell card-grid two">
-          {ARCADE_GAMES.map(([name, route, description]) => (
-            <article className="game-card" key={route}>
-              <span className="eyebrow">Arcade</span>
-              <h2>{name}</h2>
-              <p>{description}</p>
-              <Link to={route}>Play now →</Link>
-            </article>
-          ))}
+        <div className="shell">
+          <div className="arcade-profile-card">
+            <div>
+              <span className="eyebrow">YOUR LOCAL ARCADE PROFILE</span>
+              <h2>Level {profile.level}</h2>
+              <p className="muted">Progress is stored locally in this browser on this device.</p>
+            </div>
+            <div className="arcade-profile-stats">
+              <span><b>{Math.floor(profile.coins).toLocaleString()}</b>Available ES Coins</span>
+              <span><b>{Math.floor(profile.lifetimeCoins || 0).toLocaleString()}</b>Lifetime ES Coins earned</span>
+              <span><b>{Math.floor(profile.xp).toLocaleString()}</b>Arcade XP</span>
+            </div>
+          </div>
+          <div className="card-grid two arcade-game-grid">
+            {ARCADE_GAMES.map(([name, route, description], index) => (
+              <article className="game-card upgraded-game-card" key={route}>
+                <span className="card-number">{String(index + 1).padStart(2, '0')}</span>
+                <span className="eyebrow">Arcade 2.0</span>
+                <h2>{name}</h2>
+                <p>{description}</p>
+                <Link to={route}>Play now →</Link>
+              </article>
+            ))}
+          </div>
         </div>
       </section>
     </>
   )
 }
-
 function NotFound() {
   return (
     <section className="page-hero">
