@@ -5,16 +5,20 @@ export default function StartupIntro(){
 
   useEffect(()=>{
     const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches
-    const fade=window.setTimeout(()=>setPhase('exit'),reduce?420:1650)
-    const done=window.setTimeout(()=>setPhase('done'),reduce?650:2050)
-    return()=>{clearTimeout(fade);clearTimeout(done)}
+    const exit=window.setTimeout(()=>setPhase('exit'),reduce?360:1650)
+    const reveal=window.setTimeout(()=>setPhase('reveal'),reduce?520:2040)
+    const done=window.setTimeout(()=>setPhase('done'),reduce?610:2170)
+    return()=>{clearTimeout(exit);clearTimeout(reveal);clearTimeout(done)}
   },[])
 
   if(phase==='done')return null
 
-  return <div className={phase==='exit'?'startup-intro exit':'startup-intro'} aria-label="ES Network loading">
+  const className=phase==='boot'?'startup-intro':`startup-intro ${phase}`
+
+  return <div className={className} aria-label="ES Network loading">
     <div className="startup-grid" aria-hidden="true"/>
     <div className="startup-beam" aria-hidden="true"/>
+    <div className="startup-exit-scan" aria-hidden="true"/>
     <div className="startup-core">
       <div className="startup-logo-wrap">
         <div className="startup-ring ring-a"/>
