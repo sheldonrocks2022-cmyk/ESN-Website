@@ -1,6 +1,8 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 
 const SHARED_KEY='esn_arcade_shared_original_v1'
+const ARCADE_PROGRESS_KEY='esn_arcade_progress_v2'
+const ARCADE_PROGRESS_EVENT='esn-arcade-progress'
 
 export function loadLocal(key,fallback){
   try { return {...fallback,...JSON.parse(localStorage.getItem(key)||'{}')} }
@@ -23,6 +25,112 @@ export function useSharedCoins(){
     return true
   },[wallet.coins,setWallet])
   return {wallet,setWallet,add,spend}
+}
+
+const defaultProgress={
+  xp:0,
+  achievements:{},
+  totals:{
+    clickerTaps:0,
+    clickerPrestiges:0,
+    factoryMachines:0,
+    factoryResearch:0,
+    minesSafe:0,
+    minesCashouts:0,
+    motoFinishes:0,
+    motoGolds:0,
+    towerFloors:0,
+    towerCashouts:0,
+    tdWaves:0,
+    tdBosses:0,
+  },
+  recent:[],
+}
+
+export function arcadeLevelFromXp(xp){
+  return Math.max(1,Math.floor(Math.sqrt(Math.max(0,xp)/220))+1)
+}
+export function arcadeLevelFloor(level){
+  return Math.pow(Math.max(0,level-1),2)*220
+}
+export function arcadeLevelCeil(level){
+  return Math.pow(level,2)*220
+}
+
+export function useArcadeProgress(){
+  const [progress,setProgress]=useState(()=>loadLocal(ARCADE_PROGRESS_KEY,defaultProgress))
+
+  useEffect(()=>{
+    saveLocal(ARCADE_PROGRESS_KEY,progress)
+  },[progress])
+
+  useEffect(()=>{
+    const sync=e=>{
+      if(e.detail)setProgress(e.detail)
+      else setProgress(loadLocal(ARCADE_PROGRESS_KEY,defaultProgress))
+    }
+    window.addEventListener(ARCADE_PROGRESS_EVENT,sync)
+    return()=>window.removeEventListener(ARCADE_PROGRESS_EVENT,sync)
+  },[])
+
+  const commit=useCallback(updater=>{
+    setProgress(current=>{
+      const next=typeof updater==='function'?updater(current):updater
+      saveLocal(ARCADE_PROGRESS_KEY,next)
+      window.dispatchEvent(new CustomEvent(ARCADE_PROGRESS_EVENT,{detail:next}))
+      return next
+    })
+  },[])
+
+  const gainXp=useCallback((amount,label='Arcade activity')=>{
+    const value=Math.max(0,Math.floor(amount))
+    if(!value)return
+    commit(p=>({
+      ...p,
+      xp:(p.xp||0)+value,
+      recent:[{label,xp:value,at:Date.now()},...(p.recent||[])].slice(0,8),
+    }))
+  },[commit])
+
+  const track=useCallback((stat,amount=1,xp=0,label='')=>{
+    commit(p=>({
+      ...p,
+      xp:(p.xp||0)+Math.max(0,Math.floor(xp)),
+      totals:{...(p.totals||defaultProgress.totals),[stat]:Math.max(0,(p.totals?.[stat]||0)+amount)},
+      recent:xp>0?[{label:label||stat,xp:Math.floor(xp),at:Date.now()},...(p.recent||[])].slice(0,8):(p.recent||[]),
+    }))
+  },[commit])
+
+  const unlock=useCallback((id,label,xp=100)=>{
+    let unlocked=false
+    commit(p=>{
+      if(p.achievements?.[id])return p
+      unlocked=true
+      return {
+        ...p,
+        xp:(p.xp||0)+xp,
+        achievements:{...(p.achievements||{}),[id]:{label,at:Date.now(),xp}},
+        recent:[{label:'Achievement: '+label,xp,at:Date.now()},...(p.recent||[])].slice(0,8),
+      }
+    })
+    return unlocked
+  },[commit])
+
+  const level=arcadeLevelFromXp(progress.xp||0)
+  const floor=arcadeLevelFloor(level)
+  const ceil=arcadeLevelCeil(level)
+  const levelProgress=Math.max(0,Math.min(1,((progress.xp||0)-floor)/Math.max(1,ceil-floor)))
+  const achievementCount=Object.keys(progress.achievements||{}).length
+
+  return useMemo(()=>({
+    progress,
+    level,
+    levelProgress,
+    achievementCount,
+    gainXp,
+    track,
+    unlock,
+  }),[progress,level,levelProgress,achievementCount,gainXp,track,unlock])
 }
 
 export const money=n=>Math.max(0,Math.floor(n)).toLocaleString()
