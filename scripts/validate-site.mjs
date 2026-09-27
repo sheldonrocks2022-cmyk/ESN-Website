@@ -40,8 +40,9 @@ const missingRoutes = requiredRoutes.filter((route) => {
 
 const missingPayments = requiredPaymentLinks.filter((url) => !app.includes(url))
 
+const sitemapExcludedAliases = new Set(['/home', '/store', '/store/smp', '/tools'])
 const sitemapRoutes = requiredRoutes
-  .filter((route) => route !== '/home')
+  .filter((route) => !sitemapExcludedAliases.has(route))
   .filter((route) => !sitemap.includes(`https://esnoffical.com${route === '/' ? '/' : route}`))
 
 const problems = []
