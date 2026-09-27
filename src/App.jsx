@@ -6,6 +6,7 @@ import PremiumChrome from './PremiumChrome'
 import Global3DLighting from './Global3DLighting'
 import StartupIntro from './StartupIntro'
 import ExperienceLayer, { FooterCommandDeck, HeroReactor } from './ExperienceLayer'
+import NetworkShowcase, { EasterEggLayer } from './NetworkShowcase'
 import ShareCenter from './ShareCenter'
 import { SOCIAL_IMAGE_ALT, SOCIAL_IMAGE_URL, canonicalUrl, getSeo, robotsContent, structuredDataFor } from './seo'
 import { PortfolioPage, StatusCenter, TimelinePage, UpdatesPage, VaultPage, WhatsHappeningNow } from './LiveExperience'
@@ -346,7 +347,7 @@ function ExperienceEffects() {
 
 function Brand() {
   return (
-    <Link to="/" className="brand" aria-label="ES Network home">
+    <Link to="/" className="brand" data-easter="brand" aria-label="ES Network home">
       <span className="brand-mark">ES</span>
       <span className="brand-copy">
         <strong>ES NETWORK</strong>
@@ -498,7 +499,7 @@ function Footer() {
 
       <div className="shell footer-bottom">
         <span>© {new Date().getFullYear()} ES Network. All rights reserved.</span>
-        <span className="footer-signal"><i /> ESN SYSTEMS ONLINE</span>
+        <span className="footer-signal" data-easter="footer-signal"><i /> ESN SYSTEMS ONLINE</span>
       </div>
     </footer>
   )
@@ -516,7 +517,7 @@ function PageHero({ eyebrow, title, text, actions }) {
           <p>{text}</p>
           {actions ? <div className="hero-actions page-actions">{actions}</div> : null}
         </div>
-        <div className="page-hero-mark" aria-hidden="true">
+        <div className="page-hero-mark" data-easter="page-mark" aria-hidden="true">
           <span>ES</span>
           <small>NETWORK</small>
         </div>
@@ -559,7 +560,7 @@ function Home() {
           <div className="flagship-hero-copy">
             <div className="hero-badge-row">
               <span className="signal-badge"><i /> ESN SYSTEMS ONLINE</span>
-              <span className="hero-version">ES NETWORK // 2026</span>
+              <span className="hero-version" data-easter="hero-version" title="ES NETWORK // 2026">ES NETWORK // 2026</span>
             </div>
 
             <span className="eyebrow">OFFICIAL ES NETWORK DIGITAL HUB</span>
@@ -597,6 +598,8 @@ function Home() {
       </section>
 
       <WhatsHappeningNow />
+
+      <NetworkShowcase />
 
       <section className="section flagship-story-section">
         <div className="shell flagship-story">
@@ -849,7 +852,8 @@ function Leadership() {
       />
 
       <section className="section leadership-spotlight-section">
-        <div className="shell leadership-spotlight">
+        <div className="shell leadership-spotlight" data-easter="leadership" tabIndex="0">
+          <div className="leadership-scan" aria-hidden="true" />
           <div className="leadership-monogram">L</div>
           <div>
             <span className="eyebrow">Founder & CEO</span>
@@ -1416,6 +1420,7 @@ function App() {
       <Header />
       <PremiumChrome />
       <ExperienceLayer />
+      <EasterEggLayer />
       <main id="main-content">
         <Routes>
           <Route path="/" element={<Home />} />
