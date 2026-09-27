@@ -137,7 +137,7 @@ function ActivityFeed({live}) {
   </aside>
 }
 
-export function NetworkShowcase(){
+export default function NetworkShowcase(){
   const live=useLiveNetwork()
   return <section className="section network-showcase-section">
     <div className="shell">
