@@ -56,7 +56,7 @@ export default function MotoGame(){
   >{label}</button>
 
   return <OriginalFrame title="ES MOTO" subtitle="1,000+ tracks • checkpoints • touch controls • best times">
-    <section className="oa-panel oa-moto-intro">
+    <section className="oa-panel oa-moto-intro oa-moto-showcase">
       <div className="oa-bike-mark"><span/><i/><i/></div>
       <div className="oa-glow-panel oa-discord-card">
         <span className="oa-kicker">DISCORD GAMEPLAY BONUS</span>
@@ -66,7 +66,7 @@ export default function MotoGame(){
       </div>
     </section>
 
-    <section className="oa-panel">
+    <section className="oa-panel oa-moto-game-panel">
       <div className="oa-moto-toolbar">
         <label>TRACK <input type="number" min="1" max="1000" disabled={run.active} value={track} onChange={e=>{const n=Math.max(1,Math.min(1000,+e.target.value||1));setTrack(n);setSaved(v=>({...v,track:n}))}}/></label>
         <span>BEST <b>{saved.best[track]?saved.best[track]+'s':'—'}</b></span>
