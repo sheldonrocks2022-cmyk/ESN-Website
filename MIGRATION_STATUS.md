@@ -23,13 +23,13 @@ This repository is the replacement build for the current ES Network website. The
   - random picker
   - coin flip / D6 utility
   - website estimate utility
-- Arcade routes preserved for faithful original migration:
-  - ES Clicker
-  - ES Factory
-  - ES Mines
-  - ES MOTO
-  - ES Tower
-  - ES Tower Defense
+- Arcade rebuilt from the owner's official-site screen recording:
+  - ES Clicker — tap loop, live stats, 110-upgrade Power Forge
+  - ES Factory — 53 zones, production floors, 112-machine catalog
+  - ES Mines — 5×5 board, original wager/mine choices, multiplier/cash-out flow
+  - ES MOTO — side-view bike, touch controls, 1,000-track selection, checkpoints/best times
+  - ES Tower — 122-floor reward ladder, three-door progression, wager/cash-out flow
+  - ES Tower Defense — 200 rounds, original route-map layout and 10-tower roster/costs
 - Current SMP host and port used by the rebuild
 - Four verified Stripe Payment Links
 - Exact Minecraft username / leading-period delivery warning
@@ -43,19 +43,11 @@ This repository is the replacement build for the current ES Network website. The
 - Accessibility focus states, skip link, and reduced-motion support
 - CI checks for routes, payment links, removed Mobile Coaching content, migrated modules, production build, and built route files
 
-## Arcade protection
+## Arcade source and upgrade rule
 
-The temporary replacement Arcade games were removed after Test 1 because they did not match the official website closely enough. The original Arcade must be migrated faithfully before upgrades are applied.
+The owner supplied a 209-second recording of all six official Arcade games on esnoffical.com. The replacement Arcade is now rebuilt from that recording plus previously verified mechanic counts.
 
-Historically verified original-game details:
-- ES Clicker: local progress, ES Coins, statistics, upgrade shop, 110 upgrades
-- ES Factory: 53 zones, 112 machines, floors, upgrades, boosts, shared ES Coin progression
-- ES Mines: virtual ES Coins, wager selection, mine-density selection, multipliers
-- ES MOTO: 1,000+ tracks, checkpoints, touch controls, best times, daily challenges
-- ES Tower: separate original browser game
-- ES Tower Defense: separate original browser game
-
-Do not approximate or redesign the original mechanics, saves, ES Coins, upgrades, controls, balancing, routes, or presentation without source evidence.
+Upgrades may improve responsiveness, persistence, animation smoothness, accessibility, and mobile behavior, but the original game identities, core mechanics, controls, progression models, visual language, routes, and ES Coin concepts must remain recognizable.
 
 ## Content intentionally not fabricated
 
