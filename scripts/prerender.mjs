@@ -57,6 +57,10 @@ const routes = {
     title: 'ES Network Portfolio | Interactive Before & After Demos',
     description: 'Explore illustrative before-and-after ES Network service transformation demos for editing, Discord setup, and website creation.',
   },
+  '/share': {
+    title: 'ESN Share Deck | Branded Share Cards',
+    description: 'Generate branded ES Network share cards for the SMP, Arcade, services, releases, and current SMP store products.',
+  },
   '/vault': {
     title: 'ESN Vault | Secret Network Layer',
     description: 'A hidden ES Network experience unlocked through easter eggs.',
