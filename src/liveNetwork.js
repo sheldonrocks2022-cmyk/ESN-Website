@@ -30,22 +30,130 @@ export function useLiveNetwork(){
       arcade:{status:'operational',games:6},
     }
 
-    const smpPromise=fetch(`https://api.mcstatus.io/v2/status/java/${SMP_ADDRESS}:${SMP_PORT}?query=true&timeout=5`,{cache:'no-store'})
-      .then(async response=>{
-        if(!response.ok)throw new Error('SMP status unavailable')
-        const value=await response.json()
+    const fetchJson=async(url,timeoutMs=6500)=>{
+      const controller=new AbortController()
+      const timer=window.setTimeout(()=>controller.abort(),timeoutMs)
+      try{
+        const response=await fetch(url,{cache:'no-store',signal:controller.signal})
+        if(!response.ok)throw new Error(`Status source failed (${response.status})`)
+        return await response.json()
+      }finally{
+        window.clearTimeout(timer)
+      }
+    }
+
+    const statusSources=[
+      {
+        name:'mcstatus-java',
+        run:async()=>{
+          const value=await fetchJson(`https://api.mcstatus.io/v2/status/java/${SMP_ADDRESS}:${SMP_PORT}?query=true&timeout=5`)
+          return {
+            source:'mcstatus-java',
+            confirmed:true,
+            online:Boolean(value.online),
+            players:value.players?.online??null,
+            maxPlayers:value.players?.max??null,
+            version:value.version?.name_clean??value.version?.name_raw??null,
+            software:value.software??null,
+            motd:value.motd?.clean??null,
+          }
+        },
+      },
+      {
+        name:'mcstatus-bedrock',
+        run:async()=>{
+          const value=await fetchJson(`https://api.mcstatus.io/v2/status/bedrock/${SMP_ADDRESS}:${SMP_PORT}?timeout=5`)
+          return {
+            source:'mcstatus-bedrock',
+            confirmed:true,
+            online:Boolean(value.online),
+            players:value.players?.online??null,
+            maxPlayers:value.players?.max??null,
+            version:value.version?.name_clean??value.version?.name_raw??null,
+            software:value.software??null,
+            motd:value.motd?.clean??null,
+          }
+        },
+      },
+      {
+        name:'mcsrvstat',
+        run:async()=>{
+          const value=await fetchJson(`https://api.mcsrvstat.us/3/${SMP_ADDRESS}:${SMP_PORT}`)
+          return {
+            source:'mcsrvstat',
+            confirmed:true,
+            online:Boolean(value.online),
+            players:value.players?.online??null,
+            maxPlayers:value.players?.max??null,
+            version:value.version??null,
+            software:value.software??null,
+            motd:Array.isArray(value.motd?.clean)?value.motd.clean.join(' '):(value.motd?.clean??null),
+          }
+        },
+      },
+    ]
+
+    const smpPromise=Promise.allSettled(statusSources.map(source=>source.run())).then(results=>{
+      const responses=results
+        .filter(result=>result.status==='fulfilled')
+        .map(result=>result.value)
+
+      const onlineResponses=responses.filter(result=>result.online)
+      const offlineResponses=responses.filter(result=>!result.online)
+
+      if(onlineResponses.length){
+        const best=onlineResponses
+          .slice()
+          .sort((a,b)=>{
+            const score=value=>Number(value.players!=null)+Number(value.maxPlayers!=null)+Number(Boolean(value.version))+Number(Boolean(value.software))
+            return score(b)-score(a)
+          })[0]
+
         return {
-          status:value.online?'online':'offline',
-          online:Boolean(value.online),
-          players:value.players?.online??null,
-          maxPlayers:value.players?.max??null,
-          version:value.version?.name_clean??null,
-          software:value.software??null,
-          motd:value.motd?.clean??null,
+          status:'online',
+          online:true,
+          players:best.players,
+          maxPlayers:best.maxPlayers,
+          version:best.version,
+          software:best.software,
+          motd:best.motd,
           uptime:null,
+          source:best.source,
+          sourceCount:responses.length,
         }
-      })
-      .catch(()=>({status:'unavailable',online:false,players:null,maxPlayers:null,version:null,software:null,motd:null,uptime:null}))
+      }
+
+      // Avoid false OFFLINE states from one flaky or protocol-mismatched ping.
+      // Require at least two independent sources to explicitly respond offline.
+      if(offlineResponses.length>=2){
+        const best=offlineResponses[0]
+        return {
+          status:'offline',
+          online:false,
+          players:best.players,
+          maxPlayers:best.maxPlayers,
+          version:best.version,
+          software:best.software,
+          motd:best.motd,
+          uptime:null,
+          source:'multiple-confirmed',
+          sourceCount:responses.length,
+        }
+      }
+
+      return {
+        status:'unavailable',
+        online:null,
+        players:null,
+        maxPlayers:null,
+        version:null,
+        software:null,
+        motd:null,
+        uptime:null,
+        source:responses[0]?.source??null,
+        sourceCount:responses.length,
+      }
+    })
 
     const pluginPromise=fetch(`https://api.github.com/repos/${PLUGIN_REPO}/releases/latest`,{
       headers:{Accept:'application/vnd.github+json'},
