@@ -8,6 +8,7 @@ import StartupIntro from './StartupIntro'
 import ExperienceLayer, { FooterCommandDeck, HeroReactor } from './ExperienceLayer'
 import NetworkShowcase, { EasterEggLayer } from './NetworkShowcase'
 import NetworkEvolution, { NetworkEvolutionSection } from './NetworkEvolution'
+import { NetworkNexusPage, NexusEventLayer } from './NetworkNexus'
 import { ArcadeProgressCenter, ExplorePage, GalleryPage, NetworkStatsPage, RetentionHub, SettingsPage, SiteExpansionLayer, SMPEncyclopediaPage, SupportPage, WhatsNewPage } from './SiteExpansion'
 import ShareCenter from './ShareCenter'
 import { SOCIAL_IMAGE_ALT, SOCIAL_IMAGE_URL, canonicalUrl, getSeo, robotsContent, structuredDataFor } from './seo'
@@ -383,7 +384,7 @@ function Header() {
   const mobileSection = arcadeActive ? 'Arcade'
     : inGroup(['/smpconnection','/smpconsole','/smpplugin','/smpguide','/storesmp']) ? 'ESN SMP'
     : inGroup(['/serviceshowcase','/portfolio','/testimonials']) ? 'Services'
-    : inGroup(['/status','/networkstats','/updates','/whatsnew','/timeline','/explore','/gallery']) ? 'Network'
+    : inGroup(['/status','/networkstats','/updates','/whatsnew','/timeline','/explore','/gallery','/nexus']) ? 'Network'
     : location.pathname==='/estools' ? 'Tools'
     : location.pathname==='/settings' ? 'Settings'
     : location.pathname==='/support' ? 'Support'
@@ -447,12 +448,13 @@ function Header() {
 
           <Link className={location.pathname === '/estools' ? 'nav-direct active' : 'nav-direct'} onClick={close} to="/estools">ES Tools</Link>
 
-          <div className={inGroup(['/about','/leadership','/testimonials','/faq','/status','/networkstats','/timeline','/updates','/whatsnew','/explore','/gallery','/settings','/support','/share']) ? 'nav-group active' : 'nav-group'}>
+          <div className={inGroup(['/about','/leadership','/testimonials','/faq','/status','/networkstats','/timeline','/updates','/whatsnew','/explore','/gallery','/settings','/support','/share','/nexus']) ? 'nav-group active' : 'nav-group'}>
             <button className="nav-trigger" type="button" aria-haspopup="true">About</button>
             <div className="dropdown">
               <span className="dropdown-label">THE NETWORK</span>
               <Link onClick={close} to="/about">About ES Network</Link>
               <Link onClick={close} to="/status">Live Network Status</Link>
+              <Link onClick={close} to="/nexus">Network Nexus</Link>
               <Link onClick={close} to="/updates">Release Center</Link>
               <Link onClick={close} to="/timeline">Interactive Timeline</Link>
               <Link onClick={close} to="/share">Share Deck</Link>
@@ -510,6 +512,7 @@ function Footer() {
             <h3>Network</h3>
             <Link to="/about">About ESN</Link>
             <Link to="/status">Network Status</Link>
+            <Link to="/nexus">Network Nexus</Link>
             <Link to="/updates">Release Center</Link>
             <Link to="/timeline">Timeline</Link>
             <Link to="/share">Share Deck</Link>
@@ -1462,6 +1465,7 @@ function App() {
       <EasterEggLayer />
       <NetworkEvolution />
       <SiteExpansionLayer />
+      <NexusEventLayer />
       <main id="main-content">
         <Routes>
           <Route path="/" element={<Home />} />
@@ -1480,6 +1484,7 @@ function App() {
           <Route path="/smpguide" element={<SMPEncyclopediaPage />} />
           <Route path="/status" element={<StatusCenter />} />
           <Route path="/networkstats" element={<NetworkStatsPage />} />
+          <Route path="/nexus" element={<NetworkNexusPage />} />
           <Route path="/timeline" element={<TimelinePage />} />
           <Route path="/updates" element={<UpdatesPage />} />
           <Route path="/portfolio" element={<PortfolioPage />} />
