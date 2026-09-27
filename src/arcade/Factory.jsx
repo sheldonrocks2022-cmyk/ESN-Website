@@ -37,7 +37,7 @@ export default function FactoryGame(){
   const shown=machines.filter(m=>filter==='ALL'||(filter==='UNLOCKED ZONES'?m.zone<=g.unlockedZones:(m.zone<=g.unlockedZones&&m.floor<=g.unlockedFloors))).slice(0,18)
   return <OriginalFrame title="ES Factory" subtitle="53 zones • production floors • 112-machine catalog">
     <section className="oa-panel oa-status-line">Live auto-save active • last sync {Math.max(0,Math.floor((Date.now()-g.lastSync)/1000))}s ago • no offline earnings.</section>
-    <section className="oa-panel">
+    <section className="oa-panel oa-factory-zones">
       <div className="oa-section-head"><div><span className="oa-kicker">FACTORY ZONES</span><p>Zone map for this browser factory game with 53 unlockable sectors and staged progression tied to factory level milestones.</p></div><div><b>{money(wallet.coins)} ES</b><small>{rate.toFixed(2)} CPS</small></div></div>
       <div className="oa-filter-row"><button>ALL</button><button>UNLOCKED</button><button>LOCKED</button></div>
       <div className="oa-zone-list">
@@ -45,14 +45,14 @@ export default function FactoryGame(){
       </div>
     </section>
 
-    <section className="oa-panel">
+    <section className="oa-panel oa-factory-floors">
       <div className="oa-section-head"><div><span className="oa-kicker">PRODUCTION FLOORS</span><p>Unlock floor tiers to stack output bonuses and push deeper incremental factory game scaling.</p></div></div>
       <div className="oa-floor-grid">
         {Array.from({length:8},(_,i)=>{const n=i+1,open=n<=g.unlockedFloors,bonus=4+Math.floor(i/2),cost=Math.floor(865*Math.pow(1.36,Math.max(0,n-3)));return <article key={n}><h3>Production Floor {n}</h3><p>Output bonus: +{bonus}%<br/>Zone requirement: {1+i*2}</p>{open?<div className="oa-online">ACTIVE <span>ONLINE</span></div>:<div className="oa-unlock-row"><b>{money(cost)} ES</b><button disabled={wallet.coins<cost} onClick={()=>unlockFloor(n)}>UNLOCK</button></div>}</article>})}
       </div>
     </section>
 
-    <section className="oa-panel">
+    <section className="oa-panel oa-factory-machines">
       <span className="oa-kicker">MACHINE SHOP</span>
       <p>Factory management game catalog with machine classes filtered by unlocked zones and production floor requirements.</p>
       <div className="oa-filter-row">{['AVAILABLE','UNLOCKED ZONES','ALL'].map(x=><button className={filter===x?'active':''} onClick={()=>setFilter(x)} key={x}>{x}</button>)}</div>
