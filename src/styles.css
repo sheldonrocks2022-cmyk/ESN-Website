@@ -6951,3 +6951,394 @@ html[data-motion="reduced"] .route-transition{
   }
   .oa-impact-layer{display:none!important}
 }
+
+
+/* =========================================================
+   ESN RETENTION LOOP — daily / weekly / collectibles / records
+   ========================================================= */
+.retention-hub-section{
+  position:relative;
+  padding-top:64px;
+  padding-bottom:72px;
+}
+.retention-hub{
+  position:relative;
+  display:grid;
+  gap:18px;
+}
+.retention-heading{
+  align-items:flex-end;
+}
+.retention-event{
+  min-width:min(100%,280px);
+  padding:16px 18px;
+  border:1px solid rgba(119,151,220,.13);
+  border-radius:18px;
+  background:linear-gradient(145deg,rgba(13,25,49,.9),rgba(6,13,27,.94));
+  display:grid;
+  gap:4px;
+}
+.retention-event span,.retention-block-head span,.retention-primary-grid>article>span{
+  color:#75eefa;
+  font-size:.58rem;
+  font-weight:950;
+  letter-spacing:.16em;
+}
+.retention-event strong{font-size:1.1rem}
+.retention-event small{color:#7f8fa8;font-size:.68rem;line-height:1.45}
+.retention-event.live{
+  border-color:rgba(103,239,250,.35);
+  box-shadow:0 0 32px rgba(103,239,250,.08),inset 0 0 26px rgba(103,239,250,.04);
+}
+.retention-primary-grid{
+  display:grid;
+  grid-template-columns:1.15fr 1fr 1fr;
+  gap:14px;
+}
+.retention-primary-grid>article,
+.retention-weekly,
+.retention-leaderboard,
+.retention-vote{
+  position:relative;
+  overflow:hidden;
+  border:1px solid rgba(117,151,220,.13);
+  border-radius:24px;
+  background:
+    radial-gradient(circle at 92% 8%,rgba(93,128,255,.09),transparent 17rem),
+    linear-gradient(150deg,rgba(12,25,48,.92),rgba(5,12,25,.94));
+  box-shadow:0 22px 62px rgba(0,0,0,.16),inset 0 1px rgba(255,255,255,.035);
+}
+.retention-primary-grid>article{
+  min-height:280px;
+  padding:26px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+.retention-primary-grid>article strong{
+  font-size:clamp(1.8rem,3vw,2.75rem);
+  letter-spacing:-.045em;
+}
+.retention-primary-grid>article p{margin:0}
+.retention-primary-grid>article button,
+.retention-primary-grid>article .button{margin-top:auto}
+.retention-reward-card::before{
+  content:"";
+  position:absolute;
+  width:220px;height:220px;
+  right:-76px;top:-76px;
+  border-radius:50%;
+  border:1px solid rgba(103,239,250,.12);
+  box-shadow:0 0 55px rgba(103,239,250,.06),inset 0 0 42px rgba(103,239,250,.035);
+  animation:retentionCoreSpin 18s linear infinite;
+}
+@keyframes retentionCoreSpin{to{transform:rotate(360deg)}}
+.retention-reward-card button{
+  min-height:50px;
+  border:1px solid rgba(103,239,250,.24);
+  border-radius:13px;
+  background:linear-gradient(145deg,rgba(44,104,192,.22),rgba(66,214,229,.08));
+  color:#eafdff;
+  font-weight:950;
+  letter-spacing:.08em;
+  cursor:pointer;
+}
+.retention-reward-card button:disabled{opacity:.55;cursor:default}
+.retention-metrics{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:6px;
+}
+.retention-metrics b{
+  min-width:0;
+  padding:10px 8px;
+  border:1px solid rgba(255,255,255,.055);
+  border-radius:11px;
+  background:rgba(255,255,255,.018);
+  font-size:.82rem!important;
+}
+.retention-metrics small{display:block;color:#6f8098;font-size:.46rem;margin-top:3px;text-transform:uppercase;letter-spacing:.1em}
+.retention-continue-card .button{width:100%;justify-content:center}
+.retention-continue-card>small{color:#72839b;line-height:1.45}
+.retention-collectibles{
+  display:flex;
+  flex-wrap:wrap;
+  gap:7px;
+  margin-top:auto;
+  max-height:112px;
+  overflow:auto;
+}
+.retention-collectibles i{
+  font-style:normal;
+  padding:8px 10px;
+  border:1px solid rgba(155,122,255,.2);
+  border-radius:999px;
+  background:rgba(155,122,255,.055);
+  color:#d8caff;
+  font-size:.58rem;
+  font-weight:800;
+}
+.retention-collectibles small{color:#718198;line-height:1.5}
+.retention-split{
+  display:grid;
+  grid-template-columns:minmax(0,1.15fr) minmax(320px,.85fr);
+  gap:14px;
+}
+.retention-weekly,.retention-leaderboard{padding:24px}
+.retention-block-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  margin-bottom:16px;
+}
+.retention-block-head h3{margin-top:5px;font-size:1.35rem}
+.retention-block-head>b{
+  padding:7px 9px;
+  border:1px solid rgba(255,255,255,.07);
+  border-radius:999px;
+  color:#8292aa;
+  font-size:.54rem;
+  letter-spacing:.1em;
+}
+.retention-weekly-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:9px;
+}
+.retention-weekly-grid article{
+  min-height:180px;
+  padding:16px;
+  border:1px solid rgba(255,255,255,.055);
+  border-radius:15px;
+  background:rgba(255,255,255,.017);
+  display:flex;
+  flex-direction:column;
+}
+.retention-weekly-grid article>span{color:#79eaf5;font-size:.5rem;font-weight:950;letter-spacing:.12em}
+.retention-weekly-grid article>strong{font-size:.92rem;margin-top:6px}
+.retention-weekly-grid article p{font-size:.72rem;line-height:1.5;margin:.45rem 0 auto}
+.retention-weekly-grid article>div{
+  height:5px;
+  overflow:hidden;
+  border-radius:999px;
+  background:#06101e;
+  margin-top:12px;
+}
+.retention-weekly-grid article>div i{
+  display:block;height:100%;
+  background:linear-gradient(90deg,#568dff,#68f1fa);
+  box-shadow:0 0 12px rgba(104,241,250,.25);
+}
+.retention-weekly-grid article>small{margin-top:6px;color:#71839b;font-size:.54rem}
+.retention-weekly-grid article.complete{
+  border-color:rgba(76,233,143,.22);
+  background:linear-gradient(145deg,rgba(76,233,143,.045),rgba(255,255,255,.012));
+}
+.retention-ranks{display:grid;gap:7px}
+.retention-ranks a{
+  min-height:64px;
+  padding:9px 11px;
+  border:1px solid rgba(255,255,255,.055);
+  border-radius:13px;
+  background:rgba(255,255,255,.016);
+  display:grid;
+  grid-template-columns:34px minmax(0,1fr) auto;
+  align-items:center;
+  gap:10px;
+}
+.retention-ranks a:hover{border-color:rgba(103,239,250,.2);background:rgba(103,239,250,.035)}
+.retention-ranks em{font-style:normal;color:#50617a;font-size:.68rem;font-weight:900}
+.retention-ranks div{display:grid;min-width:0}
+.retention-ranks strong{font-size:.74rem}
+.retention-ranks small{color:#72849c;font-size:.56rem;margin-top:2px}
+.retention-ranks>a>b{font-size:.58rem;color:#8ff8ff}
+.retention-vote{
+  padding:26px;
+  display:grid;
+  grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);
+  gap:24px;
+  align-items:center;
+}
+.retention-vote h3{font-size:1.6rem;margin:.4rem 0}
+.retention-vote p{margin:0}
+.retention-vote-options{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:8px;
+}
+.retention-vote-options button{
+  min-height:92px;
+  padding:13px;
+  text-align:left;
+  border:1px solid rgba(255,255,255,.06);
+  border-radius:13px;
+  background:rgba(255,255,255,.018);
+  color:#edf7ff;
+  cursor:pointer;
+}
+.retention-vote-options button strong{display:block;font-size:.72rem}
+.retention-vote-options button small{display:block;color:#71839b;font-size:.55rem;line-height:1.45;margin-top:5px}
+.retention-vote-options button.selected{
+  border-color:rgba(103,239,250,.34);
+  background:linear-gradient(145deg,rgba(74,131,255,.11),rgba(103,239,250,.055));
+  box-shadow:inset 0 0 22px rgba(103,239,250,.035);
+}
+
+/* =========================================================
+   MOTO REAL BIKE / RIDER PASS
+   ========================================================= */
+.oa-moto-bike{
+  filter:drop-shadow(0 2px 1px rgba(0,0,0,.7)) drop-shadow(0 0 2px rgba(112,239,255,.15));
+}
+.oa-moto-rider{
+  transform-box:fill-box;
+  transform-origin:50% 72%;
+}
+.oa-bike-wheel{
+  transform-box:fill-box;
+  transform-origin:center;
+}
+.oa-moto-exhaust{
+  animation:oaExhaustPulse .16s ease-in-out infinite alternate;
+}
+@keyframes oaExhaustPulse{
+  from{opacity:.55;transform:scaleX(.72)}
+  to{opacity:1;transform:scaleX(1.15)}
+}
+
+/* =========================================================
+   TOWER — actual vertical building presentation
+   ========================================================= */
+.oa-tower-scene{
+  position:relative;
+  min-height:290px;
+  overflow:hidden;
+  margin:2px 0 14px;
+  border:1px solid rgba(108,160,220,.1);
+  border-radius:18px;
+  background:
+    linear-gradient(180deg,#071426 0%,#0a1b30 54%,#030812 100%);
+  box-shadow:inset 0 0 65px rgba(0,0,0,.35);
+}
+.oa-tower-sky{
+  position:absolute;inset:0;
+  background:
+    radial-gradient(circle at 76% 18%,rgba(187,239,255,.11),transparent 8rem),
+    linear-gradient(180deg,rgba(18,47,76,.62),rgba(6,15,29,.82));
+}
+.oa-tower-sky i{
+  position:absolute;width:2px;height:2px;border-radius:50%;background:#dffcff;opacity:.55;box-shadow:0 0 8px rgba(210,249,255,.65)
+}
+.oa-tower-sky i:nth-child(1){left:18%;top:18%}
+.oa-tower-sky i:nth-child(2){left:67%;top:30%;width:1px;height:1px}
+.oa-tower-sky i:nth-child(3){left:84%;top:12%}
+.oa-tower-building{
+  position:absolute;
+  left:50%;
+  bottom:0;
+  width:min(52%,330px);
+  height:92%;
+  transform:translateX(-50%) perspective(850px) rotateX(1deg);
+  border:1px solid #24425d;
+  background:linear-gradient(90deg,#0c1824,#172a3a 45%,#0b1724);
+  box-shadow:0 0 55px rgba(0,0,0,.48),inset 12px 0 25px rgba(255,255,255,.018),inset -18px 0 28px rgba(0,0,0,.25);
+  display:flex;
+  flex-direction:column-reverse;
+}
+.oa-tower-building-floor{
+  position:relative;
+  flex:1;
+  min-height:0;
+  border-top:1px solid rgba(161,207,231,.08);
+  display:grid;
+  grid-template-columns:28px repeat(4,1fr);
+  align-items:center;
+  gap:6px;
+  padding:0 8px;
+}
+.oa-tower-building-floor>span{
+  color:#526d82;
+  font-size:.42rem;
+  font-weight:900;
+  text-align:center;
+}
+.oa-tower-building-floor>i{
+  height:42%;
+  min-height:8px;
+  border:1px solid rgba(144,205,228,.11);
+  background:#06101a;
+  box-shadow:inset 0 0 10px rgba(0,0,0,.5);
+}
+.oa-tower-building-floor.active{
+  background:linear-gradient(90deg,rgba(95,229,255,.04),rgba(95,229,255,.11),rgba(95,229,255,.04));
+  box-shadow:0 0 24px rgba(92,222,255,.08);
+}
+.oa-tower-building-floor.active>span{color:#b8fbff}
+.oa-tower-building-floor.active>i{
+  background:linear-gradient(180deg,#9cf8ff,#2d92ab);
+  box-shadow:0 0 12px rgba(111,239,255,.36);
+}
+.oa-tower-roof{
+  position:absolute;
+  left:-7%;right:-7%;top:-26px;height:28px;
+  border:1px solid #28455d;
+  background:linear-gradient(180deg,#1a3041,#0b1722);
+  display:flex;align-items:center;justify-content:center;
+}
+.oa-tower-roof span{color:#8ff8ff;font-size:.55rem;font-weight:950;letter-spacing:.08em}
+.oa-tower-roof i{position:absolute;left:50%;bottom:100%;width:2px;height:45px;background:#8fefff;box-shadow:0 0 14px rgba(109,239,255,.45)}
+.oa-tower-ground{
+  position:absolute;left:0;right:0;bottom:0;height:22%;
+  background:linear-gradient(180deg,transparent,rgba(0,0,0,.42));
+  pointer-events:none;
+}
+
+/* =========================================================
+   TOWER DEFENSE — physical turrets, muzzle fire, armored enemies
+   ========================================================= */
+.oa-td-turret{
+  transform-box:fill-box;
+  transform-origin:center;
+  filter:drop-shadow(0 2px 1px rgba(0,0,0,.55));
+}
+.oa-td-turret.firing{
+  animation:oaTurretRecoil .18s ease-out;
+}
+.oa-td-muzzle{
+  animation:oaMuzzleFlash .18s ease-out infinite alternate;
+}
+.oa-td-enemy{
+  filter:drop-shadow(0 2px 1.5px rgba(0,0,0,.48));
+}
+.oa-td-enemy.elite{filter:drop-shadow(0 2px 2px rgba(0,0,0,.55)) drop-shadow(0 0 3px rgba(255,185,77,.22))}
+.oa-td-enemy.boss{filter:drop-shadow(0 3px 3px rgba(0,0,0,.65)) drop-shadow(0 0 5px rgba(162,105,255,.3))}
+@keyframes oaTurretRecoil{
+  0%{transform:translateX(.7px)}
+  100%{transform:none}
+}
+@keyframes oaMuzzleFlash{
+  from{opacity:.25;transform:scale(.75)}
+  to{opacity:1;transform:scale(1.28)}
+}
+
+@media(max-width:900px){
+  .retention-primary-grid,.retention-split,.retention-vote{grid-template-columns:1fr}
+  .retention-weekly-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:600px){
+  .retention-hub-section{padding:38px 0}
+  .retention-heading{align-items:flex-start}
+  .retention-event{width:100%}
+  .retention-primary-grid>article,.retention-weekly,.retention-leaderboard,.retention-vote{border-radius:18px}
+  .retention-primary-grid>article{min-height:auto;padding:18px}
+  .retention-weekly,.retention-leaderboard,.retention-vote{padding:17px}
+  .retention-weekly-grid,.retention-vote-options{grid-template-columns:1fr}
+  .retention-metrics{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .retention-ranks a{grid-template-columns:28px minmax(0,1fr) auto}
+  .oa-tower-scene{min-height:210px}
+  .oa-tower-building{width:68%}
+}
+@media(prefers-reduced-motion:reduce){
+  .retention-reward-card::before,.oa-moto-exhaust,.oa-td-turret.firing,.oa-td-muzzle{animation:none!important}
+}
