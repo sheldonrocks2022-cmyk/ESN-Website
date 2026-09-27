@@ -474,3 +474,7 @@ summary:focus-visible {
 .role-list { margin:14px 0 0; padding-left:18px; color:#c7d2e6; line-height:1.55; font-size:.86rem; }
 .role-list li + li { margin-top:5px; }
 .empty-state .button { margin-top:18px; }
+
+.connection-actions { display:flex; justify-content:center; margin:18px 0 12px; }
+.connection-actions .button { width:auto; }
+@media (max-width:560px){ .connection-actions .button { width:100%; } }
