@@ -7,6 +7,7 @@ import Global3DLighting from './Global3DLighting'
 import StartupIntro from './StartupIntro'
 import ExperienceLayer, { FooterCommandDeck, HeroReactor } from './ExperienceLayer'
 import ShareCenter from './ShareCenter'
+import { canonicalUrl, getSeo, robotsContent, structuredDataFor } from './seo'
 import { PortfolioPage, StatusCenter, TimelinePage, UpdatesPage, VaultPage, WhatsHappeningNow } from './LiveExperience'
 import { VERIFIED_REVIEWS } from './reviews'
 import ClickerGame from './arcade/Clicker'
@@ -156,63 +157,43 @@ const FAQ_ITEMS = [
   ['Where can I join the ESN community?', 'Use the official Discord link anywhere on this website to join the ES Network community.'],
 ]
 
-const META = {
-  '/': ['ES Network (ESN) | Fortnite Coaching, Editing & Discord Services', 'The official ES Network website for Fortnite coaching, editing, Discord setup services, ESN SMP, Arcade games, tools, and community access.'],
-  '/home': ['ES Network (ESN) | Fortnite Coaching, Editing & Discord Services', 'The official ES Network website for Fortnite coaching, editing, Discord setup services, ESN SMP, Arcade games, tools, and community access.'],
-  '/serviceshowcase': ['ES Network Services | Fortnite Coaching, Editing & Discord Setup', 'Explore ES Network services including Fortnite coaching, editing, Discord server setups, and selected digital projects.'],
-  '/storesmp': ['ESN SMP Store | ES Network Minecraft Items', 'Purchase ESN SMP digital items and bundles through official Stripe checkout links.'],
-  '/smpconnection': ['ESN SMP Connection | Server IP & Port', 'Connect to the ESN SMP using the current server IP and port.'],
-  '/smpconsole': ['ESN SMP Console Connection | Xbox, PlayStation & Switch', 'Step-by-step ESN console connection guide using Bedrock Connect for Xbox, PlayStation, and Nintendo Switch.'],
-  '/smpplugin': ['Download ESNSMP Plugin | ES Network', 'Download the latest public ESNSMP Minecraft plugin release directly from the official ESNSMP GitHub release.'],
-  '/status': ['ESN Network Status | Live SMP Players & Systems', 'View live ES Network website, SMP player count, plugin release, Arcade, and Discord connection status.'],
-  '/timeline': ['ES Network Timeline | EP1C Services to ESN', 'Explore the interactive ES Network timeline from the former EP1C Services name through ESN, SMP, Arcade, and current projects.'],
-  '/updates': ['ES Network Release Center | Updates & Roadmap', 'See current ES Network website, ESNSMP, Arcade, live-network releases, and future project candidates.'],
-  '/portfolio': ['ES Network Portfolio | Interactive Before & After Demos', 'Explore illustrative before-and-after ES Network service transformation demos for editing, Discord setup, and website creation.'],
-  '/share': ['ESN Share Deck | Branded Share Cards', 'Generate branded ES Network share cards for the SMP, Arcade, services, releases, and current SMP store products.'],
-  '/vault': ['ESN Vault | Secret Network Layer', 'A hidden ES Network experience unlocked through easter eggs.'],
-  '/estools': ['ES Tools | Free Browser-Based Creator & Gaming Utilities', 'Free browser-based ES Network tools with no account required.'],
-  '/about': ['About ES Network | ESN', 'Learn about ES Network, the current brand formerly known as EP1C Services.'],
-  '/leadership': ['ES Network Leadership | Meet the Team', 'Meet the founders, co-founders, and administrators behind ES Network.'],
-  '/faq': ['ES Network FAQ | Services, Ordering & Support', 'Answers about ES Network services, SMP purchases, support, community access, and tools.'],
-  '/testimonials': ['ES Network Customer Testimonials', 'Read 35 verified ES Network reviews for Fortnite coaching, editing, and Discord server setup services.'],
-  '/arcade': ['ESN Arcade | Browser Games', 'The ES Network Arcade routes are preserved while the original game experiences are faithfully migrated.'],
-  '/esclicker': ['ES Clicker | ESN Arcade', 'Original ES Clicker route preserved for faithful migration.'],
-  '/esfactory': ['ES Factory | ESN Arcade', 'Original ES Factory route preserved for faithful migration.'],
-  '/esmines': ['ES Mines | ESN Arcade', 'Original ES Mines route preserved for faithful migration.'],
-  '/esmoto': ['ES MOTO | ESN Arcade', 'Original ES MOTO route preserved for faithful migration.'],
-  '/estower': ['ES Tower | ESN Arcade', 'Original ES Tower route preserved for faithful migration.'],
-  '/estowerdefense': ['ES Tower Defense | ESN Arcade', 'Original ES Tower Defense route preserved for faithful migration.'],
-}
-
 function MetaManager() {
   const location = useLocation()
 
   useEffect(() => {
-    const [title, description] = META[location.pathname] ?? ['ES Network', 'Official ES Network website.']
+    const meta = getSeo(location.pathname)
+    const title = meta.title
+    const description = meta.description
+    const url = canonicalUrl(location.pathname)
+    const robots = robotsContent(location.pathname, window.location.hostname)
+
     document.title = title
 
-    let descriptionTag = document.querySelector('meta[name="description"]')
-    if (!descriptionTag) {
-      descriptionTag = document.createElement('meta')
-      descriptionTag.setAttribute('name', 'description')
-      document.head.appendChild(descriptionTag)
-    }
-    descriptionTag.setAttribute('content', description)
-
-    let robotsTag = document.querySelector('meta[name="robots"]')
-    if (window.location.hostname === 'ep1cservices.shop') {
-      if (!robotsTag) {
-        robotsTag = document.createElement('meta')
-        robotsTag.setAttribute('name', 'robots')
-        document.head.appendChild(robotsTag)
+    const setMeta = (selector, attribute, name, content) => {
+      let tag = document.querySelector(selector)
+      if (!tag) {
+        tag = document.createElement('meta')
+        tag.setAttribute(attribute, name)
+        document.head.appendChild(tag)
       }
-      robotsTag.setAttribute('content', 'noindex, nofollow')
-    } else if (robotsTag?.dataset?.testDomain === 'true') {
-      robotsTag.remove()
+      tag.setAttribute('content', content)
+      return tag
     }
-    if (robotsTag && window.location.hostname === 'ep1cservices.shop') {
-      robotsTag.dataset.testDomain = 'true'
-    }
+
+    setMeta('meta[name="description"]', 'name', 'description', description)
+    setMeta('meta[name="robots"]', 'name', 'robots', robots)
+    setMeta('meta[name="googlebot"]', 'name', 'googlebot', robots)
+
+    setMeta('meta[property="og:title"]', 'property', 'og:title', title)
+    setMeta('meta[property="og:description"]', 'property', 'og:description', description)
+    setMeta('meta[property="og:type"]', 'property', 'og:type', 'website')
+    setMeta('meta[property="og:site_name"]', 'property', 'og:site_name', 'ES Network')
+    setMeta('meta[property="og:locale"]', 'property', 'og:locale', 'en_US')
+    setMeta('meta[property="og:url"]', 'property', 'og:url', url)
+
+    setMeta('meta[name="twitter:card"]', 'name', 'twitter:card', 'summary')
+    setMeta('meta[name="twitter:title"]', 'name', 'twitter:title', title)
+    setMeta('meta[name="twitter:description"]', 'name', 'twitter:description', description)
 
     let canonical = document.querySelector('link[rel="canonical"]')
     if (!canonical) {
@@ -220,23 +201,16 @@ function MetaManager() {
       canonical.setAttribute('rel', 'canonical')
       document.head.appendChild(canonical)
     }
-    canonical.setAttribute('href', `https://esnoffical.com${location.pathname === '/home' ? '/' : location.pathname}`)
+    canonical.setAttribute('href', url)
 
-    let ogTitle = document.querySelector('meta[property="og:title"]')
-    if (!ogTitle) {
-      ogTitle = document.createElement('meta')
-      ogTitle.setAttribute('property', 'og:title')
-      document.head.appendChild(ogTitle)
+    let schema = document.getElementById('esn-route-schema')
+    if (!schema) {
+      schema = document.createElement('script')
+      schema.id = 'esn-route-schema'
+      schema.type = 'application/ld+json'
+      document.head.appendChild(schema)
     }
-    ogTitle.setAttribute('content', title)
-
-    let ogDescription = document.querySelector('meta[property="og:description"]')
-    if (!ogDescription) {
-      ogDescription = document.createElement('meta')
-      ogDescription.setAttribute('property', 'og:description')
-      document.head.appendChild(ogDescription)
-    }
-    ogDescription.setAttribute('content', description)
+    schema.textContent = JSON.stringify(structuredDataFor(location.pathname))
   }, [location.pathname])
 
   return null
