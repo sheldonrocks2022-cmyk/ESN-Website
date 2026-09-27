@@ -11,6 +11,10 @@ const RETENTION_KEY='esn_retention_v1'
 const CHALLENGE_KEY='esn_share_challenges_v1'
 const STAFF_SESSION_KEY='esn_staff_session_v1'
 const STAFF_BANNER_KEY='esn_staff_banner_v1'
+const STAFF_NOTES_KEY='esn_staff_notes_v1'
+const STAFF_INCIDENTS_KEY='esn_staff_incidents_v1'
+const STAFF_CHECKLIST_KEY='esn_staff_release_checklist_v1'
+const STAFF_ACTIVITY_KEY='esn_staff_activity_v1'
 const STAFF_CODE_HASH='645569b472b3670b547fd45aa2a626177a8fb71f722bb7c3dc07d0d670311cab'
 
 const GAME_DEFS=[
@@ -43,6 +47,13 @@ function writeJson(key,value){
 }
 function nowIso(){return new Date().toISOString()}
 function makeId(prefix='notice'){return prefix+'-'+Date.now()+'-'+Math.random().toString(36).slice(2,8)}
+function addStaffActivity(action,copy=''){
+  const current=readJson(STAFF_ACTIVITY_KEY,[])
+  const next=[{id:makeId('staff'),at:nowIso(),action,copy},...current].slice(0,60)
+  writeJson(STAFF_ACTIVITY_KEY,next)
+  window.dispatchEvent(new Event('esn-staff-activity-change'))
+  return next
+}
 
 function addNotice(notice){
   const current=readJson(NOTICE_KEY,[])
@@ -348,7 +359,22 @@ export function StaffDashboardPage(){
   const [code,setCode]=useState('')
   const [error,setError]=useState('')
   const [banner,setBanner]=useState(()=>readJson(STAFF_BANNER_KEY,{active:false,label:'ESN NETWORK NOTICE',title:'',copy:'',permanent:false,expiresAt:null}))
+  const [notes,setNotes]=useState(()=>localStorage.getItem(STAFF_NOTES_KEY)||'')
+  const [incidents,setIncidents]=useState(()=>readJson(STAFF_INCIDENTS_KEY,[]))
+  const [incidentDraft,setIncidentDraft]=useState({title:'',severity:'MINOR',copy:''})
+  const [checklist,setChecklist]=useState(()=>readJson(STAFF_CHECKLIST_KEY,{
+    build:false,mobile:false,links:false,smp:false,store:false,announcement:false,
+  }))
+  const [scan,setScan]=useState({running:false,results:[],lastRun:null})
+  const [announcement,setAnnouncement]=useState({type:'WEBSITE UPDATE',title:'ES Network Update',copy:''})
+  const [activity,setActivity]=useState(()=>readJson(STAFF_ACTIVITY_KEY,[]))
   const notices=readJson(NOTICE_KEY,[])
+
+  useEffect(()=>{
+    const refresh=()=>setActivity(readJson(STAFF_ACTIVITY_KEY,[]))
+    window.addEventListener('esn-staff-activity-change',refresh)
+    return()=>window.removeEventListener('esn-staff-activity-change',refresh)
+  },[])
 
   const unlock=async event=>{
     event.preventDefault()
@@ -358,8 +384,10 @@ export function StaffDashboardPage(){
       sessionStorage.setItem(STAFF_SESSION_KEY,'1')
       setAuthorized(true);setError('');setCode('')
       addNotice({type:'STAFF',title:'Staff console unlocked',copy:'This browser session entered the local staff dashboard.'})
+      addStaffActivity('STAFF CONSOLE UNLOCKED','Local operator session started.')
     }catch{setError('SECURE CHECK UNAVAILABLE')}
   }
+
   const publishLocalBanner=()=>{
     const permanent=Boolean(banner.permanent)
     const next={
@@ -372,13 +400,27 @@ export function StaffDashboardPage(){
     writeJson(STAFF_BANNER_KEY,next)
     setBanner(next)
     window.dispatchEvent(new Event('esn-staff-banner-change'))
+    addStaffActivity(permanent?'PERMANENT NOTICE SHOWN':'30-SECOND NOTICE SHOWN',next.title||next.label)
   }
+
   const clearBanner=()=>{
     const next={...banner,active:false}
     writeJson(STAFF_BANNER_KEY,next)
     setBanner(next)
     window.dispatchEvent(new Event('esn-staff-banner-change'))
+    addStaffActivity('NETWORK NOTICE CLEARED',banner.title||'ESN Network Notice')
   }
+
+  const applyNoticePreset=(type)=>{
+    const presets={
+      maintenance:{label:'ESN MAINTENANCE',title:'Website maintenance in progress',copy:'Some ES Network systems may be temporarily unavailable while maintenance is completed.'},
+      smp:{label:'ESN SMP NOTICE',title:'SMP maintenance in progress',copy:'ESN SMP is undergoing maintenance. Check Network Status and Discord for the latest information.'},
+      update:{label:'ESN UPDATE',title:'A new ESN update is live',copy:'The latest ES Network website update has been deployed. Check What’s New for the latest changes.'},
+      clear:{label:'ESN NETWORK NOTICE',title:'All systems normal',copy:'ES Network systems are operating normally.'},
+    }
+    setBanner(current=>({...current,...presets[type]}))
+  }
+
   const copyDiagnostics=async()=>{
     const payload={
       generatedAt:nowIso(),
@@ -393,28 +435,210 @@ export function StaffDashboardPage(){
     }
     try{await navigator.clipboard.writeText(JSON.stringify(payload,null,2))}catch{}
     addNotice({type:'STAFF',title:'Diagnostics copied',copy:'Public and local browser diagnostics were copied to the clipboard.'})
+    addStaffActivity('DIAGNOSTICS COPIED','Network and browser diagnostics copied.')
+  }
+
+  const saveNotes=value=>{
+    setNotes(value)
+    try{localStorage.setItem(STAFF_NOTES_KEY,value)}catch{}
+  }
+
+  const createIncident=()=>{
+    if(!incidentDraft.title.trim())return
+    const incident={
+      id:makeId('incident'),
+      title:incidentDraft.title.trim(),
+      severity:incidentDraft.severity,
+      copy:incidentDraft.copy.trim(),
+      status:'OPEN',
+      createdAt:nowIso(),
+      resolvedAt:null,
+    }
+    const next=[incident,...incidents].slice(0,40)
+    writeJson(STAFF_INCIDENTS_KEY,next)
+    setIncidents(next)
+    setIncidentDraft({title:'',severity:'MINOR',copy:''})
+    addStaffActivity('INCIDENT OPENED',incident.severity+' • '+incident.title)
+  }
+
+  const resolveIncident=id=>{
+    const next=incidents.map(item=>item.id===id?{...item,status:'RESOLVED',resolvedAt:nowIso()}:item)
+    writeJson(STAFF_INCIDENTS_KEY,next)
+    setIncidents(next)
+    const item=incidents.find(entry=>entry.id===id)
+    addStaffActivity('INCIDENT RESOLVED',item?.title||id)
+  }
+
+  const removeIncident=id=>{
+    const item=incidents.find(entry=>entry.id===id)
+    const next=incidents.filter(item=>item.id!==id)
+    writeJson(STAFF_INCIDENTS_KEY,next)
+    setIncidents(next)
+    addStaffActivity('INCIDENT REMOVED',item?.title||id)
+  }
+
+  const toggleChecklist=key=>{
+    const next={...checklist,[key]:!checklist[key]}
+    writeJson(STAFF_CHECKLIST_KEY,next)
+    setChecklist(next)
+    addStaffActivity('RELEASE CHECKLIST UPDATED',key+' = '+(next[key]?'complete':'incomplete'))
+  }
+
+  const resetChecklist=()=>{
+    const next={build:false,mobile:false,links:false,smp:false,store:false,announcement:false}
+    writeJson(STAFF_CHECKLIST_KEY,next)
+    setChecklist(next)
+    addStaffActivity('RELEASE CHECKLIST RESET','All release checks reset.')
+  }
+
+  const runRouteScan=async()=>{
+    const routes=['/','/nexus','/arcade','/storesmp','/status','/notifications','/rewards','/challenges','/staff']
+    setScan({running:true,results:[],lastRun:null})
+    const results=await Promise.all(routes.map(async route=>{
+      const started=performance.now()
+      try{
+        const response=await fetch(route,{cache:'no-store',headers:{'X-ESN-Route-Check':'1'}})
+        return {route,ok:response.ok,status:response.status,ms:Math.round(performance.now()-started)}
+      }catch{
+        return {route,ok:false,status:0,ms:Math.round(performance.now()-started)}
+      }
+    }))
+    const lastRun=nowIso()
+    setScan({running:false,results,lastRun})
+    const failures=results.filter(item=>!item.ok).length
+    addStaffActivity('ROUTE SCAN COMPLETE',failures?failures+' route checks failed.':'All '+results.length+' route checks responded.')
+  }
+
+  const announcementText=()=>{
+    const title=announcement.title.trim()||'ES Network Update'
+    const copy=announcement.copy.trim()||'More information will be posted as it becomes available.'
+    return `@everyone\n\n**${title}**\n\n${copy}\n\n**Type:** ${announcement.type}\n**Website:** https://esnoffical.com/`
+  }
+
+  const copyAnnouncement=async()=>{
+    try{await navigator.clipboard.writeText(announcementText())}catch{}
+    addStaffActivity('ANNOUNCEMENT COPIED',announcement.type+' • '+announcement.title)
+  }
+
+  const safeRefreshCaches=async()=>{
+    let cleared=0
+    try{
+      if('caches' in window){
+        const keys=await caches.keys()
+        for(const key of keys){if(key.startsWith('esn-')){await caches.delete(key);cleared++}}
+      }
+      if('serviceWorker' in navigator){
+        const registration=await navigator.serviceWorker.getRegistration()
+        if(registration)await registration.update()
+      }
+      addStaffActivity('SITE CACHE REFRESHED',cleared+' ESN cache buckets cleared; local progress preserved.')
+      addNotice({type:'STAFF',title:'Site cache refreshed',copy:'Cached site files were cleared without deleting local ESN progress.'})
+    }catch{
+      addStaffActivity('CACHE REFRESH FAILED','Browser did not allow the cache refresh.')
+    }
   }
 
   if(!authorized)return <section className="staff-lock"><div className="staff-lock-card"><span>ESN STAFF // RESTRICTED</span><h1>Operator access.</h1><p>Enter the staff access code to open this browser session.</p><form onSubmit={unlock}><input type="password" inputMode="numeric" autoComplete="off" value={code} onChange={e=>setCode(e.target.value)} placeholder="ACCESS CODE"/><button type="submit">UNLOCK STAFF DASHBOARD</button></form>{error&&<strong>{error}</strong>}<small>This is a client-side gate on a public static website. It prevents casual access, but it is not equivalent to server-side authentication.</small></div></section>
 
+  const checklistDone=Object.values(checklist).filter(Boolean).length
+
   return <>
-    <section className="page-hero noacct-hero"><div className="shell page-hero-inner"><div className="page-hero-copy"><span className="eyebrow">STAFF DASHBOARD</span><h1>ESN operator console.</h1><p>Live public telemetry, local notification tools, a device-local banner preview, and diagnostics without staff accounts.</p></div><div className="page-hero-mark"><span>STAFF</span><small>SESSION</small></div></div></section>
+    <section className="page-hero noacct-hero"><div className="shell page-hero-inner"><div className="page-hero-copy"><span className="eyebrow">STAFF DASHBOARD</span><h1>ESN operator console.</h1><p>Network controls, local incident tracking, release checks, staff notes, announcements, and diagnostics without staff accounts.</p></div><div className="page-hero-mark"><span>STAFF</span><small>SESSION</small></div></div></section>
+
     <section className="section"><div className="shell staff-grid">
       <article className="noacct-panel"><span className="noacct-kicker">NETWORK</span><h2>{navigator.onLine?'ONLINE':'OFFLINE'}</h2><p>SMP: <strong>{live.smp.status}</strong> • Plugin: <strong>{live.plugin.version||live.plugin.status}</strong> • Discord: <strong>{live.discord.status}</strong></p><div className="noacct-actions"><button type="button" onClick={live.refresh}>REFRESH TELEMETRY</button><Link to="/status">STATUS CENTER</Link></div></article>
       <article className="noacct-panel"><span className="noacct-kicker">SMP PLAYERS</span><h2>{live.smp.players??'—'} / {live.smp.maxPlayers??'—'}</h2><p>Public player samples appear only when the external Minecraft status source provides them.</p><div className="noacct-tags">{live.smp.playerSample?.length?live.smp.playerSample.map(name=><span key={name}>{name}</span>):<small>No public player names supplied.</small>}</div></article>
       <article className="noacct-panel"><span className="noacct-kicker">LOCAL SYSTEM</span><h2>{localStorage.length} keys</h2><p>{notices.length} notification records are stored on this browser.</p><div className="noacct-actions"><button type="button" onClick={copyDiagnostics}>COPY DIAGNOSTICS</button><button type="button" onClick={()=>window.dispatchEvent(new CustomEvent('esn-local-notification',{detail:{type:'STAFF',title:'Staff test alert',copy:'Staff notification test from the operator console.'}}))}>TEST ALERT</button></div></article>
     </div></section>
+
     <section className="section dark-section"><div className="shell">
-      <div className="section-heading"><div><span className="eyebrow">LOCAL BANNER PREVIEW</span><h2>Preview a takeover notice.</h2><p>This changes only this browser because the site currently has no writable public backend.</p></div></div>
+      <div className="section-heading"><div><span className="eyebrow">NETWORK NOTICE CONTROL</span><h2>Put a notice on this device.</h2><p>Temporary notices disappear after 30 seconds. Permanent notices remain until cleared. Because ESN has no writable backend yet, these controls affect this browser only.</p></div></div>
+      <div className="staff-preset-row">
+        <button type="button" onClick={()=>applyNoticePreset('maintenance')}>WEBSITE MAINTENANCE</button>
+        <button type="button" onClick={()=>applyNoticePreset('smp')}>SMP MAINTENANCE</button>
+        <button type="button" onClick={()=>applyNoticePreset('update')}>UPDATE LIVE</button>
+        <button type="button" onClick={()=>applyNoticePreset('clear')}>ALL CLEAR</button>
+      </div>
       <div className="staff-banner-editor">
         <label>LABEL<input value={banner.label||''} onChange={e=>setBanner({...banner,label:e.target.value.slice(0,30)})}/></label>
         <label>TITLE<input value={banner.title||''} onChange={e=>setBanner({...banner,title:e.target.value.slice(0,60)})}/></label>
         <label>MESSAGE<textarea value={banner.copy||''} onChange={e=>setBanner({...banner,copy:e.target.value.slice(0,180)})}/></label>
         <label className="staff-permanent-toggle"><input type="checkbox" checked={Boolean(banner.permanent)} onChange={e=>setBanner({...banner,permanent:e.target.checked})}/><span><strong>Permanent notice</strong><small>{banner.permanent?'Stays visible until staff clears it.':'Default: automatically disappears after 30 seconds.'}</small></span></label>
-        <div className="noacct-actions"><button type="button" onClick={publishLocalBanner}>{banner.permanent?'SHOW PERMANENT NOTICE':'SHOW 30-SECOND NOTICE'}</button><button type="button" onClick={clearBanner}>CLEAR PREVIEW</button></div>
+        <div className="noacct-actions"><button type="button" onClick={publishLocalBanner}>{banner.permanent?'SHOW PERMANENT NOTICE':'SHOW 30-SECOND NOTICE'}</button><button type="button" onClick={clearBanner}>CLEAR NOTICE</button></div>
       </div>
-      <div className="staff-quicklinks"><Link to="/updates">Release Center</Link><Link to="/nexus">Nexus</Link><Link to="/notifications">Notifications</Link><Link to="/rewards">Reward Vault</Link><Link to="/challenges">Challenge Lab</Link><a href={DISCORD_URL} target="_blank" rel="noreferrer">Discord</a></div>
-      <button className="staff-lock-button" type="button" onClick={()=>{sessionStorage.removeItem(STAFF_SESSION_KEY);setAuthorized(false)}}>LOCK STAFF CONSOLE</button>
+    </div></section>
+
+    <section className="section"><div className="shell staff-operations-grid">
+      <article className="noacct-panel staff-health-panel">
+        <span className="noacct-kicker">SITE HEALTH SCAN</span><h2>{scan.running?'SCANNING':scan.results.length?(scan.results.every(item=>item.ok)?'ALL GOOD':'CHECK ROUTES'):'READY'}</h2>
+        <p>Tests core public routes from this browser and records HTTP response status and response time.</p>
+        <button className="staff-primary-action" type="button" disabled={scan.running} onClick={runRouteScan}>{scan.running?'RUNNING CHECKS…':'RUN ROUTE SCAN'}</button>
+        <div className="staff-route-results">{scan.results.map(item=><div className={item.ok?'ok':'bad'} key={item.route}><strong>{item.route}</strong><span>{item.status||'ERR'}</span><small>{item.ms} ms</small></div>)}</div>
+      </article>
+
+      <article className="noacct-panel">
+        <span className="noacct-kicker">RELEASE CHECKLIST</span><h2>{checklistDone} / 6</h2>
+        <p>Use this before calling a website update finished.</p>
+        <div className="staff-checklist">
+          {[
+            ['build','Build / CI passed'],
+            ['mobile','Mobile layout checked'],
+            ['links','Routes and links checked'],
+            ['smp','SMP status checked'],
+            ['store','Store checkout links checked'],
+            ['announcement','Release announcement ready'],
+          ].map(([key,label])=><label key={key}><input type="checkbox" checked={Boolean(checklist[key])} onChange={()=>toggleChecklist(key)}/><span>{label}</span></label>)}
+        </div>
+        <button className="staff-secondary-action" type="button" onClick={resetChecklist}>RESET CHECKLIST</button>
+      </article>
+    </div></section>
+
+    <section className="section dark-section"><div className="shell staff-operations-grid">
+      <article className="noacct-panel">
+        <span className="noacct-kicker">INCIDENT MANAGER</span><h2>{incidents.filter(item=>item.status==='OPEN').length} open</h2>
+        <label>INCIDENT TITLE<input value={incidentDraft.title} onChange={e=>setIncidentDraft({...incidentDraft,title:e.target.value.slice(0,70)})} placeholder="Example: SMP telemetry unavailable"/></label>
+        <label>SEVERITY<select value={incidentDraft.severity} onChange={e=>setIncidentDraft({...incidentDraft,severity:e.target.value})}><option>INFO</option><option>MINOR</option><option>MAJOR</option><option>CRITICAL</option></select></label>
+        <label>DETAILS<textarea value={incidentDraft.copy} onChange={e=>setIncidentDraft({...incidentDraft,copy:e.target.value.slice(0,220)})} placeholder="What happened, impact, or current action…"/></label>
+        <button className="staff-primary-action" type="button" onClick={createIncident}>OPEN INCIDENT</button>
+        <div className="staff-incidents">{incidents.slice(0,10).map(item=><article className={item.status==='OPEN'?'open':'resolved'} key={item.id}><div><span>{item.severity}</span><strong>{item.title}</strong><small>{item.status} • {new Date(item.createdAt).toLocaleString()}</small></div><p>{item.copy||'No details added.'}</p><div className="noacct-actions">{item.status==='OPEN'&&<button type="button" onClick={()=>resolveIncident(item.id)}>RESOLVE</button>}<button type="button" onClick={()=>removeIncident(item.id)}>REMOVE</button></div></article>)}</div>
+      </article>
+
+      <article className="noacct-panel">
+        <span className="noacct-kicker">STAFF NOTES</span><h2>Local scratchpad.</h2><p>Keep temporary staff notes on this device. They are not uploaded or shared.</p>
+        <textarea className="staff-notes" value={notes} onChange={e=>saveNotes(e.target.value.slice(0,5000))} placeholder="Write staff notes, release reminders, SMP tasks, links, or follow-ups…"/>
+        <small>{notes.length.toLocaleString()} / 5,000 characters • autosaved locally</small>
+      </article>
+    </div></section>
+
+    <section className="section"><div className="shell staff-operations-grid">
+      <article className="noacct-panel">
+        <span className="noacct-kicker">ANNOUNCEMENT BUILDER</span><h2>Build staff copy fast.</h2>
+        <label>TYPE<select value={announcement.type} onChange={e=>setAnnouncement({...announcement,type:e.target.value})}><option>WEBSITE UPDATE</option><option>SMP UPDATE</option><option>MAINTENANCE</option><option>STORE NOTICE</option><option>GENERAL ESN</option></select></label>
+        <label>TITLE<input value={announcement.title} onChange={e=>setAnnouncement({...announcement,title:e.target.value.slice(0,80)})}/></label>
+        <label>MESSAGE<textarea value={announcement.copy} onChange={e=>setAnnouncement({...announcement,copy:e.target.value.slice(0,800)})} placeholder="Write the main announcement here…"/></label>
+        <pre className="staff-announcement-preview">{announcementText()}</pre>
+        <button className="staff-primary-action" type="button" onClick={copyAnnouncement}>COPY ANNOUNCEMENT</button>
+      </article>
+
+      <article className="noacct-panel">
+        <span className="noacct-kicker">SAFE SITE TOOLS</span><h2>Operator utilities.</h2>
+        <p>Refresh cached website files without deleting local Arcade progress, missions, rewards, Vault state, or preferences.</p>
+        <div className="staff-tool-stack">
+          <button type="button" onClick={safeRefreshCaches}>REFRESH ESN SITE CACHE</button>
+          <button type="button" onClick={()=>window.location.reload()}>RELOAD CURRENT PAGE</button>
+          <button type="button" onClick={()=>window.dispatchEvent(new Event('esn-open-terminal'))}>OPEN TERMINAL</button>
+          <button type="button" onClick={()=>window.dispatchEvent(new Event('esn-open-command'))}>OPEN COMMAND CENTER</button>
+          <a href={`https://github.com/sheldonrocks2022-cmyk/ESN-Website/actions`} target="_blank" rel="noreferrer">OPEN GITHUB ACTIONS ↗</a>
+        </div>
+      </article>
+    </div></section>
+
+    <section className="section dark-section"><div className="shell">
+      <div className="section-heading"><div><span className="eyebrow">STAFF ACTIVITY</span><h2>Local operator log.</h2><p>Tracks actions performed from this browser’s Staff Dashboard.</p></div><button className="staff-secondary-action" type="button" onClick={()=>{writeJson(STAFF_ACTIVITY_KEY,[]);setActivity([])}}>CLEAR ACTIVITY</button></div>
+      <div className="staff-activity-log">{activity.length?activity.slice(0,25).map(item=><article key={item.id}><span>{new Date(item.at).toLocaleString()}</span><strong>{item.action}</strong><small>{item.copy}</small></article>):<p>No staff activity recorded yet.</p>}</div>
+      <div className="staff-quicklinks"><Link to="/updates">Release Center</Link><Link to="/nexus">Nexus</Link><Link to="/notifications">Notifications</Link><Link to="/rewards">Reward Vault</Link><Link to="/challenges">Challenge Lab</Link><Link to="/storesmp">SMP Store</Link><a href={DISCORD_URL} target="_blank" rel="noreferrer">Discord</a></div>
+      <button className="staff-lock-button" type="button" onClick={()=>{addStaffActivity('STAFF CONSOLE LOCKED','Operator session ended.');sessionStorage.removeItem(STAFF_SESSION_KEY);setAuthorized(false)}}>LOCK STAFF CONSOLE</button>
     </div></section>
   </>
 }
+
