@@ -3553,3 +3553,11 @@ html[data-visual-theme="midnight"] .global-3d-lighting canvas{filter:saturate(1.
   .oa-tower-run-strip{grid-template-columns:1fr}
 }
 @media(prefers-reduced-motion:reduce){.oa-coin.overdrive{animation:none}}
+
+.oa-arcade-hub-progress{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px}
+.oa-arcade-hub-progress>div{padding:15px;border:1px solid rgba(111,184,232,.1);border-radius:15px;background:linear-gradient(145deg,rgba(22,44,82,.42),rgba(5,12,27,.72));display:grid;gap:4px}
+.oa-arcade-hub-progress span{font-size:.5rem;font-weight:950;letter-spacing:.12em;color:#687d96}
+.oa-arcade-hub-progress strong{font-size:1.35rem;color:#e9faff}
+.oa-arcade-hub-progress small{font-size:.6rem;color:#7a8fa7}
+@media(max-width:800px){.oa-arcade-hub-progress{grid-template-columns:1fr 1fr}}
+@media(max-width:430px){.oa-arcade-hub-progress{grid-template-columns:1fr}}
