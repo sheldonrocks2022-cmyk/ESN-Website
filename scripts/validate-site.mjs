@@ -13,6 +13,7 @@ const requiredRoutes = [
   '/smpconnection',
   '/smpconsole',
   '/smpplugin',
+  '/account',
   '/estools',
   '/tools',
   '/arcade',
@@ -51,6 +52,10 @@ const requiredMigrationFiles = [
   'src/Tools.jsx',
   'src/ES3DViewer.jsx',
   'src/PremiumChrome.jsx',
+  'supabase/schema.sql',
+  'src/account/AccountPage.jsx',
+  'src/account/AuthProvider.jsx',
+  'src/account/authClient.js',
   'src/reviews.js',
   'src/arcade/shared.js',
   'src/arcade/OriginalFrame.jsx',
@@ -95,6 +100,15 @@ if (!app.includes('Add & Start') || !app.includes('Open Bedrock Connect on your 
 if (!app.includes('<ExperienceEffects />')) problems.push('Premium interaction effects are not mounted.')
 if (!app.includes("import PremiumChrome from './PremiumChrome'")) problems.push('Premium command center import missing.')
 if (!app.includes('<PremiumChrome />')) problems.push('Premium command center is not mounted.')
+if (!app.includes('<Route path="/account" element={<AccountPage />} />')) problems.push('ESN account route missing.')
+if (!app.includes("import { useAuth } from './account/AuthProvider'")) problems.push('Account-aware navigation hook missing.')
+const accountPage = fs.readFileSync('src/account/AccountPage.jsx','utf8')
+const accountClient = fs.readFileSync('src/account/authClient.js','utf8')
+const accountSchema = fs.readFileSync('supabase/schema.sql','utf8')
+if (!accountPage.includes('Create your ESN account') || !accountPage.includes('Member ID') || !accountPage.includes('ESN Credits')) problems.push('ESN account UI is incomplete.')
+if (!accountClient.includes('VITE_SUPABASE_URL') || !accountClient.includes('VITE_SUPABASE_ANON_KEY')) problems.push('Supabase account client configuration missing.')
+if (!accountSchema.includes('enable row level security') || !accountSchema.includes('members update own profile')) problems.push('Account RLS schema protections missing.')
+if (accountClient.includes('service_role') || accountClient.includes('SERVICE_ROLE')) problems.push('Service-role credentials must never be used in browser account code.')
 const premiumChrome = fs.readFileSync('src/PremiumChrome.jsx','utf8')
 if (!premiumChrome.includes('Command Center') || !premiumChrome.includes('premium-ticker') || !premiumChrome.includes('CTRL / CMD + K')) problems.push('Premium chrome experience is incomplete.')
 if (!premiumChrome.includes('premium-command-search') || !premiumChrome.includes('lux-cursor-field')) problems.push('Ultra Luxury 100000x command/search/light-field experience is incomplete.')
