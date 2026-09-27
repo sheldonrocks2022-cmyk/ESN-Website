@@ -7,6 +7,7 @@ This repository is the replacement build for the current ES Network website. The
 - Unified ESN Experience System 4.0 across the entire site
 - Ultra Premium 1000x layer: ambient auroras, film-grain depth, cinematic route flare, global network ticker, responsive 3D card tilt, floating ESN command dock, keyboard command center, and back-to-top quick action
 - Ultra Luxury 100000x layer: live cursor light field, searchable command center, scroll-reactive header, cinematic route entrance, hero pointer parallax, orbiting 3D core rings, holographic card depth, animated premium stat surfaces, and enhanced product 3D framing
+- Flagship Luxury 1000000x layer: route-specific accent atmospheres, precision desktop cursor, magnetic CTA motion, floating glass-island header, route telemetry rail, animated edge beams, richer 3D product display cases, premium review lighting, and cinematic footer horizon
 - Dependency-free WebGL 3D homepage centerpiece and interactive SMP Store product viewers with drag rotation and zoom
 - One global header and footer on every route, including all six Arcade games
 - Arcade 29x responsive pass: wider game shell, mobile-safe controls, spacious per-game layouts, full 110 Clicker upgrades, all 53 Factory zones, all 112 Factory machines, and all 122 Tower floors
