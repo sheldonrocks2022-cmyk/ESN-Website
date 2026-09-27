@@ -5,6 +5,8 @@ import ES3DViewer from './ES3DViewer'
 import PremiumChrome from './PremiumChrome'
 import Global3DLighting from './Global3DLighting'
 import StartupIntro from './StartupIntro'
+import ExperienceLayer, { FooterCommandDeck, HeroReactor } from './ExperienceLayer'
+import ShareCenter from './ShareCenter'
 import { PortfolioPage, StatusCenter, TimelinePage, UpdatesPage, VaultPage, WhatsHappeningNow } from './LiveExperience'
 import { VERIFIED_REVIEWS } from './reviews'
 import ClickerGame from './arcade/Clicker'
@@ -166,6 +168,7 @@ const META = {
   '/timeline': ['ES Network Timeline | EP1C Services to ESN', 'Explore the interactive ES Network timeline from the former EP1C Services name through ESN, SMP, Arcade, and current projects.'],
   '/updates': ['ES Network Release Center | Updates & Roadmap', 'See current ES Network website, ESNSMP, Arcade, live-network releases, and future project candidates.'],
   '/portfolio': ['ES Network Portfolio | Interactive Before & After Demos', 'Explore illustrative before-and-after ES Network service transformation demos for editing, Discord setup, and website creation.'],
+  '/share': ['ESN Share Deck | Branded Share Cards', 'Generate branded ES Network share cards for the SMP, Arcade, services, releases, and current SMP store products.'],
   '/vault': ['ESN Vault | Secret Network Layer', 'A hidden ES Network experience unlocked through easter eggs.'],
   '/estools': ['ES Tools | Free Browser-Based Creator & Gaming Utilities', 'Free browser-based ES Network tools with no account required.'],
   '/about': ['About ES Network | ESN', 'Learn about ES Network, the current brand formerly known as EP1C Services.'],
@@ -437,6 +440,7 @@ function Header() {
               <Link onClick={close} to="/status">Live Network Status</Link>
               <Link onClick={close} to="/updates">Release Center</Link>
               <Link onClick={close} to="/timeline">Interactive Timeline</Link>
+              <Link onClick={close} to="/share">Share Deck</Link>
               <Link onClick={close} to="/leadership">Leadership</Link>
               <Link onClick={close} to="/testimonials">35 Verified Reviews</Link>
               <Link onClick={close} to="/faq">FAQ</Link>
@@ -486,12 +490,15 @@ function Footer() {
             <Link to="/status">Network Status</Link>
             <Link to="/updates">Release Center</Link>
             <Link to="/timeline">Timeline</Link>
+            <Link to="/share">Share Deck</Link>
             <Link to="/leadership">Leadership</Link>
             <Link to="/faq">FAQ</Link>
             <a href={DISCORD_URL} target="_blank" rel="noreferrer">Discord Support</a>
           </div>
         </div>
       </div>
+
+      <div className="shell"><FooterCommandDeck /></div>
 
       <div className="shell footer-bottom">
         <span>© {new Date().getFullYear()} ES Network. All rights reserved.</span>
@@ -557,16 +564,10 @@ function Home() {
 
           <aside className="flagship-core-stage">
             <div className="flagship-core-top"><span>ESN CORE</span><i /><b>LIVE</b></div>
-            <div className="flagship-core-visual">
-              <ES3DViewer variant="hero" label="Interactive 3D ES Network centerpiece" />
-              <div className="core-orbit-label label-a">SERVICES</div>
-              <div className="core-orbit-label label-b">ARCADE</div>
-              <div className="core-orbit-label label-c">SMP</div>
-              <div className="core-orbit-label label-d">TOOLS</div>
-            </div>
+            <HeroReactor />
             <div className="flagship-core-footer">
-              <span>INTERACTIVE NETWORK CORE</span>
-              <strong>DRAG • ROTATE • EXPLORE</strong>
+              <span>INTERACTIVE NETWORK REACTOR</span>
+              <strong>DRAG • ROTATE • CHARGE • OVERDRIVE</strong>
             </div>
           </aside>
         </div>
@@ -1356,6 +1357,7 @@ function App() {
       <Global3DLighting />
       <Header />
       <PremiumChrome />
+      <ExperienceLayer />
       <main id="main-content">
         <Routes>
           <Route path="/" element={<Home />} />
@@ -1375,6 +1377,7 @@ function App() {
           <Route path="/timeline" element={<TimelinePage />} />
           <Route path="/updates" element={<UpdatesPage />} />
           <Route path="/portfolio" element={<PortfolioPage />} />
+          <Route path="/share" element={<ShareCenter />} />
           <Route path="/vault" element={<VaultPage />} />
           <Route path="/estools" element={<ESToolsSuite />} />
           <Route path="/tools" element={<Navigate to="/estools" replace />} />
