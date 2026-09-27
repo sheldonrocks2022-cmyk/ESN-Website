@@ -631,43 +631,45 @@ function Home() {
 function About() {
   return (
     <>
-      <PageHero eyebrow="About" title="About ES Network" text="ES Network is the current organization and brand. EP1C Services was the former name — not a separate current division." />
+      <PageHero
+        eyebrow="About ES Network"
+        title="Built as one network, not a pile of separate projects."
+        text="ES Network is the current organization and brand. EP1C Services was the former name — not a separate current division."
+      />
+
+      <section className="section compact-section">
+        <div className="shell network-stat-grid about-stat-grid">
+          <div><strong>ESN</strong><span>Current brand</span></div>
+          <div><strong>35</strong><span>Verified reviews</span></div>
+          <div><strong>6</strong><span>Arcade games</span></div>
+          <div><strong>1</strong><span>Connected network</span></div>
+        </div>
+      </section>
+
       <section className="section">
-        <div className="shell two-column">
-          <div>
-            <span className="eyebrow">One network</span>
+        <div className="shell about-story-grid">
+          <div className="about-story-copy">
+            <span className="eyebrow">The Network</span>
             <h2>Gaming, creator services, tools, community, and ESN SMP.</h2>
+            <p className="large-copy">ESN brings together creator services, gaming, community projects, browser experiences, tools, and the ESN SMP under one recognizable identity.</p>
           </div>
-          <div className="stack">
-            <p className="large-copy">ESN brings together creator services, gaming, community projects, browser experiences, tools, and the ESN SMP under one recognizable name.</p>
-            <p className="muted">The website keeps the history clear: EP1C Services was the former name, while ES Network is the organization moving forward.</p>
+          <div className="brand-timeline">
+            <div><span>THEN</span><strong>EP1C Services</strong><p>The former name.</p></div>
+            <div className="timeline-line"><i /></div>
+            <div><span>NOW</span><strong>ES Network</strong><p>The current organization and brand moving forward.</p></div>
           </div>
         </div>
       </section>
+
       <section className="section dark-section">
         <div className="shell">
           <div className="section-heading">
-            <div>
-              <span className="eyebrow">Why ES Network</span>
-              <h2>One place for the network’s public projects.</h2>
-            </div>
+            <div><span className="eyebrow">Why ES Network</span><h2>Everything connects back to the same identity.</h2></div>
           </div>
           <div className="card-grid three">
-            <article className="feature-panel">
-              <span className="eyebrow">Services</span>
-              <h3>Direct ordering & support</h3>
-              <p>Service requests and support are routed through ESN Discord tickets so visitors have a clear place to start.</p>
-            </article>
-            <article className="feature-panel">
-              <span className="eyebrow">Gaming</span>
-              <h3>ESN SMP & Arcade</h3>
-              <p>The Minecraft server and rebuilt browser Arcade sit under the same ES Network identity.</p>
-            </article>
-            <article className="feature-panel">
-              <span className="eyebrow">Tools</span>
-              <h3>Free browser utilities</h3>
-              <p>ES Tools provides browser-first creator and gaming utilities without requiring an account.</p>
-            </article>
+            <article className="feature-panel"><span className="eyebrow">Services</span><h3>Direct ordering & support</h3><p>Service requests and support are routed through ESN Discord tickets so visitors have one clear place to start.</p></article>
+            <article className="feature-panel"><span className="eyebrow">Gaming</span><h3>ESN SMP & Arcade</h3><p>The Minecraft server and browser Arcade live under the same ES Network navigation and visual system.</p></article>
+            <article className="feature-panel"><span className="eyebrow">Tools</span><h3>Free browser utilities</h3><p>ES Tools provides browser-first creator and gaming utilities without requiring an account.</p></article>
           </div>
         </div>
       </section>
@@ -677,49 +679,52 @@ function About() {
 function Leadership() {
   return (
     <>
-      <PageHero eyebrow="ES Network Team" title="Leadership & administration" text="Founders and co-founders are shown separately from the administration team so roles are clear." />
-      <section className="section">
-        <div className="shell">
-          <div className="section-heading">
-            <div>
-              <span className="eyebrow">Leadership</span>
-              <h2>Founders & co-founders</h2>
+      <PageHero
+        eyebrow="ES Network Team"
+        title="The people behind ESN."
+        text="Founders and co-founders are separated from administration so the structure stays clear."
+      />
+
+      <section className="section leadership-spotlight-section">
+        <div className="shell leadership-spotlight">
+          <div className="leadership-monogram">L</div>
+          <div>
+            <span className="eyebrow">Founder & CEO</span>
+            <h2>Landon</h2>
+            <p className="large-copy">Business operations, website and service infrastructure, creator editing, Discord ticket support, marketing strategy, and brand development.</p>
+            <div className="responsibility-tags">
+              {LANDON_RESPONSIBILITIES.map((item) => <span key={item}>{item}</span>)}
             </div>
           </div>
+        </div>
+      </section>
+
+      <section className="section dark-section">
+        <div className="shell">
+          <div className="section-heading">
+            <div><span className="eyebrow">Leadership</span><h2>Founders & co-founders</h2></div>
+          </div>
           <div className="team-grid">
-            {LEADERS.map(([name, title]) => (
+            {LEADERS.filter(([name]) => name !== 'Landon').map(([name, title]) => (
               <article className="leader-tile" key={name}>
                 <div className="avatar-placeholder">{name.charAt(0).toUpperCase()}</div>
-                <div>
-                  <span className="eyebrow">{title}</span>
-                  <h3>{name}</h3>
-                  {name === 'Landon' ? (
-                    <ul className="role-list">
-                      {LANDON_RESPONSIBILITIES.map((item) => <li key={item}>{item}</li>)}
-                    </ul>
-                  ) : null}
-                </div>
+                <div><span className="eyebrow">{title}</span><h3>{name}</h3></div>
               </article>
             ))}
           </div>
         </div>
       </section>
-      <section className="section dark-section">
+
+      <section className="section">
         <div className="shell">
           <div className="section-heading">
-            <div>
-              <span className="eyebrow">Administration</span>
-              <h2>ES Network administrators</h2>
-            </div>
+            <div><span className="eyebrow">Administration</span><h2>ES Network administrators</h2></div>
           </div>
-          <div className="team-grid">
+          <div className="team-grid admin-grid">
             {ADMINISTRATION.map(([name, title]) => (
               <article className="leader-tile" key={name}>
                 <div className="avatar-placeholder">{name.charAt(0).toUpperCase()}</div>
-                <div>
-                  <span className="eyebrow">{title}</span>
-                  <h3>{name}</h3>
-                </div>
+                <div><span className="eyebrow">{title}</span><h3>{name}</h3></div>
               </article>
             ))}
           </div>
@@ -728,7 +733,6 @@ function Leadership() {
     </>
   )
 }
-
 function FAQ() {
   return (
     <>
@@ -808,34 +812,68 @@ function ServicesShowcase() {
     <>
       <PageHero
         eyebrow="Service Showcase"
-        title="ESN services in one place"
-        text="A clearer catalog for the current public ES Network services and selected digital work."
-        actions={<a className="button primary" href={DISCORD_URL} target="_blank" rel="noreferrer">Order through Discord</a>}
+        title="ESN services, built around real people."
+        text="Gaming, creator, community, and web services with ordering and support handled through the official ES Network Discord."
+        actions={<a className="button primary" href={DISCORD_URL} target="_blank" rel="noreferrer">Open a service ticket <span>↗</span></a>}
       />
-      <section className="section">
-        <div className="shell card-grid two">
-          {SERVICES.map((service) => (
-            <article className="service-card static-card" key={service.id}>
-              <span className="eyebrow">{service.eyebrow}</span>
-              <h2>{service.title}</h2>
-              <p>{service.text}</p>
-              <a href={DISCORD_URL} target="_blank" rel="noreferrer">Open a ticket →</a>
-            </article>
-          ))}
-          {SHOWCASE_EXTRAS.map(([title, type, text]) => (
-            <article className="service-card static-card" key={title}>
-              <span className="eyebrow">{type}</span>
-              <h2>{title}</h2>
-              <p>{text}</p>
-              <a href={DISCORD_URL} target="_blank" rel="noreferrer">Discuss in Discord →</a>
-            </article>
-          ))}
+
+      <section className="section compact-section">
+        <div className="shell network-stat-grid">
+          <div><strong>8</strong><span>Current service categories</span></div>
+          <div><strong>35</strong><span>Verified customer reviews</span></div>
+          <div><strong>Discord</strong><span>Ordering & support hub</span></div>
+          <div><strong>ESN</strong><span>One connected network</span></div>
+        </div>
+      </section>
+
+      <section className="section service-showcase-section">
+        <div className="shell">
+          <div className="section-heading">
+            <div><span className="eyebrow">Core Services</span><h2>Start with what ESN does best.</h2></div>
+          </div>
+          <div className="card-grid three">
+            {SERVICES.map((service, index) => (
+              <article className="service-card static-card premium-service" key={service.id}>
+                <span className="card-number">0{index + 1}</span>
+                <span className="eyebrow">{service.eyebrow}</span>
+                <h2>{service.title}</h2>
+                <p>{service.text}</p>
+                <a href={DISCORD_URL} target="_blank" rel="noreferrer">Open a ticket →</a>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="section dark-section">
+        <div className="shell">
+          <div className="section-heading">
+            <div><span className="eyebrow">More from ESN</span><h2>Digital work beyond the core three.</h2></div>
+          </div>
+          <div className="card-grid two">
+            {SHOWCASE_EXTRAS.map(([title, type, text], index) => (
+              <article className="service-card static-card premium-service" key={title}>
+                <span className="card-number">{String(index + 4).padStart(2, '0')}</span>
+                <span className="eyebrow">{type}</span>
+                <h2>{title}</h2>
+                <p>{text}</p>
+                <a href={DISCORD_URL} target="_blank" rel="noreferrer">Discuss in Discord →</a>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="section compact-section">
+        <div className="shell experience-flow">
+          <div><span>01</span><strong>Choose</strong><p>Pick the service that matches what you need.</p></div>
+          <div><span>02</span><strong>Open a ticket</strong><p>Tell ESN your goals, scope, and references in Discord.</p></div>
+          <div><span>03</span><strong>Build together</strong><p>Work through the correct ESN support channel through delivery.</p></div>
         </div>
       </section>
     </>
   )
 }
-
 function SMPConnection() {
   const [copied, setCopied] = useState(false)
   const copy = async () => {
@@ -850,25 +888,42 @@ function SMPConnection() {
 
   return (
     <>
-      <PageHero eyebrow="ESN SMP" title="Connect to the server" text="The official ESN SMP connection details, kept simple and easy to copy." />
+      <PageHero
+        eyebrow="ESN SMP"
+        title="Your gateway into the ESN world."
+        text="Use the official connection details below. Console players have a dedicated walkthrough built into the site."
+        actions={<Link className="button secondary" to="/smpconsole">Console connection guide</Link>}
+      />
+
       <section className="section">
-        <div className="shell narrow">
-          <div className="connection-card">
-            <span className="eyebrow">Server Address</span>
+        <div className="shell smp-connect-layout">
+          <div className="connection-card premium-connection">
+            <span className="eyebrow">OFFICIAL SERVER ADDRESS</span>
             <strong>{SMP_HOST}</strong>
-            <span>Port {SMP_PORT}</span>
-            <button className="button primary copy-button" type="button" onClick={copy}>{copied ? 'Copied' : 'Copy server address'}</button>
+            <span className="connection-port">PORT {SMP_PORT}</span>
+            <button className="button primary copy-button" type="button" onClick={copy}>{copied ? 'Copied to clipboard' : 'Copy server address'}</button>
+            <small>Copy: {SMP_HOST}:{SMP_PORT}</small>
           </div>
-          <div className="connection-actions">
-            <Link className="button secondary console-guide-link" to="/smpconsole">Playing on console? Open the console guide</Link>
+
+          <div className="smp-side-stack">
+            <article className="feature-panel">
+              <span className="eyebrow">Console Players</span>
+              <h3>Xbox, PlayStation & Switch</h3>
+              <p>Use the dedicated console page for third-party server connection guidance and the same ESN server details.</p>
+              <Link to="/smpconsole">Open console guide →</Link>
+            </article>
+            <article className="feature-panel">
+              <span className="eyebrow">Need Support?</span>
+              <h3>ESN Discord</h3>
+              <p>Server announcements, connection help, store support, and community updates all run through the official Discord.</p>
+              <a href={DISCORD_URL} target="_blank" rel="noreferrer">Open Discord →</a>
+            </article>
           </div>
-          <p className="muted center">Use the official ESN Discord for server announcements, support, and community updates.</p>
         </div>
       </section>
     </>
   )
 }
-
 function ConsoleConnection() {
   return (
     <>
@@ -939,63 +994,88 @@ function ProductCard({ product }) {
 function SMPStore() {
   return (
     <>
-      <PageHero eyebrow="ESN SMP Store" title="Official SMP store" text="Current ESN SMP products with real Stripe checkout links and protected username-delivery instructions." />
-      <section className="section">
+      <PageHero
+        eyebrow="ESN SMP Store"
+        title="Official SMP store."
+        text="Verified ESN SMP digital products with Stripe checkout and username-based delivery."
+      />
+
+      <section className="section compact-section">
+        <div className="shell network-stat-grid store-stat-grid">
+          <div><strong>{STORE_PRODUCTS.length}</strong><span>Current products</span></div>
+          <div><strong>Stripe</strong><span>Secure checkout</span></div>
+          <div><strong>Exact name</strong><span>Required for delivery</span></div>
+          <div><strong>.</strong><span>Include the prefix if your username uses it</span></div>
+        </div>
+      </section>
+
+      <section className="section store-section">
         <div className="shell">
-          <div className="notice warning-notice">
-            <strong>Before you buy:</strong>
-            <span>Enter your exact in-game Minecraft username in the required Stripe field. You should be online on the SMP for automatic delivery. If your server username starts with a <b>.</b>, include the <b>.</b> at the beginning or delivery may require manual admin help.</span>
+          <div className="notice warning-notice store-warning">
+            <div className="warning-icon">!</div>
+            <div>
+              <strong>Before you buy</strong>
+              <span>Enter your exact in-game Minecraft username in the required Stripe field. You should be online on the SMP for automatic delivery. If your server username starts with a <b>.</b>, include the <b>.</b> at the beginning or delivery may require manual admin help.</span>
+            </div>
           </div>
-          <div className="card-grid two">
+
+          <div className="card-grid two store-grid">
             {STORE_PRODUCTS.map((product) => <ProductCard key={product.name} product={product} />)}
           </div>
+
           <div className="store-security">
-            <span className="eyebrow">Payment safety</span>
-            <h2>Stripe handles checkout.</h2>
-            <p>No Stripe secret keys or private payment credentials are stored in this front-end repository. Product buttons only use official public Payment Links.</p>
+            <div className="security-mark">✓</div>
+            <div>
+              <span className="eyebrow">Payment safety</span>
+              <h2>Stripe handles checkout.</h2>
+              <p>No Stripe secret keys or private payment credentials are stored in this front-end repository. Product buttons use official public Payment Links.</p>
+            </div>
           </div>
         </div>
       </section>
     </>
   )
 }
-
 function ArcadeHub() {
+  const gameStats = [
+    ['110', 'Upgrades'],
+    ['53 / 112', 'Zones / Machines'],
+    ['5×5', 'Risk Grid'],
+    ['1,000+', 'MOTO Tracks'],
+    ['122', 'Tower Floors'],
+    ['200', 'Defense Rounds'],
+  ]
+
   return (
     <>
       <PageHero
         eyebrow="ESN Arcade"
-        title="ESN Arcade"
-        text="The original ESN Arcade games rebuilt from the official website recording — same identities, same core mechanics, upgraded responsiveness and persistence."
+        title="Six originals. One ESN Arcade."
+        text="The original ESN browser games rebuilt from the official site recording, keeping their core identities while improving responsiveness, persistence, and the overall experience."
+        actions={<Link className="button primary" to="/esclicker">Start playing <span>→</span></Link>}
       />
-      <section className="section">
-        <div className="shell card-grid two">
-          {ARCADE_GAMES.map(([name, route, description]) => (
-            <article className="game-card" key={route}>
-              <span className="eyebrow">Original game</span>
-              <h2>{name}</h2>
-              <p>{description}</p>
-              <Link to={route}>Play game →</Link>
-            </article>
-          ))}
+
+      <section className="section compact-section">
+        <div className="shell network-stat-grid arcade-stat-grid">
+          {gameStats.map(([value, label]) => <div key={label}><strong>{value}</strong><span>{label}</span></div>)}
         </div>
       </section>
-    </>
-  )
-}
 
-function ProtectedGame({ name, description }) {
-  return (
-    <>
-      <PageHero eyebrow="ESN Arcade" title={name} text={description} />
-      <section className="section">
-        <div className="shell narrow">
-          <div className="preserve-box">
-            <span className="eyebrow">Faithful migration required</span>
-            <h2>This game will not be approximated.</h2>
-            <p>The replacement build keeps this route reserved for the original ESN game. Its real mechanics, saves, ES Coins, upgrades, controls, balancing, progression, and presentation must be migrated from the official version before an upgraded edition is published.</p>
-            <Link className="button secondary" to="/arcade">Back to Arcade</Link>
-          </div>
+      <section className="section arcade-hub-section">
+        <div className="shell arcade-hub-grid">
+          {ARCADE_GAMES.map(([name, route, description], index) => (
+            <article className="game-card arcade-hub-card" key={route}>
+              <div className="arcade-card-top">
+                <span className="card-number">{String(index + 1).padStart(2, '0')}</span>
+                <span className="arcade-live"><i /> PLAYABLE</span>
+              </div>
+              <span className="eyebrow">Original ESN Game</span>
+              <h2>{name}</h2>
+              <p>{description}</p>
+              <div className="arcade-card-stat"><strong>{gameStats[index][0]}</strong><span>{gameStats[index][1]}</span></div>
+              <Link to={route}>Launch game <span>→</span></Link>
+            </article>
+          ))}
         </div>
       </section>
     </>
