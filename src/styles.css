@@ -470,3 +470,7 @@ summary:focus-visible {
   .tower-stage { height:500px; }
   .tool-card { padding:20px; }
 }
+
+.role-list { margin:14px 0 0; padding-left:18px; color:#c7d2e6; line-height:1.55; font-size:.86rem; }
+.role-list li + li { margin-top:5px; }
+.empty-state .button { margin-top:18px; }
