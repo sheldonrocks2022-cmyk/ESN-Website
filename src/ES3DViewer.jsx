@@ -71,6 +71,14 @@ const C={
 }
 
 function sceneFor(variant){
+  if(variant.includes('Plugin')) return [
+    box(0,0,0,1.35,1.55,.3,C.blue,0,.35,.12),
+    box(0,0,.55,.96,1.12,.12,C.cyan,0,-.18,-.06),
+    box(-.42,.28,.9,.13,.48,.12,C.white,-.08),box(.42,.28,.9,.13,.48,.12,C.white,.08),
+    box(0,-.38,.9,.45,.12,.12,C.white),
+    box(-1.65,1.1,-.25,.1,.1,.1,C.cyan),box(1.62,-1.05,.1,.12,.12,.12,C.violet),
+    box(0,-1.95,0,.85,.1,.5,C.violet)
+  ]
   if(variant==='hero') return [
     box(0,0,0,1.65,1.65,.22,C.blue,0,.45,.18),
     box(0,0,.55,1.2,1.2,.12,C.cyan,0,-.2,-.1),
