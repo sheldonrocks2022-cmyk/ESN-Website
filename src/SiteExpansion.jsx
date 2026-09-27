@@ -147,6 +147,46 @@ const COMMANDS=[
   ['/fishingevent','View fishing event information.','Events'],
   ['/report <player> <reason>','Report a player to ESN staff.','Help'],
   ['/storeclaim','Claim pending paid ESN Store purchases.','Store'],
+  ['/leaderboard','View the ESN leaderboard.','Progression'],
+  ['/team <create|join|leave|info>','Manage ESN teams.','Player'],
+  ['/outlaws','View active ESN outlaws and hunter rewards.','Player'],
+  ['/grave','View your last death location.','Player'],
+  ['/msg <player> <message>','Send a private message.','Chat'],
+  ['/reply <message>','Reply to your latest private message.','Chat'],
+  ['/globalchat','Switch to global chat.','Chat'],
+  ['/localchat','Switch to local chat.','Chat'],
+  ['/chattoggle','Toggle receiving public chat.','Chat'],
+  ['/chatmenu','Open ESN chat settings.','Chat'],
+  ['/tpmenu','Open the ESN teleport request menu.','Travel'],
+  ['/tradegui <player>','Open secure player trading.','Economy'],
+  ['/party','Access the ESN party system.','Adventure'],
+  ['/guildhq [create <name>]','View or create your Guild Headquarters.','Adventure'],
+  ['/guild','Manage adventure guild progression.','Adventure'],
+  ['/records','View persistent ESN server records.','Adventure'],
+  ['/bountyboard','View your rotating adventure bounty.','Adventure'],
+  ['/artifactfusion','Fuse matching ESN rarity artifacts.','Gear'],
+  ['/adventureachievements','View adventure achievements.','Adventure'],
+  ['/revive','Revive a nearby downed teammate.','Adventure'],
+  ['/mastery','View Realm mastery progression.','Progression'],
+  ['/codex','View discovered ESN boss progression.','Bosses'],
+  ['/pets','View boss pet information.','Bosses'],
+  ['/treasure','View treasure system information.','Bosses'],
+  ['/chaos','View the active ESN Chaos modifier.','Events'],
+  ['/artifacts','View ESN boss artifact information.','Gear'],
+  ['/contracts','View persistent boss contracts.','Progression'],
+  ['/challenges','View ESN challenge progress.','Progression'],
+  ['/rewards','View the ESN reward road.','Progression'],
+  ['/milestones','View and claim boss milestones.','Bosses'],
+  ['/bestiary2','View the persistent bestiary.','RPG'],
+  ['/achievements2','View 2.0 achievements.','Progression'],
+  ['/title','Equip earned titles.','RPG'],
+  ['/party2','Use safe party invitations.','Adventure'],
+  ['/events2','View 2.0 world events.','Events'],
+  ['/leaderboards2','View 2.0 career standings.','Progression'],
+  ['/claimflags','View claim protection features.','Protection'],
+  ['/skilltree','View RPG skill tree progression.','RPG'],
+  ['/contracts2','View advanced weekly contracts.','Progression'],
+  ['/rotation','View the current progression rotation.','Progression'],
 ]
 
 const ENCYCLOPEDIA=[
@@ -160,6 +200,14 @@ const ENCYCLOPEDIA=[
   ['Season + Rewards','The plugin exposes /season, /season2, /pass, /seasonpass, challenges, milestones, achievements, daily rewards, reward roads, and rotating progression systems.'],
   ['Claims + Travel','Players have homes, warps, RTP, TPA, back, claim protection, and teleport toggles. Staff-only warp management remains permission-gated.'],
   ['Store Delivery','Paid ESN SMP products use the store bridge. Buyers should use the exact Minecraft username required by checkout and be online when automatic delivery is expected. /storeclaim is available for pending purchases.'],
+]
+
+const KNOWN_ITEMS=[
+  ['Season Pass Relics','Angel Wings • Inferno Scepter • Storm Crystal • Tideheart • Void Relic • Celestial Star'],
+  ['Riftwalker Bundle','Riftblade • Rift Wings • Phase Boots • Rift Bow • Rift Core • Void Compass'],
+  ['Immortal Warden Bundle','Immortal Warden Helmet • Chestplate • Leggings • Boots • Warden Blade • Warden Longbow • Immortal Core • Warden Totem'],
+  ['Void Warrior Bundle','Void Blade • Void Crown • Void Chestplate • Void Leggings • Void Boots'],
+  ['Realm Progression','Realm 100 keys and Realm-scaled rewards are part of the current public store/progression surface.'],
 ]
 
 const WHAT_IS_NEW=[
@@ -361,6 +409,7 @@ export function SMPEncyclopediaPage(){
       <button type="button" onClick={()=>doCopy(PLUGIN_SHA256)}><span>PLUGIN SHA-256</span><strong>{PLUGIN_SHA256}</strong><small>{copied===PLUGIN_SHA256?'COPIED':'COPY'}</small></button>
     </div></section>
     <section className="section"><div className="shell"><div className="section-heading"><div><span className="eyebrow">ENCYCLOPEDIA</span><h2>Major ESNSMP systems.</h2></div></div><div className="encyclopedia-grid">{ENCYCLOPEDIA.map(([title,copy])=><article key={title}><h3>{title}</h3><p>{copy}</p></article>)}</div></div></section>
+    <section className="section compact-section"><div className="shell"><div className="section-heading"><div><span className="eyebrow">KNOWN CUSTOM ITEMS + SETS</span><h2>Current website/store-backed item reference.</h2><p>Only items already surfaced by the current ESN SMP store or progression experience are listed here; the site does not invent undocumented gear.</p></div></div><div className="known-item-grid">{KNOWN_ITEMS.map(([title,items])=><article key={title}><strong>{title}</strong><p>{items}</p></article>)}</div></div></section>
     <section className="section dark-section"><div className="shell"><div className="section-heading"><div><span className="eyebrow">COMMAND DATABASE</span><h2>Search verified command metadata.</h2><p>Command names and descriptions here follow the current v2.9.4 plugin metadata. Permission-gated admin commands are intentionally not presented as normal player tools.</p></div></div>
       <div className="command-search-bar"><input value={query} onChange={event=>setQuery(event.target.value)} placeholder="Search home, boss, realm, trade, season…"/><span>{filtered.length} RESULTS</span></div>
       <div className="command-category-row">{categories.map(item=><button className={category===item?'active':''} type="button" onClick={()=>setCategory(item)} key={item}>{item}</button>)}</div>
