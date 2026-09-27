@@ -60,6 +60,7 @@ const requiredMigrationFiles = [
   'src/Global3DLighting.jsx',
   'src/LiveExperience.jsx',
   'src/ShareCenter.jsx',
+  'src/seo.js',
   'src/ExperienceLayer.jsx',
   'src/liveNetwork.js',
   'src/StartupIntro.jsx',
@@ -80,6 +81,9 @@ const liveExperience = fs.readFileSync('src/LiveExperience.jsx','utf8')
 const startupIntro = fs.readFileSync('src/StartupIntro.jsx','utf8')
 const immersiveLayer = fs.readFileSync('src/ExperienceLayer.jsx','utf8')
 const shareCenter = fs.readFileSync('src/ShareCenter.jsx','utf8')
+const seo = fs.readFileSync('src/seo.js','utf8')
+const prerender = fs.readFileSync('scripts/prerender.mjs','utf8')
+const indexHtml = fs.readFileSync('index.html','utf8')
 
 if (missingRoutes.length) problems.push(`Missing app routes: ${missingRoutes.join(', ')}`)
 if (missingPayments.length) problems.push(`Missing payment links: ${missingPayments.join(', ')}`)
@@ -143,6 +147,13 @@ if (!immersiveLayer.includes('NotificationCenter') || !immersiveLayer.includes('
 if (!immersiveLayer.includes('NetworkEvents') || !immersiveLayer.includes('VISUAL EVENT ONLY')) problems.push('Rare visual network event system missing.')
 if (!immersiveLayer.includes('FooterCommandDeck') || !immersiveLayer.includes('ESN COMMAND DECK')) problems.push('Interactive footer command deck missing.')
 if (!shareCenter.includes('1200') || !shareCenter.includes('630') || !shareCenter.includes('toBlob') || !shareCenter.includes('toDataURL') || !shareCenter.includes('navigator.share')) problems.push('Share Deck must generate real 1200x630 PNG cards and support native sharing.')
+if (!seo.includes("export const SEO_ROUTES=") || !seo.includes("export const SEO_LAUNCH_MODE='staging'")) problems.push('Shared SEO route configuration missing or staging launch protection disabled before cutover.')
+if (!app.includes("from './seo'") || !app.includes('structuredDataFor(location.pathname)') || !app.includes('robotsContent(location.pathname')) problems.push('Live React SEO manager is not using the shared SEO source.')
+if (!prerender.includes("from '../src/seo.js'") || !prerender.includes('structuredDataFor(route)') || !prerender.includes("path.join('dist', 'sitemap.xml')")) problems.push('Prerendered SEO or generated sitemap is not using the shared SEO source.')
+if (!indexHtml.includes('name="robots" content="noindex, nofollow"') || !indexHtml.includes('name="googlebot" content="noindex, nofollow"')) problems.push('Staging base HTML must remain statically noindex until the .com cutover.')
+if (!seo.includes("'@type':'FAQPage'") || !seo.includes("'@type':'Service'") || !seo.includes("'@type':'VideoGame'")) problems.push('SEO structured-data coverage is incomplete.')
+if (!seo.includes("max-image-preview:large") || !seo.includes("max-snippet:-1")) problems.push('Production crawler directives are incomplete.')
+if (!seo.includes("'/vault':") || !seo.includes("nofollow:true")) problems.push('Secret Vault must remain excluded from search indexing.')
 for (const requiredCard of ['JOIN ESN SMP','PLAY THE ESN ARCADE','BUILD WITH ESN','20 REALM 100 KEYS','RIFTWALKER BUNDLE','IMMORTAL WARDEN BUNDLE','VOID WARRIOR BUNDLE']) {
   if (!shareCenter.includes(requiredCard)) problems.push(`Share Deck template missing: ${requiredCard}.`)
 }
