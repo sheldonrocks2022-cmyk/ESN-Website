@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useArcadeProgress } from './shared'
 
@@ -12,8 +13,15 @@ export default function OriginalFrame({title,subtitle='Browser Arcade',children}
 
   const slug=location.pathname.replace('/','') || 'arcade'
   const arcade=useArcadeProgress()
+  const [playMode,setPlayMode]=useState(false)
 
-  return <div className={`oa-page oa-page-${slug}`}>
+  useEffect(()=>{
+    if(!playMode)return
+    document.documentElement.classList.add('oa-mobile-play-active')
+    return()=>document.documentElement.classList.remove('oa-mobile-play-active')
+  },[playMode])
+
+  return <div className={`oa-page oa-page-${slug} ${playMode?'oa-mobile-play-mode':''}`}>
     <div className="oa-game-shell">
       <section className="oa-mobile-focusbar" aria-label="Mobile Arcade controls">
         <Link to="/arcade" aria-label="Back to Arcade">←</Link>
@@ -24,6 +32,7 @@ export default function OriginalFrame({title,subtitle='Browser Arcade',children}
             {games.map(([name,route])=><option value={route} key={route}>{name}</option>)}
           </select>
         </label>
+        <button className={playMode?'oa-mobile-play-toggle active':'oa-mobile-play-toggle'} type="button" onClick={()=>setPlayMode(value=>!value)}>{playMode?'EXIT FOCUS':'PLAY'}</button>
       </section>
 
       <section className="oa-commandbar">
