@@ -51,6 +51,7 @@ const requiredMigrationFiles = [
   'src/Tools.jsx',
   'src/ES3DViewer.jsx',
   'src/PremiumChrome.jsx',
+  'src/Global3DLighting.jsx',
   'src/reviews.js',
   'src/arcade/shared.js',
   'src/arcade/OriginalFrame.jsx',
@@ -95,6 +96,10 @@ if (!app.includes('Add & Start') || !app.includes('Open Bedrock Connect on your 
 if (!app.includes('<ExperienceEffects />')) problems.push('Premium interaction effects are not mounted.')
 if (!app.includes("import PremiumChrome from './PremiumChrome'")) problems.push('Premium command center import missing.')
 if (!app.includes('<PremiumChrome />')) problems.push('Premium command center is not mounted.')
+if (!app.includes("import Global3DLighting from './Global3DLighting'") || !app.includes('<Global3DLighting />')) problems.push('Global 3D lighting is not mounted across the site.')
+const globalLighting = fs.readFileSync('src/Global3DLighting.jsx','utf8')
+if (!globalLighting.includes('u_colorA') || !globalLighting.includes('lightVolume') || !globalLighting.includes('routePalettes')) problems.push('Global 3D lighting shader or route palette system is incomplete.')
+if (globalLighting.includes('fwidth(')) problems.push('Global 3D lighting uses WebGL derivatives that can break mobile compatibility.')
 const premiumChrome = fs.readFileSync('src/PremiumChrome.jsx','utf8')
 if (!premiumChrome.includes('Command Center') || !premiumChrome.includes('premium-ticker') || !premiumChrome.includes('CTRL / CMD + K')) problems.push('Premium chrome experience is incomplete.')
 if (!premiumChrome.includes('premium-command-search') || !premiumChrome.includes('lux-cursor-field')) problems.push('Ultra Luxury 100000x command/search/light-field experience is incomplete.')
