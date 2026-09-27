@@ -23,13 +23,13 @@ This repository is the replacement build for the current ES Network website. The
   - random picker
   - coin flip / D6 utility
   - website estimate utility
-- Rebuilt ESN Arcade 2.0 with a shared local ES Coin profile:
-  - ES Clicker: Overdrive
-  - ES Factory: Neon Grid
-  - ES Mines: Riftfield
-  - ES MOTO: Hyperlane with 1,000 generated tracks
-  - ES Tower: Skyline
-  - ES Tower Defense: Rift Siege
+- Arcade routes preserved for faithful original migration:
+  - ES Clicker
+  - ES Factory
+  - ES Mines
+  - ES MOTO
+  - ES Tower
+  - ES Tower Defense
 - Current SMP host and port used by the rebuild
 - Four verified Stripe Payment Links
 - Exact Minecraft username / leading-period delivery warning
@@ -42,6 +42,20 @@ This repository is the replacement build for the current ES Network website. The
 - Security headers, npm audit, secret-pattern scan, and CodeQL
 - Accessibility focus states, skip link, and reduced-motion support
 - CI checks for routes, payment links, removed Mobile Coaching content, migrated modules, production build, and built route files
+
+## Arcade protection
+
+The temporary replacement Arcade games were removed after Test 1 because they did not match the official website closely enough. The original Arcade must be migrated faithfully before upgrades are applied.
+
+Historically verified original-game details:
+- ES Clicker: local progress, ES Coins, statistics, upgrade shop, 110 upgrades
+- ES Factory: 53 zones, 112 machines, floors, upgrades, boosts, shared ES Coin progression
+- ES Mines: virtual ES Coins, wager selection, mine-density selection, multipliers
+- ES MOTO: 1,000+ tracks, checkpoints, touch controls, best times, daily challenges
+- ES Tower: separate original browser game
+- ES Tower Defense: separate original browser game
+
+Do not approximate or redesign the original mechanics, saves, ES Coins, upgrades, controls, balancing, routes, or presentation without source evidence.
 
 ## Content intentionally not fabricated
 
