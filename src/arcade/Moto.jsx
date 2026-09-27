@@ -69,11 +69,16 @@ export default function MotoGame(){
     if(!run.active||run.paused)return
     const t=setInterval(()=>setRun(s=>{
       const boosting=input.current.boost&&input.current.throttle&&s.nitro>0
-      let speed=s.speed+(input.current.throttle?.18:0)-(input.current.brake?.28:.035)+(boosting?.13:0)
+      const ahead=interpY(pts,Math.min(100,s.x+1.2))
+      const behind=interpY(pts,Math.max(0,s.x-1.2))
+      const slope=(ahead-behind)/2.4
+      const slopePush=slope*.035
+      let speed=s.speed+(input.current.throttle?.18:0)-(input.current.brake?.28:.035)+(boosting?.13:0)+slopePush
       speed=Math.max(0,Math.min(boosting?4.8:3.2,speed))
       const x=Math.min(100,s.x+speed*.22)
+      const trackAngle=Math.max(-24,Math.min(24,Math.atan2(ahead-behind,2.4)*180/Math.PI))
       let rotation=s.rotation+(input.current.rotF?-4:0)+(input.current.rotB?4:0)
-      rotation*=.985
+      rotation=rotation*.9+trackAngle*.1
       const time=s.time+.05
       const checkpoint=Math.max(s.checkpoint,Math.floor(x/20))
       const nitro=Math.max(0,Math.min(100,s.nitro+(boosting?-1.6:(speed<1.2?.45:.16))))
@@ -102,7 +107,7 @@ export default function MotoGame(){
       return {...s,x,speed,rotation,time,checkpoint,nitro}
     }),50)
     return()=>clearInterval(t)
-  },[run.active,run.paused,track,setSaved,medalTimes,saved.best,saved.medals,saved.finishes,arcade])
+  },[run.active,run.paused,track,setSaved,medalTimes,saved.best,saved.medals,saved.finishes,arcade,pts])
 
   const start=()=>{
     setResult(null)
@@ -140,6 +145,13 @@ export default function MotoGame(){
     </section>
 
     <section className="oa-panel oa-moto-game-panel">
+      <div className="oa-mobile-only oa-moto-mobile-quick">
+        <span>TRACK <b>{track}</b></span>
+        <span>BEST <b>{saved.best[track]?saved.best[track]+'s':'—'}</b></span>
+        <span>CP <b>{run.checkpoint}/5</b></span>
+        <button onClick={()=>chooseTrack(dailyTrack())} disabled={run.active}>DAILY</button>
+      </div>
+
       <div className="oa-moto-toolbar">
         <label>TRACK <input type="number" min="1" max="1000" disabled={run.active} value={track} onChange={e=>chooseTrack(+e.target.value)}/></label>
         <span>BEST <b>{saved.best[track]?saved.best[track]+'s':'—'}</b></span>
@@ -152,15 +164,32 @@ export default function MotoGame(){
       </div>
 
       <div className="oa-moto-stage">
+        <div className="oa-moto-stage-hud">
+          <span><small>TIME</small><b>{run.time.toFixed(2)}s</b></span>
+          <span><small>SPEED</small><b>{run.speed.toFixed(2)}</b></span>
+          <span><small>NITRO</small><b>{Math.floor(run.nitro)}%</b></span>
+        </div>
+        <div className="oa-moto-speed-lines" style={{opacity:Math.min(.68,run.speed/5)}} aria-hidden="true"/>
         <svg viewBox="0 0 100 100" preserveAspectRatio="none">
-          <defs><filter id="glow"><feGaussianBlur stdDeviation="1.4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
-          <polyline points={path} fill="none" stroke="#17185c" strokeWidth="1.1"/>
-          <polyline points={path} fill="none" stroke="#65e8f4" strokeWidth=".65" filter="url(#glow)"/>
-          {[20,40,60,80].map(x=><line key={x} x1={x} y1="20" x2={x} y2="90" stroke="rgba(100,232,244,.12)" strokeDasharray="2 2"/>)}
+          <defs>
+            <filter id="glow"><feGaussianBlur stdDeviation="1.4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+            <linearGradient id="motoSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#102b54"/><stop offset="58%" stopColor="#173a63"/><stop offset="100%" stopColor="#071329"/></linearGradient>
+            <linearGradient id="motoGround" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#16233d"/><stop offset="100%" stopColor="#060a13"/></linearGradient>
+            <radialGradient id="motoSun"><stop offset="0%" stopColor="#dffcff"/><stop offset="45%" stopColor="#70eaf4"/><stop offset="100%" stopColor="#70eaf4" stopOpacity="0"/></radialGradient>
+          </defs>
+          <rect x="0" y="0" width="100" height="100" fill="url(#motoSky)"/>
+          <circle cx="82" cy="18" r="11" fill="url(#motoSun)" opacity=".55"/>
+          <polygon points={`0,100 ${path} 100,100`} fill="url(#motoGround)" opacity=".96"/>
+          <polyline points={path} fill="none" stroke="#05070f" strokeWidth="2.6"/>
+          <polyline points={path} fill="none" stroke="#65e8f4" strokeWidth=".72" filter="url(#glow)"/>
+          {[20,40,60,80].map(x=><g key={x}><line x1={x} y1="16" x2={x} y2="90" stroke="rgba(100,232,244,.09)" strokeDasharray="2 2"/><rect x={x-.35} y="26" width=".7" height="10" fill="rgba(220,250,255,.34)"/><path d={`M${x} 26 L${x+4} 28 L${x} 30 Z`} fill="rgba(98,232,244,.55)"/></g>)}
           <g transform={`translate(${run.x} ${bikeY-4}) rotate(${run.rotation})`}>
-            <circle cx="-2.2" cy="2.2" r="2" fill="#071124" stroke="#62efff" strokeWidth=".8"/>
-            <circle cx="3.1" cy="2.2" r="2" fill="#071124" stroke="#62efff" strokeWidth=".8"/>
-            <path d="M-2 1 L0 -1 L2 1 L4 1 M0 -1 L2 -2" fill="none" stroke="#eafcff" strokeWidth=".9" strokeLinecap="round"/>
+            <circle cx="-2.5" cy="2.4" r="2.25" fill="#050914" stroke="#8af5ff" strokeWidth=".7"/>
+            <circle cx="3.4" cy="2.4" r="2.25" fill="#050914" stroke="#8af5ff" strokeWidth=".7"/>
+            <circle cx="-2.5" cy="2.4" r=".65" fill="#a9fbff"/><circle cx="3.4" cy="2.4" r=".65" fill="#a9fbff"/>
+            <path d="M-2.2 1.3 L-.1 -1.1 L2.2 1.1 L4 1.1 M-.1 -1.1 L2.1 -2.3" fill="none" stroke="#eafcff" strokeWidth=".9" strokeLinecap="round"/>
+            <path d="M.2 -1.2 L.7 -3.8 L1.6 -4.8 M.7 -3.8 L-1 -3.1" fill="none" stroke="#dcecff" strokeWidth=".72" strokeLinecap="round"/>
+            <circle cx="1.7" cy="-5.2" r=".85" fill="#dffcff"/>
           </g>
         </svg>
       </div>
