@@ -165,7 +165,7 @@ export default function MotoGame(){
         <span>GOLD ≤ <b>{medalTimes.gold}s</b></span><span>SILVER ≤ <b>{medalTimes.silver}s</b></span><span>BRONZE ≤ <b>{medalTimes.bronze}s</b></span>
       </div>
 
-      <div className="oa-moto-stage">
+      <div className={'oa-moto-stage '+(run.active?'is-racing ':'')+(run.speed>2.25?'is-fast':'')}>
         <div className="oa-moto-stage-hud">
           <span><small>TIME</small><b>{run.time.toFixed(2)}s</b></span>
           <span><small>SPEED</small><b>{run.speed.toFixed(2)}</b></span>
