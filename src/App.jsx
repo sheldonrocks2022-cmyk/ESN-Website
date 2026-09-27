@@ -385,7 +385,7 @@ function Header() {
   const mobileSection = arcadeActive ? 'Arcade'
     : inGroup(['/smpconnection','/smpconsole','/smpplugin','/smpguide','/storesmp']) ? 'ESN SMP'
     : inGroup(['/serviceshowcase','/portfolio','/testimonials']) ? 'Services'
-    : inGroup(['/status','/networkstats','/updates','/whatsnew','/timeline','/explore','/gallery','/nexus','/notifications','/rewards','/challenges']) ? 'Network'
+    : inGroup(['/status','/networkstats','/updates','/whatsnew','/timeline','/explore','/gallery','/nexus','/notifications','/rewards','/challenges','/staff']) ? 'Network'
     : location.pathname==='/estools' ? 'Tools'
     : location.pathname==='/settings' ? 'Settings'
     : location.pathname==='/support' ? 'Support'
@@ -449,7 +449,7 @@ function Header() {
 
           <Link className={location.pathname === '/estools' ? 'nav-direct active' : 'nav-direct'} onClick={close} to="/estools">ES Tools</Link>
 
-          <div className={inGroup(['/about','/leadership','/testimonials','/faq','/status','/networkstats','/timeline','/updates','/whatsnew','/explore','/gallery','/settings','/support','/share','/nexus','/notifications','/rewards','/challenges']) ? 'nav-group active' : 'nav-group'}>
+          <div className={inGroup(['/about','/leadership','/testimonials','/faq','/status','/networkstats','/timeline','/updates','/whatsnew','/explore','/gallery','/settings','/support','/share','/nexus','/notifications','/rewards','/challenges','/staff']) ? 'nav-group active' : 'nav-group'}>
             <button className="nav-trigger" type="button" aria-haspopup="true">About</button>
             <div className="dropdown">
               <span className="dropdown-label">THE NETWORK</span>
@@ -459,6 +459,7 @@ function Header() {
               <Link onClick={close} to="/notifications">Notification Center</Link>
               <Link onClick={close} to="/rewards">Reward Vault</Link>
               <Link onClick={close} to="/challenges">Challenge Lab</Link>
+              <Link onClick={close} to="/staff">Staff Dashboard</Link>
               <Link onClick={close} to="/updates">Release Center</Link>
               <Link onClick={close} to="/timeline">Interactive Timeline</Link>
               <Link onClick={close} to="/share">Share Deck</Link>
