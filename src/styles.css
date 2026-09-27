@@ -6229,7 +6229,7 @@ html[data-motion="reduced"] .route-transition{
 /* Mobile Arcade is intentionally a different play surface, not a shrunken desktop layout. */
 .oa-mobile-play-toggle{display:none}
 
-@media(max-width:760px), (pointer:coarse){
+@media(max-width:760px){
   .oa-game-shell{
     width:100%!important;
     padding:10px 8px calc(92px + env(safe-area-inset-bottom))!important;
@@ -6497,7 +6497,7 @@ html[data-motion="reduced"] .route-transition{
 }
 
 /* Focus mode hides all non-game chrome on mobile so play never requires page scrolling. */
-@media(max-width:760px), (pointer:coarse){
+@media(max-width:760px){
   html.oa-mobile-play-active,
   html.oa-mobile-play-active body{overflow:hidden!important;overscroll-behavior:none!important}
   html.oa-mobile-play-active .site-header,
@@ -7380,7 +7380,7 @@ html.oa-focus-play-active body{
   overscroll-behavior:none!important;
 }
 
-@media(min-width:761px) and (pointer:fine){
+@media(min-width:761px){
   html.oa-focus-play-active .site-header,
   html.oa-focus-play-active .premium-ticker,
   html.oa-focus-play-active .premium-dock,
@@ -7531,7 +7531,7 @@ html.oa-focus-play-active body{
 }
 
 /* Mobile keeps its dedicated compact controls and focus bar. */
-@media(max-width:760px), (pointer:coarse){
+@media(max-width:760px){
   .oa-mobile-focusbar{display:grid!important}
   .oa-desktop-play-toggle{display:none!important}
 }
@@ -7579,13 +7579,13 @@ html.oa-focus-play-active body{
 
 /* Keep the mobile battlefield geometrically stable and cheaper to render.
    Aiming, tracers and muzzle flashes remain enabled. */
-@media(max-width:760px), (pointer:coarse){
+@media(max-width:760px){
   .oa-page-estowerdefense .oa-td-board{
     width:min(100%,430px)!important;
     height:auto!important;
     max-height:none!important;
     min-height:0!important;
-    aspect-ratio:1/1!important;
+    aspect-ratio:16/10!important;
     margin:0 auto!important;
     contain:layout paint!important;
     transform:translateZ(0)!important;
@@ -7634,7 +7634,7 @@ html.oa-focus-play-active body{
     min-width:250px!important;
     max-width:430px!important;
     height:auto!important;
-    aspect-ratio:1/1!important;
+    aspect-ratio:16/10!important;
     align-self:center!important;
     justify-self:center!important;
   }
@@ -7643,4 +7643,218 @@ html.oa-focus-play-active body{
 @media(prefers-reduced-motion:reduce){
   .oa-td-turret-head{transition:none!important}
   .oa-td-shot,.oa-td-muzzle{animation:none!important}
+}
+
+
+/* =========================================================
+   ARCADE DEVICE CLASSIFICATION + TOWER DEFENSE GAME UI FIX
+   Touchscreen laptops are NOT forced into the phone layout.
+   ========================================================= */
+.oa-mobile-only{
+  display:none!important;
+}
+
+/* Real desktop / Chromebook / laptop Tower Defense */
+@media(min-width:761px){
+  .oa-page-estowerdefense .oa-game-shell{
+    width:min(1480px,calc(100% - 40px))!important;
+  }
+
+  .oa-page-estowerdefense .oa-game-viewport{
+    display:grid!important;
+    grid-template-columns:minmax(0,1.55fr) minmax(330px,.45fr)!important;
+    gap:18px!important;
+    align-items:start!important;
+  }
+
+  .oa-page-estowerdefense .oa-td-career{
+    display:grid!important;
+  }
+  .oa-page-estowerdefense .oa-td-overview-panel{
+    display:grid!important;
+    grid-column:1 / -1!important;
+  }
+  .oa-page-estowerdefense .oa-td-abilities{
+    display:grid!important;
+    grid-column:1 / -1!important;
+  }
+  .oa-page-estowerdefense .oa-td-board-panel{
+    display:grid!important;
+    min-height:0!important;
+    padding:24px!important;
+    gap:12px!important;
+    border-color:rgba(92,208,232,.2)!important;
+    background:
+      radial-gradient(circle at 50% 0%,rgba(55,153,193,.075),transparent 28rem),
+      linear-gradient(155deg,rgba(8,22,39,.98),rgba(4,11,22,.99))!important;
+    box-shadow:0 30px 80px rgba(0,0,0,.26),inset 0 1px rgba(255,255,255,.04)!important;
+  }
+
+  .oa-page-estowerdefense .oa-td-board{
+    width:100%!important;
+    min-height:0!important;
+    height:auto!important;
+    aspect-ratio:16/10!important;
+    border-radius:20px!important;
+    border:1px solid rgba(110,232,245,.2)!important;
+    overflow:hidden!important;
+    background:#07151e!important;
+    box-shadow:
+      inset 0 0 75px rgba(0,0,0,.34),
+      0 18px 48px rgba(0,0,0,.24)!important;
+  }
+
+  .oa-page-estowerdefense .oa-td-board svg{
+    width:100%!important;
+    height:100%!important;
+    display:block!important;
+    overflow:hidden!important;
+  }
+
+  .oa-page-estowerdefense .oa-td-hud{
+    display:grid!important;
+    grid-template-columns:repeat(4,minmax(0,1fr))!important;
+    gap:8px!important;
+  }
+  .oa-page-estowerdefense .oa-td-hud span{
+    min-height:46px;
+    padding:10px 12px;
+    border:1px solid rgba(255,255,255,.065);
+    border-radius:12px;
+    background:linear-gradient(180deg,rgba(15,34,55,.96),rgba(7,18,31,.96));
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:5px;
+    color:#7f95ad;
+    font-size:.62rem;
+    font-weight:800;
+  }
+  .oa-page-estowerdefense .oa-td-hud b{color:#e9fbff}
+
+  .oa-page-estowerdefense .oa-td-loadout-panel{
+    display:block!important;
+    position:sticky!important;
+    top:92px!important;
+    max-height:calc(100vh - 110px)!important;
+    overflow:auto!important;
+    padding:22px!important;
+    background:linear-gradient(160deg,rgba(10,24,43,.98),rgba(5,12,24,.98))!important;
+  }
+  .oa-page-estowerdefense .oa-tower-roster{
+    display:grid!important;
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    gap:9px!important;
+  }
+  .oa-page-estowerdefense .oa-tower-roster button{
+    min-height:106px!important;
+    padding:12px!important;
+    border-radius:13px!important;
+    font-family:inherit!important;
+    background:
+      linear-gradient(145deg,rgba(255,255,255,.025),transparent 38%),
+      linear-gradient(160deg,#0d2337,#071421)!important;
+    border:1px solid rgba(102,196,221,.13)!important;
+    box-shadow:inset 0 -12px 24px rgba(0,0,0,.18)!important;
+  }
+  .oa-page-estowerdefense .oa-tower-roster button.active{
+    border-color:rgba(106,239,250,.5)!important;
+    background:linear-gradient(160deg,#14384c,#09202d)!important;
+    box-shadow:0 0 24px rgba(91,225,242,.08),inset 0 0 22px rgba(91,225,242,.04)!important;
+  }
+
+  .oa-page-estowerdefense .oa-td-upgrade-panel{
+    display:grid!important;
+    grid-column:1 / -1!important;
+  }
+
+  /* Never show the phone command strip on desktop, even on a touchscreen Chromebook. */
+  .oa-page-estowerdefense .oa-td-mobile-command,
+  .oa-page-esmoto .oa-moto-mobile-quick,
+  .oa-page-esmoto .oa-moto-touch-deck,
+  .oa-page-estower .oa-tower-mobile-live{
+    display:none!important;
+  }
+}
+
+/* Actual phone layout only. */
+@media(max-width:760px){
+  .oa-moto-mobile-quick,
+  .oa-moto-touch-deck,
+  .oa-tower-mobile-live,
+  .oa-td-mobile-command{
+    display:grid!important;
+  }
+
+  .oa-page-estowerdefense .oa-td-board-panel{
+    padding:8px!important;
+    gap:7px!important;
+    border-radius:15px!important;
+  }
+
+  .oa-page-estowerdefense .oa-td-board{
+    width:100%!important;
+    min-width:0!important;
+    max-width:100%!important;
+    min-height:0!important;
+    height:auto!important;
+    aspect-ratio:16/10!important;
+    margin:0!important;
+    border-radius:12px!important;
+  }
+
+  .oa-page-estowerdefense .oa-td-mobile-command{
+    padding:7px!important;
+    border:1px solid rgba(102,220,240,.1)!important;
+    border-radius:11px!important;
+    background:#06121f!important;
+    box-shadow:inset 0 0 18px rgba(89,216,240,.025)!important;
+  }
+
+  .oa-page-estowerdefense .oa-td-mobile-actions{
+    grid-template-columns:repeat(5,minmax(0,1fr))!important;
+  }
+
+  .oa-page-estowerdefense .oa-td-mobile-actions button{
+    min-height:38px!important;
+    border-radius:8px!important;
+    border:1px solid rgba(255,255,255,.07)!important;
+    background:#0a1a2a!important;
+    color:#d9f8ff!important;
+  }
+
+  .oa-page-estowerdefense .oa-td-mobile-towers{
+    grid-auto-columns:70px!important;
+    padding-bottom:2px!important;
+  }
+
+  .oa-page-estowerdefense .oa-td-mobile-towers button{
+    min-height:54px!important;
+    background:linear-gradient(180deg,#0b2134,#071421)!important;
+  }
+
+  .oa-page-estowerdefense .oa-td-hud span{
+    min-height:34px!important;
+    border:1px solid rgba(255,255,255,.055)!important;
+    border-radius:8px!important;
+    background:#071523!important;
+  }
+
+  .oa-mobile-play-mode.oa-page-estowerdefense .oa-td-board{
+    width:100%!important;
+    min-width:0!important;
+    max-width:100%!important;
+    aspect-ratio:16/10!important;
+  }
+}
+
+/* Tower pads should be visible but not gigantic; invisible hit area keeps them easy to click/tap. */
+.oa-page-estowerdefense .oa-td-hit-area{
+  pointer-events:all;
+}
+
+/* A touchscreen desktop still gets desktop Focus Play. */
+@media(min-width:761px){
+  .oa-mobile-focusbar{display:none!important}
+  .oa-desktop-play-toggle{display:block!important}
 }
