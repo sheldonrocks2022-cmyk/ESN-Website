@@ -8,7 +8,8 @@ import './networkNexus.css'
 const ROUTE_LABELS={
   '/':'Home','/arcade':'Arcade','/storesmp':'SMP Store','/smpconnection':'SMP','/estools':'ES Tools',
   '/status':'Status','/updates':'Updates','/timeline':'Timeline','/vault':'Vault','/explore':'Explore',
-  '/gallery':'Gallery','/serviceshowcase':'Services','/portfolio':'Portfolio','/about':'About','/nexus':'Nexus'
+  '/gallery':'Gallery','/serviceshowcase':'Services','/portfolio':'Portfolio','/about':'About','/nexus':'Nexus',
+  '/notifications':'Notifications','/rewards':'Reward Vault','/challenges':'Challenge Lab'
 }
 
 const PROJECTS=[
@@ -294,24 +295,84 @@ function NetworkVisualization(){
 function Guide(){
   const navigate=useNavigate()
   const [query,setQuery]=useState('')
-  const [reply,setReply]=useState('Ask where something is, how to unlock the Vault, what to play, where the SMP is, or what changed.')
-  const answer=()=>{
+  const [reply,setReply]=useState('Ask me to open a page, copy the SMP address, change a theme, install ESN, launch the Terminal, or explain a system.')
+
+  const go=(path,message)=>{
+    setReply(message)
+    window.setTimeout(()=>navigate(path),220)
+  }
+  const answer=async()=>{
     const q=query.toLowerCase().trim()
     if(!q)return
-    if(q.includes('vault'))setReply('The Vault is tied to hidden website signals and Terminal protocols. Open /vault to see your current access state.')
-    else if(q.includes('smp')||q.includes('minecraft'))setReply('Open ESN SMP for connection details, the store, console guide, plugin, and encyclopedia. Server address: esn.ggwp.cc.')
-    else if(q.includes('arcade')||q.includes('game'))setReply('The Arcade has Clicker, Factory, Mines, MOTO, Tower, and Tower Defense with shared XP and achievements.')
-    else if(q.includes('terminal')||q.includes('command'))setReply('Open the Terminal from the Command Center or use the button here. It supports network, Arcade, missions, diagnostics, lore, macros, aliases, watch mode, and more.')
-    else if(q.includes('update')||q.includes('new')||q.includes('change'))setReply('The Release Center and What’s New pages track the latest ESN website, SMP, Arcade, mobile, store, and security changes.')
-    else if(q.includes('service'))setReply('ESN Services currently covers Fortnite coaching, editing, Discord server setups, and selected website/digital projects.')
-    else if(q.includes('level')||q.includes('xp')||q.includes('mission'))setReply('Network XP combines Arcade progress, claimed Nexus missions, Terminal operator progress, exploration, and hidden-signal discoveries on this device.')
-    else setReply('I can route you to Services, SMP, Arcade, Tools, Terminal, Vault, Updates, Timeline, Missions, or Network Status. Try naming the thing you want.')
+
+    const routeRules=[
+      [['notification','alerts','inbox'],'/notifications','Opening your ESN Notification Center.'],
+      [['reward','market','inventory'],'/rewards','Opening the account-free Reward Vault and Shard Market.'],
+      [['challenge','compete'],'/challenges','Opening the Challenge Lab so you can create or accept a shareable Arcade challenge.'],
+      [['staff','operator console'],'/staff','Opening the code-gated Staff Dashboard.'],
+      [['status','network status'],'/status','Opening live ESN Network Status.'],
+      [['update','release','what changed','what is new'] ,'/updates','Opening the Release Center.'],
+      [['service'],'/serviceshowcase','Opening ESN Services.'],
+      [['tool'],'/estools','Opening ES Tools.'],
+      [['arcade','game'],'/arcade','Opening the ESN Arcade.'],
+      [['smp','minecraft'],'/smpconnection','Opening ESN SMP connection information.'],
+    ]
+    for(const [words,path,message] of routeRules){
+      if(words.some(word=>q.includes(word))&&(q.includes('open')||q.includes('go')||q.includes('take me')||q.includes('show')||q===wordOr(words))){
+        go(path,message)
+        return
+      }
+    }
+
+    if((q.includes('copy')||q.includes('give me'))&&(q.includes('smp')||q.includes('ip')||q.includes('address'))){
+      const value='esn.ggwp.cc:17058'
+      try{await navigator.clipboard.writeText(value);setReply('Copied the ESN SMP address: '+value)}
+      catch{setReply('ESN SMP address: '+value)}
+      return
+    }
+    if(q.includes('install')||q.includes('home screen')){
+      window.dispatchEvent(new Event('esn-install-request'))
+      setReply('I sent the install request to your browser. If the browser supports PWA install, its install prompt will appear.')
+      return
+    }
+    if(q.includes('terminal')){
+      window.dispatchEvent(new Event('esn-open-terminal'))
+      setReply('Terminal opened. You can run network, Arcade, mission, diagnostics, lore, QR, and operator commands there.')
+      return
+    }
+    if(q.includes('vault')){
+      go('/vault','Opening the Vault. Hidden website signals and Terminal protocols control its access state.')
+      return
+    }
+    const themes=['dynamic','esn','void','smp','arcade','warden','riftwalker','midnight']
+    const requestedTheme=themes.find(theme=>q.includes(theme)&&q.includes('theme'))
+    if(requestedTheme){
+      if(requestedTheme==='midnight'&&localStorage.getItem('esn_vault_unlocked')!=='1'){
+        setReply('Midnight Core is still Vault-locked. Unlock the Vault first.')
+        return
+      }
+      localStorage.setItem('esn_visual_theme',requestedTheme)
+      window.dispatchEvent(new CustomEvent('esn-terminal-theme',{detail:{theme:requestedTheme}}))
+      setReply('Site theme changed to '+requestedTheme.toUpperCase()+'.')
+      return
+    }
+
+    if(q.includes('level')||q.includes('xp')||q.includes('mission'))setReply('Network XP combines Arcade progress, claimed Nexus missions, Terminal operator progress, exploration, and hidden-signal discoveries on this device.')
+    else if(q.includes('notification')||q.includes('alert'))setReply('The Notification Center stores release, achievement, reward, SMP, and network notices locally. Browser alerts can be enabled without an ESN account.')
+    else if(q.includes('reward')||q.includes('shard'))setReply('The Reward Vault lets you spend locally earned Network Shards on cosmetic core skins and profile titles. Nothing uses real money.')
+    else if(q.includes('challenge'))setReply('Challenge Lab creates shareable Arcade target links. The other player uses their own real local stats, with no account or fake global lobby.')
+    else if(q.includes('smp')||q.includes('minecraft'))setReply('ESN SMP is at esn.ggwp.cc:17058. I can also copy the address or open the SMP page for you.')
+    else if(q.includes('arcade')||q.includes('game'))setReply('The Arcade has Clicker, Factory, Mines, MOTO, Tower, and Tower Defense with shared local XP and achievements.')
+    else if(q.includes('update')||q.includes('new')||q.includes('change'))setReply('The Release Center and What’s New pages track website, SMP, Arcade, mobile, store, and security changes.')
+    else setReply('I can now take actions too. Try “open notifications,” “open rewards,” “open challenge lab,” “copy the SMP IP,” “install ESN,” “open terminal,” or “change theme to void.”')
   }
+  function wordOr(words){return words[0]}
+
   const quick=(label,route)=>route?navigate(route):window.dispatchEvent(new Event('esn-open-terminal'))
   return <section className="nexus-panel nexus-guide">
-    <div className="nexus-panel-head"><div><span>ESN AI GUIDE</span><h2>Ask the network where to go.</h2></div><small>LOCAL GUIDE</small></div>
-    <div className="nexus-guide-console"><div className="nexus-guide-reply"><span>ESN GUIDE</span><p>{reply}</p></div><label><input value={query} onChange={e=>setQuery(e.target.value)} onKeyDown={e=>{if(e.key==='Enter')answer()}} placeholder="Ask: how do I unlock the Vault?"/><button type="button" onClick={answer}>ASK</button></label></div>
-    <div className="nexus-guide-actions"><button onClick={()=>quick('Terminal')} type="button">OPEN TERMINAL</button><button onClick={()=>quick('Arcade','/arcade')} type="button">ARCADE</button><button onClick={()=>quick('SMP','/smpconnection')} type="button">SMP</button><button onClick={()=>quick('Updates','/updates')} type="button">LATEST UPDATES</button></div>
+    <div className="nexus-panel-head"><div><span>ESN AI GUIDE</span><h2>Ask the network — or tell it what to do.</h2></div><small>LOCAL ACTION GUIDE</small></div>
+    <div className="nexus-guide-console"><div className="nexus-guide-reply"><span>ESN GUIDE</span><p>{reply}</p></div><label><input value={query} onChange={e=>setQuery(e.target.value)} onKeyDown={e=>{if(e.key==='Enter')answer()}} placeholder="Try: open notifications"/><button type="button" onClick={answer}>ASK</button></label></div>
+    <div className="nexus-guide-actions"><button onClick={()=>quick('Terminal')} type="button">OPEN TERMINAL</button><button onClick={()=>quick('Notifications','/notifications')} type="button">ALERTS</button><button onClick={()=>quick('Rewards','/rewards')} type="button">REWARDS</button><button onClick={()=>quick('Challenges','/challenges')} type="button">CHALLENGES</button><button onClick={()=>quick('Arcade','/arcade')} type="button">ARCADE</button><button onClick={()=>quick('SMP','/smpconnection')} type="button">SMP</button></div>
   </section>
 }
 
