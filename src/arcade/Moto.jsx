@@ -206,6 +206,17 @@ export default function MotoGame(){
         {button('rotF','D / ROTATE FORWARD')}
         {button('boost','SHIFT / NITRO')}
       </div>
+      <div className="oa-mobile-only oa-moto-touch-deck" aria-label="Mobile MOTO controls">
+        <div className="oa-moto-steer-pad">
+          {button('rotB','↶ LEAN')}
+          {button('rotF','LEAN ↷')}
+        </div>
+        <div className="oa-moto-drive-pad">
+          {button('brake','BRAKE')}
+          {button('boost','NITRO')}
+          {button('throttle','THROTTLE')}
+        </div>
+      </div>
       <button className="oa-primary-wide" onClick={start}>{run.active?'RESTART TRACK':'START TRACK'}</button>
 
       {result&&<div className={'oa-race-result '+result.medal.toLowerCase()}>
