@@ -84,27 +84,59 @@ export function EnergyTrail(){
   useEffect(()=>{
     const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches
     const fine=matchMedia('(hover:hover) and (pointer:fine)').matches
-    // Touch devices already have plenty of visual feedback; skip DOM particle spawning on mobile.
-    if(reduce||!fine)return
+    if(reduce)return
+
     let last=0
-    const spawn=(x,y,burst=false)=>{
+    let activeTouchBursts=0
+
+    const spawn=(x,y,burst=false,angle=0)=>{
       const node=document.createElement('i')
       node.className=burst?'energy-trail-particle touch-burst':'energy-trail-particle'
       node.style.left=x+'px'
       node.style.top=y+'px'
-      node.style.setProperty('--drift-x',(((x%17)-8)*1.4)+'px')
-      node.style.setProperty('--drift-y',(-18-(y%21))+'px')
+      node.style.setProperty('--drift-x',burst?(Math.cos(angle)*28)+'px':(((x%17)-8)*1.4)+'px')
+      node.style.setProperty('--drift-y',burst?(Math.sin(angle)*28)+'px':(-18-(y%21))+'px')
       document.body.appendChild(node)
-      window.setTimeout(()=>node.remove(),720)
+      window.setTimeout(()=>node.remove(),burst?640:720)
     }
-    const move=e=>{
+
+    const move=event=>{
+      if(!fine)return
       const now=performance.now()
-      if(!fine||now-last<48)return
+      if(now-last<48)return
       last=now
-      spawn(e.clientX,e.clientY)
+      spawn(event.clientX,event.clientY)
     }
-    window.addEventListener('pointermove',move,{passive:true})
-    return()=>window.removeEventListener('pointermove',move)
+
+    const touch=event=>{
+      if(fine||event.pointerType==='mouse')return
+      if(document.documentElement.dataset.motion==='reduced')return
+      if(activeTouchBursts>=2)return
+      activeTouchBursts+=1
+
+      const ring=document.createElement('i')
+      ring.className='touch-energy-ring'
+      ring.style.left=event.clientX+'px'
+      ring.style.top=event.clientY+'px'
+      document.body.appendChild(ring)
+
+      for(let index=0;index<6;index+=1){
+        spawn(event.clientX,event.clientY,true,(Math.PI*2*index)/6)
+      }
+
+      window.setTimeout(()=>{
+        ring.remove()
+        activeTouchBursts=Math.max(0,activeTouchBursts-1)
+      },660)
+    }
+
+    if(fine)window.addEventListener('pointermove',move,{passive:true})
+    else window.addEventListener('pointerdown',touch,{passive:true})
+
+    return()=>{
+      window.removeEventListener('pointermove',move)
+      window.removeEventListener('pointerdown',touch)
+    }
   },[])
   return null
 }
