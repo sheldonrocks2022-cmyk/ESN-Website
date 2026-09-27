@@ -5998,8 +5998,7 @@ html[data-motion="reduced"] *::after{
   }
 
   /* Keep the unstable sources off. */
-  .global-3d-lighting canvas,
-  .energy-trail-particle{
+  .global-3d-lighting canvas{
     display:none!important;
   }
 }
@@ -6098,5 +6097,46 @@ html[data-motion="reduced"] .route-transition{
     0%{transform:scale(1);filter:brightness(.82)}
     50%{transform:scale(1.045);filter:brightness(1.08)}
     100%{transform:scale(1);filter:brightness(.9)}
+  }
+}
+
+
+/* =========================================================
+   MOBILE TOUCH ENERGY RESTORE
+   Lightweight tap feedback only; no continuous touch trail while scrolling.
+   ========================================================= */
+.touch-energy-ring{
+  position:fixed;
+  z-index:8400;
+  width:18px;
+  height:18px;
+  margin:-9px 0 0 -9px;
+  border-radius:50%;
+  pointer-events:none;
+  border:1px solid rgb(var(--route-accent-2)/.72);
+  box-shadow:
+    0 0 18px rgb(var(--route-accent-2)/.42),
+    inset 0 0 12px rgb(var(--route-accent)/.18);
+  animation:touchEnergyRing .64s cubic-bezier(.2,.75,.2,1) forwards;
+}
+
+@keyframes touchEnergyRing{
+  0%{opacity:.95;transform:scale(.35)}
+  55%{opacity:.72}
+  100%{opacity:0;transform:scale(4.4)}
+}
+
+@media(max-width:860px), (pointer:coarse){
+  html:not([data-motion="reduced"]) .energy-trail-particle.touch-burst{
+    display:block!important;
+    width:7px!important;
+    height:7px!important;
+    opacity:.9;
+    animation:energyTrail .64s ease-out forwards!important;
+  }
+
+  html[data-motion="reduced"] .touch-energy-ring,
+  html[data-motion="reduced"] .energy-trail-particle{
+    display:none!important;
   }
 }
