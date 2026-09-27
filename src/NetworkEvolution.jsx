@@ -477,7 +477,15 @@ export default function NetworkEvolution(){
         <button type="button" onClick={()=>setSearchOpen(true)}><span>⌕</span><small>Search</small></button>
         <button type="button" onClick={()=>setTerminalOpen(true)}><span>›_</span><small>Terminal</small></button>
         <button type="button" onClick={()=>setPassportOpen(true)}><span>{passportSnapshot(visited,eggs).level}</span><small>Passport</small></button>
-        <button type="button" onClick={()=>window.dispatchEvent(new Event('esn-open-command'))}><span>ES</span><small>Command</small></button>
+        <button className={soundEnabled?'active':''} type="button" onClick={()=>setSoundEnabled(!soundEnabled)}><span>{soundEnabled?'ON':'OFF'}</span><small>Sound</small></button>
+      </div>
+      <div className="mobile-pinned-deck" aria-label="Pinned ESN shortcuts">
+        {pins.map(id=>{
+          const item=DECK_DESTINATIONS.find(value=>value.id===id)
+          if(!item)return null
+          return <Link key={'mobile-'+id} to={item.path}><span>{item.glyph}</span><small>{item.label}</small></Link>
+        })}
+        <button type="button" onClick={()=>setDeckOpen(true)}><span>+</span><small>Edit</small></button>
       </div>
     </div>
 
