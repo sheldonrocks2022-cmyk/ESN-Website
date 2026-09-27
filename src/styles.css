@@ -337,3 +337,39 @@ h3 { font-size: 1.45rem; }
   .product-buy { width: 100%; }
   .preserve-box { padding: 28px; }
 }
+
+
+/* Accessibility */
+.skip-link {
+  position: fixed;
+  left: 14px;
+  top: 14px;
+  z-index: 200;
+  transform: translateY(-180%);
+  padding: 10px 14px;
+  border-radius: 10px;
+  background: #ffffff;
+  color: #050711;
+  font-weight: 900;
+  transition: transform .18s ease;
+}
+.skip-link:focus { transform: translateY(0); }
+
+a:focus-visible,
+button:focus-visible,
+summary:focus-visible {
+  outline: 3px solid var(--cyan);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *,
+  *::before,
+  *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
