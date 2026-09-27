@@ -10,7 +10,8 @@ Official GitHub source for the ES Network website rebuild.
 - React Router
 - Vite 8
 - Static route metadata generation
-- GitHub Actions validation
+- GitHub Pages test deployment
+- GitHub Actions validation + CodeQL security analysis
 
 ## Local development
 
@@ -45,7 +46,11 @@ The repository includes:
 - `public/_headers` for compatible static-host security headers.
 - `public/robots.txt` and `public/sitemap.xml`.
 
-The custom domain is **not** connected yet.
+GitHub Pages is enabled for zero-cost test hosting.
+
+- Test domain: https://ep1cservices.shop
+- Production domain remains: https://esnoffical.com
+- The production domain is intentionally not pointed at this repository yet.
 
 ## Migration status
 
