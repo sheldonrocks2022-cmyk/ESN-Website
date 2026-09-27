@@ -83,7 +83,7 @@ export default function TowerDefenseGame(){
   const reset=()=>{setG({coins:1500,round:1,base:150,selected:0,placed:{},enemies:[],running:false});setMsg('Defense reset. Build your loadout.')}
 
   return <OriginalFrame title="ES Tower Defense" subtitle="200 rounds • path defense • 10-tower roster">
-    <section className="oa-panel">
+    <section className="oa-panel oa-td-overview-panel">
       <div className="oa-td-actions"><button className="oa-primary-wide" onClick={startWave} disabled={g.running||g.base<=0}>PLAY DEFENSE</button><button className="oa-secondary-wide" onClick={reset}>RESET DEFENSE</button></div>
       <div className="oa-preview">
         <span>WAVE {String(g.round).padStart(2,'0')}</span><b>{g.round%10===0?'BOSS PATH':'SYSTEM STATUS'}</b><h2>TOWER DEFENSE<br/>PREVIEW READY</h2><p>{msg}</p>
@@ -91,7 +91,7 @@ export default function TowerDefenseGame(){
       <div className="oa-mines-stats"><div><span>TOWERS</span><b>{placedList.length} Active</b></div><div><span>WAVES</span><b>{g.round} / 200</b></div><div><span>BASE HEALTH</span><b>{g.base}</b></div><div><span>COINS</span><b>{g.coins}</b></div></div>
     </section>
 
-    <section className="oa-panel">
+    <section className="oa-panel oa-td-board-panel">
       <div className="oa-td-hud"><span>COINS: <b>{g.coins}</b></span><span>ROUND: <b>{g.round} / 200</b></span><span>BASE HP: <b>{g.base}</b></span></div>
       <div className="oa-td-board">
         <svg viewBox="0 0 100 100" preserveAspectRatio="none">
@@ -105,7 +105,7 @@ export default function TowerDefenseGame(){
       </div>
     </section>
 
-    <section className="oa-panel">
+    <section className="oa-panel oa-td-loadout-panel">
       <span className="oa-kicker">TOWER LOADOUT</span><p>10 TOWER ROSTER</p>
       <div className="oa-tower-roster">{TOWERS.map((t,i)=><button className={g.selected===i?'active':''} key={t.name} onClick={()=>setG(s=>({...s,selected:i}))}><b>{t.name}</b><span>{t.cost}C</span><small>DMG {t.damage} • RNG {Math.round(t.range*100)}</small></button>)}</div>
       <div className="oa-subpanel"><b>SELECTED: {selected.name}</b><p>Tap an empty + node on the battlefield to place this tower. Defeated enemies return defense coins for more placements.</p></div>
