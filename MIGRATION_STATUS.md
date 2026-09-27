@@ -7,6 +7,7 @@ This repository is the replacement build for the current ES Network website. The
 - Unified ESN Experience System 4.0 across the entire site
 - Dependency-free WebGL 3D homepage centerpiece and interactive SMP Store product viewers with drag rotation and zoom
 - One global header and footer on every route, including all six Arcade games
+- Arcade 29x responsive pass: wider game shell, mobile-safe controls, spacious per-game layouts, full 110 Clicker upgrades, all 53 Factory zones, all 112 Factory machines, and all 122 Tower floors
 - Active navigation states, premium mobile navigation, network-status UI, upgraded page heroes, bento-style content hierarchy, and responsive game switcher
 
 - Responsive ES Network design system
