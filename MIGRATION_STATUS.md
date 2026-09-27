@@ -1,57 +1,64 @@
 # ESN Website Migration Status
 
-This repository is the replacement build for the current ES Network website. The live site at https://esnoffical.com is intentionally untouched during migration.
+This repository is the replacement build for the current ES Network website. The production site at https://esnoffical.com remains intentionally untouched while the replacement is tested at https://ep1cservices.shop.
 
-## Migrated and working in the repo
+## Migrated and working
 
 - Responsive ES Network design system
 - Homepage and preserved homepage section anchors
-- Service Showcase
+- Service Showcase and known service categories
+- Website Creation estimator values previously surfaced in ES Tools ($180 starter / $320 multi-page)
 - SMP Store
 - SMP Connection page
-- About
-- Leadership
+- Dedicated console connection guide
+- About / Why ES Network content
+- Leadership separated from Administration
+- Landon Founder & CEO responsibility list
 - FAQ
-- Testimonials route
-- ES Tools route
-- Arcade hub
-- Protected routes for:
-  - ES Clicker
-  - ES Factory
-  - ES Mines
-  - ES MOTO
-  - ES Tower
-  - ES Tower Defense
-- Current official Discord link
-- Current SMP IP and port
-- Verified ESN leadership list
+- Testimonials route with verified-content-only policy
+- Interactive ES Tools:
+  - Fortnite / creator challenge generator
+  - focus timer
+  - prompt generator
+  - random picker
+  - coin flip / D6 utility
+  - website estimate utility
+- Rebuilt ESN Arcade 2.0 with a shared local ES Coin profile:
+  - ES Clicker: Overdrive
+  - ES Factory: Neon Grid
+  - ES Mines: Riftfield
+  - ES MOTO: Hyperlane with 1,000 generated tracks
+  - ES Tower: Skyline
+  - ES Tower Defense: Rift Siege
+- Current SMP host and port used by the rebuild
 - Four verified Stripe Payment Links
 - Exact Minecraft username / leading-period delivery warning
 - SEO metadata, canonical tags, sitemap, robots.txt, structured data
 - Route-specific static HTML generation
-- SPA fallbacks for Vercel and compatible static hosts
-- Baseline security headers
+- Static 404 output
+- GitHub Pages deployment
+- Test domain: https://ep1cservices.shop
+- Test-domain noindex protection while canonicals continue to target https://esnoffical.com
+- Security headers, npm audit, secret-pattern scan, and CodeQL
 - Accessibility focus states, skip link, and reduced-motion support
-- CI checks for protected routes, payment links, removed Mobile Coaching content, production build, and built route files
+- CI checks for routes, payment links, removed Mobile Coaching content, migrated modules, production build, and built route files
 
-## Protected migrations not yet complete
+## Content intentionally not fabricated
 
-These existing systems must be migrated from their original source instead of being recreated approximately:
-
-- ES Clicker gameplay, saves, ES Coins, statistics, and upgrade system
-- ES Factory gameplay, shared ES Coins, zones, machines, upgrades, and boosts
-- ES Mines gameplay
-- ES MOTO gameplay, tracks, checkpoints, touch controls, times, and challenges
-- ES Tower gameplay
-- ES Tower Defense gameplay
-- Original ES Tools utilities
-
-## Exact content still needed before production cutover
+The following items are still blocked by missing exact source data. They remain protected instead of being guessed:
 
 - Exact verified customer testimonial text
-- Exact current package pricing/details for every Service Showcase package
+- Exact current price for the Riftwalker Bundle
 - Exact Stripe Payment Link for the $0.50 Void Warrior Bundle
+- Any Service Showcase package price/detail that was not recoverable from previous scans
+- Any leadership/team change beyond the latest verified roster and role labels
+
+## Source recovery notes
+
+The old Alf diagnostics confirmed the old homepage structure and route targets, but the original complete website source was not found in the accessible GitHub repositories. Public automated access to the current esnoffical.com site is also unavailable from the migration tooling, so missing exact text cannot be copied safely.
+
+Mobile Coaching is discontinued and must not be restored.
 
 ## Launch rule
 
-Do not point esnoffical.com at this repository until every protected migration and required exact-content item above is either completed or intentionally removed by the site owner.
+Do not point esnoffical.com at this repository until the test domain has been fully reviewed and every remaining exact-content item is either recovered, corrected by the owner, or deliberately omitted.
