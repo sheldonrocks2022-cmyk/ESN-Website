@@ -4,6 +4,10 @@ This repository is the replacement build for the current ES Network website. The
 
 ## Migrated and working
 
+- Unified ESN Experience System 4.0 across the entire site
+- One global header and footer on every route, including all six Arcade games
+- Active navigation states, premium mobile navigation, network-status UI, upgraded page heroes, bento-style content hierarchy, and responsive game switcher
+
 - Responsive ES Network design system
 - Homepage and preserved homepage section anchors
 - Service Showcase and known service categories
