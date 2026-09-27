@@ -241,8 +241,7 @@ function deviceAutoMode(){
   const memory=navigator.deviceMemory||8
   const cores=navigator.hardwareConcurrency||8
   const saveData=Boolean(navigator.connection?.saveData)
-  const coarse=matchMedia('(pointer: coarse)').matches
-  return saveData||memory<=4||cores<=4||coarse?'performance':'premium'
+  return saveData||memory<=4||cores<=4?'performance':'premium'
 }
 
 function applyPrefs(prefs){
