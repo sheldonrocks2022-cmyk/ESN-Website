@@ -523,6 +523,26 @@ function PageHero({ eyebrow, title, text, actions }) {
     </section>
   )
 }
+function RelatedLinks({ title, links }) {
+  return (
+    <section className="section compact-section" aria-label="Related ES Network pages">
+      <div className="shell">
+        <div className="section-heading">
+          <div><span className="eyebrow">Explore Related ESN Pages</span><h2>{title}</h2></div>
+        </div>
+        <div className="card-grid three">
+          {links.map(([label, description, route]) => (
+            <article className="feature-panel" key={route}>
+              <h3>{label}</h3>
+              <p>{description}</p>
+              <Link to={route}>Explore {label} →</Link>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
 function Home() {
   return (
     <>
@@ -1013,6 +1033,14 @@ function ServicesShowcase() {
           <div><span>03</span><strong>Build together</strong><p>Work through the correct ESN support channel through delivery.</p></div>
         </div>
       </section>
+      <RelatedLinks
+        title="Research ESN before you order."
+        links={[
+          ['Customer Reviews','Read the 35 reviews currently presented as verified through ESN Discord.','/testimonials'],
+          ['Portfolio Demos','See clearly labeled illustrative editing, Discord, and website process comparisons.','/portfolio'],
+          ['Service FAQ','Get answers about ordering, support, SMP purchases, tools, and ESN community access.','/faq'],
+        ]}
+      />
     </>
   )
 }
@@ -1069,6 +1097,14 @@ function SMPConnection() {
           </div>
         </div>
       </section>
+      <RelatedLinks
+        title="Everything around the ESN SMP."
+        links={[
+          ['SMP Store','Browse the current ESN SMP keys, relics, and custom item bundles.','/storesmp'],
+          ['ESNSMP Plugin','Download the public ESNSMP.jar and view the verified release information.','/smpplugin'],
+          ['Network Status','Check the website, SMP status state, Arcade, Discord connection, and plugin release feed.','/status'],
+        ]}
+      />
     </>
   )
 }
@@ -1203,6 +1239,14 @@ function SMPPluginDownload() {
           <p>Current checksum for the verified {PLUGIN_VERSION} release asset. The “latest” download URL will move forward when a newer release is published, so check that release's checksum when the version changes.</p>
         </div>
       </section>
+      <RelatedLinks
+        title="Continue through the ESN Minecraft network."
+        links={[
+          ['Join ESN SMP','Use the official server address and port for the ES Network Minecraft server.','/smpconnection'],
+          ['SMP Store','Browse the current ESN SMP digital products and Stripe checkout links.','/storesmp'],
+          ['Release Center','See current ES Network website, plugin, Arcade, and network updates.','/updates'],
+        ]}
+      />
     </>
   )
 }
@@ -1277,6 +1321,14 @@ function SMPStore() {
           </div>
         </div>
       </section>
+      <RelatedLinks
+        title="Need more SMP information?"
+        links={[
+          ['Join ESN SMP','Get the official Minecraft server address, port, and connection shortcuts.','/smpconnection'],
+          ['Console Guide','Follow the ESN console connection flow for Xbox, PlayStation, and Nintendo Switch.','/smpconsole'],
+          ['SMP FAQ','Review ordering, username delivery, console access, and ESN support answers.','/faq'],
+        ]}
+      />
     </>
   )
 }
