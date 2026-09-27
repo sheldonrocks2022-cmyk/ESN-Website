@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link, Navigate, Route, Routes, useLocation } from 'react-router-dom'
 import ESToolsSuite from './Tools'
 import ES3DViewer from './ES3DViewer'
+import PremiumChrome from './PremiumChrome'
 import { VERIFIED_REVIEWS } from './reviews'
 import ClickerGame from './arcade/Clicker'
 import FactoryGame from './arcade/Factory'
@@ -284,13 +285,26 @@ function ExperienceEffects() {
   }, [location.pathname])
 
   useEffect(() => {
-    const interactive = '.service-card,.product-card,.review-card,.game-card,.tool-card,.feature-panel,.leader-tile,.connection-card,.store-security,.hero-control-panel,.page-hero-mark'
+    const interactive = '.service-card,.product-card,.review-card,.game-card,.tool-card,.feature-panel,.leader-tile,.connection-card,.store-security,.hero-control-panel,.page-hero-mark,.plugin-release-card,.console-step-card,.premium-connection'
     const move = (event) => {
       const target = event.target.closest?.(interactive)
       if (!target) return
       const rect = target.getBoundingClientRect()
-      target.style.setProperty('--spot-x', `${event.clientX - rect.left}px`)
-      target.style.setProperty('--spot-y', `${event.clientY - rect.top}px`)
+      const x = event.clientX - rect.left
+      const y = event.clientY - rect.top
+      const nx = rect.width ? (x / rect.width) - .5 : 0
+      const ny = rect.height ? (y / rect.height) - .5 : 0
+      target.classList.add('premium-tilt')
+      target.style.setProperty('--spot-x', `${x}px`)
+      target.style.setProperty('--spot-y', `${y}px`)
+      target.style.setProperty('--tilt-x', `${(-ny * 2.6).toFixed(2)}deg`)
+      target.style.setProperty('--tilt-y', `${(nx * 3.4).toFixed(2)}deg`)
+    }
+    const leave = (event) => {
+      const target = event.target.closest?.(interactive)
+      if (!target || target.contains(event.relatedTarget)) return
+      target.style.setProperty('--tilt-x', '0deg')
+      target.style.setProperty('--tilt-y', '0deg')
     }
     const scroll = () => {
       const max = document.documentElement.scrollHeight - window.innerHeight
@@ -298,10 +312,12 @@ function ExperienceEffects() {
       document.documentElement.style.setProperty('--scroll-progress', value)
     }
     document.addEventListener('pointermove', move, { passive: true })
+    document.addEventListener('pointerout', leave, { passive: true })
     window.addEventListener('scroll', scroll, { passive: true })
     scroll()
     return () => {
       document.removeEventListener('pointermove', move)
+      document.removeEventListener('pointerout', leave)
       window.removeEventListener('scroll', scroll)
     }
   }, [])
@@ -1265,6 +1281,7 @@ function App() {
       <ScrollToHash />
       <ExperienceEffects />
       <Header />
+      <PremiumChrome />
       <main id="main-content">
         <Routes>
           <Route path="/" element={<Home />} />
