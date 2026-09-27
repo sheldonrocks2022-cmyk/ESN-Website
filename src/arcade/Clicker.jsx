@@ -76,7 +76,7 @@ export default function ClickerGame(){
         bestCombo:Math.max(x.bestCombo||0,nextCombo),
       }
     })
-    arcade.track('clickerTaps',1,nextCombo%25===0?8:1,nextCombo%25===0?'Clicker combo milestone':'ES Clicker tap')
+    if((g.totalClicks+1)%10===0)arcade.track('clickerTaps',10,nextCombo>=25?18:10,nextCombo>=25?'Clicker combo milestone':'10 ES Clicker taps')
     if(nextCombo>=25)arcade.unlock('clicker-combo-25','Clicker: 25 Tap Combo',120)
     if(g.totalClicks+1>=1000)arcade.unlock('clicker-1000','Clicker: 1,000 Taps',180)
   }
