@@ -1,4 +1,5 @@
 import { Link, useLocation } from 'react-router-dom'
+import { useArcadeProgress } from './shared'
 
 const games=[
   ['ES Clicker','/esclicker'],['ES Factory','/esfactory'],['ES Mines','/esmines'],
@@ -9,6 +10,7 @@ export default function OriginalFrame({title,subtitle='Browser Arcade',children}
   const location=useLocation()
 
   const slug=location.pathname.replace('/','') || 'arcade'
+  const arcade=useArcadeProgress()
 
   return <div className={`oa-page oa-page-${slug}`}>
     <div className="oa-game-shell">
@@ -33,6 +35,19 @@ export default function OriginalFrame({title,subtitle='Browser Arcade',children}
         <span className="oa-kicker">ES NETWORK • ARCADE</span>
         <h1>{title}</h1>
         <p>{subtitle}</p>
+      </section>
+
+      <section className="oa-arcade-rank" aria-label="ESN Arcade progression">
+        <div className="oa-rank-copy">
+          <span>ARCADE LEVEL</span>
+          <strong>{arcade.level}</strong>
+          <small>{Math.floor(arcade.progress.xp||0).toLocaleString()} XP • {arcade.achievementCount} achievements</small>
+        </div>
+        <div className="oa-rank-meter" aria-hidden="true"><i style={{width:(arcade.levelProgress*100)+'%'}}/></div>
+        <div className="oa-rank-recent">
+          <span>RECENT XP</span>
+          <b>{arcade.progress.recent?.[0]?.label||'Play any ESN game to begin progression'}</b>
+        </div>
       </section>
 
       <div className="oa-game-viewport">
