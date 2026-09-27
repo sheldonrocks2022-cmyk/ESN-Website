@@ -122,7 +122,7 @@ export default function MinesGame(){
       <div className="oa-mini-meter"><i style={{width:risk+'%'}}/></div>
     </section>
 
-    <section className="oa-panel oa-mines-board-panel">
+    <section className={'oa-panel oa-mines-board-panel '+(round?'is-active':'')}>
       <div className="oa-mines-board">
         {board.map(i=>{
           const opened=round?.safe.has(i)
