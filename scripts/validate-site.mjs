@@ -15,6 +15,7 @@ const requiredRoutes = [
   '/smpplugin',
   '/vault',
   '/portfolio',
+  '/share',
   '/updates',
   '/timeline',
   '/status',
@@ -58,6 +59,8 @@ const requiredMigrationFiles = [
   'src/PremiumChrome.jsx',
   'src/Global3DLighting.jsx',
   'src/LiveExperience.jsx',
+  'src/ShareCenter.jsx',
+  'src/ExperienceLayer.jsx',
   'src/liveNetwork.js',
   'src/StartupIntro.jsx',
   'src/reviews.js',
@@ -105,6 +108,10 @@ if (!app.includes('<ExperienceEffects />')) problems.push('Premium interaction e
 if (!app.includes("import PremiumChrome from './PremiumChrome'")) problems.push('Premium command center import missing.')
 if (!app.includes('<PremiumChrome />')) problems.push('Premium command center is not mounted.')
 if (!app.includes('<StartupIntro />')) problems.push('Every-load cinematic startup intro missing.')
+if (!app.includes("import ExperienceLayer") || !app.includes('<ExperienceLayer />')) problems.push('Immersive ESN ExperienceLayer is not mounted.')
+if (!app.includes('<HeroReactor />')) problems.push('Interactive homepage reactor is not mounted.')
+if (!app.includes('<FooterCommandDeck />')) problems.push('Interactive footer command deck is not mounted.')
+if (!app.includes('<Route path="/share" element={<ShareCenter />} />')) problems.push('ESN Share Deck route missing.')
 if (!app.includes('<WhatsHappeningNow />')) problems.push("What's Happening Now homepage panel missing.")
 if (!app.includes('<Route path="/status" element={<StatusCenter />} />')) problems.push('Live Network Status Center route missing.')
 if (!app.includes('<Route path="/timeline" element={<TimelinePage />} />')) problems.push('Interactive ESN timeline route missing.')
@@ -115,6 +122,8 @@ if (!app.includes("import Global3DLighting from './Global3DLighting'") || !app.i
 const liveNetwork = fs.readFileSync('src/liveNetwork.js','utf8')
 const liveExperience = fs.readFileSync('src/LiveExperience.jsx','utf8')
 const startupIntro = fs.readFileSync('src/StartupIntro.jsx','utf8')
+const immersiveLayer = fs.readFileSync('src/ExperienceLayer.jsx','utf8')
+const shareCenter = fs.readFileSync('src/ShareCenter.jsx','utf8')
 if (!liveNetwork.includes('api.mcstatus.io/v2/status/java') || !liveNetwork.includes('players:value.players?.online')) problems.push('Live SMP player count integration missing.')
 if (!liveNetwork.includes('api.mcstatus.io/v2/status/bedrock') || !liveNetwork.includes('api.mcsrvstat.us/3/')) problems.push('SMP live status must use multiple independent sources including Java and Bedrock-aware checks.')
 if (!liveNetwork.includes('offlineResponses.length>=2')) problems.push('SMP status must not report OFFLINE from a single failed or protocol-mismatched source.')
@@ -127,6 +136,17 @@ if (!liveExperience.includes('Historical uptime still requires a separate monito
 if (!liveExperience.includes('EP1C Services') || !liveExperience.includes('Current Projects')) problems.push('Interactive ESN timeline content incomplete.')
 if (!liveExperience.includes('ILLUSTRATIVE PROCESS DEMO') || !liveExperience.includes('not a claimed customer result')) problems.push('Portfolio demos must remain clearly labeled as illustrative.')
 if (!startupIntro.includes('Initializing ESN') || startupIntro.includes('sessionStorage') || startupIntro.includes('localStorage')) problems.push('Startup intro must play on every full site load.')
+if (!immersiveLayer.includes('RouteTransition') || !immersiveLayer.includes('route-transition-tunnel')) problems.push('3D route transition system missing.')
+if (!immersiveLayer.includes('EnergyTrail') || !immersiveLayer.includes('energy-trail-particle')) problems.push('Cursor/touch energy trail system missing.')
+if (!immersiveLayer.includes('HeroReactor') || !immersiveLayer.includes('CORE OVERDRIVE')) problems.push('Interactive ESN hero reactor missing.')
+if (!immersiveLayer.includes('NotificationCenter') || !immersiveLayer.includes('Notification Center')) problems.push('ESN notification center missing.')
+if (!immersiveLayer.includes('NetworkEvents') || !immersiveLayer.includes('VISUAL EVENT ONLY')) problems.push('Rare visual network event system missing.')
+if (!immersiveLayer.includes('FooterCommandDeck') || !immersiveLayer.includes('ESN COMMAND DECK')) problems.push('Interactive footer command deck missing.')
+if (!shareCenter.includes('1200') || !shareCenter.includes('630') || !shareCenter.includes('toBlob') || !shareCenter.includes('toDataURL') || !shareCenter.includes('navigator.share')) problems.push('Share Deck must generate real 1200x630 PNG cards and support native sharing.')
+for (const requiredCard of ['JOIN ESN SMP','PLAY THE ESN ARCADE','BUILD WITH ESN','20 REALM 100 KEYS','RIFTWALKER BUNDLE','IMMORTAL WARDEN BUNDLE','VOID WARRIOR BUNDLE']) {
+  if (!shareCenter.includes(requiredCard)) problems.push(`Share Deck template missing: ${requiredCard}.`)
+}
+if (immersiveLayer.includes('ESN Profiles') || shareCenter.includes('ESN Profiles') || app.includes('ESN Profiles')) problems.push('ESN Profiles were explicitly excluded from this upgrade.')
 const globalLighting = fs.readFileSync('src/Global3DLighting.jsx','utf8')
 if (!globalLighting.includes('u_colorA') || !globalLighting.includes('lightVolume') || !globalLighting.includes('routePalettes')) problems.push('Global 3D lighting shader or route palette system is incomplete.')
 if (globalLighting.includes('fwidth(')) problems.push('Global 3D lighting uses WebGL derivatives that can break mobile compatibility.')
@@ -139,6 +159,7 @@ for (const theme of ['ESN Blue','Void Purple','SMP Green','Arcade Neon','Warden'
 if (!premiumChrome.includes("lighting==='day'") || !premiumChrome.includes("lighting==='night'")) problems.push('Day/night 3D lighting controls missing.')
 if (!premiumChrome.includes('join smp') || !premiumChrome.includes('play tower') || !premiumChrome.includes('download plugin')) problems.push('Command palette action upgrade missing.')
 if (!premiumChrome.includes('mobile-bottom-nav')) problems.push('Premium mobile bottom navigation missing.')
+if (!premiumChrome.includes('esn-open-command') || !premiumChrome.includes('Share Deck')) problems.push('Footer Command Center event bridge or Share Deck command missing.')
 if (!premiumChrome.includes('esn_vault_unlocked') || !premiumChrome.includes('ArrowUp')) problems.push('Secret easter egg unlock system missing.')
 if (!app.includes("scrolled ? 'site-header scrolled' : 'site-header'")) problems.push('Scroll-reactive premium header missing.')
 if (!app.includes('route-premium-enter')) problems.push('Cinematic route entrance hook missing.')
@@ -147,6 +168,7 @@ if (!styles.includes('ESN ULTRA LUXURY 100000X') || !styles.includes('.control-m
 if (!styles.includes('ESN FLAGSHIP LUXURY 1000000X') || !styles.includes('.lux-cursor-ring') || !styles.includes('.lux-route-rail')) problems.push('Flagship Luxury 1000000x visual layer missing.')
 if (!styles.includes('ESN FLAGSHIP ARCHITECTURE 2.0') || !app.includes('flagship-core-stage') || !app.includes('flagship-story-stack') || !app.includes('flagship-service-bento') || !app.includes('flagship-smp-stage') || !app.includes('flagship-arcade-rail') || !app.includes('flagship-review-wall') || !app.includes('flagship-final-cta')) problems.push('Flagship architecture 2.0 is incomplete.')
 if (!styles.includes('ESN LIVE EXPERIENCE 1,000,000,000X') || !styles.includes('.startup-intro') || !styles.includes('.status-center-grid') || !styles.includes('.timeline-layout') || !styles.includes('.before-after-stage')) problems.push('1,000,000,000X premium layer missing or incomplete.')
+if (!styles.includes('ESN IMMERSIVE SYSTEMS 7X') || !styles.includes('.route-transition') || !styles.includes('.hero-reactor') || !styles.includes('.notification-panel') || !styles.includes('.network-event') || !styles.includes('.share-center-layout') || !styles.includes('.footer-command-deck')) problems.push('Immersive 7-system visual layer missing or incomplete.')
 if (!premiumChrome.includes('routeThemes') || !premiumChrome.includes('lux-edge-beam') || !premiumChrome.includes('--mag-x')) problems.push('Flagship route lighting or magnetic interaction system missing.')
 if (premiumChrome.includes("location.pathname==='/arcade'||location.pathname.startsWith('/es')")) problems.push('ES Tools is being misclassified as an Arcade route theme.')
 const routeInitIndex = premiumChrome.indexOf('const routeKey=')
