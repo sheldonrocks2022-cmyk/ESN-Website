@@ -6007,3 +6007,40 @@ html[data-motion="reduced"] *::after{
 html[data-motion="reduced"] .route-transition{
   display:none!important;
 }
+
+
+/* =========================================================
+   MOBILE PREMIUM MOTION RESTORE 3
+   Re-enable the remaining lightweight ESN animations that the emergency
+   safe-mode pass suppressed. Heavy fixed-grid/WebGL effects stay off.
+   ========================================================= */
+@media(max-width:860px), (pointer:coarse){
+  html[data-performance-mode="premium"]:not([data-motion="reduced"]) .control-main-3d::before{
+    animation:luxOrbit 16s linear infinite!important;
+  }
+  html[data-performance-mode="premium"]:not([data-motion="reduced"]) .control-main-3d::after{
+    animation:luxOrbitReverse 12s linear infinite!important;
+  }
+  html[data-performance-mode="premium"]:not([data-motion="reduced"]) .hero h1 span{
+    animation:luxTextShift 10s ease-in-out infinite alternate!important;
+  }
+  html[data-performance-mode="premium"]:not([data-motion="reduced"]) .network-showcase-section::before{
+    animation:network-sweep 12s ease-in-out infinite!important;
+  }
+  html[data-performance-mode="premium"]:not([data-motion="reduced"]) .network-map-lines line{
+    animation:network-line-flow 6s linear infinite!important;
+  }
+  html[data-performance-mode="premium"]:not([data-motion="reduced"]) .network-map-lines circle{
+    animation:network-orbit-spin 28s linear infinite!important;
+  }
+  html[data-performance-mode="premium"]:not([data-motion="reduced"]) .network-map-lines circle+circle{
+    animation:network-orbit-spin 38s linear infinite reverse!important;
+  }
+
+  /* Keep the intentionally expensive/repaint-heavy mobile effects disabled. */
+  .esn-global-grid,
+  .premium-grain,
+  .global-3d-lighting canvas{
+    display:none!important;
+  }
+}
