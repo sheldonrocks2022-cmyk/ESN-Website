@@ -18,10 +18,10 @@ export function useSharedCoins(){
   const [wallet,setWallet]=usePersistent(SHARED_KEY,{coins:1000,highest:1000})
   const add=useCallback((amount)=>setWallet(w=>{const coins=Math.max(0,w.coins+amount);return{...w,coins,highest:Math.max(w.highest||0,coins)}}),[setWallet])
   const spend=useCallback((amount)=>{
-    let ok=false
-    setWallet(w=>{if(w.coins<amount)return w;ok=true;return{...w,coins:w.coins-amount}})
-    return ok
-  },[setWallet])
+    if(wallet.coins<amount)return false
+    setWallet(w=>({...w,coins:Math.max(0,w.coins-amount)}))
+    return true
+  },[wallet.coins,setWallet])
   return {wallet,setWallet,add,spend}
 }
 
