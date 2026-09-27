@@ -4,9 +4,9 @@ const KEY = 'esn_arcade_profile_v2'
 
 function read() {
   try {
-    return { coins: 250, xp: 0, level: 1, ...JSON.parse(localStorage.getItem(KEY) || '{}') }
+    return { coins: 250, xp: 0, level: 1, lifetimeCoins: 0, ...JSON.parse(localStorage.getItem(KEY) || '{}') }
   } catch {
-    return { coins: 250, xp: 0, level: 1 }
+    return { coins: 250, xp: 0, level: 1, lifetimeCoins: 0 }
   }
 }
 
@@ -22,6 +22,7 @@ export function useArcadeProfile() {
     return {
       ...p,
       coins: p.coins + coins,
+      lifetimeCoins: (p.lifetimeCoins || 0) + Math.max(0, coins),
       xp: nextXp,
       level: Math.max(p.level, 1 + Math.floor(Math.sqrt(nextXp / 75))),
     }
