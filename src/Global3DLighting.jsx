@@ -27,6 +27,7 @@ uniform float u_scroll;
 uniform vec3 u_colorA;
 uniform vec3 u_colorB;
 uniform vec3 u_colorC;
+uniform float u_day;
 
 float hash21(vec2 p){
   p=fract(p*vec2(123.34,456.21));
@@ -71,16 +72,19 @@ void main(){
   float v2=lightVolume(ro,rd,l2,1.25);
   float v3=lightVolume(ro,rd,l3,.92);
 
-  vec3 col=vec3(.003,.007,.018);
-  col+=u_colorA*v1*.44;
-  col+=u_colorB*v2*.34;
-  col+=u_colorC*v3*.3;
+  vec3 nightBase=vec3(.003,.007,.018);
+  vec3 dayBase=vec3(.025,.042,.075);
+  vec3 col=mix(nightBase,dayBase,u_day);
+  float lightBoost=mix(1.0,.78,u_day);
+  col+=u_colorA*v1*.44*lightBoost;
+  col+=u_colorB*v2*.34*lightBoost;
+  col+=u_colorC*v3*.3*lightBoost;
 
-  float horizon=exp(-pow((uv.y+.12)*4.0,2.0))*.055;
+  float horizon=exp(-pow((uv.y+.12)*4.0,2.0))*mix(.055,.095,u_day);
   col+=(u_colorA*.34+u_colorB*.24)*horizon;
 
   float grid=floorGrid(ro,rd);
-  col+=(u_colorB*.55+u_colorA*.15)*grid;
+  col+=(u_colorB*.55+u_colorA*.15)*grid*mix(1.0,.7,u_day);
 
   float vignette=1.0-smoothstep(.28,1.05,length(uv*vec2(.86,1.08)));
   col*=.62+.38*vignette;
@@ -170,6 +174,7 @@ export default function Global3DLighting(){
       a:gl.getUniformLocation(program,'u_colorA'),
       b:gl.getUniformLocation(program,'u_colorB'),
       c:gl.getUniformLocation(program,'u_colorC'),
+      day:gl.getUniformLocation(program,'u_day'),
     }
 
     const mobile=matchMedia('(max-width: 860px), (pointer: coarse)').matches
@@ -177,15 +182,14 @@ export default function Global3DLighting(){
     const targetFps=mobile?30:50
     const frameMs=1000/targetFps
     const maxDpr=mobile?1.0:1.35
-    const state={mx:.5,my:.5,tx:.5,ty:.5,scroll:0,visible:!document.hidden}
+    const state={
+      mx:.5,my:.5,tx:.5,ty:.5,scroll:0,visible:!document.hidden,
+      palette:routePalettes[routeKey(location.pathname)]||routePalettes.home,
+      day:localStorage.getItem('esn_lighting_mode')==='day'?1:0,
+    }
     let raf=0
     let last=0
     const started=performance.now()
-
-    const palette=routePalettes[routeKey(location.pathname)]||routePalettes.home
-    gl.uniform3fv(uniforms.a,new Float32Array(palette[0]))
-    gl.uniform3fv(uniforms.b,new Float32Array(palette[1]))
-    gl.uniform3fv(uniforms.c,new Float32Array(palette[2]))
 
     const resize=()=>{
       const rect=canvas.getBoundingClientRect()
@@ -207,12 +211,26 @@ export default function Global3DLighting(){
       state.scroll=Math.min(1,Math.max(0,scrollY/max))
     }
     const visibility=()=>{state.visible=!document.hidden}
+    const settings=e=>{
+      const detail=e.detail||{}
+      if(Array.isArray(detail.palette)&&detail.palette.length>=2){
+        const normalize=value=>{
+          if(Array.isArray(value))return value
+          return String(value).split(/\s+/).map(Number).slice(0,3).map(n=>Math.max(0,Math.min(255,n))/255)
+        }
+        const a=normalize(detail.palette[0]),b=normalize(detail.palette[1])
+        const c=[Math.min(1,(a[0]+b[0])*.58),Math.min(1,(a[1]+b[1])*.58),Math.min(1,(a[2]+b[2])*.58)]
+        if(a.length===3&&b.length===3)state.palette=[a,b,c]
+      }
+      state.day=detail.lighting==='day'?1:0
+    }
 
     if(!mobile){
       window.addEventListener('pointermove',pointer,{passive:true})
     }
     window.addEventListener('scroll',scroll,{passive:true})
     document.addEventListener('visibilitychange',visibility)
+    window.addEventListener('esn-visual-settings',settings)
     scroll()
 
     const draw=now=>{
@@ -230,6 +248,10 @@ export default function Global3DLighting(){
       gl.uniform1f(uniforms.time,seconds)
       gl.uniform2f(uniforms.mouse,state.mx,state.my)
       gl.uniform1f(uniforms.scroll,state.scroll)
+      gl.uniform3fv(uniforms.a,new Float32Array(state.palette[0]))
+      gl.uniform3fv(uniforms.b,new Float32Array(state.palette[1]))
+      gl.uniform3fv(uniforms.c,new Float32Array(state.palette[2]))
+      gl.uniform1f(uniforms.day,state.day)
       gl.drawArrays(gl.TRIANGLES,0,3)
     }
     raf=requestAnimationFrame(draw)
@@ -239,6 +261,7 @@ export default function Global3DLighting(){
       if(!mobile)window.removeEventListener('pointermove',pointer)
       window.removeEventListener('scroll',scroll)
       document.removeEventListener('visibilitychange',visibility)
+      window.removeEventListener('esn-visual-settings',settings)
       gl.deleteBuffer(quad)
       gl.deleteProgram(program)
     }
