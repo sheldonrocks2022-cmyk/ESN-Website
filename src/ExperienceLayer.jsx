@@ -1,5 +1,5 @@
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import ES3DViewer from './ES3DViewer'
 import { SITE_RELEASE, useLiveNetwork } from './liveNetwork'
@@ -22,22 +22,22 @@ export function RouteTransition(){
   const timer=useRef(null)
   const [scene,setScene]=useState(null)
 
-  useEffect(()=>{
+  useLayoutEffect(()=>{
     if(first.current){first.current=false;return}
     const next=routeScene(location.pathname)
     clearTimeout(timer.current)
-    setScene({...next,id:Date.now()})
-    timer.current=window.setTimeout(()=>setScene(null),720)
+    setScene({...next,id:location.pathname})
+    timer.current=window.setTimeout(()=>setScene(null),560)
     return()=>clearTimeout(timer.current)
   },[location.pathname])
 
   if(!scene)return null
   return <div className={'route-transition route-transition-'+scene.key} aria-hidden="true">
     <div className="route-transition-tunnel">
-      <span className="rt-ring r1"/><span className="rt-ring r2"/><span className="rt-ring r3"/><span className="rt-ring r4"/>
+      <span className="rt-ring r1"/><span className="rt-ring r2"/><span className="rt-ring r3"/>
     </div>
-    <div className="route-transition-core"><strong>{scene.glyph}</strong><span>{scene.label}</span><small>ROUTING EXPERIENCE</small></div>
-    <div className="route-transition-slice left"/><div className="route-transition-slice right"/>
+    <div className="route-transition-core"><strong>{scene.glyph}</strong><span>{scene.label}</span></div>
+    <div className="route-transition-scan" aria-hidden="true"/>
   </div>
 }
 
