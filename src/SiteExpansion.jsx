@@ -238,7 +238,7 @@ const defaultPrefs={
   highContrast:false,
   largeText:false,
   largeTargets:false,
-  noFlashing:true,
+  noFlashing:false,
 }
 
 function readJson(key,fallback){
