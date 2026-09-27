@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 
-export const SITE_RELEASE='ESN Terminal Operator Suite • 2026.09.27'
+export const SITE_RELEASE='ESN No-Account Expansion • 2026.09.27'
 export const SMP_ADDRESS='esn.ggwp.cc'
 export const SMP_PORT='17058'
 export const DISCORD_INVITE='3gxA66KZ8'
@@ -16,7 +16,7 @@ const initial={
   checkedAt:null,
   website:{status:'online'},
   arcade:{status:'operational',games:6},
-  smp:{status:'checking',online:false,players:null,maxPlayers:null,version:null,software:null,motd:null,uptime:null},
+  smp:{status:'checking',online:false,players:null,maxPlayers:null,playerSample:[],version:null,software:null,motd:null,uptime:null},
   plugin:{status:'checking',version:null,publishedAt:null,url:null},
   discord:{status:'checking',members:null,onlineMembers:null,url:DISCORD_URL},
 }
@@ -46,6 +46,12 @@ export function useLiveNetwork(){
       }
     }
 
+    const playerNames=value=>{
+      const list=value?.players?.list??value?.players?.sample??[]
+      if(!Array.isArray(list))return []
+      return list.map(player=>typeof player==='string'?player:(player?.name_clean??player?.name_raw??player?.name??null)).filter(Boolean).slice(0,12)
+    }
+
     const statusSources=[
       {
         name:'mcstatus-java',
@@ -57,6 +63,7 @@ export function useLiveNetwork(){
             online:Boolean(value.online),
             players:value.players?.online??null,
             maxPlayers:value.players?.max??null,
+            playerSample:playerNames(value),
             version:value.version?.name_clean??value.version?.name_raw??null,
             software:value.software??null,
             motd:value.motd?.clean??null,
@@ -73,6 +80,7 @@ export function useLiveNetwork(){
             online:Boolean(value.online),
             players:value.players?.online??null,
             maxPlayers:value.players?.max??null,
+            playerSample:playerNames(value),
             version:value.version?.name_clean??value.version?.name_raw??null,
             software:value.software??null,
             motd:value.motd?.clean??null,
@@ -89,6 +97,7 @@ export function useLiveNetwork(){
             online:Boolean(value.online),
             players:value.players?.online??null,
             maxPlayers:value.players?.max??null,
+            playerSample:playerNames(value),
             version:value.version??null,
             software:value.software??null,
             motd:Array.isArray(value.motd?.clean)?value.motd.clean.join(' '):(value.motd?.clean??null),
@@ -109,7 +118,7 @@ export function useLiveNetwork(){
         const best=onlineResponses
           .slice()
           .sort((a,b)=>{
-            const score=value=>Number(value.players!=null)+Number(value.maxPlayers!=null)+Number(Boolean(value.version))+Number(Boolean(value.software))
+            const score=value=>Number(value.players!=null)+Number(value.maxPlayers!=null)+Number((value.playerSample||[]).length>0)+Number(Boolean(value.version))+Number(Boolean(value.software))
             return score(b)-score(a)
           })[0]
 
@@ -118,6 +127,7 @@ export function useLiveNetwork(){
           online:true,
           players:best.players,
           maxPlayers:best.maxPlayers,
+          playerSample:best.playerSample||[],
           version:best.version,
           software:best.software,
           motd:best.motd,
@@ -139,6 +149,7 @@ export function useLiveNetwork(){
             online:true,
             players:null,
             maxPlayers:null,
+            playerSample:[],
             version:null,
             software:null,
             motd:null,
@@ -155,6 +166,7 @@ export function useLiveNetwork(){
           online:false,
           players:best.players,
           maxPlayers:best.maxPlayers,
+          playerSample:best.playerSample||[],
           version:best.version,
           software:best.software,
           motd:best.motd,
@@ -189,6 +201,7 @@ export function useLiveNetwork(){
         online:null,
         players:null,
         maxPlayers:null,
+        playerSample:[],
         version:null,
         software:null,
         motd:null,
