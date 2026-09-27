@@ -80,6 +80,8 @@ for (const file of requiredMigrationFiles) {
 if (app.includes('ESN Arcade 2.0')) problems.push('Inaccurate temporary Arcade 2.0 content returned.')
 if (!app.includes('<Route path="/esclicker" element={<ClickerGame />} />')) problems.push('Faithful Arcade game routes are not wired.')
 if (app.includes('View migration status →')) problems.push('Arcade placeholder links returned instead of playable game links.')
+if (app.includes('!isArcadeGame && <Header />') || app.includes('!isArcadeGame && <Footer />')) problems.push('Arcade pages must keep the global ESN header and footer.')
+if (!app.includes('<Header />') || !app.includes('<Footer />')) problems.push('Global ESN shell is not mounted universally.')
 if (app.includes('Tool logic is intentionally not being invented')) problems.push('Obsolete ES Tools placeholder content returned.')
 
 if (problems.length) {
