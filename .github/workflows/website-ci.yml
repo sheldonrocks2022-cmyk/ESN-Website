@@ -21,5 +21,7 @@ jobs:
           node-version: 20
       - name: Install dependencies
         run: npm install
+      - name: Validate protected routes and links
+        run: npm run validate
       - name: Build
         run: npm run build
