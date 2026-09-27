@@ -1,8 +1,9 @@
-import { useEffect, useState } from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import { useEffect, useMemo, useRef, useState } from 'react'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 
 const DISCORD_URL='https://discord.gg/3gxA66KZ8'
 const SMP_HOST='esn.ggwp.cc'
+const PLUGIN_DOWNLOAD_URL='https://github.com/sheldonrocks2022-cmyk/ESNSMP/releases/latest/download/ESNSMP.jar'
 
 const routeThemes={
   home:['84 154 255','143 249 255'],
@@ -14,30 +15,96 @@ const routeThemes={
   about:['91 160 255','122 240 255'],
 }
 
-const quickLinks=[
-  ['Services','/serviceshowcase','Creator & gaming services'],
-  ['Arcade','/arcade','Six original ESN games'],
-  ['ESN SMP','/smpconnection',SMP_HOST],
-  ['ES Tools','/estools','Free browser utilities'],
-  ['Reviews','/testimonials','35 verified reviews'],
+const userThemes={
+  esn:{label:'ESN Blue',colors:['84 154 255','143 249 255']},
+  void:{label:'Void Purple',colors:['135 76 255','214 92 255']},
+  smp:{label:'SMP Green',colors:['69 229 157','82 180 255']},
+  arcade:{label:'Arcade Neon',colors:['0 229 255','255 79 214']},
+  warden:{label:'Warden',colors:['18 154 168','93 239 220']},
+  riftwalker:{label:'Riftwalker',colors:['138 76 255','70 143 255']},
+  midnight:{label:'Midnight Core',colors:['52 72 135','112 244 255']},
+}
+
+const baseCommands=[
+  {label:'Join SMP',meta:'Open ESN SMP connection details',keywords:'join smp server ip port minecraft connect',kind:'route',value:'/smpconnection'},
+  {label:'Open Riftwalker',meta:'Jump to the Riftwalker store bundle',keywords:'riftwalker bundle store buy',kind:'route',value:'/storesmp#product-esn-riftwalker-bundle'},
+  {label:'Play Tower',meta:'Launch ES Tower',keywords:'play tower arcade',kind:'route',value:'/estower'},
+  {label:'Play Tower Defense',meta:'Launch ES Tower Defense',keywords:'play tower defense arcade',kind:'route',value:'/estowerdefense'},
+  {label:'Download Plugin',meta:'Download latest ESNSMP.jar',keywords:'download plugin jar esnsmp latest',kind:'download',value:PLUGIN_DOWNLOAD_URL},
+  {label:'Network Status',meta:'Live ESN systems and SMP players',keywords:'status live player count uptime network',kind:'route',value:'/status'},
+  {label:'Release Center',meta:'Website, plugin, Arcade, and roadmap updates',keywords:'updates releases roadmap changelog version',kind:'route',value:'/updates'},
+  {label:'ESN Timeline',meta:'EP1C Services → ES Network → current projects',keywords:'timeline history ep1c es network',kind:'route',value:'/timeline'},
+  {label:'Portfolio',meta:'Interactive service before/after demos',keywords:'portfolio before after editing discord website',kind:'route',value:'/portfolio'},
+  {label:'SMP Store',meta:'Official ESN SMP products',keywords:'store products keys relic warden void',kind:'route',value:'/storesmp'},
+  {label:'ES Tools',meta:'Free browser utilities',keywords:'tools timer prompt randomizer',kind:'route',value:'/estools'},
+  {label:'Verified Reviews',meta:'35 ESN customer reviews',keywords:'reviews testimonials verified',kind:'route',value:'/testimonials'},
+  {label:'Join Discord',meta:'Open the official ESN Discord',keywords:'discord community support ticket',kind:'external',value:DISCORD_URL},
 ]
 
 export default function PremiumChrome(){
   const location=useLocation()
+  const navigate=useNavigate()
   const [open,setOpen]=useState(false)
   const [showTop,setShowTop]=useState(false)
   const [query,setQuery]=useState('')
+  const [theme,setTheme]=useState(()=>localStorage.getItem('esn_visual_theme')||'dynamic')
+  const [lighting,setLighting]=useState(()=>localStorage.getItem('esn_lighting_mode')||'night')
+  const [vaultUnlocked,setVaultUnlocked]=useState(()=>localStorage.getItem('esn_vault_unlocked')==='1')
+  const [secretPulse,setSecretPulse]=useState(false)
+  const tapRef=useRef({count:0,timer:null})
 
   const arcadeRoutes=['/arcade','/esclicker','/esfactory','/esmines','/esmoto','/estower','/estowerdefense']
+  const gameRoutes=arcadeRoutes.filter(route=>route!=='/arcade')
   const routeKey=location.pathname.startsWith('/smp')||location.pathname.startsWith('/store')?'smp'
     :arcadeRoutes.includes(location.pathname)?'arcade'
-    :location.pathname==='/serviceshowcase'?'services'
+    :location.pathname==='/serviceshowcase'||location.pathname==='/portfolio'?'services'
     :location.pathname==='/estools'||location.pathname==='/tools'?'tools'
     :location.pathname==='/testimonials'?'reviews'
-    :['/about','/leadership','/faq'].includes(location.pathname)?'about':'home'
-  const [routeAccent,routeAccent2]=routeThemes[routeKey]||routeThemes.home
+    :['/about','/leadership','/faq','/timeline','/updates','/status','/vault'].includes(location.pathname)?'about':'home'
+
+  const routePalette=routeThemes[routeKey]||routeThemes.home
+  const effectivePalette=theme==='dynamic'?routePalette:(userThemes[theme]?.colors||routePalette)
+  const [routeAccent,routeAccent2]=effectivePalette
   const routeLabel=routeKey.toUpperCase()
-  const filteredLinks=quickLinks.filter(([label,,meta])=>`${label} ${meta}`.toLowerCase().includes(query.trim().toLowerCase()))
+  const isGame=gameRoutes.includes(location.pathname)
+
+  const availableThemes=useMemo(()=>[
+    ['dynamic','Dynamic'],
+    ['esn',userThemes.esn.label],
+    ['void',userThemes.void.label],
+    ['smp',userThemes.smp.label],
+    ['arcade',userThemes.arcade.label],
+    ['warden',userThemes.warden.label],
+    ['riftwalker',userThemes.riftwalker.label],
+    ...(vaultUnlocked?[['midnight',userThemes.midnight.label]]:[]),
+  ],[vaultUnlocked])
+
+  const unlockVault=()=>{
+    localStorage.setItem('esn_vault_unlocked','1')
+    setVaultUnlocked(true)
+    setTheme('midnight')
+    localStorage.setItem('esn_visual_theme','midnight')
+    setSecretPulse(true)
+    window.dispatchEvent(new CustomEvent('esn-visual-settings',{detail:{theme:'midnight',lighting,palette:userThemes.midnight.colors}}))
+    window.setTimeout(()=>{setSecretPulse(false);setOpen(false);navigate('/vault')},850)
+  }
+
+  const normalized=query.trim().toLowerCase()
+  const commandResults=useMemo(()=>{
+    const list=[...baseCommands]
+    if(vaultUnlocked||normalized==='esn vault'||normalized==='vault'){
+      list.unshift({label:'ESN Vault',meta:vaultUnlocked?'Open the unlocked hidden network layer':'Secret command detected',keywords:'esn vault secret core',kind:vaultUnlocked?'route':'unlock',value:'/vault'})
+    }
+    if(!normalized)return list.slice(0,8)
+    return list.filter(item=>`${item.label} ${item.meta} ${item.keywords}`.toLowerCase().includes(normalized)).slice(0,10)
+  },[normalized,vaultUnlocked])
+
+  const runCommand=(command)=>{
+    if(command.kind==='route'){setOpen(false);navigate(command.value);return}
+    if(command.kind==='external'){window.open(command.value,'_blank','noopener,noreferrer');return}
+    if(command.kind==='download'){window.location.href=command.value;return}
+    if(command.kind==='unlock'){unlockVault()}
+  }
 
   useEffect(()=>{
     setOpen(false)
@@ -48,8 +115,7 @@ export default function PremiumChrome(){
   useEffect(()=>{
     const key=(e)=>{
       if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='k'){
-        e.preventDefault()
-        setOpen(v=>!v)
+        e.preventDefault();setOpen(v=>!v)
       }
       if(e.key==='Escape')setOpen(false)
     }
@@ -61,6 +127,17 @@ export default function PremiumChrome(){
   },[])
 
   useEffect(()=>{
+    const sequence=['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a']
+    let at=0
+    const handler=e=>{
+      if(e.key===sequence[at]){at+=1;if(at===sequence.length){at=0;unlockVault()}}
+      else at=e.key===sequence[0]?1:0
+    }
+    window.addEventListener('keydown',handler)
+    return()=>window.removeEventListener('keydown',handler)
+  })
+
+  useEffect(()=>{
     document.documentElement.classList.toggle('premium-command-open',open)
     return()=>document.documentElement.classList.remove('premium-command-open')
   },[open])
@@ -68,16 +145,21 @@ export default function PremiumChrome(){
   useEffect(()=>{
     const root=document.documentElement
     root.dataset.luxRoute=routeKey
+    root.dataset.visualTheme=theme
+    root.dataset.lighting=lighting
     root.style.setProperty('--route-accent',routeAccent)
     root.style.setProperty('--route-accent-2',routeAccent2)
+    localStorage.setItem('esn_visual_theme',theme)
+    localStorage.setItem('esn_lighting_mode',lighting)
+    window.dispatchEvent(new CustomEvent('esn-visual-settings',{detail:{theme,lighting,palette:effectivePalette}}))
     return()=>delete root.dataset.luxRoute
-  },[routeKey,routeAccent,routeAccent2])
+  },[routeKey,theme,lighting,routeAccent,routeAccent2])
 
   useEffect(()=>{
     const fine=window.matchMedia('(hover:hover) and (pointer:fine)').matches
     const reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches
     if(!fine||reduce)return
-    const selector='.button,.nav-cta,.footer-discord,.premium-command-discord,.text-link,.plugin-download-button'
+    const selector='.button,.nav-cta,.footer-discord,.premium-command-discord,.text-link,.plugin-download-button,.command-result'
     const move=e=>{
       const target=e.target.closest?.(selector)
       if(!target)return
@@ -90,13 +172,21 @@ export default function PremiumChrome(){
     const out=e=>{
       const target=e.target.closest?.(selector)
       if(!target||target.contains(e.relatedTarget))return
-      target.style.setProperty('--mag-x','0px')
-      target.style.setProperty('--mag-y','0px')
+      target.style.setProperty('--mag-x','0px');target.style.setProperty('--mag-y','0px')
     }
     document.addEventListener('pointermove',move,{passive:true})
     document.addEventListener('pointerout',out,{passive:true})
     return()=>{document.removeEventListener('pointermove',move);document.removeEventListener('pointerout',out)}
   },[])
+
+  const orbTap=()=>{
+    setOpen(v=>!v)
+    const tap=tapRef.current
+    tap.count+=1
+    clearTimeout(tap.timer)
+    if(tap.count>=7){tap.count=0;unlockVault();return}
+    tap.timer=setTimeout(()=>{tap.count=0},2600)
+  }
 
   return <>
     <div className="lux-cursor-field" aria-hidden="true"/>
@@ -104,54 +194,39 @@ export default function PremiumChrome(){
     <div className="lux-cursor-core" aria-hidden="true"/>
     <div className="lux-edge-beam top" aria-hidden="true"/>
     <div className="lux-edge-beam right" aria-hidden="true"/>
-    <div className="premium-ambient" aria-hidden="true">
-      <span className="premium-aurora a"/>
-      <span className="premium-aurora b"/>
-      <span className="premium-aurora c"/>
-      <span className="premium-grain"/>
-      <span className="premium-vignette"/>
-    </div>
-
+    <div className="premium-ambient" aria-hidden="true"><span className="premium-aurora a"/><span className="premium-aurora b"/><span className="premium-aurora c"/><span className="premium-grain"/><span className="premium-vignette"/></div>
     <div key={location.pathname} className="route-lux-flare" aria-hidden="true"/>
+
+    {secretPulse&&<div className="secret-unlock-flash"><span>ESN // VAULT UNLOCKED</span><strong>MIDNIGHT CORE ACQUIRED</strong></div>}
 
     <div className="premium-ticker" aria-label="ES Network highlights">
       <div className="premium-ticker-track">
         {[0,1].map(copy=><div className="premium-ticker-segment" key={copy}>
-          <span><i/> ESN SYSTEMS ONLINE</span>
-          <span>35 VERIFIED REVIEWS</span>
-          <span>6 ORIGINAL ARCADE GAMES</span>
-          <span>{SMP_HOST}</span>
-          <span>PUBLIC ESNSMP PLUGIN</span>
-          <span>FREE ES TOOLS</span>
+          <span><i/> ESN SYSTEMS ONLINE</span><span>35 VERIFIED REVIEWS</span><span>6 ORIGINAL ARCADE GAMES</span><span>{SMP_HOST}</span><span>LIVE NETWORK STATUS</span><span>PUBLIC ESNSMP PLUGIN</span><span>FREE ES TOOLS</span>
         </div>)}
       </div>
     </div>
 
-    <div className="lux-route-rail" aria-hidden="true">
-      <span>ESN</span>
-      <i/>
-      <b>{routeLabel}</b>
-      <em>PREMIUM NETWORK</em>
-    </div>
+    <div className="lux-route-rail" aria-hidden="true"><span>ESN</span><i/><b>{routeLabel}</b><em>LIVE EXPERIENCE</em></div>
 
     <div className="premium-dock" aria-label="ESN quick actions">
-      <button className={open?'premium-orb active':'premium-orb'} type="button" onClick={()=>setOpen(v=>!v)} aria-expanded={open} aria-label="Open ESN command center">
-        <span>ES</span><i/>
-      </button>
-      <div className="premium-dock-label">QUICK ACCESS</div>
+      <button className={open?'premium-orb active':'premium-orb'} type="button" onClick={orbTap} aria-expanded={open} aria-label="Open ESN command center"><span>ES</span><i/></button>
+      <div className="premium-dock-label">COMMAND CENTER</div>
       {showTop&&<button className="premium-top-button" type="button" onClick={()=>window.scrollTo({top:0,behavior:'smooth'})} aria-label="Back to top">↑</button>}
     </div>
+
+    {!isGame&&<nav className="mobile-bottom-nav" aria-label="Mobile primary navigation">
+      <Link className={location.pathname==='/'?'active':''} to="/"><span>⌂</span><small>Home</small></Link>
+      <Link className={location.pathname==='/serviceshowcase'?'active':''} to="/serviceshowcase"><span>◇</span><small>Services</small></Link>
+      <Link className={routeKey==='smp'?'active':''} to="/smpconnection"><span>⬡</span><small>SMP</small></Link>
+      <Link className={routeKey==='arcade'?'active':''} to="/arcade"><span>▣</span><small>Arcade</small></Link>
+      <button type="button" className={open?'active':''} onClick={()=>setOpen(true)}><span>•••</span><small>More</small></button>
+    </nav>}
 
     <div className={open?'premium-command-backdrop open':'premium-command-backdrop'} onClick={()=>setOpen(false)} aria-hidden={!open}/>
 
     <aside className={open?'premium-command open':'premium-command'} aria-hidden={!open} inert={!open}>
-      <div className="premium-command-head">
-        <div>
-          <span>ES NETWORK</span>
-          <strong>Command Center</strong>
-        </div>
-        <button type="button" onClick={()=>setOpen(false)} aria-label="Close command center">×</button>
-      </div>
+      <div className="premium-command-head"><div><span>ES NETWORK</span><strong>Command Center</strong></div><button type="button" onClick={()=>setOpen(false)} aria-label="Close command center">×</button></div>
 
       <div className="premium-command-status">
         <div><i/><span>NETWORK</span><b>ONLINE</b></div>
@@ -159,24 +234,31 @@ export default function PremiumChrome(){
       </div>
 
       <label className="premium-command-search">
-        <span>SEARCH ESN</span>
-        <input value={query} onChange={e=>setQuery(e.target.value)} placeholder="Services, Arcade, SMP, Tools…" />
+        <span>COMMAND / SEARCH</span>
+        <input value={query} onChange={e=>setQuery(e.target.value)} placeholder='Try "join SMP", "play Tower", "download plugin"…' />
       </label>
 
-      <nav className="premium-command-links">
-        {filteredLinks.map(([label,to,meta],index)=><Link key={to} to={to} className={location.pathname===to?'active':''}>
+      <div className="command-results">
+        {commandResults.map((command,index)=><button className="command-result" type="button" onClick={()=>runCommand(command)} key={command.label}>
           <span className="premium-command-index">{String(index+1).padStart(2,'0')}</span>
-          <span><b>{label}</b><small>{meta}</small></span>
-          <em>↗</em>
-        </Link>)}
-        {!filteredLinks.length&&<div className="premium-command-empty">No quick destination matches that search.</div>}
-      </nav>
+          <span><b>{command.label}</b><small>{command.meta}</small></span><em>{command.kind==='download'?'↓':'↗'}</em>
+        </button>)}
+        {!commandResults.length&&<div className="premium-command-empty">No command matches that search.</div>}
+      </div>
 
-      <a className="premium-command-discord" href={DISCORD_URL} target="_blank" rel="noreferrer">
-        <span><b>Join ESN Discord</b><small>Community • support • ordering</small></span><em>↗</em>
-      </a>
+      <section className="visual-control-center">
+        <div className="visual-control-head"><span>VISUAL SYSTEM</span><b>{lighting.toUpperCase()} MODE</b></div>
+        <div className="theme-chip-row">
+          {availableThemes.map(([key,label])=><button type="button" className={theme===key?'active':''} onClick={()=>setTheme(key)} key={key}>{label}</button>)}
+        </div>
+        <div className="lighting-toggle">
+          <button type="button" className={lighting==='day'?'active':''} onClick={()=>setLighting('day')}><span>DAY</span><small>Brighter volumetric scene</small></button>
+          <button type="button" className={lighting==='night'?'active':''} onClick={()=>setLighting('night')}><span>NIGHT</span><small>Deeper cinematic lighting</small></button>
+        </div>
+      </section>
 
-      <div className="premium-command-hint"><span>CTRL / CMD + K</span><span>TOGGLE COMMAND CENTER</span></div>
+      <a className="premium-command-discord" href={DISCORD_URL} target="_blank" rel="noreferrer"><span><b>Join ESN Discord</b><small>Community • support • ordering</small></span><em>↗</em></a>
+      <div className="premium-command-hint"><span>CTRL / CMD + K</span><span>SEARCH • COMMANDS • THEMES</span></div>
     </aside>
   </>
 }
