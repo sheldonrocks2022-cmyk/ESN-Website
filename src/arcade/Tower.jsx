@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react'
 import OriginalFrame from './OriginalFrame'
-import { money, useArcadeProgress, usePersistent, useSharedCoins } from './shared'
+import { arcadeFeedback, money, useArcadeProgress, usePersistent, useSharedCoins } from './shared'
 
 const floors=Array.from({length:122},(_,i)=>{
   const floor=i+1
@@ -33,6 +33,7 @@ export default function TowerGame(){
   const newGame=()=>{
     if(!spend(wager)){setLast('Not enough shared ES Coins.');return}
     const first=floors[0]
+    arcadeFeedback('power')
     setRun({floor:1,dangers:dangerDoors(first.hazards),picked:null,busted:false,shield:0,safeChain:0})
     setStats(s=>({...s,runs:s.runs+1}))
     setLast(`Run started with ${wager} ES Coins.`)
@@ -42,13 +43,15 @@ export default function TowerGame(){
     if(!run||run.picked!==null||run.busted)return
     if(run.dangers.has(i)){
       if(run.shield>0){
-        const nextFloor=Math.min(122,run.floor+1)
+        arcadeFeedback('safe')
+    const nextFloor=Math.min(122,run.floor+1)
         const nextData=floors[nextFloor-1]
         setRun({...run,floor:nextFloor,dangers:dangerDoors(nextData.hazards),picked:null,shield:run.shield-1,safeChain:0})
         setLast(`Shield absorbed a danger door on Floor ${run.floor}. Advanced to Floor ${nextFloor}.`)
         arcade.gainXp(30,'Tower shield save')
         return
       }
+      arcadeFeedback('danger')
       setRun({...run,picked:i,busted:true})
       setStats(s=>({...s,busts:s.busts+1,currentStreak:0,bestFloor:Math.max(s.bestFloor||1,run.floor)}))
       arcade.gainXp(Math.max(5,run.floor*2),'Tower run ended')
@@ -78,6 +81,7 @@ export default function TowerGame(){
   const cashOut=()=>{
     if(!run||run.busted)return
     add(potential)
+    arcadeFeedback('win')
     const streak=(stats.currentStreak||0)+1
     setStats(s=>({
       ...s,cashouts:s.cashouts+1,totalPaid:s.totalPaid+potential,
