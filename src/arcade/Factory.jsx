@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import OriginalFrame from './OriginalFrame'
-import { money, useArcadeProgress, usePersistent, useSharedCoins } from './shared'
+import { arcadeFeedback, money, useArcadeProgress, usePersistent, useSharedCoins } from './shared'
 
 const zoneNames=['Starter Foundry','Carbon Bay','Wireline District','Core Alloy Ridge','Circuit Wharf','Ion Inlet Yard','Copper Reach','Neon Mill','Steel Harbor','Quartz Works','Pulse Yard','Titan Forge','Nova Basin','Chrome Reach','Flux Quarter','Ember Point','Prism Yard','Vector Dock','Cinder Loop','Zenith Bay','Arc Works','Helix Yard','Meteor Plant','Ion Foundry','Atlas Forge','Circuit Basin','Static Reach','Vortex Yard','Echo Mill','Quantum Dock','Solar Foundry','Lumen Bay','Alloy Quarter','Volt Harbor','Plasma Works','Cobalt Reach','Aurora Yard','Rift Forge','Nexus Bay','Photon Mill','Radiant Dock','Obsidian Plant','Crown Foundry','Apex Works','Celestial Yard','Void Harbor','Storm Forge','Infinity Basin','Mythic Works','Ascendant Yard','Eternal Foundry','Prime Nexus','ES Core']
 const machineKinds=['Assembler','Smelter','Press','Lathe','Refinery','Forge','Reactor','Fabricator']
@@ -65,6 +65,7 @@ export default function FactoryGame(){
   const unlockZone=i=>{
     const cost=Math.floor(280*Math.pow(1.45,i-3))
     if(spend(cost)){
+      arcadeFeedback('power')
       setG(x=>({...x,unlockedZones:Math.max(x.unlockedZones,i)}))
       arcade.gainXp(35+i,'Factory zone '+i)
       if(i>=10)arcade.unlock('factory-zone-10','Factory: Zone 10 Online',180)
@@ -73,6 +74,7 @@ export default function FactoryGame(){
   const unlockFloor=i=>{
     const cost=Math.floor(865*Math.pow(1.36,i-3))
     if(spend(cost)){
+      arcadeFeedback('power')
       setG(x=>({...x,unlockedFloors:Math.max(x.unlockedFloors,i)}))
       arcade.gainXp(45+​i*2,'Factory floor '+i)
     }
@@ -89,6 +91,7 @@ export default function FactoryGame(){
       total+=next;n+=1;count+=1
     }
     if(!count||!spend(total))return
+    arcadeFeedback('buy')
     setG(x=>({...x,owned:{...x.owned,[m.id]:(x.owned[m.id]||0)+count},lifetimeMachines:(x.lifetimeMachines||0)+count}))
     arcade.track('factoryMachines',count,Math.min(60,count*2),'Factory machine purchase')
     if(totalOwned+count>=100)arcade.unlock('factory-100-machines','Factory: 100 Machines',220)
@@ -98,6 +101,7 @@ export default function FactoryGame(){
     const lv=research[def.key]||0
     const cost=Math.floor(def.base*Math.pow(1.72,lv))
     if(!spend(cost))return
+    arcadeFeedback('buy')
     setG(x=>({...x,research:{...(x.research||{}),[def.key]:(x.research?.[def.key]||0)+1}}))
     arcade.track('factoryResearch',1,90,'Factory research: '+def.name)
     arcade.unlock('factory-research','Factory: Research Online',120)
@@ -106,6 +110,7 @@ export default function FactoryGame(){
   const startSurge=()=>{
     if(!surgeReady||surge||totalOwned<10)return
     setSurge(true);setSurgeReady(false)
+    arcadeFeedback('power')
     setNotice('Core Surge active: production doubled for 20 seconds.')
     arcade.gainXp(60,'Factory Core Surge')
     setTimeout(()=>setSurge(false),20000)
