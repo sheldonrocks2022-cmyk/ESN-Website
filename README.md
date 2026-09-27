@@ -35,14 +35,13 @@ The validation layer protects important ESN routes, known Stripe Payment Links, 
 npm run build
 ```
 
-The production build creates route-specific HTML files in `dist/` so deep links such as `/about`, `/storesmp`, and `/esclicker` can be deployed safely with route-specific metadata.
+The production build creates route-specific HTML files in `dist/` so deep links such as `/about`, `/storesmp`, and `/esclicker` can be deployed safely with route-specific metadata. It also creates a real static `404.html`.
 
 ## Deployment
 
 The repository includes:
 
 - `vercel.json` for Vercel SPA/deep-link handling and baseline headers.
-- `public/_redirects` for compatible static hosts such as Netlify.
 - `public/_headers` for compatible static-host security headers.
 - `public/robots.txt` and `public/sitemap.xml`.
 
