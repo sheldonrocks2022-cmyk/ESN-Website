@@ -10,7 +10,6 @@ const quickLinks=[
   ['ESN SMP','/smpconnection',SMP_HOST],
   ['ES Tools','/estools','Free browser utilities'],
   ['Reviews','/testimonials','35 verified reviews'],
-  ['Account','/account','Your ESN member identity'],
 ]
 
 export default function PremiumChrome(){
