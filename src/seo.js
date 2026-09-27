@@ -2,11 +2,13 @@ export const SITE_URL='https://esnoffical.com'
 export const SITE_NAME='ES Network'
 export const SITE_LANGUAGE='en-US'
 export const SEO_LAUNCH_MODE='staging'
+export const SOCIAL_IMAGE_URL=SITE_URL+'/esn-social-card.svg'
+export const SOCIAL_IMAGE_ALT='ES Network — Build, Play, Create'
 
 export const SEO_ROUTES={
   '/':{
     label:'Home',
-    title:'ES Network (ESN) | Fortnite Coaching, Editing, Discord & Minecraft',
+    title:'ES Network (ESN) | Creator Services, Gaming & ESN SMP',
     description:'ES Network offers Fortnite coaching, creator editing, Discord server setups, website projects, ESN SMP, six browser games, free tools, and community support.',
     canonical:'/',
     index:true,
@@ -20,7 +22,7 @@ export const SEO_ROUTES={
   },
   '/serviceshowcase':{
     label:'Services',
-    title:'ES Network Services | Fortnite Coaching, Editing & Discord Setup',
+    title:'Fortnite Coaching, Editing & Discord Setup | ES Network',
     description:'Explore ES Network services for Fortnite coaching, creator editing, Discord server setup, website creation, branding, and selected custom digital projects.',
     index:true,
   },
@@ -46,7 +48,7 @@ export const SEO_ROUTES={
   },
   '/smpconnection':{
     label:'SMP Connection',
-    title:'ESN SMP Server | Minecraft IP, Port & Connection Details',
+    title:'ESN SMP Server IP & Port | Join ES Network Minecraft',
     description:'Join the ESN SMP Minecraft server at esn.ggwp.cc on port 17058 and find the current connection details for the ES Network SMP.',
     index:true,
   },
@@ -58,7 +60,7 @@ export const SEO_ROUTES={
   },
   '/smpplugin':{
     label:'ESNSMP Plugin',
-    title:'Download ESNSMP Plugin | ES Network Minecraft Plugin',
+    title:'ESNSMP Plugin Download | ES Network Minecraft Plugin',
     description:'Download the latest public ESNSMP Minecraft plugin release from the official ESNSMP GitHub repository and view verified plugin release information.',
     index:true,
   },
@@ -205,6 +207,44 @@ export const ARCADE_SCHEMA=[
   ['ES Tower Defense','/estowerdefense'],
 ]
 
+export const GAME_SCHEMA_DETAILS={
+  '/esclicker':{name:'ES Clicker',description:'A free ESN Arcade clicker game with ES Coins, local progress, statistics, and a 110-upgrade Power Forge.'},
+  '/esfactory':{name:'ES Factory',description:'A free ESN Arcade factory progression game with 53 zones, 112 machines, upgrades, boosts, and shared ES Coins.'},
+  '/esmines':{name:'ES Mines',description:'A free virtual-coin mines game with a 5×5 board, mine-density choices, multipliers, and no real-money wagering.'},
+  '/esmoto':{name:'ES MOTO',description:'A free ESN Arcade motorcycle game with touch controls, checkpoints, saved best times, daily challenges, and more than 1,000 tracks.'},
+  '/estower':{name:'ES Tower',description:'A free ESN Arcade risk game with 122 floors, three-door progression, shared ES Coins, multipliers, and cash-out decisions.'},
+  '/estowerdefense':{name:'ES Tower Defense',description:'A free ESN Arcade tower-defense game with 200 rounds, ten tower types, upgrades, coins, and 150 base HP.'},
+}
+
+export const STORE_SCHEMA=[
+  {name:'20 Realm 100 Keys',price:'1.25',description:'Twenty Realm 100 keys for the ESN SMP.',path:'/storesmp#product-20-realm-100-keys',available:true},
+  {name:'ESN Season Pass Relic Bundle',price:'0.50',description:'Six ESN SMP Season Pass relics: Angel Wings, Inferno Scepter, Storm Crystal, Tideheart, Void Relic, and Celestial Star.',path:'/storesmp#product-esn-season-pass-relic-bundle',available:true},
+  {name:'ESN Riftwalker Bundle',price:'0.50',description:'An ESN SMP mobility and utility bundle with Riftblade, Rift Wings, Phase Boots, Rift Bow, Rift Core, and Void Compass.',path:'/storesmp#product-esn-riftwalker-bundle',available:true},
+  {name:'ESN Immortal Warden Bundle',price:'1.30',description:'An eight-item Warden-themed ESN SMP combat bundle.',path:'/storesmp#product-esn-immortal-warden-bundle',available:true},
+  {name:'Void Warrior Bundle',price:'0.50',description:'A Void-themed ESN SMP armor and weapon bundle. Checkout is not currently enabled.',path:'/storesmp#product-void-warrior-bundle',available:false},
+]
+
+export const TOOL_SCHEMA=[
+  ['Challenge Generator','Generate creator and gaming challenges in the browser.'],
+  ['Focus Timer','Run a simple browser-based focus timer.'],
+  ['Prompt Generator','Build reusable prompts in the browser.'],
+  ['Random Picker','Choose randomly from user-provided options.'],
+  ['Coin Flip','Flip a virtual coin in the browser.'],
+  ['D6 Dice','Roll a virtual six-sided die.'],
+  ['Website Estimate','View ES Network website project starting estimates.'],
+]
+
+export const CONSOLE_HOWTO_STEPS=[
+  ['Open Bedrock Connect on your phone','Open the Bedrock Connect method used by the ESN console guide and keep the phone on the same network as the console.'],
+  ['Open Custom','Choose Custom inside Bedrock Connect.'],
+  ['Tap the + button','Create a new custom server entry.'],
+  ['Enter the ESN SMP details','Use server name ESN SMP, address esn.ggwp.cc, and port 17058.'],
+  ['Save the server','Save the custom server entry.'],
+  ['Select ESN SMP','Select the ESN SMP entry you created.'],
+  ['Press Add & Start','Start the Bedrock Connect console connection process.'],
+  ['Finish on your console','Open Minecraft on Xbox, PlayStation, or Nintendo Switch and complete the connection flow.'],
+]
+
 export function getSeo(pathname){
   return SEO_ROUTES[pathname]||{
     label:'ES Network',
@@ -262,6 +302,7 @@ export function structuredDataFor(pathname){
       isPartOf:{'@id':SITE_URL+'/#website'},
       about:{'@id':SITE_URL+'/#organization'},
       inLanguage:SITE_LANGUAGE,
+      primaryImageOfPage:{'@type':'ImageObject',url:SOCIAL_IMAGE_URL,width:1200,height:630},
     },
   ]
 
@@ -309,7 +350,127 @@ export function structuredDataFor(pathname){
       itemListElement:ARCADE_SCHEMA.map(([name,path],index)=>({
         '@type':'ListItem',
         position:index+1,
-        item:{'@type':'VideoGame',name,url:SITE_URL+path,publisher:{'@id':SITE_URL+'/#organization'}},
+        item:{
+          '@type':'VideoGame',
+          name,
+          url:SITE_URL+path,
+          gamePlatform:'Web Browser',
+          playMode:'SinglePlayer',
+          isAccessibleForFree:true,
+          publisher:{'@id':SITE_URL+'/#organization'},
+        },
+      })),
+    })
+  }
+
+  if(GAME_SCHEMA_DETAILS[pathname]){
+    const game=GAME_SCHEMA_DETAILS[pathname]
+    graph.push({
+      '@type':'VideoGame',
+      '@id':url+'#game',
+      name:game.name,
+      description:game.description,
+      url,
+      gamePlatform:'Web Browser',
+      playMode:'SinglePlayer',
+      isAccessibleForFree:true,
+      publisher:{'@id':SITE_URL+'/#organization'},
+      offers:{'@type':'Offer',price:'0',priceCurrency:'USD',url},
+    })
+  }
+
+  if(pathname==='/storesmp'){
+    graph.push({
+      '@type':'ItemList',
+      '@id':url+'#products',
+      name:'ESN SMP Store Products',
+      itemListElement:STORE_SCHEMA.map((product,index)=>({
+        '@type':'ListItem',
+        position:index+1,
+        item:{
+          '@type':'Product',
+          name:product.name,
+          description:product.description,
+          url:SITE_URL+product.path,
+          brand:{'@type':'Brand',name:SITE_NAME},
+          category:'Minecraft digital item',
+          ...(product.available?{
+            offers:{
+              '@type':'Offer',
+              price:product.price,
+              priceCurrency:'USD',
+              url:SITE_URL+product.path,
+              availability:'https://schema.org/InStock',
+              seller:{'@id':SITE_URL+'/#organization'},
+            },
+          }:{}),
+        },
+      })),
+    })
+  }
+
+  if(pathname==='/smpplugin'){
+    graph.push({
+      '@type':'SoftwareApplication',
+      '@id':url+'#software',
+      name:'ESNSMP',
+      description:'The public ES Network Minecraft server plugin distributed as ESNSMP.jar.',
+      url,
+      downloadUrl:'https://github.com/sheldonrocks2022-cmyk/ESNSMP/releases/latest/download/ESNSMP.jar',
+      softwareVersion:'v2.9.4',
+      applicationCategory:'DeveloperApplication',
+      operatingSystem:'Minecraft Paper-compatible server',
+      isAccessibleForFree:true,
+      publisher:{'@id':SITE_URL+'/#organization'},
+      offers:{'@type':'Offer',price:'0',priceCurrency:'USD',url},
+    })
+  }
+
+  if(pathname==='/estools'){
+    graph.push({
+      '@type':'ItemList',
+      '@id':url+'#tools',
+      name:'ES Tools',
+      itemListElement:TOOL_SCHEMA.map(([name,description],index)=>({
+        '@type':'ListItem',
+        position:index+1,
+        item:{
+          '@type':'SoftwareApplication',
+          name,
+          description,
+          url,
+          applicationCategory:'UtilitiesApplication',
+          operatingSystem:'Web Browser',
+          isAccessibleForFree:true,
+          offers:{'@type':'Offer',price:'0',priceCurrency:'USD',url},
+        },
+      })),
+    })
+  }
+
+  if(pathname==='/smpconnection'){
+    graph.push({
+      '@type':'GameServer',
+      '@id':url+'#server',
+      name:'ESN SMP',
+      url,
+      identifier:'esn.ggwp.cc:17058',
+      game:{'@type':'VideoGame',name:'Minecraft'},
+    })
+  }
+
+  if(pathname==='/smpconsole'){
+    graph.push({
+      '@type':'HowTo',
+      '@id':url+'#howto',
+      name:'How to join ESN SMP from a console',
+      description:'Connect Xbox, PlayStation, or Nintendo Switch to ESN SMP using the ESN Bedrock Connect flow.',
+      step:CONSOLE_HOWTO_STEPS.map(([name,text],index)=>({
+        '@type':'HowToStep',
+        position:index+1,
+        name,
+        text,
+        url:url+'#step-'+(index+1),
       })),
     })
   }
