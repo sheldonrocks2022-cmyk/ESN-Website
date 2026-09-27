@@ -50,7 +50,7 @@ export default function TowerGame(){
     <section className="oa-panel oa-tower-ladder-panel">
       <div className="oa-section-head"><div><span className="oa-kicker">FLOOR REWARD LADDER</span></div><div className="oa-pill">122 FLOORS</div></div>
       <div className="oa-ladder">
-        {floors.slice(0,16).map(f=><div key={f.floor} className={run&&f.floor===run.floor?'active':''}><span>Floor {f.floor}</span><b>{f.mult.toFixed(2)}X</b></div>)}
+        {floors.map(f=><div key={f.floor} className={run&&f.floor===run.floor?'active':''}><span>Floor {f.floor}</span><b>{f.mult.toFixed(2)}X</b></div>)}
       </div>
       <p>SCROLL TO VIEW ALL FLOORS. CURRENT FLOOR STAYS HIGHLIGHTED.</p>
     </section>
