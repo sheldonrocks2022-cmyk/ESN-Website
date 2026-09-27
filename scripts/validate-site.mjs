@@ -50,6 +50,7 @@ const sitemapRoutes = requiredRoutes
 const requiredMigrationFiles = [
   'src/Tools.jsx',
   'src/ES3DViewer.jsx',
+  'src/PremiumChrome.jsx',
   'src/reviews.js',
   'src/arcade/shared.js',
   'src/arcade/OriginalFrame.jsx',
@@ -92,6 +93,10 @@ if (!app.includes("PLUGIN_VERSION = 'v2.9.4'")) problems.push('Verified ESNSMP v
 if (!app.includes('4439a6c8bf7ea6b0bf170098eeb1dff3f9f2f7008c06556140a1c1cfd8afd356')) problems.push('Verified v2.9.4 SHA-256 missing.')
 if (!app.includes('Add & Start') || !app.includes('Open Bedrock Connect on your phone') || !app.includes('Same Wi-Fi / internet required')) problems.push('Official ESN console connection flow missing.')
 if (!app.includes('<ExperienceEffects />')) problems.push('Premium interaction effects are not mounted.')
+if (!app.includes("import PremiumChrome from './PremiumChrome'")) problems.push('Premium command center import missing.')
+if (!app.includes('<PremiumChrome />')) problems.push('Premium command center is not mounted.')
+const premiumChrome = fs.readFileSync('src/PremiumChrome.jsx','utf8')
+if (!premiumChrome.includes('Command Center') || !premiumChrome.includes('premium-ticker') || !premiumChrome.includes('CTRL / CMD + K')) problems.push('Premium chrome experience is incomplete.')
 const arcadeFrame = fs.readFileSync('src/arcade/OriginalFrame.jsx','utf8')
 const clicker = fs.readFileSync('src/arcade/Clicker.jsx','utf8')
 const factory = fs.readFileSync('src/arcade/Factory.jsx','utf8')
