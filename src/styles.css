@@ -8235,3 +8235,159 @@ html.oa-focus-play-active body{
 @media(prefers-reduced-motion:reduce){
   .ev-terminal-modal.terminal-crt .ev-terminal-output{animation:none!important}
 }
+
+
+/* =========================================================
+   ESN PREMIUM INTERACTION RESTORE 2026-09-27
+   Reassert the proven cinematic/mobile systems after older safe-mode rules.
+   Heavy WebGL/touch-tilt sources remain disabled on coarse pointers.
+   ========================================================= */
+
+/* Network events are visible by default unless the user explicitly disables flashing. */
+html[data-flashing="on"] .network-event{
+  display:grid!important;
+}
+
+/* Desktop route portal: restore the full ring tunnel + scan. */
+@media(min-width:861px) and (pointer:fine){
+  html:not([data-motion="reduced"]) .route-transition{
+    display:grid!important;
+    place-items:center!important;
+    opacity:1;
+    animation:rtCover .56s cubic-bezier(.22,.72,.22,1) both!important;
+    pointer-events:none!important;
+  }
+  html:not([data-motion="reduced"]) .route-transition-tunnel{
+    display:grid!important;
+  }
+  html:not([data-motion="reduced"]) .rt-ring{
+    display:block!important;
+    animation:rtTunnelStable .42s cubic-bezier(.2,.8,.2,1) both!important;
+  }
+  html:not([data-motion="reduced"]) .rt-ring.r2{animation-delay:.025s!important}
+  html:not([data-motion="reduced"]) .rt-ring.r3{animation-delay:.05s!important}
+  html:not([data-motion="reduced"]) .route-transition-core{
+    display:grid!important;
+    animation:rtCoreStable .46s cubic-bezier(.2,.8,.2,1) both!important;
+  }
+  html:not([data-motion="reduced"]) .route-transition-scan{
+    display:block!important;
+    animation:rtScanStable .42s ease-out both!important;
+  }
+}
+
+/* Mobile route portal: restore the exact blocking five-second cinematic cover. */
+@media(max-width:860px), (pointer:coarse){
+  html:not([data-motion="reduced"]) .route-transition{
+    display:grid!important;
+    place-items:center!important;
+    pointer-events:auto!important;
+    touch-action:none!important;
+    overscroll-behavior:none!important;
+    opacity:1!important;
+    transform:none!important;
+    background:#02050d!important;
+    animation:mobileRouteCover 5s linear both!important;
+    isolation:isolate!important;
+    z-index:8500!important;
+  }
+
+  html:not([data-motion="reduced"]) .route-transition::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    z-index:0;
+    pointer-events:none;
+    background:
+      radial-gradient(circle at 50% 48%,rgb(var(--route-accent)/.20),transparent 28rem),
+      radial-gradient(circle at 50% 70%,rgb(var(--route-accent-2)/.075),transparent 34rem),
+      linear-gradient(115deg,#02050d,#071326 52%,#02050d);
+    animation:mobileRouteBackground 5s ease-in-out both!important;
+  }
+
+  html:not([data-motion="reduced"]) .route-transition-tunnel{
+    display:none!important;
+  }
+
+  html:not([data-motion="reduced"]) .route-transition-core{
+    display:grid!important;
+    position:relative!important;
+    z-index:2!important;
+    animation:mobileRouteCore 5s cubic-bezier(.2,.8,.2,1) both!important;
+  }
+
+  html:not([data-motion="reduced"]) .route-transition-scan{
+    display:block!important;
+    position:absolute!important;
+    z-index:2!important;
+    left:-20%!important;
+    right:auto!important;
+    top:0!important;
+    width:32%!important;
+    height:100%!important;
+    opacity:.72!important;
+    background:linear-gradient(90deg,transparent,rgb(var(--route-accent-2)/.18),rgb(var(--route-accent)/.36),transparent)!important;
+    box-shadow:none!important;
+    animation:mobileRouteScan 5s cubic-bezier(.2,.75,.2,1) both!important;
+  }
+
+  /* Restore the account-free mobile control surface. */
+  .mobile-network-strip{
+    display:grid!important;
+    visibility:visible!important;
+    opacity:1!important;
+  }
+  .mobile-network-strip-actions,
+  .mobile-pinned-deck{
+    display:grid!important;
+  }
+  .mobile-bottom-nav{
+    display:grid!important;
+    visibility:visible!important;
+    opacity:1!important;
+  }
+
+  /* Restore lightweight tap-energy feedback. */
+  html:not([data-motion="reduced"]) .touch-energy-ring,
+  html:not([data-motion="reduced"]) .energy-trail-particle.touch-burst{
+    display:block!important;
+    visibility:visible!important;
+  }
+
+  /* Restore safe premium motion without re-enabling mobile WebGL/flicker sources. */
+  html[data-performance-mode="premium"]:not([data-motion="reduced"]) .premium-ambient,
+  html[data-performance-mode="premium"]:not([data-motion="reduced"]) .premium-ticker{
+    display:block!important;
+  }
+  html[data-performance-mode="premium"]:not([data-motion="reduced"]) .network-showcase-section::before{
+    animation:network-sweep 12s ease-in-out infinite!important;
+  }
+  html[data-performance-mode="premium"]:not([data-motion="reduced"]) .network-map-lines line{
+    animation:network-line-flow 6s linear infinite!important;
+  }
+  html[data-performance-mode="premium"]:not([data-motion="reduced"]) .network-map-lines circle{
+    animation:network-orbit-spin 28s linear infinite!important;
+  }
+  html[data-performance-mode="premium"]:not([data-motion="reduced"]) .network-map-lines circle+circle{
+    animation:network-orbit-spin 38s linear infinite reverse!important;
+  }
+  html[data-performance-mode="premium"]:not([data-motion="reduced"]) .hero h1 span{
+    animation:luxTextShift 10s ease-in-out infinite alternate!important;
+  }
+
+  /* Keep the known unstable mobile layers off. */
+  .global-3d-lighting canvas,
+  .lux-cursor-field,
+  .lux-cursor-ring,
+  .lux-cursor-core,
+  .premium-grain{
+    display:none!important;
+  }
+}
+
+/* Explicit accessibility choice still wins. */
+html[data-motion="reduced"] .route-transition,
+html[data-motion="reduced"] .touch-energy-ring,
+html[data-motion="reduced"] .energy-trail-particle{
+  display:none!important;
+}
