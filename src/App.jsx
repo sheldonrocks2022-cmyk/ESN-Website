@@ -424,7 +424,7 @@ function Header() {
             </div>
           </div>
 
-          <div className={inGroup(['/smpconnection','/smpconsole','/smpplugin','/storesmp']) ? 'nav-group active' : 'nav-group'}>
+          <div className={inGroup(['/smpconnection','/smpconsole','/smpplugin','/smpguide','/storesmp']) ? 'nav-group active' : 'nav-group'}>
             <button className="nav-trigger" type="button" aria-haspopup="true">ESN SMP</button>
             <div className="dropdown">
               <span className="dropdown-label">MINECRAFT NETWORK</span>
@@ -447,7 +447,7 @@ function Header() {
 
           <Link className={location.pathname === '/estools' ? 'nav-direct active' : 'nav-direct'} onClick={close} to="/estools">ES Tools</Link>
 
-          <div className={inGroup(['/about','/leadership','/testimonials','/faq','/status','/timeline','/updates','/share']) ? 'nav-group active' : 'nav-group'}>
+          <div className={inGroup(['/about','/leadership','/testimonials','/faq','/status','/networkstats','/timeline','/updates','/whatsnew','/explore','/gallery','/settings','/support','/share']) ? 'nav-group active' : 'nav-group'}>
             <button className="nav-trigger" type="button" aria-haspopup="true">About</button>
             <div className="dropdown">
               <span className="dropdown-label">THE NETWORK</span>
