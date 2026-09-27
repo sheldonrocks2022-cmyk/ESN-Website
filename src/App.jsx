@@ -13,6 +13,10 @@ import TowerDefenseGame from './arcade/TowerDefense'
 const DISCORD_URL = 'https://discord.gg/3gxA66KZ8'
 const SMP_HOST = 'esn.ggwp.cc'
 const SMP_PORT = '17058'
+const PLUGIN_VERSION = 'v2.9.4'
+const PLUGIN_DOWNLOAD_URL = 'https://github.com/sheldonrocks2022-cmyk/ESNSMP/releases/latest/download/ESNSMP.jar'
+const PLUGIN_RELEASE_URL = 'https://github.com/sheldonrocks2022-cmyk/ESNSMP/releases/tag/v2.9.4'
+const PLUGIN_SHA256 = '4439a6c8bf7ea6b0bf170098eeb1dff3f9f2f7008c06556140a1c1cfd8afd356'
 
 const SERVICES = [
   {
@@ -152,7 +156,8 @@ const META = {
   '/serviceshowcase': ['ES Network Services | Fortnite Coaching, Editing & Discord Setup', 'Explore ES Network services including Fortnite coaching, editing, Discord server setups, and selected digital projects.'],
   '/storesmp': ['ESN SMP Store | ES Network Minecraft Items', 'Purchase ESN SMP digital items and bundles through official Stripe checkout links.'],
   '/smpconnection': ['ESN SMP Connection | Server IP & Port', 'Connect to the ESN SMP using the current server IP and port.'],
-  '/smpconsole': ['ESN SMP Console Connection | Xbox, PlayStation & Switch', 'Console connection guidance for joining the ESN SMP from Xbox, PlayStation, or Nintendo Switch.'],
+  '/smpconsole': ['ESN SMP Console Connection | Xbox, PlayStation & Switch', 'Step-by-step ESN console connection guide using Bedrock Connect for Xbox, PlayStation, and Nintendo Switch.'],
+  '/smpplugin': ['Download ESNSMP Plugin | ES Network', 'Download the latest public ESNSMP Minecraft plugin release directly from the official ESNSMP GitHub release.'],
   '/estools': ['ES Tools | Free Browser-Based Creator & Gaming Utilities', 'Free browser-based ES Network tools with no account required.'],
   '/about': ['About ES Network | ESN', 'Learn about ES Network, the current brand formerly known as EP1C Services.'],
   '/leadership': ['ES Network Leadership | Meet the Team', 'Meet the founders, co-founders, and administrators behind ES Network.'],
@@ -253,6 +258,57 @@ function ScrollToHash() {
   return null
 }
 
+function ExperienceEffects() {
+  const location = useLocation()
+
+  useEffect(() => {
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    const selector = '.section > .shell, .page-hero-copy, .page-hero-mark, .hero-content, .hero-control-panel, .network-stat-grid > div, .service-card, .product-card, .review-card, .game-card, .tool-card, .feature-panel, .leader-tile, .connection-card, .store-security, .experience-flow > div, .leadership-spotlight'
+    const nodes = [...document.querySelectorAll(selector)]
+
+    if (!reduce && 'IntersectionObserver' in window) {
+      nodes.forEach((node) => node.classList.add('reveal-ready'))
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible')
+            observer.unobserve(entry.target)
+          }
+        })
+      }, { threshold: 0.08, rootMargin: '0px 0px -5% 0px' })
+      nodes.forEach((node) => observer.observe(node))
+      return () => observer.disconnect()
+    }
+
+    nodes.forEach((node) => node.classList.add('is-visible'))
+  }, [location.pathname])
+
+  useEffect(() => {
+    const interactive = '.service-card,.product-card,.review-card,.game-card,.tool-card,.feature-panel,.leader-tile,.connection-card,.store-security,.hero-control-panel,.page-hero-mark'
+    const move = (event) => {
+      const target = event.target.closest?.(interactive)
+      if (!target) return
+      const rect = target.getBoundingClientRect()
+      target.style.setProperty('--spot-x', `${event.clientX - rect.left}px`)
+      target.style.setProperty('--spot-y', `${event.clientY - rect.top}px`)
+    }
+    const scroll = () => {
+      const max = document.documentElement.scrollHeight - window.innerHeight
+      const value = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0
+      document.documentElement.style.setProperty('--scroll-progress', value)
+    }
+    document.addEventListener('pointermove', move, { passive: true })
+    window.addEventListener('scroll', scroll, { passive: true })
+    scroll()
+    return () => {
+      document.removeEventListener('pointermove', move)
+      window.removeEventListener('scroll', scroll)
+    }
+  }, [])
+
+  return null
+}
+
 function Brand() {
   return (
     <Link to="/" className="brand" aria-label="ES Network home">
@@ -303,12 +359,13 @@ function Header() {
             </div>
           </div>
 
-          <div className={inGroup(['/smpconnection','/smpconsole','/storesmp']) ? 'nav-group active' : 'nav-group'}>
+          <div className={inGroup(['/smpconnection','/smpconsole','/smpplugin','/storesmp']) ? 'nav-group active' : 'nav-group'}>
             <button className="nav-trigger" type="button" aria-haspopup="true">ESN SMP</button>
             <div className="dropdown">
               <span className="dropdown-label">MINECRAFT NETWORK</span>
               <Link onClick={close} to="/smpconnection">SMP Connection</Link>
               <Link onClick={close} to="/smpconsole">Console Connection</Link>
+              <Link onClick={close} to="/smpplugin">Download ESNSMP Plugin</Link>
               <Link onClick={close} to="/storesmp">SMP Store</Link>
             </div>
           </div>
@@ -367,6 +424,7 @@ function Footer() {
             <h3>ESN SMP</h3>
             <Link to="/smpconnection">Connect</Link>
             <Link to="/smpconsole">Console Guide</Link>
+            <Link to="/smpplugin">Download Plugin</Link>
             <Link to="/storesmp">SMP Store</Link>
             <span>{SMP_HOST}</span>
           </div>
@@ -914,6 +972,12 @@ function SMPConnection() {
               <Link to="/smpconsole">Open console guide →</Link>
             </article>
             <article className="feature-panel">
+              <span className="eyebrow">Server Owners</span>
+              <h3>Download ESNSMP</h3>
+              <p>Want the ESN SMP plugin on your own server? Download the newest public ESNSMP.jar from the official release.</p>
+              <Link to="/smpplugin">Open plugin download →</Link>
+            </article>
+            <article className="feature-panel">
               <span className="eyebrow">Need Support?</span>
               <h3>ESN Discord</h3>
               <p>Server announcements, connection help, store support, and community updates all run through the official Discord.</p>
@@ -926,45 +990,134 @@ function SMPConnection() {
   )
 }
 function ConsoleConnection() {
+  const [copied, setCopied] = useState(false)
+  const copyServer = async () => {
+    try {
+      await navigator.clipboard.writeText(`${SMP_HOST}:${SMP_PORT}`)
+      setCopied(true)
+      window.setTimeout(() => setCopied(false), 1500)
+    } catch {
+      setCopied(false)
+    }
+  }
+
+  const steps = [
+    ['01', 'Open Bedrock Connect on your phone', 'Use the Bedrock Connect app/method from the ESN console guide. Your phone and your console need to be connected to the same Wi-Fi or internet network.'],
+    ['02', 'Open Custom', 'Inside Bedrock Connect, choose Custom so you can add the ESN SMP manually.'],
+    ['03', 'Tap the + button', 'Create a new custom server entry.'],
+    ['04', 'Enter the ESN SMP details', `Server name: ESN SMP • Address: ${SMP_HOST} • Port: ${SMP_PORT}`],
+    ['05', 'Save the server', 'Save the custom entry after all three fields match the ESN details above.'],
+    ['06', 'Select ESN SMP', 'Tap the ESN SMP entry you just created so it becomes the active server.'],
+    ['07', 'Press Add & Start', 'Bedrock Connect will begin the console connection process. Keep the phone and console on the same network while it starts.'],
+    ['08', 'Finish on your console', 'Open Minecraft on Xbox, PlayStation, or Nintendo Switch and follow the connection prompt/process shown by Bedrock Connect.'],
+  ]
+
   return (
     <>
       <PageHero
-        eyebrow="ESN SMP • Console"
-        title="Connect from Xbox, PlayStation, or Switch"
-        text="Consoles usually hide the normal Add Server button, so joining a third-party Bedrock/Geyser server needs an extra connection method."
+        eyebrow="ESN SMP • Console Connection"
+        title="Join ESN SMP from console."
+        text="The same ESN console flow explained on the official site: use Bedrock Connect on a phone, keep it on the same network as the console, add the ESN SMP details, then use Add & Start."
+        actions={<button className="button secondary" type="button" onClick={copyServer}>{copied ? 'Copied server details' : 'Copy IP & port'}</button>}
       />
-      <section className="section">
+
+      <section className="section compact-section">
+        <div className="shell console-server-ribbon">
+          <div><span>SERVER NAME</span><strong>ESN SMP</strong></div>
+          <div><span>ADDRESS</span><strong>{SMP_HOST}</strong></div>
+          <div><span>PORT</span><strong>{SMP_PORT}</strong></div>
+          <div><span>CONSOLES</span><strong>Xbox • PlayStation • Switch</strong></div>
+        </div>
+      </section>
+
+      <section className="section console-guide-section">
+        <div className="shell console-guide-layout">
+          <div className="console-guide-intro">
+            <span className="eyebrow">Official ESN Flow</span>
+            <h2>Phone + console.<br />Same network.</h2>
+            <p>This page follows the connection flow ESN uses instead of sending players through extra DNS instructions that are not part of the official ESN walkthrough.</p>
+            <div className="console-network-card">
+              <span className="network-pulse"><i /></span>
+              <div><strong>Same Wi-Fi / internet required</strong><p>Keep the phone running Bedrock Connect and the console on the same network during setup.</p></div>
+            </div>
+          </div>
+
+          <div className="console-step-stack">
+            {steps.map(([number, title, text]) => (
+              <article className="console-step-card" key={number}>
+                <span className="console-step-number">{number}</span>
+                <div><h3>{title}</h3><p>{text}</p></div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="section dark-section compact-section">
+        <div className="shell console-final-cta">
+          <div>
+            <span className="eyebrow">Ready?</span>
+            <h2>ESN SMP is waiting.</h2>
+            <p>If the console does not pick up the Bedrock Connect session, keep both devices on the same network and restart the Add & Start step before opening a support ticket.</p>
+          </div>
+          <a className="button primary" href={DISCORD_URL} target="_blank" rel="noreferrer">Get help in ESN Discord</a>
+        </div>
+      </section>
+    </>
+  )
+}
+function SMPPluginDownload() {
+  return (
+    <>
+      <PageHero
+        eyebrow="ESNSMP Plugin • Public Download"
+        title="Run the ESN SMP plugin on your server."
+        text="Download the newest published ESNSMP.jar directly from the official ESNSMP GitHub release. The download button follows the latest release automatically."
+        actions={<a className="button primary" href={PLUGIN_DOWNLOAD_URL}>Download latest ESNSMP.jar <span>↓</span></a>}
+      />
+
+      <section className="section plugin-showcase-section">
+        <div className="shell plugin-showcase-grid">
+          <div className="plugin-3d-panel">
+            <ES3DViewer variant="ESNSMP Plugin" label="Interactive 3D ESNSMP plugin showcase" />
+            <span className="plugin-version-float">{PLUGIN_VERSION} • LATEST VERIFIED RELEASE</span>
+          </div>
+
+          <div className="plugin-release-card">
+            <span className="eyebrow">Latest Public Release</span>
+            <h2>ESNSMP {PLUGIN_VERSION}</h2>
+            <p>The current public release passed its GitHub build and publish workflows before being attached as <b>ESNSMP.jar</b>.</p>
+
+            <div className="plugin-release-stats">
+              <div><span>FILE</span><strong>ESNSMP.jar</strong></div>
+              <div><span>SIZE</span><strong>16.2 MB</strong></div>
+              <div><span>RELEASE</span><strong>{PLUGIN_VERSION}</strong></div>
+              <div><span>BUILD</span><strong>Verified</strong></div>
+            </div>
+
+            <a className="button primary plugin-download-button" href={PLUGIN_DOWNLOAD_URL}>Download latest .jar</a>
+            <a className="text-link" href={PLUGIN_RELEASE_URL} target="_blank" rel="noreferrer">View {PLUGIN_VERSION} release notes →</a>
+          </div>
+        </div>
+      </section>
+
+      <section className="section dark-section">
         <div className="shell">
-          <div className="console-grid">
-            <article className="feature-panel">
-              <span className="eyebrow">SERVER DETAILS</span>
-              <h2>{SMP_HOST}</h2>
-              <p>Published ESN SMP port: <strong>{SMP_PORT}</strong></p>
-              <p className="muted">Keep these details ready. The console workaround opens a custom-server menu where you enter the ESN address and port.</p>
-            </article>
-            <article className="feature-panel">
-              <span className="eyebrow">XBOX</span>
-              <h2>Use a console custom-server workaround</h2>
-              <p>Geyser's console guide recommends methods such as BedrockConnect for Xbox when a server cannot be added normally.</p>
-              <ol className="connection-steps"><li>Open your console network settings.</li><li>Use a current BedrockConnect-compatible DNS/server-list method.</li><li>Launch Minecraft and open the Servers tab.</li><li>Open the custom-server menu and enter <b>{SMP_HOST}</b> with port <b>{SMP_PORT}</b>.</li></ol>
-            </article>
-            <article className="feature-panel">
-              <span className="eyebrow">PLAYSTATION</span>
-              <h2>Use a Bedrock LAN/custom-server method</h2>
-              <p>PlayStation also needs a workaround because Minecraft does not expose a normal third-party server field on console.</p>
-              <ol className="connection-steps"><li>Set up a supported BedrockConnect or LAN-proxy method on the same network.</li><li>Launch Minecraft.</li><li>Open the server/LAN entry exposed by that method.</li><li>Enter the ESN SMP address and port when prompted.</li></ol>
-            </article>
-            <article className="feature-panel">
-              <span className="eyebrow">NINTENDO SWITCH</span>
-              <h2>Use a custom-server list method</h2>
-              <p>Geyser notes that Switch players can use BedrockConnect-style workarounds to reach third-party servers.</p>
-              <ol className="connection-steps"><li>Open Switch Internet settings for your active network.</li><li>Configure a current supported custom-server/DNS method.</li><li>Restart Minecraft and open the Servers tab.</li><li>Select the custom-server option and enter the ESN SMP details.</li></ol>
-            </article>
+          <div className="section-heading"><div><span className="eyebrow">Install</span><h2>From download to server in four steps.</h2></div></div>
+          <div className="plugin-install-grid">
+            <article><span>01</span><h3>Download</h3><p>Download the newest <b>ESNSMP.jar</b> using the button above.</p></article>
+            <article><span>02</span><h3>Stop your server</h3><p>Fully stop the Minecraft server before replacing or adding plugin files.</p></article>
+            <article><span>03</span><h3>Upload the .jar</h3><p>Place <b>ESNSMP.jar</b> in your server's <b>plugins</b> folder.</p></article>
+            <article><span>04</span><h3>Start & verify</h3><p>Start the server and check the console for ESNSMP startup messages before players join.</p></article>
           </div>
-          <div className="notice">
-            <strong>Need help?</strong>
-            <span>Console workarounds can change when Minecraft or console networking changes. If a method stops working, use the ESN Discord for the current connection method.</span>
-          </div>
+        </div>
+      </section>
+
+      <section className="section compact-section">
+        <div className="shell plugin-integrity-card">
+          <div><span className="eyebrow">Release Integrity</span><h2>SHA-256</h2></div>
+          <code>{PLUGIN_SHA256}</code>
+          <p>Current checksum for the verified {PLUGIN_VERSION} release asset. The “latest” download URL will move forward when a newer release is published, so check that release's checksum when the version changes.</p>
         </div>
       </section>
     </>
@@ -1110,6 +1263,7 @@ function App() {
       <a className="skip-link" href="#main-content">Skip to main content</a>
       <MetaManager />
       <ScrollToHash />
+      <ExperienceEffects />
       <Header />
       <main id="main-content">
         <Routes>
@@ -1125,6 +1279,7 @@ function App() {
           <Route path="/store/smp" element={<Navigate to="/storesmp" replace />} />
           <Route path="/smpconnection" element={<SMPConnection />} />
           <Route path="/smpconsole" element={<ConsoleConnection />} />
+          <Route path="/smpplugin" element={<SMPPluginDownload />} />
           <Route path="/estools" element={<ESToolsSuite />} />
           <Route path="/tools" element={<Navigate to="/estools" replace />} />
           <Route path="/arcade" element={<ArcadeHub />} />
