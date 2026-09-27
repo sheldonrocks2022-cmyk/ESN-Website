@@ -65,6 +65,8 @@ const requiredMigrationFiles = [
   'src/ExperienceLayer.jsx',
   'src/liveNetwork.js',
   'src/StartupIntro.jsx',
+  'src/NetworkEvolution.jsx',
+  'src/networkEvolutionConfig.js',
   'src/reviews.js',
   'src/arcade/shared.js',
   'src/arcade/OriginalFrame.jsx',
@@ -81,6 +83,8 @@ const liveNetwork = fs.readFileSync('src/liveNetwork.js','utf8')
 const liveExperience = fs.readFileSync('src/LiveExperience.jsx','utf8')
 const startupIntro = fs.readFileSync('src/StartupIntro.jsx','utf8')
 const immersiveLayer = fs.readFileSync('src/ExperienceLayer.jsx','utf8')
+const networkEvolution = fs.readFileSync('src/NetworkEvolution.jsx','utf8')
+const evolutionConfig = fs.readFileSync('src/networkEvolutionConfig.js','utf8')
 const shareCenter = fs.readFileSync('src/ShareCenter.jsx','utf8')
 const seo = fs.readFileSync('src/seo.js','utf8')
 const prerender = fs.readFileSync('scripts/prerender.mjs','utf8')
@@ -108,6 +112,11 @@ if (!app.includes('<Route path="/esclicker" element={<ClickerGame />} />')) prob
 if (app.includes('View migration status →')) problems.push('Arcade placeholder links returned instead of playable game links.')
 if (app.includes('!isArcadeGame && <Header />') || app.includes('!isArcadeGame && <Footer />')) problems.push('Arcade pages must keep the global ESN header and footer.')
 if (!app.includes('<Header />') || !app.includes('<Footer />')) problems.push('Global ESN shell is not mounted universally.')
+if (!app.includes('<NetworkEvolution />') || !app.includes('<NetworkEvolutionSection />')) problems.push('Network Evolution 12X is not mounted globally and on the homepage.')
+if (!networkEvolution.includes('ESN Passport') || !networkEvolution.includes('ESN Terminal') || !networkEvolution.includes('Universal ESN Search')) problems.push('Network Evolution Passport, Terminal, or universal search system missing.')
+if (!networkEvolution.includes('Share achievement card') || !networkEvolution.includes('Math.random()<.01')) problems.push('Achievement card or ultra-rare event system missing.')
+if (!networkEvolution.includes('esn_command_deck') || !evolutionConfig.includes('NETWORK_TAKEOVER') || !evolutionConfig.includes('SMP_EVENT_BOARD')) problems.push('Command Deck, takeover configuration, or event board configuration missing.')
+if (!liveExperience.includes('Network Evolution 12X') || !liveExperience.includes('timeline-scrubber')) problems.push('Network Evolution release log or interactive timeline scrubber missing.')
 if (!app.includes("import ES3DViewer from './ES3DViewer'")) problems.push('3D viewer import missing.')
 if (!app.includes('<ES3DViewer variant={product.name} compact')) problems.push('3D store viewer missing.')
 if (!app.includes('<ES3DViewer variant="hero"') && !immersiveLayer.includes('<ES3DViewer variant="hero"')) problems.push('3D homepage viewer missing from App or HeroReactor.')
