@@ -1,6 +1,6 @@
 import fs from 'node:fs'
 import path from 'node:path'
-import { SEO_ROUTES, canonicalUrl, robotsContent } from '../src/seo.js'
+import { SEO_ROUTES, SOCIAL_IMAGE_ALT, SOCIAL_IMAGE_URL, canonicalUrl, robotsContent } from '../src/seo.js'
 
 const failures = []
 
@@ -37,12 +37,25 @@ for (const [route, meta] of Object.entries(SEO_ROUTES)) {
   if (!html.includes('property="og:site_name" content="ES Network"')) failures.push(`Missing Open Graph site name in ${file}`)
   if (!html.includes('name="twitter:title"')) failures.push(`Missing Twitter title in ${file}`)
   if (!html.includes('name="twitter:description"')) failures.push(`Missing Twitter description in ${file}`)
+  if (!html.includes(`property="og:image" content="${SOCIAL_IMAGE_URL}"`)) failures.push(`Missing social preview image in ${file}`)
+  if (!html.includes(`property="og:image:alt" content="${escapeHtml(SOCIAL_IMAGE_ALT)}"`)) failures.push(`Missing Open Graph image alt text in ${file}`)
+  if (!html.includes('property="og:image:width" content="1200"') || !html.includes('property="og:image:height" content="630"')) failures.push(`Wrong social image dimensions in ${file}`)
+  if (!html.includes('name="twitter:card" content="summary_large_image"')) failures.push(`Missing large Twitter/X card in ${file}`)
+  if (!html.includes(`name="twitter:image" content="${SOCIAL_IMAGE_URL}"`)) failures.push(`Missing Twitter/X image in ${file}`)
+  if (!html.includes(`rel="alternate" hreflang="en-US" href="${expectedCanonical}"`)) failures.push(`Missing en-US hreflang in ${file}`)
+  if (!html.includes(`rel="alternate" hreflang="x-default" href="${expectedCanonical}"`)) failures.push(`Missing x-default hreflang in ${file}`)
   if (!html.includes('id="esn-route-schema"')) failures.push(`Missing JSON-LD route schema in ${file}`)
   if (!html.includes('"@type":"WebPage"')) failures.push(`Missing WebPage structured data in ${file}`)
 
   if (route === '/faq' && !html.includes('"@type":"FAQPage"')) failures.push('FAQPage structured data missing from /faq')
   if (route === '/serviceshowcase' && !html.includes('"@type":"Service"')) failures.push('Service structured data missing from /serviceshowcase')
   if (route === '/arcade' && !html.includes('"@type":"VideoGame"')) failures.push('Arcade VideoGame structured data missing from /arcade')
+  if (route === '/storesmp' && (!html.includes('"@type":"Product"') || !html.includes('"@type":"Offer"'))) failures.push('Product/Offer structured data missing from /storesmp')
+  if (route === '/smpplugin' && !html.includes('"@type":"SoftwareApplication"')) failures.push('SoftwareApplication structured data missing from /smpplugin')
+  if (route === '/estools' && !html.includes('"@type":"SoftwareApplication"')) failures.push('ES Tools SoftwareApplication structured data missing from /estools')
+  if (route === '/smpconnection' && !html.includes('"@type":"GameServer"')) failures.push('GameServer structured data missing from /smpconnection')
+  if (route === '/smpconsole' && !html.includes('"@type":"HowTo"')) failures.push('HowTo structured data missing from /smpconsole')
+  if (['/esclicker','/esfactory','/esmines','/esmoto','/estower','/estowerdefense'].includes(route) && !html.includes('"@type":"VideoGame"')) failures.push(`Individual VideoGame structured data missing from ${route}`)
 }
 
 const notFoundFile = path.join('dist', '404.html')
@@ -76,6 +89,15 @@ if (!fs.existsSync(sitemapFile)) {
       if (sitemap.includes(`<loc>${direct}</loc>`)) failures.push(`Noindex/alias route leaked into sitemap: ${route}`)
     }
   }
+}
+
+const socialImageFile = path.join('dist', 'esn-social-card.svg')
+if (!fs.existsSync(socialImageFile)) {
+  failures.push('Missing built ES Network social preview asset')
+} else {
+  const socialImage = fs.readFileSync(socialImageFile, 'utf8')
+  if (!socialImage.includes('width="1200"') || !socialImage.includes('height="630"')) failures.push('Social preview asset must remain 1200x630')
+  if (!socialImage.includes('BUILD. PLAY. CREATE.')) failures.push('Social preview asset lost ES Network branding')
 }
 
 if (failures.length) {
