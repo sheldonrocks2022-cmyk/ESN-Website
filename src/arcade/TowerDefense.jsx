@@ -261,7 +261,7 @@ export default function TowerDefenseGame(){
           <button onClick={sellSelected}>SELL</button>
         </div>}
       </div>
-      <div className="oa-td-board">
+      <div className={'oa-td-board '+(g.running&&!g.paused?'is-live ':'')+(g.round%10===0?'is-boss':'')}>
         <div className="oa-td-battle-label"><span>{g.paused?'PAUSED':g.running?'WAVE ACTIVE':'BUILD PHASE'}</span><b>WAVE {g.round}</b></div>
         <svg viewBox="0 0 100 100" preserveAspectRatio="none">
           <defs>
