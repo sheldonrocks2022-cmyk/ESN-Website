@@ -108,10 +108,18 @@ export function NoAccountExperienceLayer(){
   },[])
 
   useEffect(()=>{
-    if(!banner?.active||banner.permanent||!banner.expiresAt)return
-    const remaining=Number(banner.expiresAt)-Date.now()
+    if(!banner?.active||banner.permanent)return
+    let expiresAt=Number(banner.expiresAt)||0
+    if(!expiresAt){
+      const updated=Date.parse(banner.updatedAt||'')
+      expiresAt=(Number.isFinite(updated)?updated:Date.now())+30000
+      const normalized={...banner,permanent:false,expiresAt}
+      writeJson(STAFF_BANNER_KEY,normalized)
+      setBanner(normalized)
+    }
+    const remaining=expiresAt-Date.now()
     if(remaining<=0){
-      const next={...banner,active:false}
+      const next={...banner,active:false,expiresAt}
       writeJson(STAFF_BANNER_KEY,next)
       setBanner(next)
       window.dispatchEvent(new Event('esn-staff-banner-change'))
@@ -127,7 +135,7 @@ export function NoAccountExperienceLayer(){
       }
     },remaining)
     return()=>window.clearTimeout(timer)
-  },[banner?.active,banner?.permanent,banner?.expiresAt])
+  },[banner?.active,banner?.permanent,banner?.expiresAt,banner?.updatedAt])
 
   if(!banner?.active)return null
   return <div className="esn-staff-banner" role="status"><span>{banner.label||'ESN NETWORK NOTICE'}</span><strong>{banner.title||'Network notice'}</strong><small>{banner.copy||''}</small></div>
