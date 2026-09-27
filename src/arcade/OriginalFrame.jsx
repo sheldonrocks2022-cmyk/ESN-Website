@@ -8,7 +8,9 @@ const games=[
 export default function OriginalFrame({title,subtitle='Browser Arcade',children}){
   const location=useLocation()
 
-  return <div className="oa-page">
+  const slug=location.pathname.replace('/','') || 'arcade'
+
+  return <div className={`oa-page oa-page-${slug}`}>
     <div className="oa-game-shell">
       <section className="oa-commandbar">
         <div className="oa-command-copy">
@@ -33,7 +35,9 @@ export default function OriginalFrame({title,subtitle='Browser Arcade',children}
         <p>{subtitle}</p>
       </section>
 
-      {children}
+      <div className="oa-game-viewport">
+        {children}
+      </div>
 
       <section className="oa-endcap">
         <div>
