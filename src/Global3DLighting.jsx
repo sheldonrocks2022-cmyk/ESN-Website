@@ -137,6 +137,15 @@ export default function Global3DLighting(){
 
   useEffect(()=>{
     const canvas=canvasRef.current
+    const mobile=matchMedia('(max-width: 860px), (pointer: coarse)').matches
+
+    // Mobile Performance Mode: skip the always-running WebGL shader completely.
+    // The static fallback/depth layers preserve the look without burning GPU every frame.
+    if(mobile){
+      canvas?.classList.add('mobile-static')
+      return
+    }
+
     const gl=canvas?.getContext('webgl',{
       alpha:false,
       antialias:false,
@@ -177,11 +186,10 @@ export default function Global3DLighting(){
       day:gl.getUniformLocation(program,'u_day'),
     }
 
-    const mobile=matchMedia('(max-width: 860px), (pointer: coarse)').matches
     const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches
-    const targetFps=mobile?30:50
+    const targetFps=50
     const frameMs=1000/targetFps
-    const maxDpr=mobile?1.0:1.35
+    const maxDpr=1.35
     const state={
       mx:.5,my:.5,tx:.5,ty:.5,scroll:0,visible:!document.hidden,
       palette:routePalettes[routeKey(location.pathname)]||routePalettes.home,
@@ -225,9 +233,7 @@ export default function Global3DLighting(){
       state.day=detail.lighting==='day'?1:0
     }
 
-    if(!mobile){
-      window.addEventListener('pointermove',pointer,{passive:true})
-    }
+    window.addEventListener('pointermove',pointer,{passive:true})
     window.addEventListener('scroll',scroll,{passive:true})
     document.addEventListener('visibilitychange',visibility)
     window.addEventListener('esn-visual-settings',settings)
@@ -258,7 +264,7 @@ export default function Global3DLighting(){
 
     return()=>{
       cancelAnimationFrame(raf)
-      if(!mobile)window.removeEventListener('pointermove',pointer)
+      window.removeEventListener('pointermove',pointer)
       window.removeEventListener('scroll',scroll)
       document.removeEventListener('visibilitychange',visibility)
       window.removeEventListener('esn-visual-settings',settings)
