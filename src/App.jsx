@@ -16,6 +16,7 @@ import MinesGame from './arcade/Mines'
 import MotoGame from './arcade/Moto'
 import TowerGame from './arcade/Tower'
 import TowerDefenseGame from './arcade/TowerDefense'
+import { useArcadeProgress } from './arcade/shared'
 
 const DISCORD_URL = 'https://discord.gg/3gxA66KZ8'
 const SMP_HOST = 'esn.ggwp.cc'
@@ -1333,6 +1334,7 @@ function SMPStore() {
   )
 }
 function ArcadeHub() {
+  const arcade = useArcadeProgress()
   const gameStats = [
     ['110', 'Upgrades'],
     ['53 / 112', 'Zones / Machines'],
@@ -1347,9 +1349,18 @@ function ArcadeHub() {
       <PageHero
         eyebrow="ESN Arcade"
         title="Six originals. One ESN Arcade."
-        text="The original ESN browser games rebuilt from the official site recording, keeping their core identities while improving responsiveness, persistence, and the overall experience."
+        text="Six original ESN browser games with shared Arcade XP, levels, achievements, deeper progression, persistent records, and upgraded mobile and desktop gameplay."
         actions={<Link className="button primary" to="/esclicker">Start playing <span>→</span></Link>}
       />
+
+      <section className="section compact-section">
+        <div className="shell oa-arcade-hub-progress">
+          <div><span>ARCADE LEVEL</span><strong>{arcade.level}</strong><small>{Math.floor(arcade.progress.xp||0).toLocaleString()} total XP</small></div>
+          <div><span>ACHIEVEMENTS</span><strong>{arcade.achievementCount}</strong><small>Unlocked across all six games</small></div>
+          <div><span>PROGRESSION</span><strong>SHARED</strong><small>One local Arcade level across every game</small></div>
+          <div><span>SAVES</span><strong>LOCAL</strong><small>Progress stays on this device without an account</small></div>
+        </div>
+      </section>
 
       <section className="section compact-section">
         <div className="shell network-stat-grid arcade-stat-grid">
