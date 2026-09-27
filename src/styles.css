@@ -478,3 +478,14 @@ summary:focus-visible {
 .connection-actions { display:flex; justify-content:center; margin:18px 0 12px; }
 .connection-actions .button { width:auto; }
 @media (max-width:560px){ .connection-actions .button { width:100%; } }
+
+.arcade-profile-card { display:grid; grid-template-columns:1fr auto; gap:24px; align-items:center; margin-bottom:24px; padding:28px; border:1px solid var(--line); border-radius:26px; background:linear-gradient(135deg,rgba(98,241,255,.07),rgba(108,81,255,.07)); }
+.arcade-profile-card h2 { margin:.3rem 0 .4rem; }
+.arcade-profile-stats { display:grid; grid-template-columns:repeat(3,minmax(130px,1fr)); gap:10px; }
+.arcade-profile-stats span { min-width:0; padding:14px; border:1px solid var(--line); border-radius:16px; background:rgba(255,255,255,.035); color:var(--muted); font-size:.78rem; }
+.arcade-profile-stats b { display:block; color:#fff; font-size:1.35rem; margin-bottom:4px; }
+.arcade-game-grid { margin-top:0; }
+.upgraded-game-card { position:relative; overflow:hidden; min-height:260px; }
+.upgraded-game-card .card-number { position:absolute; right:22px; top:20px; opacity:.5; }
+@media (max-width:900px){ .arcade-profile-card { grid-template-columns:1fr; } }
+@media (max-width:650px){ .arcade-profile-stats { grid-template-columns:1fr; } }
