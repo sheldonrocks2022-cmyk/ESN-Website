@@ -284,7 +284,7 @@ export default function TowerDefenseGame(){
             <rect x={x*100-2.6} y={y*100-4.2} width={5.2*Math.max(0,e.hp/e.max)} height=".65" rx=".2" fill={e.boss?'#b277ff':e.elite?'#ffc45c':'#50e28c'}/>
           </g>})}
         </svg>
-      </div>>
+      </div>
     </section>
 
     <section className="oa-panel oa-td-loadout-panel">
