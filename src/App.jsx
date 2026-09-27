@@ -10,7 +10,6 @@ import ShareCenter from './ShareCenter'
 import { SOCIAL_IMAGE_ALT, SOCIAL_IMAGE_URL, canonicalUrl, getSeo, robotsContent, structuredDataFor } from './seo'
 import { PortfolioPage, StatusCenter, TimelinePage, UpdatesPage, VaultPage, WhatsHappeningNow } from './LiveExperience'
 import { VERIFIED_REVIEWS } from './reviews'
-import { LANDON_CARD_IMAGE } from './landonCard'
 import ClickerGame from './arcade/Clicker'
 import FactoryGame from './arcade/Factory'
 import MinesGame from './arcade/Mines'
@@ -850,15 +849,11 @@ function Leadership() {
       />
 
       <section className="section leadership-spotlight-section">
-        <div className="shell leadership-spotlight landon-leadership-card">
-          <div className="landon-leadership-art">
-            <img src={LANDON_CARD_IMAGE} alt="Kavero-styled profile artwork for Landon, Founder and CEO of ES Network." />
-            <span className="landon-card-glow" aria-hidden="true" />
-          </div>
-          <div className="landon-leadership-copy">
+        <div className="shell leadership-spotlight">
+          <div className="leadership-monogram">L</div>
+          <div>
             <span className="eyebrow">Founder & CEO</span>
             <h2>Landon</h2>
-            <p className="landon-alias">KAVERO · ES NETWORK</p>
             <p className="large-copy">Business operations, website and service infrastructure, creator editing, Discord ticket support, marketing strategy, and brand development.</p>
             <div className="responsibility-tags">
               {LANDON_RESPONSIBILITIES.map((item) => <span key={item}>{item}</span>)}
