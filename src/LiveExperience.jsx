@@ -24,8 +24,9 @@ export function WhatsHappeningNow(){
       <div className="now-grid">
         <article className="now-card now-smp">
           <div className="now-card-top"><span>ESN SMP</span><StatusPill status={live.smp.status}/></div>
-          <strong>{live.smp.players??'—'}<small> / {live.smp.maxPlayers??'—'}</small></strong>
-          <p>Players online right now</p>
+          {live.smp.telemetry==='live'&&live.smp.players!=null
+            ? <><strong>{live.smp.players}<small> / {live.smp.maxPlayers??'—'}</small></strong><p>Players online right now</p></>
+            : <><strong>LIVE</strong><p>ESN confirmed online • player telemetry unavailable</p></>}
           <div className="now-meta"><span>{SMP_ADDRESS}:{SMP_PORT}</span><span>{live.smp.version||'Version unavailable'}</span></div>
         </article>
 
@@ -82,14 +83,19 @@ export function StatusCenter(){
       <div className="shell status-center-grid">
         <article className="status-system-card featured">
           <div className="status-system-head"><div><span>01</span><h2>ESN SMP</h2></div><StatusPill status={live.smp.status}/></div>
-          <div className="status-player-display"><strong>{live.smp.players??'—'}</strong><span>of {live.smp.maxPlayers??'—'} players online</span></div>
+          <div className="status-player-display">
+            <strong>{live.smp.telemetry==='live'&&live.smp.players!=null?live.smp.players:'LIVE'}</strong>
+            <span>{live.smp.telemetry==='live'&&live.smp.players!=null?`of ${live.smp.maxPlayers??'—'} players online`:'ESN-confirmed operational • player telemetry unavailable'}</span>
+          </div>
           <div className="status-detail-grid">
             <div><span>SERVER</span><strong>{SMP_ADDRESS}:{SMP_PORT}</strong></div>
             <div><span>VERSION</span><strong>{live.smp.version||'Unavailable'}</strong></div>
             <div><span>SOFTWARE</span><strong>{live.smp.software||'Not exposed'}</strong></div>
-            <div><span>UPTIME</span><strong>Not exposed by server ping</strong></div>
+            <div><span>STATUS SOURCE</span><strong>{live.smp.source==='esn-confirmed'?'ESN confirmed live':live.smp.source||'Unavailable'}</strong></div>
           </div>
-          <p className="status-note">A standard Minecraft status ping can safely expose online state, player counts, and version. Historical uptime requires a separate monitoring service, so ESN does not invent an uptime percentage.</p>
+          <p className="status-note">{live.smp.source==='esn-confirmed'
+            ? 'ESN has confirmed the SMP is live. Public Minecraft status providers are currently unable to read reliable telemetry for this server setup, so the site will not falsely mark it offline or invent a player count.'
+            : 'Public Minecraft status telemetry is responding normally. Historical uptime still requires a separate monitoring service, so ESN does not invent an uptime percentage.'}</p>
           <Link className="button primary" to="/smpconnection">Connect to ESN SMP</Link>
         </article>
 
