@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link, Navigate, Route, Routes, useLocation } from 'react-router-dom'
 import ESToolsSuite from './Tools'
+import ES3DViewer from './ES3DViewer'
 import { VERIFIED_REVIEWS } from './reviews'
 import ClickerGame from './arcade/Clicker'
 import FactoryGame from './arcade/Factory'
@@ -444,11 +445,11 @@ function Home() {
               <span>NETWORK STATUS</span>
               <i />
             </div>
-            <div className="control-main">
-              <div className="control-logo">ES</div>
-              <div>
+            <div className="control-main control-main-3d">
+              <ES3DViewer variant="hero" label="Interactive 3D ES Network centerpiece" />
+              <div className="control-3d-label">
                 <span>ES NETWORK</span>
-                <strong>CONNECTED</strong>
+                <strong>INTERACTIVE 3D CORE</strong>
               </div>
             </div>
             <div className="control-grid">
@@ -977,6 +978,12 @@ function ProductCard({ product }) {
         <span className="eyebrow">ESN SMP</span>
         <span className="product-price">{product.price}</span>
       </div>
+
+      <div className="product-3d-stage">
+        <ES3DViewer variant={product.name} compact label={`${product.name} interactive 3D viewer`} />
+        <div className="product-3d-badge">LIVE 3D PREVIEW</div>
+      </div>
+
       <h2>{product.name}</h2>
       <p>{product.summary}</p>
       <ul className="product-items">
