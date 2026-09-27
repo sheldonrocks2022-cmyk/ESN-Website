@@ -50,6 +50,9 @@ export const SEARCH_INDEX=[
   {label:'ES Tools',meta:'Free browser utilities',path:'/estools',category:'Tools'},
   {label:'Network Status',meta:'Live ESN status center and incident history',path:'/status',category:'Network'},
   {label:'Network Statistics',meta:'Live network and local progress metrics',path:'/networkstats',category:'Network'},
+  {label:'Notification Center',meta:'Local ESN alerts, achievements, releases, rewards, and SMP notices',path:'/notifications',category:'Network'},
+  {label:'Reward Vault',meta:'Account-free Network Shard marketplace, inventory, and local identity cosmetics',path:'/rewards',category:'Network'},
+  {label:'Challenge Lab',meta:'Create and accept shareable ESN Arcade challenges without accounts',path:'/challenges',category:'Arcade'},
   {label:'Release Center',meta:'Website, SMP, Arcade, and network update logs',path:'/updates',category:'Updates'},
   {label:"What's New",meta:'Changes since your last visit',path:'/whatsnew',category:'Updates'},
   {label:'Interactive Timeline',meta:'Explore ESN eras',path:'/timeline',category:'About'},
@@ -73,6 +76,9 @@ export const DECK_DESTINATIONS=[
   {id:'services',label:'Services',path:'/serviceshowcase',glyph:'S'},
   {id:'share',label:'Share',path:'/share',glyph:'↗'},
   {id:'timeline',label:'Timeline',path:'/timeline',glyph:'◫'},
+  {id:'notifications',label:'Alerts',path:'/notifications',glyph:'!'},
+  {id:'rewards',label:'Rewards',path:'/rewards',glyph:'R'},
+  {id:'challenges',label:'Challenge',path:'/challenges',glyph:'C'},
 ]
 
 export const SMP_EVENT_BOARD=[
