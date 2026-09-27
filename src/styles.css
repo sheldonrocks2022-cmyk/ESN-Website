@@ -5267,9 +5267,9 @@ html[data-esn-season="summer"] .network-evolution-ambient{filter:hue-rotate(-14d
 }
 .expansion-callout h2{margin:.4rem 0 0}
 
-.quick-copy-strip{
+ .quick-copy-strip{
   display:grid;
-  grid-template-columns:repeat(3,1fr);
+  grid-template-columns:repeat(4,1fr);
   gap:8px;
 }
 .quick-copy-strip button{
