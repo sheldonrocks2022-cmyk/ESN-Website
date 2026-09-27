@@ -126,12 +126,12 @@ const STORE_PRODUCTS = [
 ]
 
 const ARCADE_GAMES = [
-  ['ES Clicker', '/esclicker', 'Local progress, ES Coins, statistics, and an upgrade shop with 110 upgrades.'],
-  ['ES Factory', '/esfactory', 'A factory progression game with 53 zones, 112 machines, upgrades, boosts, and shared ES Coins.'],
-  ['ES Mines', '/esmines', 'Virtual ES Coin gameplay built around wager, density, and multiplier mechanics.'],
-  ['ES MOTO', '/esmoto', 'A racing experience with 1,000+ tracks, checkpoints, touch controls, best times, and daily challenges.'],
-  ['ES Tower', '/estower', 'The existing ES Tower browser game route, preserved for migration.'],
-  ['ES Tower Defense', '/estowerdefense', 'The existing ES Tower Defense browser game route, preserved for migration.'],
+  ['ES Clicker: Overdrive', '/esclicker', 'Tap, automate, buy upgrades, and grow the shared ES Arcade Coin profile.'],
+  ['ES Factory: Neon Grid', '/esfactory', 'Build production machines, increase grid multipliers, and generate ES Coins over time.'],
+  ['ES Mines: Riftfield', '/esmines', 'A 5×5 virtual ES Coin risk game with safe-cell multipliers and cash-out decisions. No real-money wagering.'],
+  ['ES MOTO: Hyperlane', '/esmoto', 'Race across 1,000 generated tracks with hazards, touch controls, saved best times, and Arcade rewards.'],
+  ['ES Tower: Skyline', '/estower', 'A precision stacking game where narrower placements increase the challenge as the tower climbs.'],
+  ['ES Tower Defense: Rift Siege', '/estowerdefense', 'Defend three lanes with upgradeable turrets, escalating waves, energy management, and ES Coin rewards.'],
 ]
 
 const FAQ_ITEMS = [
@@ -140,6 +140,7 @@ const FAQ_ITEMS = [
   ['How do I order a service?', 'Service ordering and support are handled through the official ESN Discord. Open a ticket and provide the details of what you need.'],
   ['How do SMP purchases get delivered?', 'Enter your exact in-game Minecraft username at Stripe checkout. The buyer should be online on the SMP for automatic delivery. If your server username starts with a period, include the period at the beginning.'],
   ['Are ES Tools paid?', 'ES Tools are intended to be free browser-based utilities. They do not require an account and are not supposed to save your personal data.'],
+  ['Can console players join the ESN SMP?', 'Yes. Xbox, PlayStation, and Nintendo Switch generally need a third-party-server workaround because Minecraft console editions do not expose a normal Add Server field. Use the Console Connection page for ESN server details and guidance.'],
   ['Where can I join the ESN community?', 'Use the official Discord link anywhere on this website to join the ES Network community.'],
 ]
 
@@ -597,13 +598,14 @@ function FAQ() {
 function Testimonials() {
   return (
     <>
-      <PageHero eyebrow="Customer Testimonials" title="What people say about ESN" text="A dedicated home for verified customer and community feedback." />
+      <PageHero eyebrow="Customer Testimonials" title="ESN community feedback" text="This page is reserved for real customer and community feedback carried over from verified ESN sources." />
       <section className="section">
         <div className="shell">
           <div className="empty-state">
-            <span className="eyebrow">Verified content only</span>
-            <h2>No fake reviews.</h2>
-            <p>Existing verified testimonial content will be migrated here when its exact text is available. This page intentionally does not fabricate quotes, names, ratings, or customer stories.</p>
+            <span className="eyebrow">Migration in progress</span>
+            <h2>Verified reviews are being restored.</h2>
+            <p>Only reviews that can be matched to existing ESN feedback will be published here. Until the original review text is recovered, this page will not substitute made-up quotes or ratings.</p>
+            <a className="button secondary" href={DISCORD_URL} target="_blank" rel="noreferrer">Visit ESN Discord</a>
           </div>
         </div>
       </section>
@@ -765,28 +767,6 @@ function SMPStore() {
   )
 }
 
-function ESTools() {
-  return (
-    <>
-      <PageHero eyebrow="ES Tools" title="Free browser utilities" text="The existing ES Tools route is preserved. Original tool behavior will be migrated without changing its no-account, no-save approach." />
-      <section className="section">
-        <div className="shell">
-          <div className="preserve-box">
-            <span className="eyebrow">Protected migration</span>
-            <h2>Tool logic is intentionally not being invented or rewritten.</h2>
-            <p>The current ES Tools experience is protected. This rebuild preserves the route and product identity while we migrate the exact existing utilities instead of replacing them with made-up versions.</p>
-            <div className="preserve-grid">
-              <div><strong>Free</strong><span>No purchase required</span></div>
-              <div><strong>No account</strong><span>Browser-first access</span></div>
-              <div><strong>No personal-data saves</strong><span>Keep the existing privacy approach</span></div>
-            </div>
-          </div>
-        </div>
-      </section>
-    </>
-  )
-}
-
 function ArcadeHub() {
   return (
     <>
@@ -801,24 +781,6 @@ function ArcadeHub() {
               <Link to={route}>Play now →</Link>
             </article>
           ))}
-        </div>
-      </section>
-    </>
-  )
-}
-
-function ProtectedGame({ name, description }) {
-  return (
-    <>
-      <PageHero eyebrow="ESN Arcade" title={name} text={description} />
-      <section className="section">
-        <div className="shell narrow">
-          <div className="preserve-box">
-            <span className="eyebrow">Protected game migration</span>
-            <h2>Original gameplay comes next.</h2>
-            <p>This route is already reserved in the new site, but the existing game code, saves, ES Coins, upgrades, controls, mechanics, and progression are intentionally not being replaced with approximations.</p>
-            <Link className="button secondary" to="/arcade">Back to Arcade</Link>
-          </div>
         </div>
       </section>
     </>
