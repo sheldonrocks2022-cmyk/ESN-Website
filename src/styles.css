@@ -491,3 +491,75 @@ summary:focus-visible {
 @media (max-width:650px){ .arcade-profile-stats { grid-template-columns:1fr; } }
 
 .compact-role-list { margin-top:10px; columns:1; }
+
+
+/* Faithful ESN Arcade rebuild — based on official site recording */
+.oa-page{
+  --oa-bg:#061225;--oa-panel:#10214a;--oa-panel2:#0b1937;--oa-line:#234a91;
+  --oa-cyan:#62e8f4;--oa-text:#eff4ff;--oa-muted:#91a0bf;--oa-green:#35d26f;--oa-purple:#975dff;--oa-orange:#ffae2b;
+  min-height:100vh;background:
+    radial-gradient(circle at 50% 8%,rgba(72,157,216,.14),transparent 28rem),
+    linear-gradient(180deg,#0a1834,#061225 42%,#051020);
+  color:var(--oa-text);font-family:Georgia,"Times New Roman",serif;
+}
+.oa-page *{box-sizing:border-box}
+.oa-page p{font-family:Georgia,"Times New Roman",serif;color:var(--oa-muted);font-size:1.03rem;line-height:1.75}
+.oa-header{position:sticky;top:0;z-index:60;min-height:112px;display:flex;align-items:center;justify-content:space-between;gap:18px;padding:20px clamp(20px,5vw,58px);background:rgba(15,33,72,.96);border-bottom:1px solid var(--oa-line);backdrop-filter:blur(16px)}
+.oa-brand,.oa-menu-btn{border:1px solid #315ca7;background:rgba(13,31,68,.7);border-radius:24px;min-height:72px;color:#f6f8ff;display:flex;align-items:center;gap:17px;padding:10px 22px;letter-spacing:.17em;font:700 1rem Georgia,"Times New Roman",serif}
+.oa-logo{width:48px;height:48px;border-radius:12px;display:grid;place-items:center;border:1px solid #6df6ff;background:linear-gradient(145deg,#1a477a,#07182f);box-shadow:0 0 18px rgba(98,232,244,.7),inset 0 0 20px rgba(98,232,244,.14);font-family:ui-sans-serif,system-ui;font-weight:950;letter-spacing:-.1em}
+.oa-menu-btn{cursor:pointer}.oa-menu-btn b{font-family:ui-sans-serif,system-ui;font-size:1.7rem;letter-spacing:0}
+.oa-menu-panel{position:fixed;z-index:70;right:22px;top:104px;width:min(360px,calc(100vw - 44px));padding:18px;border:1px solid #315ca7;border-radius:20px;background:#0a1835;box-shadow:0 22px 70px rgba(0,0,0,.5);display:grid;gap:7px}
+.oa-menu-panel a,.oa-menu-panel span{padding:12px 14px;border:1px solid #1d4388;border-radius:9px;color:#dce6fa;font:.77rem Georgia,"Times New Roman",serif;letter-spacing:.12em}
+.oa-menu-panel span{color:var(--oa-cyan);border-color:transparent;padding-bottom:4px}
+.oa-main{width:min(980px,calc(100% - 36px));margin:0 auto;padding:34px 0 74px}
+.oa-title-card{padding:28px 32px;margin-bottom:22px;border:1px solid var(--oa-line);border-radius:28px;background:linear-gradient(155deg,rgba(26,50,102,.78),rgba(7,19,43,.7));box-shadow:inset 0 1px rgba(255,255,255,.03)}
+.oa-title-card h1{font-family:Georgia,"Times New Roman",serif;font-size:clamp(2.5rem,7vw,5.5rem);font-weight:500;letter-spacing:.04em;margin:2px 0 8px}.oa-title-card p{margin:0;letter-spacing:.1em;text-transform:uppercase;font-size:.83rem}
+.oa-kicker{color:#dfe9fa;font-size:.82rem;letter-spacing:.24em;text-transform:uppercase}.oa-spaced{display:block;margin-top:30px}
+.oa-panel,.oa-glow-panel{margin:24px 0;padding:32px;border:1px solid var(--oa-line);border-radius:30px;background:rgba(14,31,68,.74);box-shadow:inset 0 1px rgba(255,255,255,.025)}
+.oa-glow-panel{border-color:var(--oa-cyan);box-shadow:0 0 20px rgba(98,232,244,.22),inset 0 0 34px rgba(60,144,212,.1)}
+.oa-panel h2,.oa-panel h3,.oa-glow-panel h2,.oa-glow-panel h3{font-family:Georgia,"Times New Roman",serif;font-weight:500;letter-spacing:.11em}
+.oa-panel h2,.oa-glow-panel h2{font-size:clamp(1.8rem,5vw,3rem);line-height:1.38}
+.oa-panel h3,.oa-glow-panel h3{font-size:1.25rem}
+.oa-audio{position:fixed;z-index:80;right:24px;bottom:24px;width:68px;height:68px;border:0;border-radius:50%;background:#fff;font-size:1.65rem;box-shadow:0 10px 30px rgba(0,0,0,.4);cursor:pointer}
+.oa-footer{padding:62px max(28px,calc((100vw - 980px)/2));background:#52607c;color:#eff3fb;font-family:Georgia,"Times New Roman",serif}
+.oa-footer h2{max-width:660px;font:500 clamp(1.4rem,4vw,2.4rem) Georgia,"Times New Roman",serif;letter-spacing:.16em;line-height:1.6}.oa-footer p{color:#bdc7db;max-width:800px}.oa-footer div{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin:30px 0}.oa-footer a{font-size:1.05rem}.oa-footer small{display:block;border-top:1px solid #344664;padding-top:24px;color:#a9b5cd}
+.oa-pill,.oa-status-chip{display:inline-flex;align-items:center;min-height:42px;padding:0 16px;border:1px solid #3b72bc;border-radius:12px;letter-spacing:.16em;font-size:.75rem;color:#7cedf5}
+.oa-subpanel{margin-top:22px;padding:22px;border:1px solid #234a91;border-radius:18px;background:#0d1d3f}.oa-subpanel h3,.oa-subpanel p{margin:0}.oa-subpanel p+*{margin-top:10px}
+.oa-section-head{display:flex;justify-content:space-between;align-items:flex-start;gap:20px}.oa-section-head>div:last-child{display:grid;text-align:right;gap:4px}.oa-section-head small{color:var(--oa-cyan)}
+.oa-filter-row,.oa-choice-row{display:flex;gap:12px;flex-wrap:wrap;margin:18px 0}.oa-filter-row button,.oa-choice-row button{min-height:52px;padding:0 24px;border:1px solid #234a91;border-radius:16px;background:#0d1c3d;color:#d8e2f4;font:700 .88rem Georgia,"Times New Roman",serif;letter-spacing:.1em;cursor:pointer}
+.oa-filter-row button.active,.oa-choice-row button.active{border-color:#67dce8;background:rgba(92,211,224,.12);color:#76e3ed}
+.oa-primary-wide,.oa-secondary-wide,.oa-cash-wide{width:100%;min-height:72px;margin-top:18px;border-radius:12px;border:1px solid #2a589b;font:700 1rem Georgia,"Times New Roman",serif;letter-spacing:.17em;cursor:pointer}
+.oa-primary-wide{background:#65dce8;color:#071329;border-color:#65dce8}.oa-secondary-wide{background:#11244c;color:#f3f5fa}.oa-cash-wide{background:#1b8e4b;color:#effff5;border-color:#1b8e4b}.oa-primary-wide:disabled,.oa-secondary-wide:disabled,.oa-cash-wide:disabled{opacity:.42;cursor:not-allowed}
+
+/* Clicker */
+.oa-stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.oa-stats>div,.oa-mines-stats>div,.oa-tower-stats>div{padding:22px;border:1px solid #234a91;border-radius:18px;background:rgba(18,37,78,.6);display:grid;gap:12px}.oa-stats span,.oa-mines-stats span,.oa-tower-stats span{color:#8292b0;letter-spacing:.18em;font-size:.75rem}.oa-stats b,.oa-mines-stats b,.oa-tower-stats b{font-size:1.3rem;font-weight:500}
+.oa-tap-zone>p:first-of-type{letter-spacing:.17em;text-transform:uppercase}.oa-coin{width:min(390px,82vw);aspect-ratio:1;border-radius:50%;border:1px solid #76effa;margin:26px auto;display:grid;place-items:center;align-content:center;background:radial-gradient(circle at 48% 45%,#6ee8f5,#44c4e5 45%,#2b8dd5 100%);box-shadow:0 0 35px rgba(85,224,240,.55),0 0 90px rgba(48,175,230,.2);color:#08203a;font-family:Georgia,"Times New Roman",serif;cursor:pointer}
+.oa-coin small{letter-spacing:.2em;font-size:.85rem}.oa-coin strong{font-size:clamp(2rem,7vw,4.5rem);font-weight:500}.oa-coin:active{transform:scale(.975)}
+.oa-upgrade-list{display:grid;gap:16px;margin-top:22px}.oa-upgrade{padding:24px;border:1px solid #244b92;border-radius:19px;background:#0d1d40}.oa-upgrade h3{margin:0 0 6px}.oa-upgrade p{margin:0}.oa-tags{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}.oa-tags span{padding:9px 13px;border:1px solid #3572aa;border-radius:11px;color:#72e4ec;letter-spacing:.1em;font-size:.68rem}.oa-buy-row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}.oa-buy-row>span{padding:10px 13px;border:1px solid #244b92;border-radius:10px;color:#cdd8ec}.oa-buy-row button{margin-left:auto;padding:11px 16px;border:0;border-radius:8px;background:#63e3ef;color:#08152b;font-weight:900}.oa-buy-row button:disabled{opacity:.4}
+
+/* Factory */
+.oa-status-line{color:#b7c1d4;letter-spacing:.04em}.oa-zone-list,.oa-machine-list,.oa-floor-grid{display:grid;gap:14px}.oa-zone{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:20px;border:1px solid #234a91;border-radius:18px;background:#0c1b3b}.oa-zone.active{border-color:#64e2ec}.oa-zone>div{display:grid;gap:8px}.oa-zone span{color:#91a0bd}.oa-zone button,.oa-unlock-row button,.oa-machine button{padding:11px 16px;border:1px solid #3672a8;border-radius:11px;background:#0c1b3b;color:#d9e2f1;letter-spacing:.09em}.oa-zone.active button{border-color:#62e8f4;color:#e6feff}.oa-zone button:disabled,.oa-unlock-row button:disabled,.oa-machine button:disabled{opacity:.55}
+.oa-floor-grid{grid-template-columns:repeat(2,minmax(0,1fr));margin-top:18px}.oa-floor-grid article{padding:24px;border:1px solid #234a91;border-radius:20px;background:#0d1c3c}.oa-online{display:flex;justify-content:space-between;color:#2e74b8}.oa-unlock-row{display:flex;align-items:center;justify-content:space-between}.oa-machine{padding:24px;border:1px solid #244b92;border-radius:19px;background:#0d1d40;display:grid;gap:8px}.oa-machine h3,.oa-machine p{margin:0}.oa-machine>span{color:#6e7f9d;letter-spacing:.15em}.oa-machine>b{font-size:1.2rem}.oa-met,.oa-locked{display:flex;justify-content:space-between;align-items:center;margin-top:10px;color:#42d66f;letter-spacing:.12em;font-size:.8rem}.oa-locked{color:#8d98ad}
+
+/* Mines */
+.oa-balance-card{display:flex;gap:22px;align-items:center}.oa-coin-icon{width:72px;height:72px;border:1px solid #65e9f4;border-radius:18px;display:grid;place-items:center;color:#65e9f4;font-weight:900;font-family:ui-sans-serif,system-ui}.oa-balance-card>div:last-child{display:grid;gap:8px}.oa-balance-card span{letter-spacing:.2em;color:#8999b6}.oa-balance-card b{font-size:2rem}
+.oa-discord-card a{display:flex;min-height:62px;margin-top:18px;border-radius:12px;background:#67e0eb;color:#071429;align-items:center;justify-content:center;font-weight:800;letter-spacing:.18em}.oa-mines-stats,.oa-tower-stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.oa-mines-board{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}.oa-mines-board button{aspect-ratio:1;border:1px solid #244b92;border-radius:15px;background:#0d1d40;color:#f1f5ff;font:700 1.15rem Georgia,"Times New Roman",serif}.oa-mines-board button.safe{border-color:#43d47c;background:rgba(56,196,111,.12);color:#54e78a}
+
+/* MOTO */
+.oa-moto-intro{overflow:hidden}.oa-bike-mark{height:230px;position:relative;border:1px solid #244b92;border-radius:28px;background:radial-gradient(circle at 55% 30%,rgba(85,203,232,.15),transparent 45%),#0d1c3c}.oa-bike-mark span{position:absolute;left:18%;right:18%;top:51%;height:5px;background:#61e6f1;box-shadow:0 0 15px #61e6f1;transform:skewX(-25deg)}.oa-bike-mark i{position:absolute;top:52%;width:72px;height:72px;border-radius:50%;border:4px solid #62e8f4;box-shadow:0 0 16px rgba(98,232,244,.6)}.oa-bike-mark i:first-of-type{left:24%}.oa-bike-mark i:last-of-type{right:24%}
+.oa-moto-toolbar,.oa-moto-hud,.oa-td-hud{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:16px}.oa-moto-toolbar>* ,.oa-moto-hud>*,.oa-td-hud>*{padding:12px 15px;border:1px solid #244b92;border-radius:12px;background:#0d1c3c;color:#e8eef9}.oa-moto-toolbar input{width:82px;background:#07152e;border:1px solid #2b5a9c;border-radius:8px;padding:7px;color:#fff}.oa-moto-toolbar button{font-family:Georgia,"Times New Roman",serif}
+.oa-moto-stage{height:min(590px,65vh);border:1px solid #244b92;border-radius:26px;background:linear-gradient(180deg,#1b3259,#071329 70%);overflow:hidden}.oa-moto-stage svg{width:100%;height:100%}.oa-moto-controls{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}.oa-moto-controls button{min-height:94px;border:1px solid #28539b;border-radius:16px;background:#11244c;color:#f4f6fb;font:700 .95rem Georgia,"Times New Roman",serif;letter-spacing:.08em}.oa-moto-controls button:nth-child(2){background:#65dfea;color:#07152b;border-color:#65dfea}.oa-moto-controls button:active{transform:scale(.98)}
+
+/* Tower */
+.oa-ladder{max-height:440px;overflow:auto;border:1px solid #234a91;border-radius:14px;padding:8px;margin-top:14px}.oa-ladder>div{display:flex;justify-content:space-between;padding:13px 18px;border:1px solid #244b92;border-radius:10px;margin:7px 0;color:#cbd6e9}.oa-ladder>div.active{border-color:#64e6ef;box-shadow:0 0 14px rgba(98,232,244,.17)}.oa-doors{display:grid;gap:12px;margin:18px 0}.oa-doors button{min-height:110px;text-align:left;padding:18px 24px;border:1px solid #2c58a0;border-radius:18px;background:#0e1d3e;color:#d8e3f6;font-family:Georgia,"Times New Roman",serif}.oa-doors span{display:block;letter-spacing:.2em;font-size:.74rem;margin-bottom:17px}.oa-doors b{font-size:1.2rem;font-weight:500}.oa-doors button.danger{border-color:#8c52ff;color:#9a64ff}.oa-busted{padding:10px 18px;border:1px solid #8d56ff;border-radius:999px;color:#9f6aff;letter-spacing:.18em}
+
+/* Tower Defense */
+.oa-td-actions{display:grid;grid-template-columns:1fr 1fr;gap:12px}.oa-preview{position:relative;margin:24px 0;padding:34px;border:1px solid #65dfe9;border-radius:20px;background:linear-gradient(140deg,rgba(16,37,77,.95),rgba(5,19,42,.88));box-shadow:0 0 22px rgba(98,232,244,.16);text-align:center}.oa-preview>span{position:absolute;left:18px;top:16px;letter-spacing:.14em}.oa-preview>b{display:block;color:#77e3ed;letter-spacing:.18em;font-weight:500}.oa-preview h2{margin:25px 0 8px}.oa-preview p{margin:0}
+.oa-td-board{aspect-ratio:1.55;border:1px solid #244b92;border-radius:24px;overflow:hidden;background-color:#0d1d3e;background-image:linear-gradient(#183b78 1px,transparent 1px),linear-gradient(90deg,#183b78 1px,transparent 1px);background-size:8% 8%}.oa-td-board svg{width:100%;height:100%}.oa-node{cursor:pointer}.oa-tower-roster{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:18px}.oa-tower-roster button{min-height:105px;padding:17px;text-align:left;border:1px solid #244b92;border-radius:16px;background:#0d1d3e;color:#eef3ff;font-family:Georgia,"Times New Roman",serif;display:grid;gap:6px}.oa-tower-roster button.active{border-color:#62e7f3;background:rgba(66,154,188,.32)}.oa-tower-roster b{font-size:1.02rem;letter-spacing:.15em}.oa-tower-roster span{color:#aab6cc}.oa-tower-roster small{color:#6f819f}.oa-mines-stats{margin-top:18px}
+
+@media (max-width:720px){
+  .oa-header{min-height:92px;padding:14px 18px}.oa-brand,.oa-menu-btn{min-height:62px;border-radius:20px;padding:8px 14px}.oa-logo{width:42px;height:42px}.oa-brand{font-size:.8rem}.oa-main{width:min(100% - 24px,980px);padding-top:18px}.oa-title-card,.oa-panel,.oa-glow-panel{padding:22px;border-radius:22px}.oa-title-card h1{font-size:2.35rem}.oa-stats,.oa-mines-stats,.oa-tower-stats,.oa-floor-grid{grid-template-columns:1fr 1fr}.oa-zone{align-items:flex-start}.oa-section-head{flex-direction:column}.oa-moto-stage{height:480px}.oa-footer div{grid-template-columns:1fr}.oa-audio{width:58px;height:58px;right:16px;bottom:16px}
+}
+@media (max-width:480px){
+  .oa-brand span:last-child{display:none}.oa-stats,.oa-mines-stats,.oa-tower-stats,.oa-floor-grid{grid-template-columns:1fr}.oa-choice-row{display:grid;grid-template-columns:repeat(3,1fr)}.oa-choice-row button{padding:0 10px}.oa-mines-board{gap:7px}.oa-mines-board button{border-radius:11px}.oa-moto-controls,.oa-td-actions,.oa-tower-roster{grid-template-columns:1fr 1fr}.oa-moto-controls button{min-height:78px}.oa-footer{padding-left:24px;padding-right:24px}
+}
