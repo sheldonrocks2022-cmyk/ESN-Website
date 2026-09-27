@@ -2963,3 +2963,168 @@ html[data-lux-route="services"] .service-card:hover{box-shadow:0 30px 88px rgba(
 @media(prefers-reduced-motion:reduce){
   .hero-line-main{animation:none}
 }
+
+
+/* =========================================================
+   GLOBAL WEBGL 3D LIGHTING BACKGROUND
+   One route-aware volumetric scene behind the entire website
+   ========================================================= */
+.site{
+  isolation:isolate;
+}
+.global-3d-lighting{
+  position:fixed;
+  inset:0;
+  z-index:-2;
+  pointer-events:none;
+  overflow:hidden;
+  background:#02050d;
+}
+.global-3d-lighting canvas,
+.global-3d-fallback,
+.global-3d-depth-mask{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+}
+.global-3d-lighting canvas{
+  display:block;
+  opacity:.96;
+}
+.global-3d-lighting canvas.webgl-failed{
+  display:none;
+}
+.global-3d-fallback{
+  z-index:-1;
+  background:
+    radial-gradient(circle at 18% 22%,rgb(var(--route-accent)/.16),transparent 34rem),
+    radial-gradient(circle at 84% 68%,rgb(var(--route-accent-2)/.10),transparent 38rem),
+    linear-gradient(180deg,#02050d,#040916 48%,#02050d);
+}
+.global-3d-depth-mask{
+  z-index:2;
+  background:
+    linear-gradient(180deg,rgba(2,5,13,.04),rgba(2,5,13,.16) 46%,rgba(2,5,13,.28)),
+    radial-gradient(circle at 50% 42%,transparent 0%,rgba(2,5,13,.05) 46%,rgba(2,5,13,.34) 100%);
+}
+#main-content,
+.site-footer{
+  position:relative;
+  z-index:1;
+}
+.site-header{
+  z-index:100;
+}
+
+/* Let global lighting show through major surfaces */
+.flagship-hero,
+.flagship-story-section,
+.flagship-services-section,
+.flagship-arcade-section,
+.flagship-reviews-section,
+.flagship-safety-section,
+.flagship-faq-section,
+.section:not(.dark-section):not(.flagship-smp-section):not(.flagship-process-section){
+  background-color:transparent;
+}
+.flagship-story-section{
+  background:
+    linear-gradient(180deg,rgba(3,8,18,.22),rgba(5,10,21,.52));
+}
+.flagship-smp-section{
+  background:
+    radial-gradient(circle at 14% 55%,rgba(53,224,151,.045),transparent 29rem),
+    linear-gradient(180deg,rgba(2,8,16,.54),rgba(3,8,18,.68));
+}
+.flagship-process-section{
+  background:linear-gradient(180deg,rgba(4,10,22,.38),rgba(7,14,28,.56));
+}
+.dark-section{
+  background:
+    linear-gradient(180deg,rgba(8,15,29,.58),rgba(3,8,17,.34));
+  backdrop-filter:blur(4px);
+}
+.page-hero{
+  background:
+    radial-gradient(circle at 78% 28%,rgb(var(--route-accent)/.10),transparent 30rem),
+    linear-gradient(180deg,rgba(5,14,30,.5),rgba(3,7,17,.42));
+  backdrop-filter:blur(2px);
+}
+
+/* Glass surfaces gain depth against the moving light field */
+.flagship-core-stage,
+.story-panel,
+.flagship-service-card,
+.flagship-smp-stage,
+.flagship-game-card,
+.flagship-community-stage,
+.flagship-leadership,
+.review-card,
+.service-card,
+.product-card,
+.tool-card,
+.feature-panel,
+.leader-tile,
+.connection-card,
+.plugin-release-card,
+.console-step-card,
+.premium-connection{
+  backdrop-filter:blur(18px) saturate(125%);
+  -webkit-backdrop-filter:blur(18px) saturate(125%);
+}
+.flagship-route-strip,
+.flagship-process,
+.network-stat-grid>div,
+.review-summary>div{
+  backdrop-filter:blur(14px) saturate(120%);
+  -webkit-backdrop-filter:blur(14px) saturate(120%);
+}
+
+/* Small moving-light sheen on large flagship panels */
+.flagship-smp-stage::after,
+.flagship-community-stage::after,
+.flagship-final-cta::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  border-radius:inherit;
+  pointer-events:none;
+  background:
+    radial-gradient(520px circle at var(--cursor-x,50vw) var(--cursor-y,50vh),rgb(var(--route-accent-2)/.035),transparent 72%);
+  mix-blend-mode:screen;
+}
+.flagship-smp-stage,
+.flagship-community-stage,
+.flagship-final-cta{
+  position:relative;
+  overflow:hidden;
+}
+
+/* Mobile: keep the scene visible but cheaper and calmer */
+@media(max-width:860px){
+  .global-3d-lighting canvas{opacity:.82}
+  .global-3d-depth-mask{
+    background:
+      linear-gradient(180deg,rgba(2,5,13,.08),rgba(2,5,13,.24)),
+      radial-gradient(circle at 50% 35%,transparent 0%,rgba(2,5,13,.18) 70%,rgba(2,5,13,.42) 100%);
+  }
+  .flagship-core-stage,
+  .story-panel,
+  .flagship-service-card,
+  .flagship-smp-stage,
+  .flagship-game-card,
+  .flagship-community-stage,
+  .flagship-leadership,
+  .review-card,
+  .service-card,
+  .product-card,
+  .tool-card,
+  .feature-panel{
+    backdrop-filter:blur(12px) saturate(115%);
+    -webkit-backdrop-filter:blur(12px) saturate(115%);
+  }
+}
+@media(prefers-reduced-motion:reduce){
+  .global-3d-lighting canvas{opacity:.72}
+}
