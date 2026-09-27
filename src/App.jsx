@@ -334,14 +334,6 @@ function ExperienceEffects() {
     }
   }, [])
 
-  useEffect(() => {
-    const main = document.getElementById('main-content')
-    if (!main) return
-    main.classList.remove('route-premium-enter')
-    const frame = requestAnimationFrame(() => main.classList.add('route-premium-enter'))
-    return () => cancelAnimationFrame(frame)
-  }, [location.pathname])
-
   return null
 }
 
