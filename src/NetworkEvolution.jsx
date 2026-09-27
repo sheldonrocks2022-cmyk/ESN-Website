@@ -210,20 +210,30 @@ function SearchPanel({onClose,onOpenPassport,onOpenTerminal}) {
   const [query,setQuery]=useState('')
   const normalized=query.trim().toLowerCase()
   const results=useMemo(()=>normalized
-    ?SEARCH_INDEX.filter(item=>(item.label+' '+item.meta).toLowerCase().includes(normalized)).slice(0,12)
-    :SEARCH_INDEX.slice(0,8),[normalized])
+    ?SEARCH_INDEX.filter(item=>(item.label+' '+item.meta+' '+(item.category||'')).toLowerCase().includes(normalized)).slice(0,18)
+    :SEARCH_INDEX.slice(0,12),[normalized])
+  const grouped=useMemo(()=>results.reduce((map,item)=>{
+    const key=item.category||'Network'
+    if(!map[key])map[key]=[]
+    map[key].push(item)
+    return map
+  },{}),[results])
   useEffect(()=>{localStorage.setItem('esn_search_used','1');window.dispatchEvent(new Event('esn-progress-change'))},[])
   return <SystemModal title="Universal ESN Search" kicker="SEARCH THE ENTIRE NETWORK" onClose={onClose} className="ev-search-modal">
     <label className="ev-search-field"><span>⌕</span><input autoFocus value={query} onChange={event=>setQuery(event.target.value)} placeholder="Search services, SMP, Arcade, tools, updates…"/></label>
     <div className="ev-quick-actions">
       <button type="button" onClick={()=>{onClose();onOpenPassport()}}>Passport</button>
       <button type="button" onClick={()=>{onClose();onOpenTerminal()}}>Terminal</button>
+      <button type="button" onClick={()=>{onClose();navigate('/explore')}}>Explore ESN</button>
       <button type="button" onClick={()=>{onClose();navigate('/status')}}>Network Status</button>
     </div>
-    <div className="ev-search-results">
-      {results.map(item=><button type="button" key={item.path} onClick={()=>{onClose();navigate(item.path)}}>
-        <span>{item.label}</span><small>{item.meta}</small><b>↗</b>
-      </button>)}
+    <div className="ev-search-results categorized">
+      {Object.entries(grouped).map(([category,items])=><section className="ev-search-group" key={category}>
+        <div className="ev-search-group-label">{category}</div>
+        {items.map(item=><button type="button" key={item.path} onClick={()=>{onClose();navigate(item.path)}}>
+          <span>{item.label}</span><small>{item.meta}</small><b>↗</b>
+        </button>)}
+      </section>)}
       {!results.length&&<p>No ESN destination matched that search.</p>}
     </div>
   </SystemModal>
