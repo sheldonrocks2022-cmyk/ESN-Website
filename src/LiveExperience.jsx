@@ -169,8 +169,8 @@ const timelinePhases=[
     index:'05',
     title:'Current Projects',
     eyebrow:'Now',
-    copy:'ESN is currently focused on a premium unified website experience, live network systems, SMP development, Arcade improvements, tools, and public-facing infrastructure.',
-    points:['Flagship website experience','Live status + updates','Ongoing SMP and Arcade development'],
+    copy:'ESN is currently focused on a premium unified website experience with persistent local-device progression, live network systems, SMP development, Arcade improvements, tools, and public-facing infrastructure.',
+    points:['Network Evolution 12X: missions, Passport, Terminal + search','Live status, event board + seasonal network states','Ongoing SMP and Arcade development'],
   },
 ]
 
@@ -186,7 +186,7 @@ export function TimelinePage(){
       </div>
     </section>
 
-    <section className="section timeline-section">
+    <section className="section timeline-section" data-era={phase.id}>
       <div className="shell timeline-layout">
         <nav className="timeline-nav" aria-label="ESN timeline">
           {timelinePhases.map((item,index)=><button key={item.id} type="button" className={active===index?'active':''} onClick={()=>setActive(index)}>
@@ -200,6 +200,11 @@ export function TimelinePage(){
           <h2>{phase.title}</h2>
           <p>{phase.copy}</p>
           <div className="timeline-points">{phase.points.map(point=><div key={point}><i/> {point}</div>)}</div>
+          <div className="timeline-scrubber">
+            <button type="button" onClick={()=>setActive(value=>Math.max(0,value-1))} disabled={active===0}>← PREV</button>
+            <label><span>SCRUB THROUGH ESN HISTORY</span><input aria-label="ESN timeline era" type="range" min="0" max={timelinePhases.length-1} step="1" value={active} onChange={event=>setActive(Number(event.target.value))}/></label>
+            <button type="button" onClick={()=>setActive(value=>Math.min(timelinePhases.length-1,value+1))} disabled={active===timelinePhases.length-1}>NEXT →</button>
+          </div>
           <div className="timeline-position"><span>ERA {phase.index}</span><div><i style={{width:`${((active+1)/timelinePhases.length)*100}%`}}/></div><strong>{active+1} / {timelinePhases.length}</strong></div>
         </article>
       </div>
@@ -211,10 +216,11 @@ export function UpdatesPage(){
   const live=useLiveNetwork()
 
   const releases=[
-    {type:'Website',status:'LIVE',version:SITE_RELEASE,title:'ESN Live Experience + Global 3D Lighting',copy:'Flagship architecture, global WebGL lighting, premium command center, live status systems, mobile navigation, themes, timeline, update center, portfolio demos, and cinematic startup.'},
+    {type:'Website 12X',status:'LIVE',version:'Network Evolution 12X',title:'12-system interactive network expansion',copy:'Added ESN Missions, local-device Passport progression, configurable Network Takeovers, seasonal network states, ESN Terminal commands, universal search, an upgraded timeline scrubber, optional muted-by-default sound design, a public SMP + network event board, a customizable personal Command Deck, shareable Passport achievement cards, and ultra-rare network events.'},
+    {type:'Website',status:'LIVE',version:SITE_RELEASE,title:'ESN Live Experience + stable cinematic transitions',copy:'Flagship architecture, global WebGL lighting, premium command center, live status systems, mobile navigation, themes, timeline, update center, portfolio demos, cinematic startup, and the corrected single-layer page transition system.'},
     {type:'ESNSMP Plugin',status:live.plugin.status==='available'?'LATEST':'CHECKING',version:live.plugin.version||'Checking…',title:'Latest public ESNSMP release',copy:'Detected live from the official ESNSMP GitHub Releases feed.'},
     {type:'Arcade',status:'LIVE',version:'29× Responsive Pass',title:'Full Arcade layout upgrade',copy:'Wider game layouts, mobile-safe controls, full Clicker/Factory/Tower catalogs, and a consistent ESN shell across all six games.'},
-    {type:'Network',status:'LIVE',version:'Live Status',title:'Public network telemetry',copy:'Website, SMP player count/version, plugin release, Arcade status, and Discord connection information.'},
+    {type:'Network',status:'LIVE',version:'Live Status + Event Board',title:'Public network telemetry and event surface',copy:'Website, SMP player count/version, plugin release, Arcade status, Discord connection information, and a public event board that avoids inventing unannounced timed events.'},
   ]
 
   const roadmap=[
