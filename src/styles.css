@@ -6140,3 +6140,442 @@ html[data-motion="reduced"] .route-transition{
     display:none!important;
   }
 }
+
+
+/* =========================================================
+   ESN ARCADE REALISM + MOBILE PLAY MODE
+   More game-like depth on desktop; one-screen thumb-first play on phones.
+   ========================================================= */
+.oa-game-viewport{
+  --game-surface:#07101d;
+  --game-surface-2:#0b1829;
+}
+.oa-panel,.oa-glow-panel{
+  background:
+    linear-gradient(145deg,rgba(255,255,255,.018),transparent 30%),
+    radial-gradient(circle at 88% 8%,rgba(98,232,244,.035),transparent 22rem),
+    linear-gradient(155deg,rgba(12,28,50,.94),rgba(5,12,23,.96));
+  box-shadow:
+    inset 0 1px rgba(255,255,255,.045),
+    inset 0 -20px 60px rgba(0,0,0,.11),
+    0 24px 65px rgba(0,0,0,.18);
+}
+.oa-panel::after,.oa-glow-panel::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  border-radius:inherit;
+  background:linear-gradient(115deg,rgba(255,255,255,.025),transparent 26%,transparent 76%,rgba(98,232,244,.018));
+  opacity:.8;
+}
+.oa-panel,.oa-glow-panel{position:relative;overflow:hidden}
+.oa-panel>*,
+.oa-glow-panel>*{position:relative;z-index:1}
+
+.oa-moto-stage{
+  background:
+    radial-gradient(circle at 78% 18%,rgba(160,246,255,.12),transparent 16rem),
+    linear-gradient(180deg,#0b2748,#0a1930 56%,#03070d);
+  box-shadow:inset 0 0 80px rgba(0,0,0,.42),0 22px 60px rgba(0,0,0,.22);
+}
+.oa-moto-stage::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  background:linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);
+  background-size:7% 100%;
+  mix-blend-mode:screen;
+  opacity:.22;
+}
+.oa-moto-stage svg{filter:contrast(1.06) saturate(1.08)}
+.oa-moto-stage svg g:last-of-type{filter:drop-shadow(0 4px 5px rgba(0,0,0,.6)) drop-shadow(0 0 5px rgba(138,245,255,.2))}
+
+.oa-td-board{
+  background:linear-gradient(180deg,#0b2527,#06131e);
+  box-shadow:inset 0 0 80px rgba(0,0,0,.4),0 22px 60px rgba(0,0,0,.2);
+}
+.oa-td-board svg{filter:contrast(1.08) saturate(1.08) drop-shadow(0 12px 24px rgba(0,0,0,.25))}
+.oa-td-board .oa-node{cursor:pointer}
+
+.oa-mines-board button{
+  background:
+    linear-gradient(145deg,rgba(255,255,255,.04),transparent 38%),
+    linear-gradient(160deg,#102440,#071326);
+  box-shadow:inset 0 -10px 20px rgba(0,0,0,.16),0 6px 14px rgba(0,0,0,.12);
+}
+.oa-mines-board button.safe{
+  background:linear-gradient(145deg,rgba(75,236,151,.18),rgba(10,49,43,.9));
+  box-shadow:inset 0 0 20px rgba(75,236,151,.08),0 0 18px rgba(75,236,151,.07);
+}
+.oa-mines-board button.mine{
+  background:linear-gradient(145deg,rgba(255,81,111,.2),rgba(63,13,29,.92));
+}
+.oa-coin{
+  box-shadow:
+    0 28px 70px rgba(0,0,0,.34),
+    0 0 50px rgba(98,232,244,.12),
+    inset 0 8px 18px rgba(255,255,255,.08),
+    inset 0 -20px 40px rgba(0,0,0,.2);
+}
+.oa-doors button{
+  background:
+    linear-gradient(90deg,rgba(255,255,255,.025),transparent 8%,transparent 92%,rgba(255,255,255,.018)),
+    linear-gradient(165deg,#102039,#07101e);
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.025),inset 0 -24px 50px rgba(0,0,0,.16),0 16px 35px rgba(0,0,0,.13);
+}
+
+/* Mobile Arcade is intentionally a different play surface, not a shrunken desktop layout. */
+.oa-mobile-play-toggle{display:none}
+
+@media(max-width:760px), (pointer:coarse){
+  .oa-game-shell{
+    width:100%!important;
+    padding:10px 8px calc(92px + env(safe-area-inset-bottom))!important;
+  }
+  .oa-game-viewport{gap:10px!important}
+  .oa-panel,.oa-glow-panel{
+    padding:14px!important;
+    border-radius:16px!important;
+  }
+  .oa-title-card,
+  .oa-commandbar,
+  .oa-game-switcher,
+  .oa-arcade-rank,
+  .oa-endcap{
+    display:none!important;
+  }
+
+  .oa-mobile-focusbar{
+    position:sticky!important;
+    top:64px!important;
+    z-index:120!important;
+    display:grid!important;
+    grid-template-columns:42px minmax(0,1fr) 86px 64px!important;
+    gap:6px!important;
+    align-items:center!important;
+    min-height:58px!important;
+    margin:0 0 8px!important;
+    padding:6px!important;
+    border:1px solid rgba(98,232,244,.12)!important;
+    border-radius:14px!important;
+    background:#06101f!important;
+    box-shadow:0 12px 28px rgba(0,0,0,.28)!important;
+  }
+  .oa-mobile-focusbar>a{
+    min-height:44px!important;
+    display:grid!important;
+    place-items:center!important;
+    border:1px solid rgba(255,255,255,.07)!important;
+    border-radius:10px!important;
+    background:#0a1728!important;
+  }
+  .oa-mobile-focusbar>div{min-width:0!important;display:grid!important}
+  .oa-mobile-focusbar>div span{font-size:.38rem!important}
+  .oa-mobile-focusbar>div strong{font-size:.67rem!important;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .oa-mobile-focusbar>div small{font-size:.39rem!important;color:#6e819a!important}
+  .oa-mobile-focusbar label{min-width:0!important}
+  .oa-mobile-focusbar label>span{display:none!important}
+  .oa-mobile-focusbar select{
+    width:100%!important;
+    min-height:44px!important;
+    padding:0 5px!important;
+    border:1px solid rgba(255,255,255,.07)!important;
+    border-radius:10px!important;
+    background:#0a1728!important;
+    color:#dcecff!important;
+    font-size:.5rem!important;
+  }
+  .oa-mobile-play-toggle{
+    display:block!important;
+    min-height:44px!important;
+    padding:0 5px!important;
+    border:1px solid rgba(98,232,244,.14)!important;
+    border-radius:10px!important;
+    background:#0a1728!important;
+    color:#aef8ff!important;
+    font:900 .48rem/1 system-ui,sans-serif!important;
+  }
+  .oa-mobile-play-toggle.active{background:rgba(98,232,244,.09)!important;border-color:rgba(98,232,244,.28)!important}
+
+  /* Stop cramped typography and desktop minimum heights. */
+  .oa-page p{font-size:.76rem!important;line-height:1.48!important}
+  .oa-kicker{font-size:.5rem!important}
+  .oa-panel h2,.oa-glow-panel h2{font-size:1.15rem!important}
+  .oa-panel h3,.oa-glow-panel h3{font-size:.86rem!important}
+  .oa-page button{touch-action:manipulation}
+  .oa-page-esclicker .oa-stats,
+  .oa-tower-stats,
+  .oa-page-estowerdefense .oa-mines-stats,
+  .oa-mines-career,
+  .oa-td-career,
+  .oa-moto-career{
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  }
+  .oa-page-esclicker .oa-stats>div,
+  .oa-tower-stats>div,
+  .oa-mines-career>div,
+  .oa-td-career>div,
+  .oa-moto-career>div{
+    min-width:0!important;
+    min-height:68px!important;
+    padding:9px!important;
+  }
+
+  /* Clicker: compact tap-first mobile game. */
+  .oa-page-esclicker .oa-tap-zone{min-height:310px!important}
+  .oa-page-esclicker .oa-coin{width:min(250px,68vw)!important;height:min(250px,68vw)!important}
+  .oa-clicker-forge .oa-upgrade-list{
+    max-height:56dvh!important;
+    grid-template-columns:1fr!important;
+    overscroll-behavior:contain!important;
+  }
+  .oa-clicker-forge .oa-upgrade{min-height:160px!important}
+
+  /* Factory: catalogs scroll inside themselves instead of creating a giant page. */
+  .oa-factory-zones .oa-zone-list,
+  .oa-factory-machines .oa-machine-list,
+  .oa-factory-floors .oa-floor-grid{
+    grid-template-columns:1fr!important;
+    max-height:58dvh!important;
+    overflow:auto!important;
+    overscroll-behavior:contain!important;
+  }
+  .oa-factory-zones .oa-zone,
+  .oa-factory-machines .oa-machine,
+  .oa-factory-floors .oa-floor-grid article{min-height:150px!important}
+
+  /* Mines: board and controls fit a phone without horizontal pressure. */
+  .oa-page-esmines .oa-game-viewport{display:grid!important;grid-template-columns:1fr!important}
+  .oa-mines-board-panel{padding:10px!important}
+  .oa-mines-board{width:100%!important;gap:5px!important}
+  .oa-mines-board button{
+    aspect-ratio:1!important;
+    min-height:0!important;
+    padding:0!important;
+    border-radius:8px!important;
+    font-size:1rem!important;
+  }
+  .oa-mines-stats{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+  .oa-page-esmines .oa-choice-row{grid-template-columns:repeat(5,minmax(0,1fr))!important;gap:5px!important}
+  .oa-page-esmines .oa-choice-row:nth-of-type(2){grid-template-columns:repeat(4,minmax(0,1fr))!important}
+  .oa-page-esmines .oa-choice-row button{min-width:0!important;padding:0 4px!important;font-size:.58rem!important}
+
+  /* MOTO: landscape-like stage + thumb controls in one local surface. */
+  .oa-page-esmoto .oa-moto-career,
+  .oa-page-esmoto .oa-moto-intro,
+  .oa-page-esmoto .oa-moto-toolbar,
+  .oa-page-esmoto .oa-medal-targets,
+  .oa-page-esmoto .oa-moto-hud,
+  .oa-page-esmoto .oa-moto-controls,
+  .oa-page-esmoto .oa-subpanel{
+    display:none!important;
+  }
+  .oa-moto-game-panel{padding:8px!important}
+  .oa-moto-stage{
+    height:min(43dvh,360px)!important;
+    min-height:250px!important;
+    border-radius:14px!important;
+    overflow:hidden!important;
+  }
+  .oa-moto-stage-hud{padding:7px!important;gap:5px!important}
+  .oa-moto-stage-hud span{min-width:0!important;padding:5px 7px!important}
+  .oa-moto-stage-hud small{font-size:.38rem!important}
+  .oa-moto-stage-hud b{font-size:.62rem!important}
+  .oa-moto-mobile-quick{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:4px!important;margin-bottom:6px!important}
+  .oa-moto-mobile-quick>*{min-width:0!important;font-size:.45rem!important}
+  .oa-moto-touch-deck{
+    display:grid!important;
+    grid-template-columns:.72fr 1.28fr!important;
+    gap:7px!important;
+    margin-top:7px!important;
+  }
+  .oa-moto-steer-pad,.oa-moto-drive-pad{display:grid!important;gap:6px!important}
+  .oa-moto-steer-pad{grid-template-columns:1fr 1fr!important}
+  .oa-moto-drive-pad{grid-template-columns:.8fr .8fr 1.2fr!important}
+  .oa-moto-touch-deck button{
+    min-height:58px!important;
+    border:1px solid rgba(98,232,244,.14)!important;
+    border-radius:13px!important;
+    background:linear-gradient(180deg,#10223b,#071221)!important;
+    color:#e9fbff!important;
+    font-weight:900!important;
+    font-size:.62rem!important;
+    user-select:none!important;
+    -webkit-user-select:none!important;
+  }
+  .oa-moto-touch-deck button:active{background:#173b55!important;box-shadow:inset 0 0 18px rgba(98,232,244,.12)!important}
+  .oa-moto-game-panel>.oa-primary-wide{min-height:48px!important;margin-top:7px!important}
+
+  /* Tower: keep the actual doors/action area together. */
+  .oa-page-estower .oa-game-viewport{display:grid!important;grid-template-columns:1fr!important}
+  .oa-page-estower .oa-tower-career,
+  .oa-page-estower .oa-tower-ladder-panel{display:none!important}
+  .oa-tower-summary{padding:10px!important}
+  .oa-tower-stats{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+  .oa-tower-door-panel{min-height:auto!important;padding:10px!important}
+  .oa-doors{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:6px!important}
+  .oa-doors button{min-height:130px!important;padding:8px!important}
+  .oa-tower-mobile-live{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:5px!important;margin:7px 0!important}
+  .oa-tower-mobile-live span{
+    min-width:0!important;padding:7px 3px!important;border:1px solid rgba(255,255,255,.06)!important;border-radius:9px!important;
+    background:#071321!important;text-align:center!important;font-size:.4rem!important;color:#72859d!important;
+  }
+  .oa-tower-mobile-live b{display:block!important;margin-top:2px!important;color:#e8f7ff!important;font-size:.62rem!important}
+
+  /* Tower Defense: battlefield + all important commands stay in the same screen-sized area. */
+  .oa-page-estowerdefense .oa-td-career,
+  .oa-page-estowerdefense .oa-td-overview-panel,
+  .oa-page-estowerdefense .oa-td-abilities,
+  .oa-page-estowerdefense .oa-td-loadout-panel,
+  .oa-page-estowerdefense .oa-td-upgrade-panel{display:none!important}
+  .oa-page-estowerdefense .oa-game-viewport{display:block!important}
+  .oa-td-board-panel{
+    min-height:auto!important;
+    padding:8px!important;
+    display:grid!important;
+    gap:6px!important;
+  }
+  .oa-td-hud{
+    display:grid!important;
+    grid-template-columns:repeat(4,minmax(0,1fr))!important;
+    gap:4px!important;
+  }
+  .oa-td-hud span{min-width:0!important;padding:6px 3px!important;font-size:.42rem!important;text-align:center!important}
+  .oa-td-mobile-command{display:grid!important;gap:5px!important}
+  .oa-td-mobile-actions{display:grid!important;grid-template-columns:repeat(5,minmax(0,1fr))!important;gap:4px!important}
+  .oa-td-mobile-actions button{min-width:0!important;min-height:40px!important;padding:3px!important;font-size:.47rem!important}
+  .oa-td-mobile-towers{
+    display:grid!important;
+    grid-auto-flow:column!important;
+    grid-auto-columns:64px!important;
+    gap:4px!important;
+    overflow-x:auto!important;
+    overscroll-behavior:contain!important;
+    scrollbar-width:none!important;
+  }
+  .oa-td-mobile-towers::-webkit-scrollbar{display:none}
+  .oa-td-mobile-towers button{
+    min-height:52px!important;
+    padding:4px!important;
+    border:1px solid rgba(255,255,255,.06)!important;
+    border-radius:9px!important;
+    background:#071321!important;
+    color:#dcecff!important;
+    display:grid!important;
+    place-items:center!important;
+    gap:1px!important;
+  }
+  .oa-td-mobile-towers button.active{border-color:#62eaf6!important;background:rgba(98,232,244,.07)!important}
+  .oa-td-mobile-towers span{font-size:.38rem!important;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:56px}
+  .oa-td-mobile-towers small{font-size:.35rem!important;color:#71839b!important}
+  .oa-td-mobile-selected{
+    display:grid!important;
+    grid-template-columns:1fr auto auto!important;
+    gap:4px!important;
+    align-items:center!important;
+    padding:5px!important;
+    border:1px solid rgba(98,232,244,.09)!important;
+    border-radius:10px!important;
+    background:#071321!important;
+  }
+  .oa-td-mobile-selected>div{display:grid!important;min-width:0!important}
+  .oa-td-mobile-selected span,.oa-td-mobile-selected small{font-size:.38rem!important;color:#71839b!important}
+  .oa-td-mobile-selected b{font-size:.55rem!important}
+  .oa-td-mobile-selected button{min-height:38px!important;padding:0 7px!important;font-size:.43rem!important}
+  .oa-td-board{
+    width:100%!important;
+    min-height:0!important;
+    height:min(48dvh,430px)!important;
+    aspect-ratio:auto!important;
+    border-radius:13px!important;
+    overflow:hidden!important;
+    touch-action:manipulation!important;
+  }
+  .oa-td-board svg{width:100%!important;height:100%!important}
+}
+
+/* Focus mode hides all non-game chrome on mobile so play never requires page scrolling. */
+@media(max-width:760px), (pointer:coarse){
+  html.oa-mobile-play-active,
+  html.oa-mobile-play-active body{overflow:hidden!important;overscroll-behavior:none!important}
+  html.oa-mobile-play-active .site-header,
+  html.oa-mobile-play-active .premium-ticker,
+  html.oa-mobile-play-active .mobile-network-strip,
+  html.oa-mobile-play-active .mobile-bottom-nav,
+  html.oa-mobile-play-active .site-footer{display:none!important}
+
+  .oa-mobile-play-mode{
+    position:fixed!important;
+    inset:0!important;
+    z-index:500!important;
+    overflow:hidden!important;
+    background:#020711!important;
+  }
+  .oa-mobile-play-mode .oa-game-shell{
+    height:100dvh!important;
+    padding:6px!important;
+    display:grid!important;
+    grid-template-rows:54px minmax(0,1fr)!important;
+    overflow:hidden!important;
+  }
+  .oa-mobile-play-mode .oa-mobile-focusbar{
+    position:relative!important;
+    top:0!important;
+    margin:0!important;
+    min-height:54px!important;
+  }
+  .oa-mobile-play-mode .oa-game-viewport{
+    min-height:0!important;
+    overflow:auto!important;
+    overscroll-behavior:contain!important;
+  }
+
+  /* The three action-heavy games become true one-screen mobile games. */
+  .oa-mobile-play-mode.oa-page-esmoto .oa-game-viewport,
+  .oa-mobile-play-mode.oa-page-estower .oa-game-viewport,
+  .oa-mobile-play-mode.oa-page-estowerdefense .oa-game-viewport{
+    overflow:hidden!important;
+  }
+  .oa-mobile-play-mode.oa-page-esmoto .oa-moto-game-panel,
+  .oa-mobile-play-mode.oa-page-estower .oa-tower-door-panel,
+  .oa-mobile-play-mode.oa-page-estowerdefense .oa-td-board-panel{
+    height:100%!important;
+    min-height:0!important;
+    overflow:hidden!important;
+  }
+  .oa-mobile-play-mode.oa-page-esmoto .oa-moto-game-panel{
+    display:grid!important;
+    grid-template-rows:auto minmax(0,1fr) auto auto!important;
+  }
+  .oa-mobile-play-mode.oa-page-esmoto .oa-moto-stage{
+    height:auto!important;
+    min-height:0!important;
+  }
+  .oa-mobile-play-mode.oa-page-estower .oa-tower-summary{display:none!important}
+  .oa-mobile-play-mode.oa-page-estower .oa-tower-door-panel{
+    display:grid!important;
+    grid-template-rows:auto auto minmax(0,1fr) auto auto auto!important;
+  }
+  .oa-mobile-play-mode.oa-page-estower .oa-doors{min-height:0!important}
+  .oa-mobile-play-mode.oa-page-estower .oa-doors button{min-height:0!important;height:100%!important}
+  .oa-mobile-play-mode.oa-page-estowerdefense .oa-td-board-panel{
+    grid-template-rows:auto auto auto minmax(0,1fr)!important;
+  }
+  .oa-mobile-play-mode.oa-page-estowerdefense .oa-td-board{
+    height:auto!important;
+    min-height:0!important;
+  }
+}
+
+/* Wider desktop play surfaces feel less like stacked web cards. */
+@media(min-width:1101px){
+  .oa-page-esmoto .oa-moto-game-panel,
+  .oa-page-estowerdefense .oa-td-board-panel,
+  .oa-page-esmines .oa-mines-board-panel{
+    border-color:rgba(98,232,244,.18);
+  }
+  .oa-moto-stage,.oa-td-board{border:1px solid rgba(168,245,255,.09)}
+  .oa-moto-stage:hover,.oa-td-board:hover{box-shadow:inset 0 0 90px rgba(0,0,0,.36),0 30px 80px rgba(0,0,0,.28)}
+}
