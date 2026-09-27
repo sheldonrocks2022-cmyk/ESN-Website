@@ -35,7 +35,7 @@ const TERMINAL_COMMANDS=[
   'arcade launch clicker','arcade launch factory','arcade launch mines','arcade launch moto','arcade launch tower','arcade launch defense',
   'dashboard','dashboard arcade','dashboard network','dashboard missions','missions','rewards','inventory','profile','whoami',
   'vault','vault open','release latest','updates','timeline','tools','history','logs','logs arcade','logs achievements','logs network',
-  'notifications','notifications clear','favorites','favorites add arcade','favorites remove arcade',
+  'notifications','notifications network','notifications achievements','notifications rewards','notifications releases','notifications events','notifications clear','favorites','favorites add arcade','favorites remove arcade',
   'alias','alias grind "arcade launch tower"','unalias grind','macro','macro save daily "rewards && missions && arcade stats"','macro run daily','macro delete daily',
   'watch network','watch smp status','watch stop','terminal theme cyan','terminal theme green','terminal theme amber','terminal theme void',
   'terminal theme warden','terminal theme crt','terminal theme minimal','crt on','crt off',
@@ -57,7 +57,7 @@ const TERMINAL_MAN={
   alias:['alias <name> "<command>"','Creates a custom one-word shortcut. Use "alias" to list and "unalias <name>" to remove.'],
   macro:['macro save <name> "<cmd && cmd>"','Stores a multi-command routine. Use "macro run <name>" or "macro delete <name>".'],
   logs:['logs [arcade|achievements|network]','Shows recent device-local activity and progress logs.'],
-  notifications:['notifications','Shows Terminal notifications. Use "notifications clear" to mark current notices read.'],
+  notifications:['notifications [network|achievements|rewards|releases|events]','Shows the Terminal notification console with optional filters. Use "notifications clear" to mark current notices read.'],
   copy:['copy <smp|discord|plugin|website|diagnostics>','Copies useful ESN information to your clipboard.'],
   qr:['qr <smp|discord|website>','Displays a scannable QR code for the selected ESN destination.'],
   session:['session','Shows this visit: duration, pages seen, commands run, and Arcade XP earned.'],
@@ -959,13 +959,26 @@ function TerminalPanel({onClose,onOpenPassport,onOpenSearch,soundEnabled,setSoun
       else combined.forEach(item=>push('system',(item.at?new Date(item.at).toLocaleDateString():'—')+' // '+item.label))
     }else if(command==='notifications clear'){
       localStorage.setItem(TERMINAL_NOTICE_CLEAR_KEY,String(Date.now()));push('ok','NOTIFICATIONS // current Terminal notices marked read')
-    }else if(command==='notifications'){
-      const cleared=Number(localStorage.getItem(TERMINAL_NOTICE_CLEAR_KEY)||0)
-      const notices=[]
-      if(live.checkedAt&&new Date(live.checkedAt).getTime()>cleared)notices.push('NETWORK • SMP '+String(live.smp.status||'checking').toUpperCase()+' • Plugin '+(live.plugin.version||'checking'))
-      ;(arcade.progress.recent||[]).filter(item=>(item.at||0)>cleared).slice(0,5).forEach(item=>notices.push('ARCADE • '+item.label+' • +'+item.xp+' XP'))
-      if(!notices.length)push('system','NOTIFICATIONS // no unread Terminal notices')
-      else notices.forEach(item=>push('ok','NOTICE // '+item))
+    }else if(command==='notifications'||command.startsWith('notifications ')){
+      const filter=command==='notifications'?'all':command.slice('notifications '.length).trim()
+      const allowed=['all','network','achievements','rewards','releases','events']
+      if(!allowed.includes(filter))push('error','Notification filters: network, achievements, rewards, releases, events')
+      else{
+        const cleared=Number(localStorage.getItem(TERMINAL_NOTICE_CLEAR_KEY)||0)
+        const notices=[]
+        const add=(type,text,at=Date.now())=>{if((filter==='all'||filter===type)&&at>cleared)notices.push(type.toUpperCase()+' • '+text)}
+        if(live.checkedAt)add('network','SMP '+String(live.smp.status||'checking').toUpperCase()+' • Plugin '+(live.plugin.version||'checking'),new Date(live.checkedAt).getTime())
+        ;(arcade.progress.recent||[]).slice(0,6).forEach(item=>add('achievements',item.label+' • +'+item.xp+' XP',item.at||0))
+        const retention=readJson('esn_retention_v1',{lastClaim:null,streak:0,shards:0})
+        if(retention.lastClaim===terminalDateKey())add('rewards','Daily reward claimed • streak '+(retention.streak||0)+' • '+(retention.shards||0)+' shards',Date.now())
+        const releaseSeen=Number(localStorage.getItem('esn_terminal_release_seen_at')||0)
+        if(!releaseSeen)add('releases',SITE_RELEASE,Date.now())
+        const season=currentSeason()
+        add('events',season.label+' • '+season.copy,Date.now())
+        if(!notices.length)push('system','NOTIFICATIONS // no unread '+(filter==='all'?'Terminal':'filtered')+' notices')
+        else notices.forEach(item=>push('ok','NOTICE // '+item))
+        if(filter==='releases')localStorage.setItem('esn_terminal_release_seen_at',String(Date.now()))
+      }
     }else if(command.startsWith('terminal theme ')){
       const theme=command.slice('terminal theme '.length).trim()
       if(!TERMINAL_UI_THEMES.includes(theme))push('error','Terminal themes: '+TERMINAL_UI_THEMES.join(', '))
@@ -1005,7 +1018,10 @@ function TerminalPanel({onClose,onOpenPassport,onOpenSearch,soundEnabled,setSoun
         diagnostics:diagnosticsText(),
       }
       if(!values[target])push('error','Copy targets: smp, discord, plugin, website, diagnostics')
-      else push(await terminalCopy(values[target])?'ok':'error',(await terminalCopy(values[target])?'COPIED // ':'COPY FAILED // ')+target.toUpperCase())
+      else{
+        const ok=await terminalCopy(values[target])
+        push(ok?'ok':'error',(ok?'COPIED // ':'COPY FAILED // ')+target.toUpperCase())
+      }
     }else if(command.startsWith('qr ')){
       const target=command.slice(3).trim()
       const values={smp:'minecraft://?addExternalServer=ESN|'+SMP_ADDRESS+':'+SMP_PORT,discord:DISCORD_URL,website:window.location.origin}
