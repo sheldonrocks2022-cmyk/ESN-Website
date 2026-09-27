@@ -8,7 +8,7 @@ import StartupIntro from './StartupIntro'
 import ExperienceLayer, { FooterCommandDeck, HeroReactor } from './ExperienceLayer'
 import NetworkShowcase, { EasterEggLayer } from './NetworkShowcase'
 import NetworkEvolution, { NetworkEvolutionSection } from './NetworkEvolution'
-import { ArcadeProgressCenter, ExplorePage, GalleryPage, NetworkStatsPage, SettingsPage, SiteExpansionLayer, SMPEncyclopediaPage, SupportPage, WhatsNewPage } from './SiteExpansion'
+import { ArcadeProgressCenter, ExplorePage, GalleryPage, NetworkStatsPage, RetentionHub, SettingsPage, SiteExpansionLayer, SMPEncyclopediaPage, SupportPage, WhatsNewPage } from './SiteExpansion'
 import ShareCenter from './ShareCenter'
 import { SOCIAL_IMAGE_ALT, SOCIAL_IMAGE_URL, canonicalUrl, getSeo, robotsContent, structuredDataFor } from './seo'
 import { PortfolioPage, StatusCenter, TimelinePage, UpdatesPage, VaultPage, WhatsHappeningNow } from './LiveExperience'
@@ -633,6 +633,8 @@ function Home() {
       <NetworkShowcase />
 
       <NetworkEvolutionSection />
+
+      <RetentionHub />
 
       <section className="section flagship-story-section">
         <div className="shell flagship-story">
@@ -1406,6 +1408,8 @@ function ArcadeHub() {
       </section>
 
       <ArcadeProgressCenter />
+
+      <RetentionHub />
 
       <section className="section arcade-hub-section">
         <div className="shell arcade-hub-grid">
