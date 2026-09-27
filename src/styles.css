@@ -3565,32 +3565,67 @@ html[data-visual-theme="midnight"] .global-3d-lighting canvas{filter:saturate(1.
 
 /* Landon / Kavero leadership card */
 .landon-leadership-card{
+  --landon-red:255,55,78;
+  --landon-cyan:98,241,255;
+  --landon-blue:90,167,255;
+  --landon-violet:157,124,255;
   position:relative;
   overflow:hidden;
   grid-template-columns:minmax(280px,420px) minmax(0,1fr);
   gap:42px;
   padding:24px;
-  border-color:rgba(255,62,78,.34);
+  border-color:rgba(var(--landon-cyan),.2);
   background:
-    radial-gradient(circle at 18% 28%,rgba(255,35,55,.17),transparent 28rem),
-    radial-gradient(circle at 88% 18%,rgba(103,239,250,.07),transparent 24rem),
-    linear-gradient(145deg,rgba(12,10,16,.97),rgba(7,10,18,.94));
+    radial-gradient(circle at 14% 28%,rgba(var(--landon-red),.16),transparent 29rem),
+    radial-gradient(circle at 82% 12%,rgba(var(--landon-cyan),.1),transparent 24rem),
+    radial-gradient(circle at 92% 88%,rgba(var(--landon-violet),.1),transparent 27rem),
+    linear-gradient(145deg,rgba(8,13,28,.98),rgba(5,7,17,.97));
   box-shadow:
-    0 32px 90px rgba(0,0,0,.32),
-    inset 0 1px rgba(255,255,255,.04),
-    0 0 48px rgba(255,32,52,.08);
+    0 32px 90px rgba(0,0,0,.34),
+    inset 0 1px rgba(255,255,255,.05),
+    0 0 46px rgba(var(--landon-blue),.07),
+    0 0 54px rgba(var(--landon-red),.055);
+  transition:transform .22s ease,border-color .22s ease,box-shadow .22s ease;
+}
+.landon-leadership-card::before{
+  content:"";
+  position:absolute;
+  inset:0 0 auto;
+  height:1px;
+  pointer-events:none;
+  background:linear-gradient(90deg,rgba(var(--landon-red),.65),rgba(var(--landon-cyan),.78),rgba(var(--landon-violet),.5),transparent);
+  box-shadow:0 0 18px rgba(var(--landon-cyan),.18);
 }
 .landon-leadership-card::after{
   content:"";
   position:absolute;
   inset:0;
   pointer-events:none;
-  background:linear-gradient(120deg,transparent 45%,rgba(103,239,250,.025),transparent 64%);
+  opacity:.75;
+  background:
+    linear-gradient(120deg,transparent 40%,rgba(var(--landon-cyan),.035),transparent 63%),
+    linear-gradient(rgba(var(--landon-blue),.018) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(var(--landon-blue),.018) 1px,transparent 1px);
+  background-size:auto,30px 30px,30px 30px;
+  mask-image:linear-gradient(90deg,transparent 0%,#000 42%,#000 100%);
+}
+.landon-leadership-card:hover{
+  transform:translateY(-2px);
+  border-color:rgba(var(--landon-cyan),.3);
+  box-shadow:
+    0 38px 100px rgba(0,0,0,.38),
+    inset 0 1px rgba(255,255,255,.06),
+    0 0 54px rgba(var(--landon-blue),.1),
+    0 0 52px rgba(var(--landon-red),.07);
 }
 .landon-leadership-art{
   position:relative;
   z-index:1;
   min-width:0;
+  padding:1px;
+  border-radius:25px;
+  background:linear-gradient(145deg,rgba(var(--landon-cyan),.5),rgba(var(--landon-violet),.2) 48%,rgba(var(--landon-red),.48));
+  box-shadow:0 0 34px rgba(var(--landon-blue),.08);
 }
 .landon-leadership-art img{
   display:block;
@@ -3599,18 +3634,21 @@ html[data-visual-theme="midnight"] .global-3d-lighting canvas{filter:saturate(1.
   aspect-ratio:4/5;
   object-fit:cover;
   border-radius:24px;
-  border:1px solid rgba(255,70,86,.34);
+  border:1px solid rgba(5,7,17,.9);
   box-shadow:
-    0 24px 64px rgba(0,0,0,.45),
-    0 0 36px rgba(255,28,48,.12);
+    0 24px 64px rgba(0,0,0,.48),
+    0 0 34px rgba(var(--landon-red),.1),
+    inset 0 0 28px rgba(var(--landon-cyan),.035);
 }
 .landon-card-glow{
   position:absolute;
-  inset:10% -4% -4% 10%;
+  inset:8% -5% -6% 8%;
   z-index:-1;
   border-radius:50%;
-  background:radial-gradient(circle,rgba(255,31,55,.18),transparent 68%);
-  filter:blur(18px);
+  background:
+    radial-gradient(circle at 35% 42%,rgba(var(--landon-red),.18),transparent 52%),
+    radial-gradient(circle at 70% 65%,rgba(var(--landon-cyan),.1),transparent 60%);
+  filter:blur(20px);
   pointer-events:none;
 }
 .landon-leadership-copy{
@@ -3619,26 +3657,38 @@ html[data-visual-theme="midnight"] .global-3d-lighting canvas{filter:saturate(1.
   padding:22px 18px 22px 4px;
 }
 .landon-leadership-card .eyebrow{
-  color:#ff6f80;
+  color:var(--cyan);
+  text-shadow:0 0 18px rgba(var(--landon-cyan),.18);
 }
 .landon-leadership-card .eyebrow::before{
-  background:linear-gradient(90deg,#ff4055,transparent);
+  background:linear-gradient(90deg,rgb(var(--landon-red)),rgb(var(--landon-cyan)),transparent);
 }
 .landon-leadership-card h2{
-  color:#fff;
-  text-shadow:0 0 34px rgba(255,40,62,.14);
+  background:linear-gradient(96deg,#fff 0%,#dff9ff 38%,#b8cfff 68%,#ff9bab 112%);
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+  text-shadow:0 18px 70px rgba(var(--landon-blue),.08);
 }
 .landon-alias{
   margin:-.2rem 0 1.2rem;
-  color:#aeb9ca;
+  color:#a9dfff;
   font-size:.72rem;
   font-weight:900;
   letter-spacing:.26em;
 }
+.landon-leadership-card .large-copy{
+  color:#b5bfd1;
+}
 .landon-leadership-card .responsibility-tags span{
-  border-color:rgba(255,62,78,.22);
-  background:linear-gradient(135deg,rgba(255,45,64,.08),rgba(103,239,250,.035));
-  color:#f4f7fb;
+  border-color:rgba(var(--landon-cyan),.16);
+  background:
+    linear-gradient(135deg,rgba(var(--landon-blue),.08),rgba(var(--landon-violet),.055) 58%,rgba(var(--landon-red),.045));
+  color:#eaf9ff;
+  box-shadow:inset 0 1px rgba(255,255,255,.025);
+}
+.landon-leadership-card .responsibility-tags span:nth-child(3n+1){
+  border-color:rgba(var(--landon-red),.17);
 }
 @media(max-width:860px){
   .landon-leadership-card{
@@ -3653,4 +3703,11 @@ html[data-visual-theme="midnight"] .global-3d-lighting canvas{filter:saturate(1.
   .landon-leadership-copy{
     padding:8px 8px 18px;
   }
+}
+@media(hover:none){
+  .landon-leadership-card:hover{transform:none}
+}
+@media(prefers-reduced-motion:reduce){
+  .landon-leadership-card{transition:none}
+  .landon-leadership-card:hover{transform:none}
 }
