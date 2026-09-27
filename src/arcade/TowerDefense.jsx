@@ -278,16 +278,39 @@ export default function TowerDefenseGame(){
           <g transform="translate(4 78)"><circle r="4.6" fill="#35193f" stroke="#b56cff" strokeWidth=".8"/><circle r="2.2" fill="#d38cff"/><text x="-2.8" y="8" fill="#f1c9ff" fontSize="3.2">SPAWN</text></g>
           <g transform="translate(96 58)"><rect x="-4" y="-5" width="8" height="10" rx="1.3" fill="#102d46" stroke="#a9fbff" strokeWidth=".7"/><circle r="7" fill="url(#tdBaseGlow)" opacity=".28"/><text x="-8" y="11" fill="#d9ffff" fontSize="3.2">BASE</text></g>
           {selectedPlaced&&selectedStats&&<circle cx={nodes[g.selectedNode][0]*100} cy={nodes[g.selectedNode][1]*100} r={selectedStats.range*100} fill="rgba(98,234,246,.055)" stroke="rgba(98,234,246,.35)" strokeWidth=".45" strokeDasharray="1.4 1.2"/>}
-          {nodes.map(([x,y],i)=><g key={i} onClick={()=>place(i)} className={g.selectedNode===i?'oa-node selected':'oa-node'}>
-            <circle cx={x*100} cy={y*100} r="6.9" fill={g.placed[i]?'rgba(22,59,67,.92)':'rgba(8,20,34,.92)'} stroke={g.selectedNode===i?'#ffffff':'#62eaf6'} strokeWidth={g.placed[i]?'1':'.45'}/>
-            {g.placed[i]?<><circle cx={x*100} cy={y*100} r="3.7" fill="#173a55" stroke="#b8fbff" strokeWidth=".5"/><rect x={x*100-.7} y={y*100-5.1} width="1.4" height="5" rx=".5" fill="#c4fbff"/><text x={x*100} y={y*100+1.25} textAnchor="middle" fill="#efffff" fontSize="3.6">{TOWERS[g.placed[i].type].mark}</text><text x={x*100} y={y*100+8.2} textAnchor="middle" fill="#8ddff0" fontSize="2.5">L{g.placed[i].level}</text></>:<text x={x*100} y={y*100+1.6} textAnchor="middle" fill="#8df4ff" fontSize="4.8">+</text>}
-          </g>)}
-          {g.enemies.filter(e=>e.t>=0).map(e=>{const [x,y]=lerpPath(e.t);const size=e.boss?2.8:e.elite?2.15:1.7;return <g key={e.id}>
-            <circle cx={x*100} cy={y*100} r={size+1.1} fill={e.boss?'rgba(159,89,255,.16)':e.elite?'rgba(255,184,77,.13)':'rgba(230,246,255,.1)'}/>
-            <circle cx={x*100} cy={y*100} r={size} fill={e.boss?'#9a63ff':e.elite?'#ffb84d':'#e8f4ff'} stroke="#061224" strokeWidth=".45"/>
-            <rect x={x*100-2.6} y={y*100-4.2} width="5.2" height=".65" rx=".2" fill="#1a2847"/>
-            <rect x={x*100-2.6} y={y*100-4.2} width={5.2*Math.max(0,e.hp/e.max)} height=".65" rx=".2" fill={e.boss?'#b277ff':e.elite?'#ffc45c':'#50e28c'}/>
-          </g>})}
+          {nodes.map(([x,y],i)=>{
+            const placed=g.placed[i]
+            const tower=placed?TOWERS[placed.type]:null
+            const firing=Boolean(placed&&g.running&&!g.paused&&(placed.cool||0)>0)
+            const tx=x*100,ty=y*100
+            return <g key={i} onClick={()=>place(i)} className={g.selectedNode===i?'oa-node selected':'oa-node'}>
+              <ellipse cx={tx} cy={ty+4.7} rx="6.4" ry="2.4" fill="rgba(0,0,0,.32)"/>
+              <circle cx={tx} cy={ty} r="6.9" fill={placed?'rgba(15,48,56,.96)':'rgba(8,20,34,.92)'} stroke={g.selectedNode===i?'#ffffff':'#62eaf6'} strokeWidth={placed?'1':'.45'}/>
+              {placed?<g className={firing?'oa-td-turret firing':'oa-td-turret'} transform={`translate(${tx} ${ty})`}>
+                <rect x="-3.7" y=".8" width="7.4" height="2.6" rx=".7" fill="#102638" stroke="#78dae9" strokeWidth=".35"/>
+                <polygon points="-3.1,1.1 0,-3.5 3.1,1.1" fill={tower.name==='VOID'?'#382866':tower.name==='CANNON'?'#413326':'#174153'} stroke="#b9f8ff" strokeWidth=".32"/>
+                <circle cx="0" cy="-1.1" r="2.2" fill="#17384d" stroke="#d5fbff" strokeWidth=".38"/>
+                <rect x="1.2" y="-1.55" width={tower.name==='SNIPER'?5.8:4.4} height=".9" rx=".35" fill="#b9eaf2" transform="rotate(-18 1.2 -1.55)"/>
+                <circle cx="0" cy="-1.1" r=".7" fill={tower.name==='VOID'?'#a575ff':'#7ef4ff'}/>
+                {firing&&<g className="oa-td-muzzle"><circle cx="5.3" cy="-3.1" r="1.1" fill="#ffffff"/><circle cx="5.3" cy="-3.1" r="2.2" fill="rgba(103,239,250,.22)"/><path d="M5.3 -3.1 L10 -4.7" stroke="rgba(200,253,255,.8)" strokeWidth=".55"/></g>}
+                <text x="0" y="6.9" textAnchor="middle" fill="#93e9f4" fontSize="2.35">L{placed.level}</text>
+              </g>:<text x={tx} y={ty+1.6} textAnchor="middle" fill="#8df4ff" fontSize="4.8">+</text>}
+            </g>
+          })}
+          {g.enemies.filter(e=>e.t>=0).map(e=>{
+            const [x,y]=lerpPath(e.t),cx=x*100,cy=y*100
+            const size=e.boss?3.2:e.elite?2.45:1.9
+            const body=e.boss?'#7651c9':e.elite?'#d98c2f':'#ced8df'
+            return <g key={e.id} className={e.boss?'oa-td-enemy boss':e.elite?'oa-td-enemy elite':'oa-td-enemy'}>
+              <ellipse cx={cx} cy={cy+size+1.2} rx={size*1.15} ry={size*.5} fill="rgba(0,0,0,.28)"/>
+              <circle cx={cx} cy={cy} r={size+1.4} fill={e.boss?'rgba(151,89,255,.13)':e.elite?'rgba(255,184,77,.12)':'rgba(220,244,255,.07)'}/>
+              <path d={`M${cx} ${cy-size} L${cx+size*.9} ${cy-size*.2} L${cx+size*.72} ${cy+size} L${cx-size*.72} ${cy+size} L${cx-size*.9} ${cy-size*.2} Z`} fill={body} stroke="#07111f" strokeWidth=".45"/>
+              <rect x={cx-size*.55} y={cy-size*.15} width={size*1.1} height={size*.38} rx=".22" fill="#101a27"/>
+              <circle cx={cx-size*.24} cy={cy+.02} r=".18" fill={e.boss?'#dfc6ff':'#8ff7ff'}/><circle cx={cx+size*.24} cy={cy+.02} r=".18" fill={e.boss?'#dfc6ff':'#8ff7ff'}/>
+              <rect x={cx-2.8} y={cy-size-2.2} width="5.6" height=".72" rx=".22" fill="#14243b"/>
+              <rect x={cx-2.8} y={cy-size-2.2} width={5.6*Math.max(0,e.hp/e.max)} height=".72" rx=".22" fill={e.boss?'#b277ff':e.elite?'#ffc45c':'#50e28c'}/>
+            </g>
+          })}
         </svg>
       </div>
     </section>
