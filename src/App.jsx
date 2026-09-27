@@ -273,24 +273,31 @@ function ExperienceEffects() {
 
   useEffect(() => {
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    const mobile = window.matchMedia('(max-width: 860px), (pointer: coarse)').matches
     const selector = '.section > .shell, .page-hero-copy, .page-hero-mark, .hero-content, .hero-control-panel, .network-stat-grid > div, .service-card, .product-card, .review-card, .game-card, .tool-card, .feature-panel, .leader-tile, .connection-card, .store-security, .experience-flow > div, .leadership-spotlight'
     const nodes = [...document.querySelectorAll(selector)]
 
-    if (!reduce && 'IntersectionObserver' in window) {
-      nodes.forEach((node) => node.classList.add('reveal-ready'))
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('is-visible')
-            observer.unobserve(entry.target)
-          }
-        })
-      }, { threshold: 0.08, rootMargin: '0px 0px -5% 0px' })
-      nodes.forEach((node) => observer.observe(node))
-      return () => observer.disconnect()
+    // Mobile Stability Mode: never hide content waiting for an observer.
+    // This prevents sections/cards from flashing out and back in while the mobile browser viewport changes.
+    if (reduce || mobile || !('IntersectionObserver' in window)) {
+      nodes.forEach((node) => {
+        node.classList.remove('reveal-ready')
+        node.classList.add('is-visible')
+      })
+      return
     }
 
-    nodes.forEach((node) => node.classList.add('is-visible'))
+    nodes.forEach((node) => node.classList.add('reveal-ready'))
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible')
+          observer.unobserve(entry.target)
+        }
+      })
+    }, { threshold: 0.08, rootMargin: '0px 0px -5% 0px' })
+    nodes.forEach((node) => observer.observe(node))
+    return () => observer.disconnect()
   }, [location.pathname])
 
   useEffect(() => {
