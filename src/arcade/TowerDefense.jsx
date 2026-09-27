@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import OriginalFrame from './OriginalFrame'
-import { useArcadeProgress, usePersistent } from './shared'
+import { arcadeFeedback, useArcadeProgress, usePersistent } from './shared'
 
 const TOWERS=[
   {name:'BASIC',cost:80,damage:5,range:.16,rate:5,mark:'B'},
@@ -81,11 +81,13 @@ export default function TowerDefenseGame(){
     }
     const tower=TOWERS[g.selected]
     if(g.coins<tower.cost)return
+    arcadeFeedback('buy')
     setG(s=>({...s,coins:s.coins-tower.cost,selectedNode:node,placed:{...s.placed,[node]:{type:s.selected,cool:0,level:1}}}))
   }
 
   const startWave=()=>{
     if(g.running||g.completed)return
+    arcadeFeedback('wave')
     const count=6+Math.min(24,g.round)
     const bossRound=g.round%10===0
     const eliteRound=g.round%5===0
@@ -165,6 +167,7 @@ export default function TowerDefenseGame(){
     const tower=TOWERS[p.type]
     const cost=upgradeCost(tower,p.level)
     if(g.coins<cost||p.level>=8)return
+    arcadeFeedback('buy')
     setG(s=>({...s,coins:s.coins-cost,placed:{...s.placed,[s.selectedNode]:{...s.placed[s.selectedNode],level:s.placed[s.selectedNode].level+1}}}))
     setCareer(c=>({...c,upgrades:(c.upgrades||0)+1}))
     arcade.gainXp(35,'Tower Defense upgrade')
@@ -186,6 +189,7 @@ export default function TowerDefenseGame(){
   const pulse=()=>{
     if(!pulseReady||!g.running)return
     setG(s=>({...s,enemies:s.enemies.map(e=>({...e,hp:e.hp-(e.boss?45:80+s.round*1.5)}))}))
+    arcadeFeedback('power')
     setPulseReady(false)
     setMsg('ESN Pulse deployed across the battlefield.')
     arcade.gainXp(45,'Tower Defense ESN Pulse')
@@ -195,6 +199,7 @@ export default function TowerDefenseGame(){
   const repair=()=>{
     if(g.coins<220||g.base>=150)return
     setG(s=>({...s,coins:s.coins-220,base:Math.min(150,s.base+35)}))
+    arcadeFeedback('safe')
     setMsg('Base repaired by 35 HP.')
   }
 
