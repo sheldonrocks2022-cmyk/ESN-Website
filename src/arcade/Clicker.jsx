@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import OriginalFrame from './OriginalFrame'
-import { money, useArcadeProgress, usePersistent } from './shared'
+import { arcadeFeedback, money, useArcadeProgress, usePersistent } from './shared'
 
 const tiers=['Bronze','Iron','Steel','Cobalt','Silver','Gold','Platinum','Sapphire','Ruby','Emerald','Obsidian']
 const types=[
@@ -66,6 +66,7 @@ export default function ClickerGame(){
     const crit=Math.random()<g.crit
     const burst=Math.random()<.06
     const gain=g.clickPower*effectiveGlobal*comboMult*(crit?2:1)*(burst?g.burst:1)
+    if(crit||burst||nextCombo%5===0)arcadeFeedback(crit||burst?'power':'tap')
     setG(x=>{
       const balance=x.balance+gain
       return {
@@ -95,6 +96,7 @@ export default function ClickerGame(){
         count+=1
       }
       if(!count)return x
+      arcadeFeedback('buy')
       const next={...x,balance,levels:{...x.levels,[u.id]:lv}}
       const amount=u.power*count
       if(u.tag==='CLICK POWER')next.clickPower+=amount
@@ -110,6 +112,7 @@ export default function ClickerGame(){
     if(overdrive||(g.overdriveCharge||0)<100)return
     setG(x=>({...x,overdriveCharge:0}))
     setOverdrive(true)
+    arcadeFeedback('power')
     arcade.gainXp(75,'Clicker Overdrive')
     arcade.unlock('clicker-overdrive','Clicker: Core Overdrive',100)
     setTimeout(()=>setOverdrive(false),10000)
@@ -123,6 +126,7 @@ export default function ClickerGame(){
       prestige:(x.prestige||0)+1,prestigeEarned:0,overdriveCharge:0,
     }))
     setCombo(0)
+    arcadeFeedback('win')
     arcade.track('clickerPrestiges',1,350,'Clicker prestige')
     arcade.unlock('clicker-prestige','Clicker: First Prestige',250)
   }
