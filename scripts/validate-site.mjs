@@ -12,6 +12,7 @@ const requiredRoutes = [
   '/store/smp',
   '/smpconnection',
   '/smpconsole',
+  '/smpplugin',
   '/estools',
   '/tools',
   '/arcade',
@@ -86,6 +87,11 @@ if (!app.includes('<Header />') || !app.includes('<Footer />')) problems.push('G
 if (!app.includes("import ES3DViewer from './ES3DViewer'")) problems.push('3D viewer import missing.')
 if (!app.includes('<ES3DViewer variant={product.name} compact')) problems.push('3D store viewer missing.')
 if (!app.includes('<ES3DViewer variant="hero"')) problems.push('3D homepage viewer missing.')
+if (!app.includes('https://github.com/sheldonrocks2022-cmyk/ESNSMP/releases/latest/download/ESNSMP.jar')) problems.push('Latest ESNSMP.jar download URL missing.')
+if (!app.includes("PLUGIN_VERSION = 'v2.9.4'")) problems.push('Verified ESNSMP v2.9.4 label missing.')
+if (!app.includes('4439a6c8bf7ea6b0bf170098eeb1dff3f9f2f7008c06556140a1c1cfd8afd356')) problems.push('Verified v2.9.4 SHA-256 missing.')
+if (!app.includes('Add & Start') || !app.includes('Open Bedrock Connect on your phone') || !app.includes('Same Wi-Fi / internet required')) problems.push('Official ESN console connection flow missing.')
+if (!app.includes('<ExperienceEffects />')) problems.push('Premium interaction effects are not mounted.')
 if (app.includes('Tool logic is intentionally not being invented')) problems.push('Obsolete ES Tools placeholder content returned.')
 
 if (problems.length) {
