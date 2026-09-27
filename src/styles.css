@@ -4769,3 +4769,92 @@ html[data-esn-season="summer"] .network-evolution-ambient{filter:hue-rotate(-14d
   .route-transition-scan{animation-duration:.24s!important}
   .route-transition-core{animation-duration:.28s!important}
 }
+
+
+/* =========================================================
+   MOBILE FLOATING BAR LAYOUT FIX
+   Keep ESN utilities, Command Deck, and bottom nav aligned instead of crossing.
+   ========================================================= */
+@media(max-width:760px), (pointer:coarse){
+  body{padding-bottom:206px!important}
+
+  .mobile-bottom-nav{
+    left:10px!important;
+    right:10px!important;
+    bottom:10px!important;
+    min-height:64px!important;
+    z-index:190!important;
+  }
+
+  .ev-system-rail{
+    left:10px!important;
+    right:10px!important;
+    top:auto!important;
+    bottom:84px!important;
+    width:auto!important;
+    height:50px!important;
+    padding:5px!important;
+    display:grid!important;
+    grid-template-columns:repeat(4,minmax(0,1fr))!important;
+    gap:5px!important;
+    border-radius:18px!important;
+    z-index:185!important;
+  }
+  .ev-system-rail button{
+    width:auto!important;
+    min-width:0!important;
+    min-height:40px!important;
+    height:40px!important;
+    border-radius:11px!important;
+  }
+  .ev-system-rail button span{font-size:.82rem!important}
+  .ev-system-rail button small{display:block!important;font-size:.4rem!important}
+
+  .ev-command-deck{
+    left:10px!important;
+    right:10px!important;
+    bottom:142px!important;
+    width:auto!important;
+    max-width:none!important;
+    min-height:54px!important;
+    padding:5px!important;
+    display:grid!important;
+    grid-auto-flow:column!important;
+    grid-auto-columns:minmax(44px,1fr)!important;
+    gap:5px!important;
+    overflow-x:auto!important;
+    overflow-y:hidden!important;
+    border-radius:18px!important;
+    z-index:184!important;
+    scrollbar-width:none!important;
+  }
+  .ev-command-deck::-webkit-scrollbar{display:none!important}
+  .ev-command-deck>a,
+  .ev-command-deck>button{
+    width:auto!important;
+    min-width:44px!important;
+    min-height:42px!important;
+    height:42px!important;
+    border-radius:11px!important;
+  }
+  .ev-command-deck span{font-size:.78rem!important}
+  .ev-command-deck small{display:block!important;font-size:.38rem!important}
+
+  /* Prevent unrelated floating controls from colliding with the aligned stack. */
+  .notification-orb{top:82px!important;right:10px!important}
+  .ev-season-pill{
+    left:10px!important;
+    right:auto!important;
+    top:82px!important;
+    max-width:190px!important;
+    z-index:150!important;
+  }
+
+  /* Remove decorative crossing lines around the top mobile hero. */
+  .page-hero::before,
+  .page-hero::after,
+  .section-heading::before,
+  .section-heading::after{
+    pointer-events:none!important;
+  }
+}
