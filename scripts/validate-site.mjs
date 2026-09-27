@@ -84,6 +84,7 @@ const shareCenter = fs.readFileSync('src/ShareCenter.jsx','utf8')
 const seo = fs.readFileSync('src/seo.js','utf8')
 const prerender = fs.readFileSync('scripts/prerender.mjs','utf8')
 const indexHtml = fs.readFileSync('index.html','utf8')
+const socialPreview = fs.readFileSync('public/esn-social-card.svg','utf8')
 
 if (missingRoutes.length) problems.push(`Missing app routes: ${missingRoutes.join(', ')}`)
 if (missingPayments.length) problems.push(`Missing payment links: ${missingPayments.join(', ')}`)
@@ -148,6 +149,35 @@ if (!immersiveLayer.includes('NetworkEvents') || !immersiveLayer.includes('VISUA
 if (!immersiveLayer.includes('FooterCommandDeck') || !immersiveLayer.includes('ESN COMMAND DECK')) problems.push('Interactive footer command deck missing.')
 if (!shareCenter.includes('1200') || !shareCenter.includes('630') || !shareCenter.includes('toBlob') || !shareCenter.includes('toDataURL') || !shareCenter.includes('navigator.share')) problems.push('Share Deck must generate real 1200x630 PNG cards and support native sharing.')
 if (!seo.includes("export const SEO_ROUTES=") || !seo.includes("export const SEO_LAUNCH_MODE='staging'")) problems.push('Shared SEO route configuration missing or staging launch protection disabled before cutover.')
+if (!seo.includes("SOCIAL_IMAGE_URL=SITE_URL+'/esn-social-card.svg'") || !seo.includes('SOCIAL_IMAGE_ALT')) problems.push('Shared ESN social preview metadata missing.')
+if (!socialPreview.includes('width="1200"') || !socialPreview.includes('height="630"') || !socialPreview.includes('BUILD. PLAY. CREATE.')) problems.push('ESN 1200x630 social preview asset is missing or malformed.')
+if (!app.includes('SOCIAL_IMAGE_URL') || !app.includes("setAlternate('en-US')") || !app.includes("setAlternate('x-default')")) problems.push('Live SEO manager is missing social image or hreflang support.')
+if (!prerender.includes('SOCIAL_IMAGE_URL') || !prerender.includes('hreflang="en-US"') || !prerender.includes('hreflang="x-default"')) problems.push('Prerendered SEO is missing social image or hreflang support.')
+if (!indexHtml.includes('property="og:image" content="https://esnoffical.com/esn-social-card.svg"') || !indexHtml.includes('name="twitter:card" content="summary_large_image"')) problems.push('Base HTML social preview metadata missing.')
+if (!indexHtml.includes('hreflang="en-US"') || !indexHtml.includes('hreflang="x-default"')) problems.push('Base HTML hreflang links missing.')
+if (!seo.includes('export const STORE_SCHEMA=') || !seo.includes('export const GAME_SCHEMA_DETAILS=') || !seo.includes('export const TOOL_SCHEMA=') || !seo.includes('export const CONSOLE_HOWTO_STEPS=')) problems.push('Expanded route structured-data definitions missing.')
+for (const marker of ["'@type':'Product'","'@type':'SoftwareApplication'","'@type':'GameServer'","'@type':'HowTo'"]) {
+  if (!seo.includes(marker)) problems.push(`Structured data type missing: ${marker}.`)
+}
+for (const relatedTitle of ['Research ESN before you order.','Everything around the ESN SMP.','Continue through the ESN Minecraft network.','Need more SMP information?']) {
+  if (!app.includes(relatedTitle)) problems.push(`Contextual internal-link section missing: ${relatedTitle}`)
+}
+
+const indexedSeoEntries = Object.entries(SEO_ROUTES).filter(([,meta])=>meta.index!==false)
+const seenTitles = new Map()
+const seenDescriptions = new Map()
+const seenCanonicals = new Map()
+for (const [route,meta] of indexedSeoEntries) {
+  if (!meta.title || meta.title.length < 20 || meta.title.length > 75) problems.push(`SEO title length is weak for ${route}: ${meta.title?.length??0} characters.`)
+  if (!meta.description || meta.description.length < 80 || meta.description.length > 180) problems.push(`SEO description length is weak for ${route}: ${meta.description?.length??0} characters.`)
+  if (seenTitles.has(meta.title)) problems.push(`Duplicate indexable SEO title: ${route} and ${seenTitles.get(meta.title)}.`)
+  else seenTitles.set(meta.title,route)
+  if (seenDescriptions.has(meta.description)) problems.push(`Duplicate indexable SEO description: ${route} and ${seenDescriptions.get(meta.description)}.`)
+  else seenDescriptions.set(meta.description,route)
+  const canonical=canonicalUrl(route)
+  if (seenCanonicals.has(canonical)) problems.push(`Duplicate indexable canonical: ${route} and ${seenCanonicals.get(canonical)}.`)
+  else seenCanonicals.set(canonical,route)
+}
 if (!app.includes("from './seo'") || !app.includes('structuredDataFor(location.pathname)') || !app.includes('robotsContent(location.pathname')) problems.push('Live React SEO manager is not using the shared SEO source.')
 if (!prerender.includes("from '../src/seo.js'") || !prerender.includes('structuredDataFor(route)') || !prerender.includes("path.join('dist', 'sitemap.xml')")) problems.push('Prerendered SEO or generated sitemap is not using the shared SEO source.')
 if (!indexHtml.includes('name="robots" content="noindex, nofollow"') || !indexHtml.includes('name="googlebot" content="noindex, nofollow"')) problems.push('Staging base HTML must remain statically noindex until the .com cutover.')
