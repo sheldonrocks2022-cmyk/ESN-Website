@@ -1,13 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link, Navigate, Route, Routes, useLocation } from 'react-router-dom'
 import ESToolsSuite from './Tools'
-import ClickerGame from './arcade/Clicker'
-import FactoryGame from './arcade/Factory'
-import MinesGame from './arcade/Mines'
-import MotoGame from './arcade/Moto'
-import TowerGame from './arcade/Tower'
-import TowerDefenseGame from './arcade/TowerDefense'
-import { useArcadeProfile } from './arcade/profile'
 
 const DISCORD_URL = 'https://discord.gg/3gxA66KZ8'
 const SMP_HOST = 'esn.ggwp.cc'
@@ -127,12 +120,12 @@ const STORE_PRODUCTS = [
 ]
 
 const ARCADE_GAMES = [
-  ['ES Clicker: Overdrive', '/esclicker', 'Tap, automate, buy upgrades, and grow the shared ES Arcade Coin profile.'],
-  ['ES Factory: Neon Grid', '/esfactory', 'Build production machines, increase grid multipliers, and generate ES Coins over time.'],
-  ['ES Mines: Riftfield', '/esmines', 'A 5×5 virtual ES Coin risk game with safe-cell multipliers and cash-out decisions. No real-money wagering.'],
-  ['ES MOTO: Hyperlane', '/esmoto', 'Race across 1,000 generated tracks with hazards, touch controls, saved best times, and Arcade rewards.'],
-  ['ES Tower: Skyline', '/estower', 'A precision stacking game where narrower placements increase the challenge as the tower climbs.'],
-  ['ES Tower Defense: Rift Siege', '/estowerdefense', 'Defend three lanes with upgradeable turrets, escalating waves, energy management, and ES Coin rewards.'],
+  ['ES Clicker', '/esclicker', 'Original ES Clicker route. Historically verified features include local progress, ES Coins, statistics, an upgrade shop, and 110 upgrades.'],
+  ['ES Factory', '/esfactory', 'Original ES Factory route. Historically verified features include 53 zones, 112 machines, floors, upgrades, boosts, and shared ES Coin progression.'],
+  ['ES Mines', '/esmines', 'Original ES Mines route with virtual ES Coins, wager selection, mine-density selection, and multipliers. No real-money transactions.'],
+  ['ES MOTO', '/esmoto', 'Original ES MOTO route with 1,000+ tracks, checkpoints, touch controls, best times, and daily challenges.'],
+  ['ES Tower', '/estower', 'Original ES Tower route reserved for faithful migration from the official game.'],
+  ['ES Tower Defense', '/estowerdefense', 'Original ES Tower Defense route reserved for faithful migration from the official game.'],
 ]
 
 const FAQ_ITEMS = [
@@ -157,13 +150,13 @@ const META = {
   '/leadership': ['ES Network Leadership | Meet the Team', 'Meet the founders, co-founders, and administrators behind ES Network.'],
   '/faq': ['ES Network FAQ | Services, Ordering & Support', 'Answers about ES Network services, SMP purchases, support, community access, and tools.'],
   '/testimonials': ['ES Network Customer Testimonials', 'Customer and community feedback for ES Network services and projects.'],
-  '/arcade': ['ESN Arcade 2.0 | Browser Games', 'Play ES Network browser games with a shared local ES Coin profile and saved progression.'],
-  '/esclicker': ['ES Clicker: Overdrive | ESN Arcade', 'Tap, automate, upgrade, and grow your shared ES Arcade profile.'],
-  '/esfactory': ['ES Factory: Neon Grid | ESN Arcade', 'Build machines and production upgrades in the ESN Arcade factory.'],
-  '/esmines': ['ES Mines: Riftfield | ESN Arcade', 'Play a virtual ES Coin risk-and-cash-out grid with no real-money wagering.'],
-  '/esmoto': ['ES MOTO: Hyperlane | ESN Arcade', 'Race across 1,000 generated tracks with touch controls, hazards, and saved best times.'],
-  '/estower': ['ES Tower: Skyline | ESN Arcade', 'Build a precision tower and chase higher stacking scores.'],
-  '/estowerdefense': ['ES Tower Defense: Rift Siege | ESN Arcade', 'Defend three lanes with turret upgrades, waves, and ES Coin rewards.'],
+  '/arcade': ['ESN Arcade | Browser Games', 'The ES Network Arcade routes are preserved while the original game experiences are faithfully migrated.'],
+  '/esclicker': ['ES Clicker | ESN Arcade', 'Original ES Clicker route preserved for faithful migration.'],
+  '/esfactory': ['ES Factory | ESN Arcade', 'Original ES Factory route preserved for faithful migration.'],
+  '/esmines': ['ES Mines | ESN Arcade', 'Original ES Mines route preserved for faithful migration.'],
+  '/esmoto': ['ES MOTO | ESN Arcade', 'Original ES MOTO route preserved for faithful migration.'],
+  '/estower': ['ES Tower | ESN Arcade', 'Original ES Tower route preserved for faithful migration.'],
+  '/estowerdefense': ['ES Tower Defense | ESN Arcade', 'Original ES Tower Defense route preserved for faithful migration.'],
 }
 
 function MetaManager() {
@@ -836,35 +829,40 @@ function SMPStore() {
 }
 
 function ArcadeHub() {
-  const { profile } = useArcadeProfile()
-
   return (
     <>
-      <PageHero eyebrow="ESN Arcade 2.0" title="Six games. One shared profile." text="The rebuilt ESN Arcade connects every game through local ES Coins, XP, levels, and device-saved progression." />
+      <PageHero
+        eyebrow="ESN Arcade"
+        title="Original Arcade migration"
+        text="The six official ESN games are being migrated from their original mechanics and presentation. The temporary rebuilt versions have been removed so we do not replace the originals with guesses."
+      />
       <section className="section">
-        <div className="shell">
-          <div className="arcade-profile-card">
-            <div>
-              <span className="eyebrow">YOUR LOCAL ARCADE PROFILE</span>
-              <h2>Level {profile.level}</h2>
-              <p className="muted">Progress is stored locally in this browser on this device.</p>
-            </div>
-            <div className="arcade-profile-stats">
-              <span><b>{Math.floor(profile.coins).toLocaleString()}</b>Available ES Coins</span>
-              <span><b>{Math.floor(profile.lifetimeCoins || 0).toLocaleString()}</b>Lifetime ES Coins earned</span>
-              <span><b>{Math.floor(profile.xp).toLocaleString()}</b>Arcade XP</span>
-            </div>
-          </div>
-          <div className="card-grid two arcade-game-grid">
-            {ARCADE_GAMES.map(([name, route, description], index) => (
-              <article className="game-card upgraded-game-card" key={route}>
-                <span className="card-number">{String(index + 1).padStart(2, '0')}</span>
-                <span className="eyebrow">Arcade 2.0</span>
-                <h2>{name}</h2>
-                <p>{description}</p>
-                <Link to={route}>Play now →</Link>
-              </article>
-            ))}
+        <div className="shell card-grid two">
+          {ARCADE_GAMES.map(([name, route, description]) => (
+            <article className="game-card" key={route}>
+              <span className="eyebrow">Protected original</span>
+              <h2>{name}</h2>
+              <p>{description}</p>
+              <Link to={route}>View migration status →</Link>
+            </article>
+          ))}
+        </div>
+      </section>
+    </>
+  )
+}
+
+function ProtectedGame({ name, description }) {
+  return (
+    <>
+      <PageHero eyebrow="ESN Arcade" title={name} text={description} />
+      <section className="section">
+        <div className="shell narrow">
+          <div className="preserve-box">
+            <span className="eyebrow">Faithful migration required</span>
+            <h2>This game will not be approximated.</h2>
+            <p>The replacement build keeps this route reserved for the original ESN game. Its real mechanics, saves, ES Coins, upgrades, controls, balancing, progression, and presentation must be migrated from the official version before an upgraded edition is published.</p>
+            <Link className="button secondary" to="/arcade">Back to Arcade</Link>
           </div>
         </div>
       </section>
@@ -911,12 +909,9 @@ function App() {
           <Route path="/estools" element={<ESToolsSuite />} />
           <Route path="/tools" element={<Navigate to="/estools" replace />} />
           <Route path="/arcade" element={<ArcadeHub />} />
-          <Route path="/esclicker" element={<ClickerGame />} />
-          <Route path="/esfactory" element={<FactoryGame />} />
-          <Route path="/esmines" element={<MinesGame />} />
-          <Route path="/esmoto" element={<MotoGame />} />
-          <Route path="/estower" element={<TowerGame />} />
-          <Route path="/estowerdefense" element={<TowerDefenseGame />} />
+          {ARCADE_GAMES.map(([name, route, description]) => (
+            <Route key={route} path={route} element={<ProtectedGame name={name} description={description} />} />
+          ))}
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
