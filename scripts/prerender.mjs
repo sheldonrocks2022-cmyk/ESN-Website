@@ -33,6 +33,10 @@ const routes = {
     title: 'ESN SMP Connection | Server IP & Port',
     description: 'Connect to the ESN SMP using esn.ggwp.cc and port 17058.',
   },
+  '/smpconsole': {
+    title: 'ESN SMP Console Connection | Xbox, PlayStation & Switch',
+    description: 'Console connection guidance for joining the ESN SMP from Xbox, PlayStation, or Nintendo Switch.',
+  },
   '/estools': {
     title: 'ES Tools | Free Browser-Based Creator & Gaming Utilities',
     description: 'Free browser-based ES Network tools with no account required.',
