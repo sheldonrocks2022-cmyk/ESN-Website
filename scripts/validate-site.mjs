@@ -14,6 +14,13 @@ const requiredRoutes = [
   '/smpconnection',
   '/smpconsole',
   '/smpplugin',
+  '/smpguide',
+  '/networkstats',
+  '/whatsnew',
+  '/explore',
+  '/gallery',
+  '/settings',
+  '/support',
   '/vault',
   '/portfolio',
   '/share',
@@ -67,6 +74,7 @@ const requiredMigrationFiles = [
   'src/StartupIntro.jsx',
   'src/NetworkEvolution.jsx',
   'src/networkEvolutionConfig.js',
+  'src/SiteExpansion.jsx',
   'src/reviews.js',
   'src/arcade/shared.js',
   'src/arcade/OriginalFrame.jsx',
@@ -113,6 +121,16 @@ if (app.includes('View migration status →')) problems.push('Arcade placeholder
 if (app.includes('!isArcadeGame && <Header />') || app.includes('!isArcadeGame && <Footer />')) problems.push('Arcade pages must keep the global ESN header and footer.')
 if (!app.includes('<Header />') || !app.includes('<Footer />')) problems.push('Global ESN shell is not mounted universally.')
 if (!app.includes('<NetworkEvolution />') || !app.includes('<NetworkEvolutionSection />')) problems.push('Network Evolution 12X is not mounted globally and on the homepage.')
+if (!app.includes('<SiteExpansionLayer />') || !app.includes('<ArcadeProgressCenter />')) problems.push('Expansion 20 global layer or Arcade challenge center is not mounted.')
+for (const route of ['/smpguide','/networkstats','/whatsnew','/explore','/gallery','/settings','/support']) {
+  if (!app.includes(`path="${route}"`)) problems.push(`Expansion 20 route missing: ${route}`)
+}
+const siteExpansion = fs.readFileSync('src/SiteExpansion.jsx','utf8')
+if (!siteExpansion.includes('SMPEncyclopediaPage') || !siteExpansion.includes('SettingsPage') || !siteExpansion.includes('ArcadeProgressCenter')) problems.push('Expansion 20 SMP, settings, or Arcade systems missing.')
+if (!siteExpansion.includes('beforeinstallprompt') || !fs.existsSync('public/site.webmanifest') || !fs.existsSync('public/sw.js')) problems.push('Installable ESN PWA system missing.')
+if (!siteExpansion.includes('REPORT PREVIEW') || !siteExpansion.includes('NetworkStatsPage') || !siteExpansion.includes('ExplorePage')) problems.push('Bug report, network stats, or feature discovery system missing.')
+if (!liveExperience.includes('Expansion 20') || !liveExperience.includes('release-filter-row') || !liveExperience.includes('INCIDENT HISTORY')) problems.push('Expansion 20 release log, filters, or incident history missing.')
+if (!indexHtml.includes('site.webmanifest')) problems.push('PWA manifest link missing from base HTML.')
 if (!networkEvolution.includes('ESN Passport') || !networkEvolution.includes('ESN Terminal') || !networkEvolution.includes('Universal ESN Search')) problems.push('Network Evolution Passport, Terminal, or universal search system missing.')
 if (!networkEvolution.includes('Share achievement card') || !networkEvolution.includes('Math.random()<.01')) problems.push('Achievement card or ultra-rare event system missing.')
 if (!networkEvolution.includes('esn_command_deck') || !evolutionConfig.includes('NETWORK_TAKEOVER') || !evolutionConfig.includes('SMP_EVENT_BOARD')) problems.push('Command Deck, takeover configuration, or event board configuration missing.')
