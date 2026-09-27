@@ -266,12 +266,22 @@ function Brand() {
 
 function Header() {
   const [open, setOpen] = useState(false)
+  const location = useLocation()
   const close = () => setOpen(false)
+  const inGroup = (paths) => paths.some((path) => location.pathname === path || location.pathname.startsWith(path + '/'))
+  const arcadeActive = location.pathname === '/arcade' || ARCADE_GAMES.some(([, route]) => route === location.pathname)
 
   return (
     <header className="site-header">
+      <div className="header-glow" aria-hidden="true" />
       <div className="shell header-inner">
         <Brand />
+
+        <div className="header-status" aria-label="ES Network status">
+          <i />
+          <span>ESN ONLINE</span>
+        </div>
+
         <button className="menu-toggle" type="button" onClick={() => setOpen((v) => !v)} aria-expanded={open} aria-label="Toggle navigation">
           <span />
           <span />
@@ -279,9 +289,12 @@ function Header() {
         </button>
 
         <nav className={open ? 'nav open' : 'nav'} aria-label="Main navigation">
-          <div className="nav-group">
+          <Link className={location.pathname === '/' || location.pathname === '/home' ? 'nav-direct active' : 'nav-direct'} onClick={close} to="/">Home</Link>
+
+          <div className={inGroup(['/serviceshowcase']) ? 'nav-group active' : 'nav-group'}>
             <button className="nav-trigger" type="button" aria-haspopup="true">Services</button>
             <div className="dropdown">
+              <span className="dropdown-label">ESN SERVICES</span>
               <Link onClick={close} to="/serviceshowcase">Service Showcase</Link>
               <Link onClick={close} to="/#fortnite-coaching">Fortnite Coaching</Link>
               <Link onClick={close} to="/#editing-services">Editing Services</Link>
@@ -289,82 +302,111 @@ function Header() {
             </div>
           </div>
 
-          <div className="nav-group">
+          <div className={inGroup(['/smpconnection','/smpconsole','/storesmp']) ? 'nav-group active' : 'nav-group'}>
             <button className="nav-trigger" type="button" aria-haspopup="true">ESN SMP</button>
             <div className="dropdown">
+              <span className="dropdown-label">MINECRAFT NETWORK</span>
               <Link onClick={close} to="/smpconnection">SMP Connection</Link>
               <Link onClick={close} to="/smpconsole">Console Connection</Link>
               <Link onClick={close} to="/storesmp">SMP Store</Link>
             </div>
           </div>
 
-          <div className="nav-group">
+          <div className={arcadeActive ? 'nav-group active' : 'nav-group'}>
             <button className="nav-trigger" type="button" aria-haspopup="true">Arcade</button>
-            <div className="dropdown">
+            <div className="dropdown arcade-dropdown">
+              <span className="dropdown-label">PLAY ESN</span>
               <Link onClick={close} to="/arcade">Arcade Hub</Link>
               {ARCADE_GAMES.map(([name, route]) => <Link onClick={close} key={route} to={route}>{name}</Link>)}
             </div>
           </div>
 
-          <Link onClick={close} to="/estools">ES Tools</Link>
+          <Link className={location.pathname === '/estools' ? 'nav-direct active' : 'nav-direct'} onClick={close} to="/estools">ES Tools</Link>
 
-          <div className="nav-group">
+          <div className={inGroup(['/about','/leadership','/testimonials','/faq']) ? 'nav-group active' : 'nav-group'}>
             <button className="nav-trigger" type="button" aria-haspopup="true">About</button>
             <div className="dropdown">
+              <span className="dropdown-label">THE NETWORK</span>
               <Link onClick={close} to="/about">About ES Network</Link>
               <Link onClick={close} to="/leadership">Leadership</Link>
-              <Link onClick={close} to="/testimonials">Customer Testimonials</Link>
+              <Link onClick={close} to="/testimonials">35 Verified Reviews</Link>
               <Link onClick={close} to="/faq">FAQ</Link>
             </div>
           </div>
 
-          <a onClick={close} className="nav-cta" href={DISCORD_URL} target="_blank" rel="noreferrer">Join Discord</a>
+          <a onClick={close} className="nav-cta" href={DISCORD_URL} target="_blank" rel="noreferrer">
+            <span>Join Discord</span><b>↗</b>
+          </a>
         </nav>
       </div>
     </header>
   )
 }
-
 function Footer() {
   return (
     <footer className="site-footer">
-      <div className="shell footer-grid">
-        <div>
+      <div className="footer-orb" aria-hidden="true" />
+      <div className="shell footer-top">
+        <div className="footer-brand-block">
           <Brand />
-          <p className="muted">The official home of ES Network, its services, community, Arcade, tools, and ESN SMP.</p>
+          <h2>Build. Play. Create.<br />Stay inside the network.</h2>
+          <p>The official home of ES Network — creator services, verified reviews, ESN SMP, browser Arcade, free tools, and community support.</p>
+          <a className="footer-discord" href={DISCORD_URL} target="_blank" rel="noreferrer">Join ESN Discord <span>↗</span></a>
         </div>
-        <div>
-          <h3>Explore</h3>
-          <Link to="/serviceshowcase">Services</Link>
-          <Link to="/smpconnection">ESN SMP</Link>
-          <Link to="/arcade">Arcade</Link>
-          <Link to="/estools">ES Tools</Link>
-        </div>
-        <div>
-          <h3>Community</h3>
-          <a href={DISCORD_URL} target="_blank" rel="noreferrer">Official Discord</a>
-          <Link to="/testimonials">Testimonials</Link>
-          <Link to="/faq">FAQ</Link>
+
+        <div className="footer-links">
+          <div>
+            <h3>Explore</h3>
+            <Link to="/serviceshowcase">Services</Link>
+            <Link to="/testimonials">Verified Reviews</Link>
+            <Link to="/arcade">Arcade</Link>
+            <Link to="/estools">ES Tools</Link>
+          </div>
+          <div>
+            <h3>ESN SMP</h3>
+            <Link to="/smpconnection">Connect</Link>
+            <Link to="/smpconsole">Console Guide</Link>
+            <Link to="/storesmp">SMP Store</Link>
+            <span>{SMP_HOST}</span>
+          </div>
+          <div>
+            <h3>Network</h3>
+            <Link to="/about">About ESN</Link>
+            <Link to="/leadership">Leadership</Link>
+            <Link to="/faq">FAQ</Link>
+            <a href={DISCORD_URL} target="_blank" rel="noreferrer">Discord Support</a>
+          </div>
         </div>
       </div>
-      <div className="shell footer-bottom">© {new Date().getFullYear()} ES Network. All rights reserved.</div>
+
+      <div className="shell footer-bottom">
+        <span>© {new Date().getFullYear()} ES Network. All rights reserved.</span>
+        <span className="footer-signal"><i /> ESN SYSTEMS ONLINE</span>
+      </div>
     </footer>
   )
 }
-
 function PageHero({ eyebrow, title, text, actions }) {
   return (
     <section className="page-hero">
-      <div className="shell narrow">
-        <span className="eyebrow">{eyebrow}</span>
-        <h1>{title}</h1>
-        <p>{text}</p>
-        {actions ? <div className="hero-actions page-actions">{actions}</div> : null}
+      <div className="page-hero-grid" aria-hidden="true" />
+      <div className="page-hero-orb orb-a" aria-hidden="true" />
+      <div className="page-hero-orb orb-b" aria-hidden="true" />
+      <div className="shell page-hero-inner">
+        <div className="page-hero-copy">
+          <span className="eyebrow">{eyebrow}</span>
+          <h1>{title}</h1>
+          <p>{text}</p>
+          {actions ? <div className="hero-actions page-actions">{actions}</div> : null}
+        </div>
+        <div className="page-hero-mark" aria-hidden="true">
+          <span>ES</span>
+          <small>NETWORK</small>
+        </div>
       </div>
     </section>
   )
 }
-
 function Home() {
   return (
     <>
@@ -372,19 +414,50 @@ function Home() {
         <div className="hero-grid" aria-hidden="true" />
         <div className="hero-orb orb-one" aria-hidden="true" />
         <div className="hero-orb orb-two" aria-hidden="true" />
-        <div className="shell hero-content">
-          <span className="eyebrow">ES NETWORK • OFFICIAL</span>
-          <h1>One network.<br /><span>More ways to build.</span></h1>
-          <p>Gaming, creator services, browser games, tools, community, and the ESN SMP — brought together under one ES Network.</p>
-          <div className="hero-actions">
-            <Link className="button primary" to="/serviceshowcase">Explore services</Link>
-            <a className="button secondary" href={DISCORD_URL} target="_blank" rel="noreferrer">Join the community</a>
+        <div className="hero-scanline" aria-hidden="true" />
+
+        <div className="shell hero-layout">
+          <div className="hero-content">
+            <div className="hero-badge-row">
+              <span className="signal-badge"><i /> ESN SYSTEMS ONLINE</span>
+              <span className="hero-version">NETWORK // 2026</span>
+            </div>
+
+            <span className="eyebrow">ES NETWORK • OFFICIAL DIGITAL HUB</span>
+            <h1>One network.<br /><span>Everything ESN.</span></h1>
+            <p>Creator services, verified customer reviews, six browser games, free tools, community support, and the ESN SMP — built into one connected experience.</p>
+
+            <div className="hero-actions">
+              <Link className="button primary" to="/serviceshowcase">Explore ESN <span>↗</span></Link>
+              <a className="button secondary" href={DISCORD_URL} target="_blank" rel="noreferrer">Join the community</a>
+            </div>
+
+            <div className="hero-stats premium-stats">
+              <div><strong>35</strong><span>Verified reviews</span></div>
+              <div><strong>6</strong><span>Browser Arcade games</span></div>
+              <div><strong>{SMP_HOST}</strong><span>ESN SMP</span></div>
+            </div>
           </div>
-          <div className="hero-stats">
-            <div><strong>ESN</strong><span>Current brand</span></div>
-            <div><strong>{SMP_HOST}</strong><span>Minecraft server</span></div>
-            <div><strong>Discord</strong><span>Ordering & support</span></div>
-          </div>
+
+          <aside className="hero-control-panel">
+            <div className="control-panel-top">
+              <span>NETWORK STATUS</span>
+              <i />
+            </div>
+            <div className="control-main">
+              <div className="control-logo">ES</div>
+              <div>
+                <span>ES NETWORK</span>
+                <strong>CONNECTED</strong>
+              </div>
+            </div>
+            <div className="control-grid">
+              <Link to="/serviceshowcase"><span>01</span><b>Services</b><small>Creator & gaming</small></Link>
+              <Link to="/arcade"><span>02</span><b>Arcade</b><small>6 original games</small></Link>
+              <Link to="/smpconnection"><span>03</span><b>ESN SMP</b><small>Connect & play</small></Link>
+              <Link to="/testimonials"><span>04</span><b>Reviews</b><small>35 verified</small></Link>
+            </div>
+          </aside>
         </div>
       </section>
 
@@ -945,15 +1018,12 @@ function NotFound() {
 }
 
 function App() {
-  const location = useLocation()
-  const isArcadeGame = ARCADE_GAMES.some(([, route]) => route === location.pathname)
-
   return (
     <div className="site">
       <a className="skip-link" href="#main-content">Skip to main content</a>
       <MetaManager />
       <ScrollToHash />
-      {!isArcadeGame && <Header />}
+      <Header />
       <main id="main-content">
         <Routes>
           <Route path="/" element={<Home />} />
@@ -980,7 +1050,7 @@ function App() {
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
-      {!isArcadeGame && <Footer />}
+      <Footer />
     </div>
   )
 }
