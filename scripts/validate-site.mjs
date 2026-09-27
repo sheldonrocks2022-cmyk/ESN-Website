@@ -75,6 +75,11 @@ const requiredMigrationFiles = [
 ]
 
 const problems = []
+const liveNetwork = fs.readFileSync('src/liveNetwork.js','utf8')
+const liveExperience = fs.readFileSync('src/LiveExperience.jsx','utf8')
+const startupIntro = fs.readFileSync('src/StartupIntro.jsx','utf8')
+const immersiveLayer = fs.readFileSync('src/ExperienceLayer.jsx','utf8')
+const shareCenter = fs.readFileSync('src/ShareCenter.jsx','utf8')
 
 if (missingRoutes.length) problems.push(`Missing app routes: ${missingRoutes.join(', ')}`)
 if (missingPayments.length) problems.push(`Missing payment links: ${missingPayments.join(', ')}`)
@@ -119,11 +124,6 @@ if (!app.includes('<Route path="/updates" element={<UpdatesPage />} />')) proble
 if (!app.includes('<Route path="/portfolio" element={<PortfolioPage />} />')) problems.push('Before/after portfolio route missing.')
 if (!app.includes('<Route path="/vault" element={<VaultPage />} />')) problems.push('Secret ESN Vault route missing.')
 if (!app.includes("import Global3DLighting from './Global3DLighting'") || !app.includes('<Global3DLighting />')) problems.push('Global 3D lighting is not mounted across the site.')
-const liveNetwork = fs.readFileSync('src/liveNetwork.js','utf8')
-const liveExperience = fs.readFileSync('src/LiveExperience.jsx','utf8')
-const startupIntro = fs.readFileSync('src/StartupIntro.jsx','utf8')
-const immersiveLayer = fs.readFileSync('src/ExperienceLayer.jsx','utf8')
-const shareCenter = fs.readFileSync('src/ShareCenter.jsx','utf8')
 if (!liveNetwork.includes('api.mcstatus.io/v2/status/java') || !liveNetwork.includes('players:value.players?.online')) problems.push('Live SMP player count integration missing.')
 if (!liveNetwork.includes('api.mcstatus.io/v2/status/bedrock') || !liveNetwork.includes('api.mcsrvstat.us/3/')) problems.push('SMP live status must use multiple independent sources including Java and Bedrock-aware checks.')
 if (!liveNetwork.includes('offlineResponses.length>=2')) problems.push('SMP status must not report OFFLINE from a single failed or protocol-mismatched source.')
