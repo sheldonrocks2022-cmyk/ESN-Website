@@ -775,7 +775,7 @@ export function RetentionHub(){
       </div>
     </div>
 
-    <div className="retention-vote">
+    <div className="retention-vote" id="community-ballot">
       <div><span className="eyebrow">COMMUNITY BALLOT</span><h3>What should ESN push next?</h3><p>Your choice is remembered for this weekly ballot. The public community tally remains handled through ESN community channels until account-backed voting is available.</p></div>
       <div className="retention-vote-options">{VOTE_OPTIONS.map(([id,title,copy])=><button type="button" className={voteNow.week===week&&voteNow.choice===id?'selected':''} onClick={()=>vote(id)} key={id}><strong>{title}</strong><small>{copy}</small></button>)}</div>
     </div>
