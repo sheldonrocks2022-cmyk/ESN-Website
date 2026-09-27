@@ -153,7 +153,7 @@ export default function ClickerGame(){
       </div>
     </section>
 
-    <section className="oa-panel oa-tap-zone">
+    <section className={'oa-panel oa-tap-zone '+(overdrive?'is-overdrive ':'')+(combo>=25?'is-combo':'')}>
       <span className="oa-kicker">TAP LOOP ZONE</span>
       <p>CHAIN FAST TAPS • CRITS CHARGE OVERDRIVE FASTER</p>
       <button className={overdrive?'oa-coin overdrive':'oa-coin'} onClick={tap}><small>{overdrive?'OVERDRIVE':'TAP FOR'}</small><strong>ES Coins</strong></button>
