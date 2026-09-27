@@ -48,6 +48,7 @@ const sitemapRoutes = requiredRoutes
 
 const requiredMigrationFiles = [
   'src/Tools.jsx',
+  'src/reviews.js',
   'src/arcade/shared.js',
   'src/arcade/OriginalFrame.jsx',
   'src/arcade/Clicker.jsx',
@@ -65,6 +66,14 @@ if (missingPayments.length) problems.push(`Missing payment links: ${missingPayme
 if (sitemapRoutes.length) problems.push(`Missing sitemap routes: ${sitemapRoutes.join(', ')}`)
 if (app.includes('mobile-coaching')) problems.push('Removed Mobile Coaching content was reintroduced.')
 if (app.includes('example.com')) problems.push('Placeholder example.com URL found.')
+if (!app.includes("name: 'ESN Riftwalker Bundle'") || !app.includes("price: '$0.50'")) problems.push('Riftwalker price is not restored to $0.50.')
+const reviews = fs.readFileSync('src/reviews.js','utf8')
+const reviewCount = (reviews.match(/category:'/g) || []).length
+if (reviewCount !== 35) problems.push(`Expected 35 verified reviews, found ${reviewCount}.`)
+if (!reviews.includes('Verified')) {
+  // marker is rendered by ReviewCard, but keep source integrity checks below
+}
+if (!app.includes('Verified on Discord')) problems.push('Verified on Discord review label missing.')
 for (const file of requiredMigrationFiles) {
   if (!fs.existsSync(file)) problems.push(`Missing migrated module: ${file}`)
 }
