@@ -273,6 +273,7 @@ export function SiteExpansionLayer(){
     if(arcade.achievementCount>previousAchievements.current){
       const recent=arcade.progress.recent?.[0]
       setToast({title:'Arcade achievement unlocked',copy:recent?.label||'Your shared Arcade progress increased.'})
+      window.dispatchEvent(new Event('esn-progress-change'))
       window.setTimeout(()=>setToast(null),3200)
     }
     previousAchievements.current=arcade.achievementCount
