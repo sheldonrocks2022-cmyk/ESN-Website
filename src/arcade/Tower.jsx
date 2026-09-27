@@ -36,7 +36,7 @@ export default function TowerGame(){
   }
 
   return <OriginalFrame title="ES Tower" subtitle="122 floors • three doors • shared ES Coins">
-    <section className="oa-panel">
+    <section className="oa-panel oa-tower-summary">
       <div className="oa-tower-stats">
         <div><span>CURRENT FLOOR</span><b>{run?run.floor:1}</b></div>
         <div><span>MULTIPLIER</span><b>{multiplier.toFixed(2)}X</b></div>
@@ -47,7 +47,7 @@ export default function TowerGame(){
       {!run&&<><span className="oa-kicker oa-spaced">SET WAGER</span><div className="oa-choice-row">{[10,25,50,100,250].map(v=><button key={v} className={wager===v?'active':''} onClick={()=>setWager(v)}>{v}</button>)}</div></>}
     </section>
 
-    <section className="oa-panel">
+    <section className="oa-panel oa-tower-ladder-panel">
       <div className="oa-section-head"><div><span className="oa-kicker">FLOOR REWARD LADDER</span></div><div className="oa-pill">122 FLOORS</div></div>
       <div className="oa-ladder">
         {floors.slice(0,16).map(f=><div key={f.floor} className={run&&f.floor===run.floor?'active':''}><span>Floor {f.floor}</span><b>{f.mult.toFixed(2)}X</b></div>)}
@@ -55,7 +55,7 @@ export default function TowerGame(){
       <p>SCROLL TO VIEW ALL FLOORS. CURRENT FLOOR STAYS HIGHLIGHTED.</p>
     </section>
 
-    <section className="oa-panel">
+    <section className="oa-panel oa-tower-door-panel">
       <div className="oa-section-head"><h3>Pick one of three doors on Floor {run?.floor||1}</h3>{run?.busted&&<span className="oa-busted">BUSTED</span>}</div>
       <div className="oa-doors">
         {[0,1,2].map(i=>{
