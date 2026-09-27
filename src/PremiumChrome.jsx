@@ -28,8 +28,9 @@ export default function PremiumChrome(){
   const [showTop,setShowTop]=useState(false)
   const [query,setQuery]=useState('')
 
+  const arcadeRoutes=['/arcade','/esclicker','/esfactory','/esmines','/esmoto','/estower','/estowerdefense']
   const routeKey=location.pathname.startsWith('/smp')||location.pathname.startsWith('/store')?'smp'
-    :location.pathname==='/arcade'||location.pathname.startsWith('/es')?'arcade'
+    :arcadeRoutes.includes(location.pathname)?'arcade'
     :location.pathname==='/serviceshowcase'?'services'
     :location.pathname==='/estools'||location.pathname==='/tools'?'tools'
     :location.pathname==='/testimonials'?'reviews'
