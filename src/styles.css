@@ -489,3 +489,5 @@ summary:focus-visible {
 .upgraded-game-card .card-number { position:absolute; right:22px; top:20px; opacity:.5; }
 @media (max-width:900px){ .arcade-profile-card { grid-template-columns:1fr; } }
 @media (max-width:650px){ .arcade-profile-stats { grid-template-columns:1fr; } }
+
+.compact-role-list { margin-top:10px; columns:1; }
