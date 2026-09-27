@@ -19,14 +19,149 @@ const TERMINAL_HISTORY_KEY='esn_terminal_history_v2'
 const TERMINAL_FAVORITES_KEY='esn_favorites'
 const TERMINAL_PREF_KEY='esn_site_preferences'
 const TERMINAL_THEMES=['dynamic','esn','void','smp','arcade','warden','riftwalker','midnight']
+const TERMINAL_MACROS_KEY='esn_terminal_macros_v1'
+const TERMINAL_ALIASES_KEY='esn_terminal_aliases_v1'
+const TERMINAL_OPERATOR_KEY='esn_terminal_operator_v1'
+const TERMINAL_THEME_KEY='esn_terminal_theme_v1'
+const TERMINAL_CRT_KEY='esn_terminal_crt_v1'
+const TERMINAL_NOTICE_CLEAR_KEY='esn_terminal_notice_clear_v1'
+const TERMINAL_CHALLENGE_KEY='esn_terminal_challenge_v1'
+const TERMINAL_SIGNAL_KEY='esn_terminal_signal_v1'
+const TERMINAL_PLUGIN_URL='https://github.com/sheldonrocks2022-cmyk/ESNSMP/releases/latest/download/ESNSMP.jar'
+const TERMINAL_UI_THEMES=['cyan','green','amber','void','warden','crt','minimal']
+const TERMINAL_WATCHABLE=['network','smp status','arcade stats','daily','rewards','uptime','diagnostics','session','notifications','dashboard network','dashboard arcade']
 const TERMINAL_COMMANDS=[
-  'help','help advanced','network','status','smp','smp status','arcade','arcade stats',
+  'help','help advanced','man help','network','map','status','smp','smp status','arcade','arcade stats',
   'arcade launch clicker','arcade launch factory','arcade launch mines','arcade launch moto','arcade launch tower','arcade launch defense',
-  'missions','rewards','inventory','profile','whoami','vault','vault open','release latest','updates','timeline','tools',
-  'history','favorites','favorites add arcade','favorites remove arcade','theme dynamic','theme esn','theme void','theme smp','theme arcade','theme warden','theme riftwalker',
+  'dashboard','dashboard arcade','dashboard network','dashboard missions','missions','rewards','inventory','profile','whoami',
+  'vault','vault open','release latest','updates','timeline','tools','history','logs','logs arcade','logs achievements','logs network',
+  'notifications','notifications clear','favorites','favorites add arcade','favorites remove arcade',
+  'alias','alias grind "arcade launch tower"','unalias grind','macro','macro save daily "rewards && missions && arcade stats"','macro run daily','macro delete daily',
+  'watch network','watch smp status','watch stop','terminal theme cyan','terminal theme green','terminal theme amber','terminal theme void',
+  'terminal theme warden','terminal theme crt','terminal theme minimal','crt on','crt off',
+  'theme dynamic','theme esn','theme void','theme smp','theme arcade','theme warden','theme riftwalker',
   'performance auto','performance performance','performance premium','motion full','motion reduced',
-  'diagnostics','ping','uptime','random','daily','leaderboard','vote','search','sound on','sound off','event','clear','clear data',
+  'copy smp','copy discord','copy plugin','copy website','copy diagnostics',
+  'qr smp','qr discord','qr website','session','profiler','diagnostics','diagnostics export','ping','uptime',
+  'random','daily','leaderboard','vote','challenge','fortune','signal','search','sound on','sound off','event',
+  'terminal export','terminal import ','repeat 3 network','dev info','dev routes','dev release','dev storage',
+  'ls /network/archive','cat /network/archive/origin.txt','cat /network/archive/founder.log','cat /network/archive/arcade.sys',
+  'clear','clear data',
 ]
+
+const TERMINAL_MAN={
+  help:['help','Lists core command groups. Use "help advanced" for the full operator index.'],
+  network:['network','Shows live Website, SMP, Plugin, Arcade, Discord, and release status.'],
+  map:['map','Renders a text network topology with current live states.'],
+  watch:['watch <command>','Refreshes a safe status command every three seconds. Use "watch stop" to end it.'],
+  alias:['alias <name> "<command>"','Creates a custom one-word shortcut. Use "alias" to list and "unalias <name>" to remove.'],
+  macro:['macro save <name> "<cmd && cmd>"','Stores a multi-command routine. Use "macro run <name>" or "macro delete <name>".'],
+  logs:['logs [arcade|achievements|network]','Shows recent device-local activity and progress logs.'],
+  notifications:['notifications','Shows Terminal notifications. Use "notifications clear" to mark current notices read.'],
+  copy:['copy <smp|discord|plugin|website|diagnostics>','Copies useful ESN information to your clipboard.'],
+  qr:['qr <smp|discord|website>','Displays a scannable QR code for the selected ESN destination.'],
+  session:['session','Shows this visit: duration, pages seen, commands run, and Arcade XP earned.'],
+  profiler:['profiler','Measures an approximate browser frame rate and reports the active rendering profile.'],
+  diagnostics:['diagnostics','Shows public browser/device/site diagnostics. "diagnostics export" copies a support-ready report.'],
+  dashboard:['dashboard [arcade|network|missions]','Prints a compact ASCII/Unicode dashboard in the Terminal.'],
+  challenge:['challenge','Shows today’s Terminal challenge. Complete its requested command for bonus Network XP.'],
+  signal:['signal','Tunes into a daily ESN signal. Rare signals can contain a Terminal-only collectible.'],
+  fortune:['fortune','Returns a random ESN network message, hint, or operator line.'],
+  repeat:['repeat <1-10> <safe command>','Repeats a safe local/read-only command up to ten times.'],
+  terminal:['terminal export | terminal import <code> | terminal theme <theme>','Moves Terminal setup between devices or changes the Terminal-only visual theme.'],
+  dev:['dev info | dev routes | dev release | dev storage','Read-only public developer information. No secrets or private server data are exposed.'],
+  lore:['ls /network/archive | cat /network/archive/<file>','Explores hidden ESN archive files and Terminal-only relics.'],
+}
+
+const TERMINAL_LORE={
+  '/network/archive/origin.txt':[
+    'ES NETWORK ARCHIVE // ORIGIN',
+    'EP1C Services was the former name. ES Network is the current organization and identity.',
+    'The archive records the rename as an evolution of the same project, not a separate active division.',
+  ],
+  '/network/archive/founder.log':[
+    'FOUNDER CHANNEL // AUTHORIZED PUBLIC RECORD',
+    'Landon // Founder & CEO of ES Network.',
+    'The Founder channel is tied to one of the network’s hidden signals.',
+  ],
+  '/network/archive/arcade.sys':[
+    'ARCADE CORE // SIX ACTIVE MODULES',
+    'CLICKER • FACTORY • MINES • MOTO • TOWER • TOWER DEFENSE',
+    'Local progression links Arcade activity into the wider ESN Passport and return-loop systems.',
+  ],
+  '/network/archive/rift.sig':[
+    'RIFT SIGNAL // PARTIAL',
+    'violet/cyan carrier detected',
+    'Hint: some Terminal protocols are names already hidden elsewhere in the network.',
+  ],
+  '/network/archive/legacy.1337':[
+    'LEGACY CHANNEL // 1337',
+    'Old network habits leave new traces.',
+    'The terminal remembers operators who still know where to look.',
+  ],
+}
+
+function terminalLevenshtein(a,b){
+  const left=String(a||''),right=String(b||'')
+  const row=Array.from({length:right.length+1},(_,i)=>i)
+  for(let i=1;i<=left.length;i++){
+    let prev=row[0]
+    row[0]=i
+    for(let j=1;j<=right.length;j++){
+      const old=row[j]
+      row[j]=Math.min(row[j]+1,row[j-1]+1,prev+(left[i-1]===right[j-1]?0:1))
+      prev=old
+    }
+  }
+  return row[right.length]
+}
+
+function terminalClosestCommand(value){
+  const query=String(value||'').trim().toLowerCase()
+  if(!query)return null
+  const ranked=TERMINAL_COMMANDS.map(item=>({item,score:terminalLevenshtein(query,item)})).sort((a,b)=>a.score-b.score)
+  const best=ranked[0]
+  return best&&best.score<=Math.max(2,Math.floor(query.length*.28))?best.item:null
+}
+
+async function terminalCopy(value){
+  try{
+    await navigator.clipboard.writeText(String(value))
+    return true
+  }catch{
+    try{
+      const node=document.createElement('textarea')
+      node.value=String(value)
+      node.style.position='fixed'
+      node.style.opacity='0'
+      document.body.appendChild(node)
+      node.select()
+      const ok=document.execCommand('copy')
+      node.remove()
+      return ok
+    }catch{return false}
+  }
+}
+
+function terminalEncode(value){
+  try{return btoa(unescape(encodeURIComponent(JSON.stringify(value))))}catch{return ''}
+}
+
+function terminalDecode(value){
+  try{return JSON.parse(decodeURIComponent(escape(atob(value))))}catch{return null}
+}
+
+function terminalBar(value,total=100,width=18){
+  const ratio=Math.max(0,Math.min(1,Number(value||0)/Math.max(1,Number(total||1))))
+  const filled=Math.round(ratio*width)
+  return '['+'█'.repeat(filled)+'░'.repeat(width-filled)+'] '+Math.round(ratio*100)+'%'
+}
+
+function terminalDateSeed(){
+  const key=terminalDateKey().replace(/\D/g,'')
+  return Number(key)||1
+}
+
 
 function readJson(key,fallback){
   try{return JSON.parse(localStorage.getItem(key)||JSON.stringify(fallback))}catch{return fallback}
