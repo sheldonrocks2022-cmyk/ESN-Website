@@ -168,6 +168,12 @@ export const SEO_ROUTES={
     description:'View ES Network live system information alongside local Arcade, Passport, Easter egg, recent-route, and favorite progress.',
     index:true,
   },
+  '/nexus':{
+    label:'Network Nexus',
+    title:'ES Network Nexus | XP, Missions, Arcade & Live Systems',
+    description:'Explore the ES Network Nexus with connected XP, missions, achievements, Arcade competition, live activity, secret lore, dynamic events, 3D systems, and the ESN Guide.',
+    index:true,
+  },
   '/whatsnew':{
     label:"What's New",
     title:"What's New at ES Network | Latest Website Features",
