@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import OriginalFrame from './OriginalFrame'
-import { useArcadeProgress, usePersistent } from './shared'
+import { arcadeFeedback, useArcadeProgress, usePersistent } from './shared'
 
 function terrain(track){
   const pts=[]
@@ -96,6 +96,7 @@ export default function MotoGame(){
           golds:(v.golds||0)+(medal==='GOLD'&&v.medals?.[track]!=='GOLD'?1:0),
         }))
         setResult({time:final,medal,isBest,previous:previous||null})
+        arcadeFeedback(medal==='GOLD'?'win':'impact')
         arcade.track('motoFinishes',1,medal==='GOLD'?120:medal==='SILVER'?80:50,'MOTO '+medal+' finish')
         if(medal==='GOLD'){
           arcade.track('motoGolds',1,0)
@@ -111,6 +112,7 @@ export default function MotoGame(){
 
   const start=()=>{
     setResult(null)
+    arcadeFeedback('power')
     setRun({active:true,paused:false,x:0,speed:0,rotation:0,time:0,checkpoint:0,nitro:100})
   }
   const chooseTrack=n=>{
@@ -120,7 +122,7 @@ export default function MotoGame(){
   const bikeY=interpY(pts,run.x)
   const path=pts.map(p=>p.join(',')).join(' ')
   const button=(key,label)=><button
-    onPointerDown={()=>input.current[key]=true}
+    onPointerDown={()=>{input.current[key]=true;arcadeFeedback(key==='boost'?'boost':'tap')}}
     onPointerUp={()=>input.current[key]=false}
     onPointerCancel={()=>input.current[key]=false}
     onPointerLeave={()=>input.current[key]=false}
