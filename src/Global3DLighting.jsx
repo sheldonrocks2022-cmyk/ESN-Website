@@ -49,10 +49,10 @@ float floorGrid(vec3 ro,vec3 rd){
   float t=(-1.55-ro.y)/rd.y;
   if(t<=0.0)return 0.0;
   vec3 p=ro+rd*t;
-  vec2 g=abs(fract(p.xz*.35)-.5)/fwidth(p.xz*.35);
-  float line=1.0-min(min(g.x,g.y),1.0);
+  vec2 wave=abs(sin(p.xz*1.10));
+  float line=pow(max(0.0,1.0-min(wave.x,wave.y)),16.0);
   float fade=exp(-.055*length(p.xz));
-  return line*fade*.13;
+  return line*fade*.11;
 }
 
 void main(){
