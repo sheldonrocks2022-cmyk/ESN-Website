@@ -120,6 +120,9 @@ export default function MotoGame(){
     setTrack(next);setSaved(v=>({...v,track:next}));setResult(null)
   }
   const bikeY=interpY(pts,run.x)
+  const wheelSpin=(run.x*54+run.time*run.speed*80)%360
+  const suspension=Math.sin(run.time*18)*Math.min(.7,run.speed*.16)
+  const riderLean=Math.max(-13,Math.min(13,run.rotation*.42))
   const path=pts.map(p=>p.join(',')).join(' ')
   const button=(key,label)=><button
     onPointerDown={()=>{input.current[key]=true;arcadeFeedback(key==='boost'?'boost':'tap')}}
@@ -185,13 +188,42 @@ export default function MotoGame(){
           <polyline points={path} fill="none" stroke="#05070f" strokeWidth="2.6"/>
           <polyline points={path} fill="none" stroke="#65e8f4" strokeWidth=".72" filter="url(#glow)"/>
           {[20,40,60,80].map(x=><g key={x}><line x1={x} y1="16" x2={x} y2="90" stroke="rgba(100,232,244,.09)" strokeDasharray="2 2"/><rect x={x-.35} y="26" width=".7" height="10" fill="rgba(220,250,255,.34)"/><path d={`M${x} 26 L${x+4} 28 L${x} 30 Z`} fill="rgba(98,232,244,.55)"/></g>)}
-          <g transform={`translate(${run.x} ${bikeY-4}) rotate(${run.rotation})`}>
-            <circle cx="-2.5" cy="2.4" r="2.25" fill="#050914" stroke="#8af5ff" strokeWidth=".7"/>
-            <circle cx="3.4" cy="2.4" r="2.25" fill="#050914" stroke="#8af5ff" strokeWidth=".7"/>
-            <circle cx="-2.5" cy="2.4" r=".65" fill="#a9fbff"/><circle cx="3.4" cy="2.4" r=".65" fill="#a9fbff"/>
-            <path d="M-2.2 1.3 L-.1 -1.1 L2.2 1.1 L4 1.1 M-.1 -1.1 L2.1 -2.3" fill="none" stroke="#eafcff" strokeWidth=".9" strokeLinecap="round"/>
-            <path d="M.2 -1.2 L.7 -3.8 L1.6 -4.8 M.7 -3.8 L-1 -3.1" fill="none" stroke="#dcecff" strokeWidth=".72" strokeLinecap="round"/>
-            <circle cx="1.7" cy="-5.2" r=".85" fill="#dffcff"/>
+          <g className="oa-moto-bike" transform={`translate(${run.x} ${bikeY-4+suspension}) rotate(${run.rotation})`}>
+            {input.current.boost&&run.active&&run.nitro>0&&<g className="oa-moto-exhaust">
+              <path d="M-4.8 .2 L-9.2 -.8 L-7.4 .7 L-10.1 1.7 L-5.1 1.45 Z" fill="#77f6ff" opacity=".9"/>
+              <path d="M-5.1 .5 L-7.8 .15 L-6.6 .9 L-8.2 1.25 L-5.2 1.15 Z" fill="#ffffff"/>
+            </g>}
+            <g className="oa-bike-wheel oa-bike-wheel-rear" transform={`translate(-3.25 2.65) rotate(${wheelSpin})`}>
+              <circle r="2.65" fill="#02050a" stroke="#19283b" strokeWidth=".95"/>
+              <circle r="1.85" fill="#07111c" stroke="#86f6ff" strokeWidth=".32"/>
+              <circle r=".48" fill="#c8fbff"/>
+              {[0,45,90,135].map(a=><line key={a} x1="-1.65" y1="0" x2="1.65" y2="0" transform={`rotate(${a})`} stroke="rgba(214,250,255,.72)" strokeWidth=".18"/>)}
+            </g>
+            <g className="oa-bike-wheel oa-bike-wheel-front" transform={`translate(3.85 2.65) rotate(${wheelSpin})`}>
+              <circle r="2.65" fill="#02050a" stroke="#19283b" strokeWidth=".95"/>
+              <circle r="1.85" fill="#07111c" stroke="#86f6ff" strokeWidth=".32"/>
+              <circle r=".48" fill="#c8fbff"/>
+              {[0,45,90,135].map(a=><line key={a} x1="-1.65" y1="0" x2="1.65" y2="0" transform={`rotate(${a})`} stroke="rgba(214,250,255,.72)" strokeWidth=".18"/>)}
+            </g>
+            <path d="M-3.1 1.8 L-.9 -1.05 L2.2 .95 L3.8 2.1 M-.9 -1.05 L.55 1.7 L-3.1 1.8 M.55 1.7 L2.2 .95" fill="none" stroke="#8cefff" strokeWidth=".72" strokeLinejoin="round"/>
+            <path d="M-.95 -1.08 L1.35 -1.2 L2.45 -.42 L.15 -.2 Z" fill="#183752" stroke="#d9fbff" strokeWidth=".26"/>
+            <path d="M2.25 -.4 L3.55 -2.15 L4.15 -2.2" fill="none" stroke="#bfeeff" strokeWidth=".42" strokeLinecap="round"/>
+            <path d="M3.48 -2.1 L4.05 2.0" stroke="#9ecfe2" strokeWidth=".34"/>
+            <rect x="-2.15" y=".15" width="2.35" height="1.35" rx=".35" fill="#142a3d" stroke="#79dceb" strokeWidth=".25"/>
+            <circle cx="-1.3" cy=".82" r=".5" fill="#293e50" stroke="#9af7ff" strokeWidth=".18"/>
+            <path d="M-3.9 .65 L-2.2 .5" stroke="#8a9eac" strokeWidth=".42" strokeLinecap="round"/>
+            <g className="oa-moto-rider" transform={`rotate(${riderLean} .5 -2.4)`}>
+              <path d="M-.15 -1.4 L.45 -4.1 L1.82 -4.0 L2.35 -1.65 Z" fill="#111a28" stroke="#9fdce9" strokeWidth=".28"/>
+              <path d="M.15 -1.3 L-1.45 1.05" stroke="#d1dbe4" strokeWidth=".58" strokeLinecap="round"/>
+              <path d="M1.65 -1.55 L2.45 .72" stroke="#d1dbe4" strokeWidth=".58" strokeLinecap="round"/>
+              <path d="M.55 -3.78 L2.35 -2.48 L3.55 -2.18" fill="none" stroke="#d8e3eb" strokeWidth=".55" strokeLinecap="round"/>
+              <path d="M.52 -3.68 L-.75 -2.35 L-.98 -.7" fill="none" stroke="#cbd9e4" strokeWidth=".55" strokeLinecap="round"/>
+              <circle cx=".95" cy="-5.05" r="1.02" fill="#101722" stroke="#d5fbff" strokeWidth=".34"/>
+              <path d="M.15 -5.12 Q1.05 -6 1.86 -5.22 L1.62 -4.72 L.18 -4.72 Z" fill="#2a6380"/>
+              <path d="M1.02 -5.18 L1.82 -5.04" stroke="#8ef8ff" strokeWidth=".28" strokeLinecap="round"/>
+              <path d="M.72 -4.12 L.88 -3.82" stroke="#d6e3ec" strokeWidth=".45"/>
+            </g>
+            <path d="M-4.15 .45 L-4.8 .45" stroke="#718598" strokeWidth=".4" strokeLinecap="round"/>
           </g>
         </svg>
       </div>
