@@ -72,7 +72,10 @@ function passportSnapshot(visited,eggs){
   const daily=readJson('esn_arcade_daily_v1',{completed:[]})
   const dailyCompleted=Array.isArray(daily.completed)?daily.completed.length:0
   const arcadePassportXp=arcadeAchievements*35+dailyCompleted*15
-  const xp=visited.length*18+eggs.length*12+missionXp+arcadePassportXp
+  const retention=readJson('esn_retention_v1',{networkXp:0,collectibles:[],streak:0})
+  const retentionXp=Math.max(0,Math.floor(retention.networkXp||0))
+  const collectibleCount=Array.isArray(retention.collectibles)?retention.collectibles.length:0
+  const xp=visited.length*18+eggs.length*12+missionXp+arcadePassportXp+retentionXp
   const level=Math.max(1,Math.floor(xp/120)+1)
   const badges=[
     visited.length>=4&&'Network Explorer',
@@ -81,10 +84,12 @@ function passportSnapshot(visited,eggs){
     GAME_ROUTES.every(route=>visited.includes(route))&&'Arcade Pathfinder',
     arcadeAchievements>=3&&'Arcade Achiever',
     arcadeAchievements>=6&&'Arcade Veteran',
+    (retention.streak||0)>=7&&'Seven-Day Operator',
+    collectibleCount>=3&&'Relic Collector',
     visited.includes('/vault')&&'Vault Witness',
     completed.length===MISSIONS.length&&'12X Completionist',
   ].filter(Boolean)
-  return {completed,xp,level,badges,arcadeAchievements,arcadePassportXp}
+  return {completed,xp,level,badges,arcadeAchievements,arcadePassportXp,retentionXp,collectibleCount}
 }
 
 function SystemModal({title,kicker,onClose,children,className=''}) {
