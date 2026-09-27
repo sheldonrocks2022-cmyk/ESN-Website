@@ -8,6 +8,7 @@ const RECENT_KEY='esn_recent_routes'
 const FAVORITES_KEY='esn_favorites'
 const PREF_KEY='esn_site_preferences'
 const DAILY_KEY='esn_arcade_daily_v1'
+const PLUGIN_SHA256='4439a6c8bf7ea6b0bf170098eeb1dff3f9f2f7008c06556140a1c1cfd8afd356'
 
 const ROUTE_META={
   '/':{label:'Home',category:'Network'},
@@ -356,6 +357,7 @@ export function SMPEncyclopediaPage(){
       <button type="button" onClick={()=>doCopy(SMP_ADDRESS)}><span>IP</span><strong>{SMP_ADDRESS}</strong><small>{copied===SMP_ADDRESS?'COPIED':'COPY'}</small></button>
       <button type="button" onClick={()=>doCopy(SMP_PORT)}><span>PORT</span><strong>{SMP_PORT}</strong><small>{copied===SMP_PORT?'COPIED':'COPY'}</small></button>
       <button type="button" onClick={()=>doCopy(`${SMP_ADDRESS}:${SMP_PORT}`)}><span>FULL</span><strong>{SMP_ADDRESS}:{SMP_PORT}</strong><small>{copied===`${SMP_ADDRESS}:${SMP_PORT}`?'COPIED':'COPY'}</small></button>
+      <button type="button" onClick={()=>doCopy(PLUGIN_SHA256)}><span>PLUGIN SHA-256</span><strong>{PLUGIN_SHA256}</strong><small>{copied===PLUGIN_SHA256?'COPIED':'COPY'}</small></button>
     </div></section>
     <section className="section"><div className="shell"><div className="section-heading"><div><span className="eyebrow">ENCYCLOPEDIA</span><h2>Major ESNSMP systems.</h2></div></div><div className="encyclopedia-grid">{ENCYCLOPEDIA.map(([title,copy])=><article key={title}><h3>{title}</h3><p>{copy}</p></article>)}</div></div></section>
     <section className="section dark-section"><div className="shell"><div className="section-heading"><div><span className="eyebrow">COMMAND DATABASE</span><h2>Search verified command metadata.</h2><p>Command names and descriptions here follow the current v2.9.4 plugin metadata. Permission-gated admin commands are intentionally not presented as normal player tools.</p></div></div>
