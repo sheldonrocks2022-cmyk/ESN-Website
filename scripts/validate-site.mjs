@@ -48,6 +48,7 @@ const sitemapRoutes = requiredRoutes
 
 const requiredMigrationFiles = [
   'src/Tools.jsx',
+  'src/ES3DViewer.jsx',
   'src/reviews.js',
   'src/arcade/shared.js',
   'src/arcade/OriginalFrame.jsx',
@@ -82,6 +83,9 @@ if (!app.includes('<Route path="/esclicker" element={<ClickerGame />} />')) prob
 if (app.includes('View migration status →')) problems.push('Arcade placeholder links returned instead of playable game links.')
 if (app.includes('!isArcadeGame && <Header />') || app.includes('!isArcadeGame && <Footer />')) problems.push('Arcade pages must keep the global ESN header and footer.')
 if (!app.includes('<Header />') || !app.includes('<Footer />')) problems.push('Global ESN shell is not mounted universally.')
+if (!app.includes("import ES3DViewer from './ES3DViewer'")) problems.push('3D viewer import missing.')
+if (!app.includes('<ES3DViewer variant={product.name} compact')) problems.push('3D store viewer missing.')
+if (!app.includes('<ES3DViewer variant="hero"')) problems.push('3D homepage viewer missing.')
 if (app.includes('Tool logic is intentionally not being invented')) problems.push('Obsolete ES Tools placeholder content returned.')
 
 if (problems.length) {
