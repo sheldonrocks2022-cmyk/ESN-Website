@@ -1,6 +1,12 @@
 import { useEffect, useState } from 'react'
 import { Link, Navigate, Route, Routes, useLocation } from 'react-router-dom'
 import ESToolsSuite from './Tools'
+import ClickerGame from './arcade/Clicker'
+import FactoryGame from './arcade/Factory'
+import MinesGame from './arcade/Mines'
+import MotoGame from './arcade/Moto'
+import TowerGame from './arcade/Tower'
+import TowerDefenseGame from './arcade/TowerDefense'
 
 const DISCORD_URL = 'https://discord.gg/3gxA66KZ8'
 const SMP_HOST = 'esn.ggwp.cc'
@@ -833,17 +839,17 @@ function ArcadeHub() {
     <>
       <PageHero
         eyebrow="ESN Arcade"
-        title="Original Arcade migration"
-        text="The six official ESN games are being migrated from their original mechanics and presentation. The temporary rebuilt versions have been removed so we do not replace the originals with guesses."
+        title="ESN Arcade"
+        text="The original ESN Arcade games rebuilt from the official website recording — same identities, same core mechanics, upgraded responsiveness and persistence."
       />
       <section className="section">
         <div className="shell card-grid two">
           {ARCADE_GAMES.map(([name, route, description]) => (
             <article className="game-card" key={route}>
-              <span className="eyebrow">Protected original</span>
+              <span className="eyebrow">Original game</span>
               <h2>{name}</h2>
               <p>{description}</p>
-              <Link to={route}>View migration status →</Link>
+              <Link to={route}>Play game →</Link>
             </article>
           ))}
         </div>
@@ -886,12 +892,15 @@ function NotFound() {
 }
 
 function App() {
+  const location = useLocation()
+  const isArcadeGame = ARCADE_GAMES.some(([, route]) => route === location.pathname)
+
   return (
     <div className="site">
       <a className="skip-link" href="#main-content">Skip to main content</a>
       <MetaManager />
       <ScrollToHash />
-      <Header />
+      {!isArcadeGame && <Header />}
       <main id="main-content">
         <Routes>
           <Route path="/" element={<Home />} />
@@ -909,13 +918,16 @@ function App() {
           <Route path="/estools" element={<ESToolsSuite />} />
           <Route path="/tools" element={<Navigate to="/estools" replace />} />
           <Route path="/arcade" element={<ArcadeHub />} />
-          {ARCADE_GAMES.map(([name, route, description]) => (
-            <Route key={route} path={route} element={<ProtectedGame name={name} description={description} />} />
-          ))}
+          <Route path="/esclicker" element={<ClickerGame />} />
+          <Route path="/esfactory" element={<FactoryGame />} />
+          <Route path="/esmines" element={<MinesGame />} />
+          <Route path="/esmoto" element={<MotoGame />} />
+          <Route path="/estower" element={<TowerGame />} />
+          <Route path="/estowerdefense" element={<TowerDefenseGame />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
-      <Footer />
+      {!isArcadeGame && <Footer />}
     </div>
   )
 }
