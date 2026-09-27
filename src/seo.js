@@ -1,7 +1,7 @@
 export const SITE_URL='https://esnoffical.com'
 export const SITE_NAME='ES Network'
 export const SITE_LANGUAGE='en-US'
-export const SEO_LAUNCH_MODE='staging'
+export const SEO_LAUNCH_MODE='production'
 export const SOCIAL_IMAGE_URL=SITE_URL+'/esn-social-card.svg'
 export const SOCIAL_IMAGE_ALT='ES Network — Build, Play, Create'
 
