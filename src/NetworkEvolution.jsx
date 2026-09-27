@@ -447,27 +447,84 @@ function TerminalPanel({onClose,onOpenPassport,onOpenSearch,soundEnabled,setSoun
   const navigate=useNavigate()
   const live=useLiveNetwork()
   const arcade=useArcadeProgress()
+  const inputRef=useRef(null)
+  const runRef=useRef(null)
+  const sessionStarted=useRef(Number(sessionStorage.getItem('esn_session_started'))||Date.now())
+  const sessionStartXp=useRef(Number(sessionStorage.getItem('esn_terminal_session_xp'))||Math.floor(arcade.progress.xp||0))
   const [value,setValue]=useState('')
-  const [lines,setLines]=useState([
-    {kind:'system',text:'ESN TERMINAL // OPERATOR CHANNEL READY'},
-    {kind:'system',text:'Type "help" for commands. ↑/↓ recalls history. TAB autocompletes.'},
-  ])
+  const [lines,setLines]=useState([])
   const [history,setHistory]=useState(()=>readJson(TERMINAL_HISTORY_KEY,[]))
   const [historyIndex,setHistoryIndex]=useState(-1)
+  const [historySearch,setHistorySearch]=useState(false)
   const [clearArmed,setClearArmed]=useState(false)
-  const sessionStarted=useRef(Number(sessionStorage.getItem('esn_session_started'))||Date.now())
+  const [watchCommand,setWatchCommand]=useState('')
+  const [qrData,setQrData]=useState(null)
+  const [online,setOnline]=useState(()=>navigator.onLine)
+  const [booting,setBooting]=useState(true)
+  const [sessionCommands,setSessionCommands]=useState(0)
+  const [terminalTheme,setTerminalTheme]=useState(()=>localStorage.getItem(TERMINAL_THEME_KEY)||'cyan')
+  const [crtEnabled,setCrtEnabled]=useState(()=>localStorage.getItem(TERMINAL_CRT_KEY)==='1')
+  const [aliases,setAliases]=useState(()=>readJson(TERMINAL_ALIASES_KEY,{}))
+  const [macros,setMacros]=useState(()=>readJson(TERMINAL_MACROS_KEY,{}))
+  const [operator,setOperator]=useState(()=>readJson(TERMINAL_OPERATOR_KEY,{xp:0,commands:0,achievements:{},relics:[],used:[]}))
 
   useEffect(()=>{
     if(!sessionStorage.getItem('esn_session_started'))sessionStorage.setItem('esn_session_started',String(sessionStarted.current))
+    if(!sessionStorage.getItem('esn_terminal_session_xp'))sessionStorage.setItem('esn_terminal_session_xp',String(sessionStartXp.current))
+    const steps=[
+      [0,'ESN TERMINAL // BOOTING OPERATOR CORE'],
+      [150,'CHECK // WEBSITE LINK ... '+(navigator.onLine?'OK':'OFFLINE / LOCAL MODE')],
+      [300,'CHECK // ARCADE CORE ... 6 MODULES READY'],
+      [450,'CHECK // SMP CHANNEL ... '+String(live.smp.status||'CHECKING').toUpperCase()],
+      [600,'CHECK // LOCAL PASSPORT ... MOUNTED'],
+      [760,'READY // Type "help" or press TAB for commands. ↑/↓ history • Ctrl+R search'],
+    ]
+    const timers=steps.map(([delay,text])=>window.setTimeout(()=>setLines(current=>[...current,{kind:delay===760?'ok':'system',text}]),delay))
+    timers.push(window.setTimeout(()=>setBooting(false),800))
+    return()=>timers.forEach(timer=>window.clearTimeout(timer))
   },[])
+
+  useEffect(()=>{
+    const setOn=()=>setOnline(true)
+    const setOff=()=>setOnline(false)
+    window.addEventListener('online',setOn)
+    window.addEventListener('offline',setOff)
+    return()=>{window.removeEventListener('online',setOn);window.removeEventListener('offline',setOff)}
+  },[])
+
+  useEffect(()=>{
+    return()=>{
+      setWatchCommand('')
+      document.documentElement.classList.remove('terminal-crt-active')
+    }
+  },[])
+
+  useEffect(()=>{
+    document.documentElement.classList.toggle('terminal-crt-active',crtEnabled)
+    localStorage.setItem(TERMINAL_CRT_KEY,crtEnabled?'1':'0')
+  },[crtEnabled])
+
+  useEffect(()=>{
+    localStorage.setItem(TERMINAL_THEME_KEY,terminalTheme)
+  },[terminalTheme])
 
   const suggestions=useMemo(()=>{
     const q=value.trim().toLowerCase()
-    if(!q)return TERMINAL_COMMANDS.slice(0,6)
-    return TERMINAL_COMMANDS.filter(item=>item.startsWith(q)||item.includes(q)).slice(0,6)
-  },[value])
+    const custom=[
+      ...Object.keys(aliases),
+      ...Object.keys(macros).map(name=>'macro run '+name),
+    ]
+    const source=[...TERMINAL_COMMANDS,...custom]
+    if(!q)return source.slice(0,7)
+    return [...new Set(source.filter(item=>item.toLowerCase().startsWith(q)||item.toLowerCase().includes(q)))].slice(0,7)
+  },[value,aliases,macros])
 
-  const push=(kind,text)=>setLines(current=>[...current,{kind,text}].slice(-60))
+  const historyMatches=useMemo(()=>{
+    const q=value.trim().toLowerCase()
+    return history.filter(item=>!q||item.toLowerCase().includes(q)).slice(0,12)
+  },[history,value])
+
+  const push=(kind,text)=>setLines(current=>[...current,{kind,text}].slice(-120))
   const pushMany=(kind,items)=>items.filter(Boolean).forEach(item=>push(kind,item))
   const go=(path,label)=>{
     push('ok','Routing to '+label+'…')
@@ -488,48 +545,195 @@ function TerminalPanel({onClose,onOpenPassport,onOpenSearch,soundEnabled,setSoun
     return passportSnapshot(visited,eggs)
   }
 
-  const run=async raw=>{
-    const original=raw.trim()
-    const command=original.toLowerCase()
-    if(!command)return
-    localStorage.setItem('esn_terminal_used','1')
+  const awardOperator=(id,label,xp=25,relic=null)=>{
+    const current=readJson(TERMINAL_OPERATOR_KEY,{xp:0,commands:0,achievements:{},relics:[],used:[]})
+    if(current.achievements?.[id])return false
+    const next={
+      ...current,
+      xp:(current.xp||0)+xp,
+      achievements:{...(current.achievements||{}),[id]:{label,xp,at:Date.now()}},
+      relics:relic&&!current.relics?.includes(relic)?[...(current.relics||[]),relic]:(current.relics||[]),
+    }
+    writeJson(TERMINAL_OPERATOR_KEY,next)
+    setOperator(next)
+    const retention=readJson('esn_retention_v1',{networkXp:0,shards:0,collectibles:[]})
+    const collectibles=relic&&!retention.collectibles?.includes(relic)?[...(retention.collectibles||[]),relic]:(retention.collectibles||[])
+    writeJson('esn_retention_v1',{...retention,networkXp:(retention.networkXp||0)+xp,shards:(retention.shards||0)+1,collectibles})
+    window.dispatchEvent(new CustomEvent('esn-achievement',{detail:{title:'Terminal achievement: '+label,copy:'+'+xp+' Network XP • +1 Network Shard'}}))
     window.dispatchEvent(new Event('esn-progress-change'))
-    push('input','> '+original)
+    return true
+  }
 
-    const nextHistory=[original,...history.filter(item=>item.toLowerCase()!==command)].slice(0,60)
-    setHistory(nextHistory)
-    writeJson(TERMINAL_HISTORY_KEY,nextHistory)
-    setHistoryIndex(-1)
+  const trackOperator=command=>{
+    const current=readJson(TERMINAL_OPERATOR_KEY,{xp:0,commands:0,achievements:{},relics:[],used:[]})
+    const used=[command,...(current.used||[]).filter(item=>item!==command)].slice(0,60)
+    const next={...current,xp:(current.xp||0)+3,commands:(current.commands||0)+1,used}
+    writeJson(TERMINAL_OPERATOR_KEY,next)
+    setOperator(next)
+    if(next.commands===1)window.setTimeout(()=>awardOperator('first-command','First Contact',25),0)
+    if(next.commands>=25)window.setTimeout(()=>awardOperator('command-25','Command Cadet',35),0)
+    if(next.commands>=100)window.setTimeout(()=>awardOperator('command-100','Network Operator',80,'Operator Core Fragment'),0)
+  }
+
+  const challengeData=()=>{
+    const list=[
+      ['systems-scan','Systems Scan','Run "network".','network',60],
+      ['arcade-audit','Arcade Audit','Run "arcade stats".','arcade stats',60],
+      ['smp-pulse','SMP Pulse','Run "smp status".','smp status',60],
+      ['inventory-check','Inventory Check','Run "inventory".','inventory',60],
+      ['diagnostic-cycle','Diagnostic Cycle','Run "diagnostics".','diagnostics',70],
+      ['daily-sync','Daily Sync','Run "daily".','daily',60],
+    ]
+    return list[terminalDateSeed()%list.length]
+  }
+
+  const checkChallenge=command=>{
+    const [id,title,copy,target,xp]=challengeData()
+    const today=terminalDateKey()
+    const current=readJson(TERMINAL_CHALLENGE_KEY,{date:today,id,complete:false})
+    const state=current.date===today&&current.id===id?current:{date:today,id,complete:false}
+    if(!state.complete&&command===target){
+      writeJson(TERMINAL_CHALLENGE_KEY,{...state,complete:true,at:Date.now()})
+      const retention=readJson('esn_retention_v1',{networkXp:0,shards:0})
+      writeJson('esn_retention_v1',{...retention,networkXp:(retention.networkXp||0)+xp,shards:(retention.shards||0)+2})
+      window.dispatchEvent(new CustomEvent('esn-achievement',{detail:{title:'Terminal challenge complete: '+title,copy:'+'+xp+' Network XP • +2 Network Shards'}}))
+      window.dispatchEvent(new Event('esn-progress-change'))
+      push('ok','CHALLENGE COMPLETE // '+title+' • +'+xp+' XP • +2 Shards')
+    }
+  }
+
+  const diagnosticsText=()=>{
+    const prefs=readJson(TERMINAL_PREF_KEY,{performance:'auto',reducedMotion:false})
+    return [
+      'ESN DIAGNOSTIC REPORT',
+      'Release: '+SITE_RELEASE,
+      'URL: '+window.location.href,
+      'Viewport: '+window.innerWidth+'x'+window.innerHeight+' @ '+(window.devicePixelRatio||1)+' DPR',
+      'CPU: '+(navigator.hardwareConcurrency||'unknown')+' logical cores',
+      'Memory: '+(navigator.deviceMemory?navigator.deviceMemory+' GB browser estimate':'not exposed'),
+      'Connection: '+(navigator.onLine?'online':'offline')+(navigator.connection?.effectiveType?' / '+navigator.connection.effectiveType:''),
+      'Performance: '+(document.documentElement.dataset.performanceMode||prefs.performance||'auto'),
+      'Motion: '+(document.documentElement.dataset.motion||'full'),
+      'Terminal theme: '+terminalTheme+(crtEnabled?' + CRT':''),
+      'User agent: '+navigator.userAgent,
+    ].join('\n')
+  }
+
+  const measureFps=()=>new Promise(resolve=>{
+    let frames=0
+    const started=performance.now()
+    const tick=now=>{
+      frames+=1
+      if(now-started>=650){resolve(Math.round(frames/((now-started)/1000)));return}
+      requestAnimationFrame(tick)
+    }
+    requestAnimationFrame(tick)
+  })
+
+  const run=async(raw,options={})=>{
+    const original=String(raw||'').trim()
+    if(!original)return
+    let command=original.toLowerCase()
+
+    if(command.includes('&&')&&!command.startsWith('macro save ')&&!command.startsWith('alias ')&&!options.noChain){
+      if(options.record!==false){
+        push('input','> '+original)
+        const nextHistory=[original,...history.filter(item=>item.toLowerCase()!==command)].slice(0,60)
+        setHistory(nextHistory);writeJson(TERMINAL_HISTORY_KEY,nextHistory);setSessionCommands(n=>n+1);trackOperator(command)
+      }
+      const parts=original.split('&&').map(item=>item.trim()).filter(Boolean)
+      push('system','CHAIN // '+parts.length+' commands')
+      for(const part of parts)await runRef.current(part,{record:false,noChain:true})
+      setValue('')
+      return
+    }
+
+    const first=command.split(/\s+/)[0]
+    if(aliases[first]&&!options.aliasExpanded){
+      const rest=original.split(/\s+/).slice(1).join(' ')
+      const expanded=aliases[first]+(rest?' '+rest:'')
+      push('system','ALIAS '+first+' → '+expanded)
+      await runRef.current(expanded,{...options,record:options.record,aliasExpanded:true})
+      return
+    }
+
+    if(options.record!==false){
+      localStorage.setItem('esn_terminal_used','1')
+      window.dispatchEvent(new Event('esn-progress-change'))
+      push('input','> '+original)
+      const nextHistory=[original,...history.filter(item=>item.toLowerCase()!==command)].slice(0,60)
+      setHistory(nextHistory)
+      writeJson(TERMINAL_HISTORY_KEY,nextHistory)
+      setHistoryIndex(-1)
+      setHistorySearch(false)
+      setSessionCommands(n=>n+1)
+      trackOperator(command)
+      checkChallenge(command)
+    }else if(options.watch){
+      push('watch','↻ '+new Date().toLocaleTimeString()+' // '+original.toUpperCase())
+    }
 
     const protocolMap={kavero:'typed-kavero',warden:'typed-warden',riftwalker:'typed-riftwalker',void:'typed-void','1337':'typed-1337'}
 
     if(command==='help'){
       pushMany('system',[
-        'CORE // network, status, smp status, arcade stats, profile, daily, missions, rewards, inventory',
-        'NAV // arcade launch <game>, search, tools, updates, timeline, leaderboard, vote, random',
-        'CUSTOMIZE // favorites, favorites add/remove <page>, theme <name>, performance <mode>, motion <mode>',
-        'SYSTEM // diagnostics, ping, uptime, history, sound on/off, clear',
-        'Type "help advanced" for the full operator command index.',
+        'CORE // network, map, status, smp status, arcade stats, dashboard, profile',
+        'OPERATOR // man, alias, macro, watch, logs, notifications, session, profiler',
+        'UTILITY // copy, qr, favorites, search, repeat, terminal export/import',
+        'CUSTOMIZE // terminal theme, crt, site theme, performance, motion',
+        'DISCOVERY // challenge, fortune, signal, dev, ls /network/archive, cat <file>',
+        'Type "help advanced" for the complete command index.',
       ])
     }else if(command==='help advanced'){
       pushMany('system',[
-        'ADVANCED COMMAND INDEX',
-        'NETWORK: network | status | smp | smp status | release latest',
-        'ARCADE: arcade | arcade stats | arcade launch clicker/factory/mines/moto/tower/defense | leaderboard',
-        'PROGRESS: missions | rewards | inventory | profile | whoami | daily | vault | vault open',
-        'NAVIGATION: tools | updates | timeline | search [term] | random | vote',
-        'CUSTOMIZATION: favorites | favorites add <page> | favorites remove <page> | theme dynamic/esn/void/smp/arcade/warden/riftwalker | performance auto/performance/premium | motion full/reduced',
-        'SYSTEM: diagnostics | ping | uptime | history | sound on/off | event | clear | clear data',
-        'HIDDEN CHANNEL: protocol <signal> // some signals are not documented.',
+        'ADVANCED ESN TERMINAL INDEX',
+        'NETWORK // network | map | status | smp | smp status | release latest | ping | uptime',
+        'ARCADE // arcade | arcade stats | arcade launch <game> | leaderboard | dashboard arcade',
+        'PROGRESS // missions | rewards | inventory | profile | whoami | daily | challenge',
+        'OPERATOR // operator | man <command> | alias | macro | watch | history | logs | notifications',
+        'UTILITY // copy <target> | qr <target> | search <term> | favorites | random | repeat',
+        'VISUAL // terminal theme <theme> | crt on/off | theme <site-theme> | performance | motion',
+        'SYSTEM // session | profiler | diagnostics | diagnostics export | terminal export/import',
+        'ARCHIVE // ls /network/archive | cat /network/archive/<file> | signal | fortune',
+        'DEV // dev info | dev routes | dev release | dev storage',
+        'KEYS // ↑/↓ history • TAB/Ctrl+Space autocomplete • Ctrl+R history search • Ctrl+L clear • "/" search',
+      ])
+    }else if(command.startsWith('man ')){
+      const rawKey=command.slice(4).trim()
+      const key=TERMINAL_MAN[rawKey]?rawKey:rawKey.split(' ')[0]
+      const doc=TERMINAL_MAN[key]
+      if(doc){pushMany('system',['MANUAL // '+key.toUpperCase(),'USAGE // '+doc[0],doc[1]]);awardOperator('manual-reader','Manual Reader',25)}
+      else push('error','No manual page for "'+rawKey+'". Try man watch, man macro, man diagnostics, or help advanced.')
+    }else if(command==='operator'){
+      const current=readJson(TERMINAL_OPERATOR_KEY,{xp:0,commands:0,achievements:{},relics:[]})
+      const rank=Math.floor((current.xp||0)/120)+1
+      pushMany('ok',[
+        'OPERATOR RANK // '+rank,
+        'MASTERY XP // '+Math.floor(current.xp||0).toLocaleString(),
+        'COMMANDS RUN // '+(current.commands||0),
+        'TERMINAL ACHIEVEMENTS // '+Object.keys(current.achievements||{}).length,
+        'TERMINAL RELICS // '+((current.relics||[]).join(', ')||'none yet'),
       ])
     }else if(command==='network'){
       pushMany('ok',[
         'WEBSITE // '+String(live.website.status||'online').toUpperCase(),
-        'SMP // '+String(live.smp.status||'checking').toUpperCase()+(live.smp.players!=null?' • '+live.smp.players+(live.smp.maxPlayers!=null?'/'+live.smp.maxPlayers:'')+' players':''),
-        'PLUGIN // '+(live.plugin.version||'checking'),
-        'ARCADE // 6 games operational',
-        'DISCORD // '+String(live.discord.status||'checking').toUpperCase()+(live.discord.members!=null?' • '+live.discord.members+' members':''),
+        '├─ SMP // '+String(live.smp.status||'checking').toUpperCase()+(live.smp.players!=null?' • '+live.smp.players+(live.smp.maxPlayers!=null?'/'+live.smp.maxPlayers:'')+' players':''),
+        '├─ PLUGIN // '+(live.plugin.version||'checking'),
+        '├─ ARCADE // 6 games operational',
+        '└─ DISCORD // '+String(live.discord.status||'checking').toUpperCase()+(live.discord.members!=null?' • '+live.discord.members+' members':''),
         'RELEASE // '+SITE_RELEASE,
+      ])
+    }else if(command==='map'){
+      pushMany('system',[
+        '              ┌─────────────┐',
+        '              │  ES NETWORK │',
+        '              └──────┬──────┘',
+        '       ┌──────────────┼──────────────┐',
+        '       ▼              ▼              ▼',
+        '  SMP ['+(live.smp.status==='online'?'LIVE':'CHECK')+']     ARCADE [6/6]     TOOLS [LIVE]',
+        '       │                             │',
+        '       └──── PLUGIN ['+(live.plugin.version||'…')+']       └──── PASSPORT [LOCAL]',
+        '              DISCORD ['+String(live.discord.status||'CHECK').toUpperCase()+']',
       ])
     }else if(command==='status')go('/status','Network Status')
     else if(command==='smp')go('/smpconnection','ESN SMP')
@@ -546,7 +750,7 @@ function TerminalPanel({onClose,onOpenPassport,onOpenSearch,soundEnabled,setSoun
     else if(command==='arcade stats'){
       const totals=arcade.progress.totals||{}
       pushMany('ok',[
-        'ARCADE LEVEL // '+arcade.level,
+        'ARCADE LEVEL // '+arcade.level+' '+terminalBar(arcade.levelProgress*100),
         'XP // '+Math.floor(arcade.progress.xp||0).toLocaleString(),
         'ACHIEVEMENTS // '+arcade.achievementCount,
         'CLICKER TAPS // '+Math.floor(totals.clickerTaps||0).toLocaleString(),
@@ -559,10 +763,32 @@ function TerminalPanel({onClose,onOpenPassport,onOpenSearch,soundEnabled,setSoun
       const route=requested==='tower defense'||requested==='defense'?'/estowerdefense':requested==='tower'?'/estower':requested==='clicker'?'/esclicker':requested==='factory'?'/esfactory':requested==='mines'?'/esmines':requested==='moto'?'/esmoto':null
       if(route)go(route,'ES '+requested.toUpperCase())
       else push('error','Game not found. Try clicker, factory, mines, moto, tower, or defense.')
+    }else if(command==='dashboard'||command==='dashboard network'){
+      pushMany('system',[
+        '┌─ ESN NETWORK DASHBOARD ─────────────────────┐',
+        '│ WEBSITE  '+String(live.website.status||'online').toUpperCase().padEnd(10)+' SMP '+String(live.smp.status||'checking').toUpperCase().padEnd(10)+' │',
+        '│ ARCADE   6/6 LIVE    PLUGIN '+String(live.plugin.version||'…').slice(0,15).padEnd(15)+' │',
+        '│ DISCORD  '+String(live.discord.status||'checking').toUpperCase().padEnd(10)+' RELEASE ACTIVE        │',
+        '└─────────────────────────────────────────────┘',
+      ])
+    }else if(command==='dashboard arcade'){
+      const totals=arcade.progress.totals||{}
+      pushMany('system',[
+        '┌─ ARCADE DASHBOARD ──────────────────────────┐',
+        '│ LEVEL '+String(arcade.level).padEnd(5)+' XP '+String(Math.floor(arcade.progress.xp||0)).padEnd(12)+' ACH '+String(arcade.achievementCount).padEnd(5)+'│',
+        '│ '+terminalBar(arcade.levelProgress*100,100,28)+' │',
+        '│ MOTO '+String(totals.motoFinishes||0).padEnd(7)+' TOWER '+String(totals.towerFloors||0).padEnd(7)+' TD '+String(totals.tdWaves||0).padEnd(7)+'│',
+        '└─────────────────────────────────────────────┘',
+      ])
+    }else if(command==='dashboard missions'){
+      const visited=readJson('esn_passport_routes',[])
+      const eggs=readEggs()
+      const complete=MISSIONS.filter(item=>completeMission(item,visited,eggs))
+      pushMany('system',['MISSION DASHBOARD // '+complete.length+'/'+MISSIONS.length,terminalBar(complete.length,MISSIONS.length,28),...MISSIONS.map(item=>(complete.includes(item)?'✓ ':'○ ')+item.title)])
     }else if(command==='tools')go('/estools','ES Tools')
     else if(command==='updates')go('/updates','Release Center')
     else if(command==='timeline')go('/timeline','Timeline')
-    else if(command==='release latest')push('ok','LATEST RELEASE // '+SITE_RELEASE+' // Open /updates for the complete release history.')
+    else if(command==='release latest')push('ok','LATEST RELEASE // '+SITE_RELEASE+' // Open /updates for the full release history.')
     else if(command==='passport'||command==='profile'){
       const data=snapshot()
       if(command==='passport'){onClose();onOpenPassport()}
@@ -576,12 +802,13 @@ function TerminalPanel({onClose,onOpenPassport,onOpenSearch,soundEnabled,setSoun
     }else if(command==='whoami'){
       const data=snapshot()
       const retention=readJson('esn_retention_v1',{streak:0,shards:0,collectibles:[]})
+      const current=readJson(TERMINAL_OPERATOR_KEY,{xp:0})
       pushMany('system',[
         'IDENTITY // ESN LOCAL OPERATOR',
         'PASSPORT // LEVEL '+data.level+' • '+data.xp.toLocaleString()+' XP',
+        'OPERATOR RANK // '+(Math.floor((current.xp||0)/120)+1),
         'STREAK // '+(retention.streak||0)+' days',
         'NETWORK SHARDS // '+(retention.shards||0),
-        'BADGES // '+data.badges.length,
         'SCOPE // Device-local profile; no account identity required.',
       ])
     }else if(command==='missions'){
@@ -604,9 +831,11 @@ function TerminalPanel({onClose,onOpenPassport,onOpenSearch,soundEnabled,setSoun
       const data=snapshot()
       const retention=readJson('esn_retention_v1',{collectibles:[],shards:0})
       const eggs=readEggs()
+      const current=readJson(TERMINAL_OPERATOR_KEY,{relics:[]})
       pushMany('system',[
         'NETWORK SHARDS // '+(retention.shards||0),
         'COLLECTIBLES // '+((retention.collectibles||[]).join(', ')||'none yet'),
+        'TERMINAL RELICS // '+((current.relics||[]).join(', ')||'none yet'),
         'BADGES // '+(data.badges.join(', ')||'none yet'),
         'HIDDEN SIGNALS // '+eggs.length+'/24',
       ])
@@ -625,6 +854,7 @@ function TerminalPanel({onClose,onOpenPassport,onOpenSearch,soundEnabled,setSoun
       localStorage.setItem('esn_vault_unlocked','1')
       localStorage.setItem('esn_visual_theme','midnight')
       window.dispatchEvent(new CustomEvent('esn-terminal-theme',{detail:{theme:'midnight',vault:true}}))
+      awardOperator('vault-terminal','Terminal Vault Authorization',80,'Midnight Authorization Chip')
       push('ok','VAULT AUTHORIZATION ACCEPTED // Midnight Core enabled.')
     }else if(command==='search'){
       onClose();onOpenSearch()
@@ -656,35 +886,161 @@ function TerminalPanel({onClose,onOpenPassport,onOpenSearch,soundEnabled,setSoun
         window.dispatchEvent(new Event('esn-history-change'))
         push('ok','Favorite removed // '+target.label)
       }
+    }else if(command==='alias'){
+      const entries=Object.entries(aliases)
+      push('system','ALIASES // '+(entries.length?entries.map(([name,target])=>name+' → '+target).join(' • '):'none yet'))
+    }else if(command.startsWith('unalias ')){
+      const name=command.slice(8).trim()
+      if(!aliases[name])push('error','Alias "'+name+'" does not exist.')
+      else{
+        const next={...aliases};delete next[name];setAliases(next);writeJson(TERMINAL_ALIASES_KEY,next);push('ok','Alias removed // '+name)
+      }
+    }else if(command.startsWith('alias ')){
+      const match=original.match(/^alias\s+([a-z0-9_-]+)\s+["']?(.+?)["']?$/i)
+      if(!match)push('error','Usage: alias <name> "<command>"')
+      else{
+        const name=match[1].toLowerCase(),target=match[2].replace(/^["']|["']$/g,'').trim()
+        if(['help','clear','alias','macro'].includes(name))push('error','That alias name is reserved.')
+        else{
+          const next={...aliases,[name]:target};setAliases(next);writeJson(TERMINAL_ALIASES_KEY,next);push('ok','Alias saved // '+name+' → '+target);awardOperator('alias-maker','Shortcut Architect',30)
+        }
+      }
+    }else if(command==='macro'){
+      const entries=Object.entries(macros)
+      push('system','MACROS // '+(entries.length?entries.map(([name,body])=>name+' → '+body).join(' • '):'none yet'))
+    }else if(command.startsWith('macro run ')){
+      const name=command.slice(10).trim()
+      if(!macros[name])push('error','Macro "'+name+'" not found.')
+      else{
+        push('system','MACRO '+name.toUpperCase()+' // '+macros[name])
+        await runRef.current(macros[name],{record:false})
+      }
+    }else if(command.startsWith('macro delete ')){
+      const name=command.slice(13).trim()
+      if(!macros[name])push('error','Macro "'+name+'" not found.')
+      else{
+        const next={...macros};delete next[name];setMacros(next);writeJson(TERMINAL_MACROS_KEY,next);push('ok','Macro deleted // '+name)
+      }
+    }else if(command.startsWith('macro save ')){
+      const match=original.match(/^macro\s+save\s+([a-z0-9_-]+)\s+["']?(.+?)["']?$/i)
+      if(!match)push('error','Usage: macro save <name> "command && command"')
+      else{
+        const name=match[1].toLowerCase(),body=match[2].replace(/^["']|["']$/g,'').trim()
+        const next={...macros,[name]:body};setMacros(next);writeJson(TERMINAL_MACROS_KEY,next);push('ok','Macro saved // '+name+' → '+body);awardOperator('macro-maker','Routine Builder',35)
+      }
+    }else if(command==='watch stop'){
+      setWatchCommand('');push('ok','WATCH // stopped')
+    }else if(command.startsWith('watch ')){
+      const target=command.slice(6).trim()
+      if(!TERMINAL_WATCHABLE.includes(target))push('error','Watch supports: '+TERMINAL_WATCHABLE.join(', '))
+      else{setWatchCommand(target);push('ok','WATCH // '+target+' every 3 seconds • use "watch stop"');awardOperator('watcher','Live Channel Watcher',35)}
+    }else if(command==='history'){
+      if(!history.length)push('system','COMMAND HISTORY // empty')
+      else history.slice(0,15).forEach((item,index)=>push('system',String(index+1).padStart(2,'0')+' // '+item))
+    }else if(command==='logs'||command==='logs network'){
+      const routes=readJson('esn_recent_routes',[])
+      pushMany('system',[
+        'NETWORK LOG // '+SITE_RELEASE,
+        'RECENT ROUTES // '+(routes.join(' → ')||'none'),
+        'SMP LAST CHECK // '+(live.checkedAt?new Date(live.checkedAt).toLocaleString():'not checked'),
+        'TERMINAL COMMANDS // '+(readJson(TERMINAL_OPERATOR_KEY,{commands:0}).commands||0),
+      ])
+    }else if(command==='logs arcade'){
+      const recent=arcade.progress.recent||[]
+      if(!recent.length)push('system','ARCADE LOG // no recent XP events')
+      else recent.slice(0,12).forEach(item=>push('system',new Date(item.at).toLocaleTimeString()+' // '+item.label+' +'+item.xp+' XP'))
+    }else if(command==='logs achievements'){
+      const op=readJson(TERMINAL_OPERATOR_KEY,{achievements:{}})
+      const combined=[
+        ...Object.values(arcade.progress.achievements||{}).map(item=>({label:'ARCADE • '+item.label,at:item.at})),
+        ...Object.values(op.achievements||{}).map(item=>({label:'TERMINAL • '+item.label,at:item.at})),
+      ].sort((a,b)=>(b.at||0)-(a.at||0)).slice(0,16)
+      if(!combined.length)push('system','ACHIEVEMENT LOG // empty')
+      else combined.forEach(item=>push('system',(item.at?new Date(item.at).toLocaleDateString():'—')+' // '+item.label))
+    }else if(command==='notifications clear'){
+      localStorage.setItem(TERMINAL_NOTICE_CLEAR_KEY,String(Date.now()));push('ok','NOTIFICATIONS // current Terminal notices marked read')
+    }else if(command==='notifications'){
+      const cleared=Number(localStorage.getItem(TERMINAL_NOTICE_CLEAR_KEY)||0)
+      const notices=[]
+      if(live.checkedAt&&new Date(live.checkedAt).getTime()>cleared)notices.push('NETWORK • SMP '+String(live.smp.status||'checking').toUpperCase()+' • Plugin '+(live.plugin.version||'checking'))
+      ;(arcade.progress.recent||[]).filter(item=>(item.at||0)>cleared).slice(0,5).forEach(item=>notices.push('ARCADE • '+item.label+' • +'+item.xp+' XP'))
+      if(!notices.length)push('system','NOTIFICATIONS // no unread Terminal notices')
+      else notices.forEach(item=>push('ok','NOTICE // '+item))
+    }else if(command.startsWith('terminal theme ')){
+      const theme=command.slice('terminal theme '.length).trim()
+      if(!TERMINAL_UI_THEMES.includes(theme))push('error','Terminal themes: '+TERMINAL_UI_THEMES.join(', '))
+      else{
+        setTerminalTheme(theme);localStorage.setItem(TERMINAL_THEME_KEY,theme)
+        if(theme==='crt')setCrtEnabled(true)
+        push('ok','TERMINAL THEME // '+theme.toUpperCase())
+      }
+    }else if(command==='crt on'){
+      setCrtEnabled(true);push('ok','CRT EFFECTS // ON')
+    }else if(command==='crt off'){
+      setCrtEnabled(false);push('ok','CRT EFFECTS // OFF')
     }else if(command.startsWith('theme ')){
       const theme=command.slice(6).trim()
-      if(!TERMINAL_THEMES.includes(theme))push('error','Themes: dynamic, esn, void, smp, arcade, warden, riftwalker'+(localStorage.getItem('esn_vault_unlocked')==='1'?', midnight':''))
+      if(!TERMINAL_THEMES.includes(theme))push('error','Site themes: dynamic, esn, void, smp, arcade, warden, riftwalker'+(localStorage.getItem('esn_vault_unlocked')==='1'?', midnight':''))
       else if(theme==='midnight'&&localStorage.getItem('esn_vault_unlocked')!=='1')push('error','Midnight Core is Vault-locked.')
       else{
         localStorage.setItem('esn_visual_theme',theme)
         window.dispatchEvent(new CustomEvent('esn-terminal-theme',{detail:{theme}}))
-        push('ok','Visual theme changed // '+theme.toUpperCase())
+        push('ok','SITE THEME // '+theme.toUpperCase())
       }
     }else if(command.startsWith('performance ')){
       const mode=command.slice(12).trim()
       if(!['auto','performance','premium'].includes(mode))push('error','Performance modes: auto, performance, premium')
-      else{savePrefs({performance:mode});push('ok','Performance profile // '+mode.toUpperCase())}
+      else{savePrefs({performance:mode});push('ok','PERFORMANCE PROFILE // '+mode.toUpperCase())}
     }else if(command.startsWith('motion ')){
       const mode=command.slice(7).trim()
       if(!['full','reduced'].includes(mode))push('error','Motion modes: full, reduced')
-      else{savePrefs({reducedMotion:mode==='reduced'});push('ok','Motion profile // '+mode.toUpperCase())}
-    }else if(command==='diagnostics'){
-      const prefs=readJson(TERMINAL_PREF_KEY,{performance:'auto',reducedMotion:false})
+      else{savePrefs({reducedMotion:mode==='reduced'});push('ok','MOTION PROFILE // '+mode.toUpperCase())}
+    }else if(command.startsWith('copy ')){
+      const target=command.slice(5).trim()
+      const values={
+        smp:SMP_ADDRESS+':'+SMP_PORT,
+        discord:DISCORD_URL,
+        plugin:TERMINAL_PLUGIN_URL,
+        website:window.location.origin,
+        diagnostics:diagnosticsText(),
+      }
+      if(!values[target])push('error','Copy targets: smp, discord, plugin, website, diagnostics')
+      else push(await terminalCopy(values[target])?'ok':'error',(await terminalCopy(values[target])?'COPIED // ':'COPY FAILED // ')+target.toUpperCase())
+    }else if(command.startsWith('qr ')){
+      const target=command.slice(3).trim()
+      const values={smp:'minecraft://?addExternalServer=ESN|'+SMP_ADDRESS+':'+SMP_PORT,discord:DISCORD_URL,website:window.location.origin}
+      if(!values[target])push('error','QR targets: smp, discord, website')
+      else{setQrData({label:target.toUpperCase(),value:values[target]});push('ok','QR READY // '+target.toUpperCase());awardOperator('qr-tech','Signal Encoder',30)}
+    }else if(command==='session'){
+      const seconds=Math.floor((Date.now()-sessionStarted.current)/1000)
+      const routes=readJson('esn_passport_routes',[])
+      const routeSession=(()=>{try{return JSON.parse(sessionStorage.getItem('esn_routes_seen')||'[]')}catch{return []}})()
       pushMany('system',[
-        'DIAGNOSTICS // '+SITE_RELEASE,
-        'VIEWPORT // '+window.innerWidth+'×'+window.innerHeight+' @ '+(window.devicePixelRatio||1)+' DPR',
-        'CPU // '+(navigator.hardwareConcurrency||'unknown')+' logical cores',
-        'MEMORY // '+(navigator.deviceMemory?navigator.deviceMemory+' GB estimate':'not exposed by browser'),
-        'NETWORK // '+(navigator.onLine?'online':'offline')+(navigator.connection?.effectiveType?' • '+navigator.connection.effectiveType:''),
-        'PERFORMANCE // '+(document.documentElement.dataset.performanceMode||prefs.performance||'auto'),
-        'MOTION // '+(document.documentElement.dataset.motion||'full'),
-        'STORAGE // '+(typeof localStorage!=='undefined'?'available':'unavailable'),
+        'SESSION // '+Math.floor(seconds/60)+'m '+(seconds%60)+'s',
+        'PAGES THIS SESSION // '+new Set(routeSession).size,
+        'TERMINAL COMMANDS THIS OPEN // '+sessionCommands,
+        'ARCADE XP GAIN // '+Math.max(0,Math.floor(arcade.progress.xp||0)-sessionStartXp.current),
+        'TOTAL PAGES EXPLORED // '+new Set(routes).size,
+        'CONNECTION // '+(online?'ONLINE':'OFFLINE / LOCAL MODE'),
       ])
+    }else if(command==='profiler'){
+      push('system','PROFILER // measuring ~650ms sample…')
+      const fps=await measureFps()
+      pushMany('ok',[
+        'FPS ESTIMATE // '+fps,
+        'RENDER PROFILE // '+(document.documentElement.dataset.performanceMode||'auto'),
+        'VIEWPORT // '+window.innerWidth+'×'+window.innerHeight,
+        'DPR // '+(window.devicePixelRatio||1),
+        'MOTION // '+(document.documentElement.dataset.motion||'full'),
+      ])
+      awardOperator('profiler','Performance Analyst',30)
+    }else if(command==='diagnostics'){
+      pushMany('system',diagnosticsText().split('\n'))
+    }else if(command==='diagnostics export'){
+      const report=diagnosticsText()+'\nGenerated: '+new Date().toISOString()
+      const ok=await terminalCopy(report)
+      push(ok?'ok':'error',ok?'DIAGNOSTIC REPORT COPIED // ready to paste into support':'Could not copy diagnostic report.')
+      if(ok)awardOperator('diagnostic-export','Support Engineer',35)
     }else if(command==='ping'){
       const started=performance.now()
       push('system','PING // checking ESN origin…')
@@ -692,15 +1048,12 @@ function TerminalPanel({onClose,onOpenPassport,onOpenSearch,soundEnabled,setSoun
         await fetch(window.location.origin+'/?terminal_ping='+Date.now(),{method:'HEAD',cache:'no-store'})
         push('ok','PING // '+Math.max(1,Math.round(performance.now()-started))+' ms browser round-trip')
       }catch{
-        push('error','PING // request failed or network unavailable')
+        push('error','PING // request failed; local Terminal functions remain available offline')
       }
     }else if(command==='uptime'){
       const seconds=Math.floor((Date.now()-sessionStarted.current)/1000)
       const h=Math.floor(seconds/3600),m=Math.floor((seconds%3600)/60),s=seconds%60
-      push('ok','SESSION UPTIME // '+(h?h+'h ':'')+(m?m+'m ':'')+s+'s • Release '+SITE_RELEASE)
-    }else if(command==='history'){
-      if(!history.length)push('system','COMMAND HISTORY // empty')
-      else history.slice(0,12).forEach((item,index)=>push('system',String(index+1).padStart(2,'0')+' // '+item))
+      push('ok','SESSION UPTIME // '+(h?h+'h ':'')+(m?m+'m ':'')+s+'s • '+SITE_RELEASE)
     }else if(command==='daily'){
       const daily=readJson('esn_arcade_daily_v1',{completed:[],streak:0,date:null})
       const retention=readJson('esn_retention_v1',{lastClaim:null,streak:0})
@@ -716,15 +1069,120 @@ function TerminalPanel({onClose,onOpenPassport,onOpenSearch,soundEnabled,setSoun
       const pool=SEARCH_INDEX.filter(item=>item.path!=='/vault')
       const item=pool[Math.floor(Math.random()*pool.length)]
       go(item.path,'Random: '+item.label)
+    }else if(command==='challenge'){
+      const [id,title,copy,target,xp]=challengeData()
+      const saved=readJson(TERMINAL_CHALLENGE_KEY,{date:terminalDateKey(),id,complete:false})
+      const complete=saved.date===terminalDateKey()&&saved.id===id&&saved.complete
+      pushMany(complete?'ok':'system',[
+        'TODAY’S TERMINAL CHALLENGE // '+title,
+        copy,
+        'REWARD // '+xp+' Network XP + 2 Shards',
+        'STATUS // '+(complete?'COMPLETE':'ACTIVE'),
+      ])
+    }else if(command==='fortune'){
+      const fortunes=[
+        'The network rewards curiosity more than speed.',
+        'Six Arcade modules. One Passport. Too many hidden signals.',
+        'If a command looks ordinary, try reading its manual page.',
+        'The Vault rarely opens for operators who only follow buttons.',
+        'A good operator checks diagnostics before blaming the server.',
+        'Build. Play. Create. Then check the logs.',
+      ]
+      push('system','FORTUNE // '+fortunes[(Date.now()+history.length)%fortunes.length])
+    }else if(command==='signal'){
+      const today=terminalDateKey()
+      const previous=readJson(TERMINAL_SIGNAL_KEY,{date:null,rolled:false})
+      const hints=[
+        'WARDEN carrier detected near the hidden protocol band.',
+        'RIFTWALKER signature found between Arcade and Store channels.',
+        '1337 legacy digits still echo in the archive.',
+        'VOID is short, but the signal behind it is not.',
+        'KAVERO protocol handshake is still recognized by the network.',
+      ]
+      const index=terminalDateSeed()%hints.length
+      push('system','SIGNAL // '+hints[index])
+      if(previous.date!==today){
+        const rare=terminalDateSeed()%11===0
+        writeJson(TERMINAL_SIGNAL_KEY,{date:today,rolled:true,rare})
+        if(rare){
+          awardOperator('signal-relic-'+today,'Rare Signal Capture',55,'Ghost Signal Fragment')
+          push('ok','ULTRA-RARE SIGNAL // Ghost Signal Fragment captured.')
+        }else push('system','No rare carrier locked today. Signal scan resets tomorrow.')
+      }else push('system','Daily signal already scanned.')
+    }else if(command.startsWith('repeat ')){
+      const match=original.match(/^repeat\s+(\d+)\s+(.+)$/i)
+      if(!match)push('error','Usage: repeat <1-10> <safe command>')
+      else{
+        const count=Math.max(1,Math.min(10,Number(match[1]))),target=match[2].trim().toLowerCase()
+        const safe=['network','map','smp status','arcade stats','daily','rewards','inventory','profile','whoami','diagnostics','uptime','session','notifications','dashboard','dashboard network','dashboard arcade','dashboard missions']
+        if(!safe.includes(target))push('error','Repeat only supports safe local/read-only commands.')
+        else for(let i=0;i<count;i++)await runRef.current(target,{record:false,noChain:true})
+      }
+    }else if(command==='terminal export'){
+      const payload={
+        version:1,
+        favorites:readJson(TERMINAL_FAVORITES_KEY,[]),
+        aliases:readJson(TERMINAL_ALIASES_KEY,{}),
+        macros:readJson(TERMINAL_MACROS_KEY,{}),
+        terminalTheme,
+        crtEnabled,
+      }
+      const code=terminalEncode(payload)
+      const ok=await terminalCopy(code)
+      push(ok?'ok':'error',ok?'TERMINAL EXPORT COPIED // paste it on another ESN device with "terminal import <code>"':'Export created but clipboard copy failed.')
+      if(ok)awardOperator('exporter','Portable Operator',35)
+    }else if(command.startsWith('terminal import ')){
+      const payload=terminalDecode(original.slice('terminal import '.length).trim())
+      if(!payload||payload.version!==1)push('error','Invalid ESN Terminal export code.')
+      else{
+        const favorites=Array.isArray(payload.favorites)?payload.favorites.filter(route=>SEARCH_INDEX.some(item=>item.path===route)).slice(0,12):[]
+        const nextAliases=payload.aliases&&typeof payload.aliases==='object'?Object.fromEntries(Object.entries(payload.aliases).filter(([k,v])=>/^[a-z0-9_-]{1,24}$/.test(k)&&typeof v==='string'&&v.length<=180)):{}
+        const nextMacros=payload.macros&&typeof payload.macros==='object'?Object.fromEntries(Object.entries(payload.macros).filter(([k,v])=>/^[a-z0-9_-]{1,24}$/.test(k)&&typeof v==='string'&&v.length<=360)):{}
+        writeJson(TERMINAL_FAVORITES_KEY,favorites);writeJson(TERMINAL_ALIASES_KEY,nextAliases);writeJson(TERMINAL_MACROS_KEY,nextMacros)
+        setAliases(nextAliases);setMacros(nextMacros)
+        if(TERMINAL_UI_THEMES.includes(payload.terminalTheme)){setTerminalTheme(payload.terminalTheme);localStorage.setItem(TERMINAL_THEME_KEY,payload.terminalTheme)}
+        setCrtEnabled(Boolean(payload.crtEnabled))
+        window.dispatchEvent(new Event('esn-history-change'))
+        push('ok','TERMINAL IMPORT COMPLETE // favorites, aliases, macros, and Terminal visuals restored.')
+      }
+    }else if(command==='dev info'){
+      pushMany('system',['DEV INFO // public read-only','APP // React + Vite ESN website','RELEASE // '+SITE_RELEASE,'ROUTE // '+window.location.pathname,'ORIGIN // '+window.location.origin])
+    }else if(command==='dev routes'){
+      push('system','PUBLIC ROUTES // '+SEARCH_INDEX.map(item=>item.path).join(' • '))
+    }else if(command==='dev release'){
+      push('system','RELEASE // '+SITE_RELEASE+' • Network Evolution '+NETWORK_EVOLUTION_VERSION)
+    }else if(command==='dev storage'){
+      const keys=Object.keys(localStorage).filter(key=>key.startsWith('esn_'))
+      const bytes=keys.reduce((sum,key)=>sum+(localStorage.getItem(key)?.length||0),0)
+      pushMany('system',['LOCAL ESN STORAGE // '+keys.length+' keys','APPROX TEXT BYTES // '+bytes.toLocaleString(),'VALUES // hidden by this readout','Use Settings/Terminal reset controls for deliberate changes.'])
+    }else if(command==='ls /network/archive'||command==='ls archive'){
+      pushMany('system',['/network/archive/',...Object.keys(TERMINAL_LORE).map(path=>'  '+path.split('/').pop())])
+    }else if(command.startsWith('cat ')){
+      const requested=command.slice(4).trim()
+      const path=requested.startsWith('/')?requested:'/network/archive/'+requested
+      const file=TERMINAL_LORE[path]
+      if(!file)push('error','Archive file not found. Run "ls /network/archive".')
+      else{
+        pushMany('system',file)
+        const relicMap={
+          '/network/archive/origin.txt':'Origin Archive Chip',
+          '/network/archive/founder.log':'Founder Channel Token',
+          '/network/archive/arcade.sys':'Arcade Kernel Fragment',
+          '/network/archive/rift.sig':'Rift Signal Shard',
+          '/network/archive/legacy.1337':'Legacy 1337 Chip',
+        }
+        awardOperator('archive-'+path.split('/').pop(),'Archive Reader: '+path.split('/').pop(),30,relicMap[path])
+        awardOperator('archivist','Archive Diver',45)
+      }
     }else if(command==='sound on'){setSoundEnabled(true);push('ok','Optional interface sound enabled.')}
     else if(command==='sound off'){setSoundEnabled(false);push('ok','Interface sound muted.')}
     else if(command==='event'){triggerRare();push('ok','Rare-event simulator requested.')}
-    else if(command==='clear')setLines([])
+    else if(command==='clear'){setLines([])}
     else if(command==='clear data'){
       setClearArmed(true)
       pushMany('error',[
         'LOCAL PROGRESS CLEAR ARMED — nothing has been deleted.',
-        'Run "clear data confirm" next if you really want to reset local progress. Themes, accessibility preferences, and favorites will be kept.',
+        'Run "clear data confirm" next to reset local progress. Terminal visual preferences, aliases, macros, and favorites will be kept.',
       ])
       setValue('')
       return
@@ -739,7 +1197,7 @@ function TerminalPanel({onClose,onOpenPassport,onOpenSearch,soundEnabled,setSoun
         keys.forEach(key=>localStorage.removeItem(key))
         window.dispatchEvent(new Event('esn-progress-change'))
         window.dispatchEvent(new Event('esn-arcade-progress'))
-        push('ok','LOCAL PROGRESS CLEARED // visual preferences and favorites preserved.')
+        push('ok','LOCAL PROGRESS CLEARED // Terminal setup and visual preferences preserved.')
         setClearArmed(false)
       }
     }else if(command.startsWith('protocol ')){
@@ -749,23 +1207,51 @@ function TerminalPanel({onClose,onOpenPassport,onOpenSearch,soundEnabled,setSoun
       else{
         const fresh=terminalUnlockEgg(egg)
         push(fresh?'ok':'system',fresh?'HIDDEN SIGNAL CAPTURED // '+signal.toUpperCase():'SIGNAL ALREADY CAPTURED // '+signal.toUpperCase())
+        if(fresh)awardOperator('protocol-'+signal,'Protocol Breaker: '+signal.toUpperCase(),40,'Protocol '+signal.toUpperCase()+' Fragment')
       }
     }else if(command==='1337'){
       const fresh=terminalUnlockEgg('typed-1337')
       push(fresh?'ok':'system',fresh?'LEGACY MODE SIGNAL CAPTURED.':'LEGACY MODE already recorded.')
+      if(fresh)awardOperator('protocol-1337','Legacy Protocol',40,'Legacy Protocol Fragment')
     }else{
+      const suggestion=terminalClosestCommand(command)
       const personalities=[
         'COMMAND NOT RECOGNIZED // The network heard you. It just has no idea what you meant.',
-        'NO ROUTE FOUND // Try "help" before the terminal starts judging your typing.',
+        'NO ROUTE FOUND // The command parser has filed a formal complaint.',
         'UNKNOWN OPERATOR REQUEST // Search index returned absolutely nothing useful.',
         'SIGNAL LOST // That command does not exist in this timeline.',
       ]
-      push('error',personalities[(command.length*7)%personalities.length])
+      push('error',personalities[(command.length*7)%personalities.length]+(suggestion?' Did you mean "'+suggestion+'"?':' Type "help".'))
     }
     setValue('')
   }
 
+  runRef.current=run
+
+  useEffect(()=>{
+    if(!watchCommand)return
+    const fire=async()=>{
+      if(watchCommand==='network'||watchCommand==='smp status')live.refresh?.()
+      await runRef.current?.(watchCommand,{record:false,watch:true,noChain:true})
+    }
+    fire()
+    const timer=window.setInterval(fire,3000)
+    return()=>window.clearInterval(timer)
+  },[watchCommand])
+
   const keyDown=event=>{
+    if((event.ctrlKey||event.metaKey)&&event.key.toLowerCase()==='l'){
+      event.preventDefault();setLines([]);return
+    }
+    if((event.ctrlKey||event.metaKey)&&event.key.toLowerCase()==='r'){
+      event.preventDefault();setHistorySearch(v=>!v);return
+    }
+    if(event.ctrlKey&&event.code==='Space'&&suggestions.length){
+      event.preventDefault();setValue(suggestions[0]);return
+    }
+    if(event.key==='/'&&!value){
+      event.preventDefault();setValue('search ');return
+    }
     if(event.key==='ArrowUp'){
       event.preventDefault()
       if(!history.length)return
@@ -776,19 +1262,28 @@ function TerminalPanel({onClose,onOpenPassport,onOpenSearch,soundEnabled,setSoun
       if(historyIndex<=0){setHistoryIndex(-1);setValue('')}
       else{const next=historyIndex-1;setHistoryIndex(next);setValue(history[next]||'')}
     }else if(event.key==='Tab'&&suggestions.length){
-      event.preventDefault()
-      setValue(suggestions[0])
+      event.preventDefault();setValue(suggestions[0])
+    }else if(event.key==='Escape'&&historySearch){
+      event.preventDefault();setHistorySearch(false)
     }
   }
 
-  return <SystemModal title="ESN Terminal" kicker="NETWORK COMMAND INTERFACE" onClose={onClose} className="ev-terminal-modal">
+  const currentOperator=readJson(TERMINAL_OPERATOR_KEY,{xp:0,commands:0,achievements:{},relics:[]})
+  const operatorRank=Math.floor((currentOperator.xp||0)/120)+1
+
+  return <SystemModal title="ESN Terminal" kicker="NETWORK COMMAND INTERFACE" onClose={onClose} className={'ev-terminal-modal terminal-theme-'+terminalTheme+(crtEnabled?' terminal-crt':'')}>
     <div className="ev-terminal-toolbar">
-      <span>OPERATOR MODE</span><b>{navigator.onLine?'ONLINE':'OFFLINE'}</b><small>{SITE_RELEASE}</small>
+      <span>OPERATOR RANK {operatorRank}</span><b>{online?'ONLINE':'OFFLINE / LOCAL'}</b><small>{watchCommand?'WATCHING '+watchCommand.toUpperCase():' '+SITE_RELEASE}</small>
     </div>
-    <div className="ev-terminal-output">{lines.map((line,index)=><div className={line.kind} key={index}>{line.text}</div>)}</div>
-    <div className="ev-terminal-suggestions">{suggestions.map(item=><button type="button" key={item} onClick={()=>setValue(item)}>{item}</button>)}</div>
-    <form className="ev-terminal-input" onSubmit={event=>{event.preventDefault();run(value)}}>
-      <span>ESN:/</span><input autoFocus autoComplete="off" spellCheck="false" value={value} onKeyDown={keyDown} onChange={event=>{setValue(event.target.value);setHistoryIndex(-1)}} placeholder="help"/><button type="submit">RUN</button>
+    <div className="ev-terminal-output" aria-live="polite">{lines.map((line,index)=><div className={line.kind} key={index}>{line.text}</div>)}</div>
+    {historySearch&&<div className="ev-terminal-history-search"><span>CTRL+R HISTORY SEARCH</span>{historyMatches.length?historyMatches.map(item=><button type="button" key={item} onClick={()=>{setValue(item);setHistorySearch(false);inputRef.current?.focus()}}>{item}</button>):<small>No history match.</small>}</div>}
+    {qrData&&<div className="ev-terminal-qr">
+      <img src={'https://api.qrserver.com/v1/create-qr-code/?size=220x220&margin=12&data='+encodeURIComponent(qrData.value)} alt={qrData.label+' QR code'}/>
+      <div><span>QR SIGNAL</span><strong>{qrData.label}</strong><small>{qrData.value}</small><button type="button" onClick={()=>setQrData(null)}>CLOSE QR</button></div>
+    </div>}
+    <div className="ev-terminal-suggestions">{suggestions.map(item=><button type="button" key={item} onClick={()=>{setValue(item);inputRef.current?.focus()}}>{item}</button>)}</div>
+    <form className="ev-terminal-input" onSubmit={event=>{event.preventDefault();if(!booting)run(value)}}>
+      <span>ESN:/</span><input ref={inputRef} autoFocus autoComplete="off" spellCheck="false" disabled={booting} value={value} onKeyDown={keyDown} onChange={event=>{setValue(event.target.value);setHistoryIndex(-1)}} placeholder={booting?'booting…':'help'}/><button type="submit" disabled={booting}>RUN</button>
     </form>
   </SystemModal>
 }
