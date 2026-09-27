@@ -468,6 +468,19 @@ export default function NetworkEvolution(){
 
     <div className="ev-season-pill"><i/><span>{season.label}</span><small>{season.copy}</small></div>
 
+    <div className="mobile-network-strip" aria-label="ESN mobile network controls">
+      <div className="mobile-network-strip-top">
+        <div className="mobile-season-chip"><i/><span>{season.label}</span></div>
+        <Link className="mobile-update-chip" to="/whatsnew"><b>NEW</b><span>Website update</span></Link>
+      </div>
+      <div className="mobile-network-strip-actions">
+        <button type="button" onClick={()=>setSearchOpen(true)}><span>⌕</span><small>Search</small></button>
+        <button type="button" onClick={()=>setTerminalOpen(true)}><span>›_</span><small>Terminal</small></button>
+        <button type="button" onClick={()=>setPassportOpen(true)}><span>{passportSnapshot(visited,eggs).level}</span><small>Passport</small></button>
+        <button type="button" onClick={()=>window.dispatchEvent(new Event('esn-open-command'))}><span>ES</span><small>Command</small></button>
+      </div>
+    </div>
+
     <CommandDeck pins={pins} onEdit={()=>setDeckOpen(true)}/>
 
     {takeover&&<Takeover soundEnabled={soundEnabled} onDone={()=>{localStorage.setItem('esn_takeover_seen',NETWORK_TAKEOVER.id);setTakeover(false)}}/>}
