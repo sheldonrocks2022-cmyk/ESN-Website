@@ -127,7 +127,7 @@ export default function FactoryGame(){
   return <OriginalFrame title="ES Factory" subtitle="53 zones • research tech • offline production • 112-machine catalog">
     <section className="oa-panel oa-status-line">{notice} • auto-save active • up to 4h offline recovery at 55% efficiency.</section>
 
-    <section className="oa-panel oa-factory-command">
+    <section className={'oa-panel oa-factory-command '+(surge?'is-surge':'')}>
       <div className="oa-factory-live">
         <span>FACTORY OUTPUT</span><strong>{rate.toFixed(2)} CPS</strong><small>{money(wallet.coins)} shared ES Coins • {money(totalOwned)} machines</small>
       </div>
