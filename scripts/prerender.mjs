@@ -35,7 +35,11 @@ const routes = {
   },
   '/smpconsole': {
     title: 'ESN SMP Console Connection | Xbox, PlayStation & Switch',
-    description: 'Console connection guidance for joining the ESN SMP from Xbox, PlayStation, or Nintendo Switch.',
+    description: 'Step-by-step ESN console connection guide using Bedrock Connect for Xbox, PlayStation, and Nintendo Switch.',
+  },
+  '/smpplugin': {
+    title: 'Download ESNSMP Plugin | ES Network',
+    description: 'Download the latest public ESNSMP Minecraft plugin release directly from the official ESNSMP GitHub release.',
   },
   '/estools': {
     title: 'ES Tools | Free Browser-Based Creator & Gaming Utilities',
