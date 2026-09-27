@@ -249,6 +249,12 @@ export default function PremiumChrome(){
         {!commandResults.length&&<div className="premium-command-empty">No command matches that search.</div>}
       </div>
 
+      <section className="mobile-network-utilities" aria-label="Network Evolution utilities">
+        <button type="button" onClick={()=>{setOpen(false);window.dispatchEvent(new Event('esn-open-universal-search'))}}><span>⌕</span><b>Search</b><small>Find anything ESN</small></button>
+        <button type="button" onClick={()=>{setOpen(false);window.dispatchEvent(new Event('esn-open-terminal'))}}><span>›_</span><b>Terminal</b><small>Network commands</small></button>
+        <button type="button" onClick={()=>{setOpen(false);window.dispatchEvent(new Event('esn-open-passport'))}}><span>◎</span><b>Passport</b><small>Missions + XP</small></button>
+      </section>
+
       <section className="visual-control-center">
         <div className="visual-control-head"><span>VISUAL SYSTEM</span><b>{lighting.toUpperCase()} MODE</b></div>
         <div className="theme-chip-row">
