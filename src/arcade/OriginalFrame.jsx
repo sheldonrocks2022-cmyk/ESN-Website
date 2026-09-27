@@ -14,6 +14,7 @@ export default function OriginalFrame({title,subtitle='Browser Arcade',children}
   const slug=location.pathname.replace('/','') || 'arcade'
   const arcade=useArcadeProgress()
   const [playMode,setPlayMode]=useState(false)
+  const [fx,setFx]=useState(null)
 
   useEffect(()=>{
     if(!playMode)return
@@ -21,7 +22,25 @@ export default function OriginalFrame({title,subtitle='Browser Arcade',children}
     return()=>document.documentElement.classList.remove('oa-mobile-play-active')
   },[playMode])
 
-  return <div className={`oa-page oa-page-${slug} ${playMode?'oa-mobile-play-mode':''}`}>
+  useEffect(()=>{
+    let timer
+    const onFx=event=>{
+      const type=event.detail?.type||'tap'
+      setFx({type,id:event.detail?.at||Date.now()})
+      clearTimeout(timer)
+      timer=setTimeout(()=>setFx(null),type==='danger'?620:420)
+    }
+    window.addEventListener('esn-arcade-fx',onFx)
+    return()=>{window.removeEventListener('esn-arcade-fx',onFx);clearTimeout(timer)}
+  },[])
+
+  return <div className={`oa-page oa-page-${slug} ${playMode?'oa-mobile-play-mode':''} ${fx?'oa-fx-'+fx.type:''}`}>
+    <div className="oa-world-layer" aria-hidden="true">
+      <i className="oa-world-glow oa-world-glow-a"/><i className="oa-world-glow oa-world-glow-b"/>
+      <i className="oa-world-horizon"/><i className="oa-world-fog"/>
+      <div className="oa-world-particles">{Array.from({length:18},(_,i)=><i key={i} style={{'--p':i}}/>)}</div>
+    </div>
+    {fx&&<div key={fx.id} className={'oa-impact-layer oa-impact-'+fx.type} aria-hidden="true"><i/><b/></div>}
     <div className="oa-game-shell">
       <section className="oa-mobile-focusbar" aria-label="Mobile Arcade controls">
         <Link to="/arcade" aria-label="Back to Arcade">←</Link>
