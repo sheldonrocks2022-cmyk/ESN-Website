@@ -118,6 +118,21 @@ export default function PremiumChrome(){
   }
 
   useEffect(()=>{
+    const terminalTheme=event=>{
+      const requested=event.detail?.theme
+      if(!requested)return
+      if(event.detail?.vault)setVaultUnlocked(true)
+      if(requested==='midnight'&&localStorage.getItem('esn_vault_unlocked')!=='1')return
+      if(requested==='dynamic'||userThemes[requested]){
+        setTheme(requested)
+        localStorage.setItem('esn_visual_theme',requested)
+      }
+    }
+    window.addEventListener('esn-terminal-theme',terminalTheme)
+    return()=>window.removeEventListener('esn-terminal-theme',terminalTheme)
+  },[])
+
+  useEffect(()=>{
     setOpen(false)
     setQuery('')
     document.documentElement.classList.remove('premium-command-open')
