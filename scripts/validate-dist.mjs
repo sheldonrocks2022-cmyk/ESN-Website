@@ -11,6 +11,7 @@ const routes = [
   '/smpconnection',
   '/smpconsole',
   '/smpplugin',
+  '/account',
   '/estools',
   '/tools',
   '/arcade',
