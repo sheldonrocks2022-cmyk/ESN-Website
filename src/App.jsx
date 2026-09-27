@@ -4,6 +4,8 @@ import ESToolsSuite from './Tools'
 import ES3DViewer from './ES3DViewer'
 import PremiumChrome from './PremiumChrome'
 import Global3DLighting from './Global3DLighting'
+import StartupIntro from './StartupIntro'
+import { PortfolioPage, StatusCenter, TimelinePage, UpdatesPage, VaultPage, WhatsHappeningNow } from './LiveExperience'
 import { VERIFIED_REVIEWS } from './reviews'
 import ClickerGame from './arcade/Clicker'
 import FactoryGame from './arcade/Factory'
@@ -160,6 +162,11 @@ const META = {
   '/smpconnection': ['ESN SMP Connection | Server IP & Port', 'Connect to the ESN SMP using the current server IP and port.'],
   '/smpconsole': ['ESN SMP Console Connection | Xbox, PlayStation & Switch', 'Step-by-step ESN console connection guide using Bedrock Connect for Xbox, PlayStation, and Nintendo Switch.'],
   '/smpplugin': ['Download ESNSMP Plugin | ES Network', 'Download the latest public ESNSMP Minecraft plugin release directly from the official ESNSMP GitHub release.'],
+  '/status': ['ESN Network Status | Live SMP Players & Systems', 'View live ES Network website, SMP player count, plugin release, Arcade, and Discord connection status.'],
+  '/timeline': ['ES Network Timeline | EP1C Services to ESN', 'Explore the interactive ES Network timeline from the former EP1C Services name through ESN, SMP, Arcade, and current projects.'],
+  '/updates': ['ES Network Release Center | Updates & Roadmap', 'See current ES Network website, ESNSMP, Arcade, live-network releases, and future project candidates.'],
+  '/portfolio': ['ES Network Portfolio | Interactive Before & After Demos', 'Explore illustrative before-and-after ES Network service transformation demos for editing, Discord setup, and website creation.'],
+  '/vault': ['ESN Vault | Secret Network Layer', 'A hidden ES Network experience unlocked through easter eggs.'],
   '/estools': ['ES Tools | Free Browser-Based Creator & Gaming Utilities', 'Free browser-based ES Network tools with no account required.'],
   '/about': ['About ES Network | ESN', 'Learn about ES Network, the current brand formerly known as EP1C Services.'],
   '/leadership': ['ES Network Leadership | Meet the Team', 'Meet the founders, co-founders, and administrators behind ES Network.'],
@@ -388,11 +395,12 @@ function Header() {
         <nav className={open ? 'nav open' : 'nav'} aria-label="Main navigation">
           <Link className={location.pathname === '/' || location.pathname === '/home' ? 'nav-direct active' : 'nav-direct'} onClick={close} to="/">Home</Link>
 
-          <div className={inGroup(['/serviceshowcase']) ? 'nav-group active' : 'nav-group'}>
+          <div className={inGroup(['/serviceshowcase','/portfolio']) ? 'nav-group active' : 'nav-group'}>
             <button className="nav-trigger" type="button" aria-haspopup="true">Services</button>
             <div className="dropdown">
               <span className="dropdown-label">ESN SERVICES</span>
               <Link onClick={close} to="/serviceshowcase">Service Showcase</Link>
+              <Link onClick={close} to="/portfolio">Before / After Portfolio</Link>
               <Link onClick={close} to="/#fortnite-coaching">Fortnite Coaching</Link>
               <Link onClick={close} to="/#editing-services">Editing Services</Link>
               <Link onClick={close} to="/#discord-server-setups">Discord Server Setups</Link>
@@ -421,11 +429,14 @@ function Header() {
 
           <Link className={location.pathname === '/estools' ? 'nav-direct active' : 'nav-direct'} onClick={close} to="/estools">ES Tools</Link>
 
-          <div className={inGroup(['/about','/leadership','/testimonials','/faq']) ? 'nav-group active' : 'nav-group'}>
+          <div className={inGroup(['/about','/leadership','/testimonials','/faq','/status','/timeline','/updates']) ? 'nav-group active' : 'nav-group'}>
             <button className="nav-trigger" type="button" aria-haspopup="true">About</button>
             <div className="dropdown">
               <span className="dropdown-label">THE NETWORK</span>
               <Link onClick={close} to="/about">About ES Network</Link>
+              <Link onClick={close} to="/status">Live Network Status</Link>
+              <Link onClick={close} to="/updates">Release Center</Link>
+              <Link onClick={close} to="/timeline">Interactive Timeline</Link>
               <Link onClick={close} to="/leadership">Leadership</Link>
               <Link onClick={close} to="/testimonials">35 Verified Reviews</Link>
               <Link onClick={close} to="/faq">FAQ</Link>
@@ -456,6 +467,7 @@ function Footer() {
           <div>
             <h3>Explore</h3>
             <Link to="/serviceshowcase">Services</Link>
+            <Link to="/portfolio">Portfolio</Link>
             <Link to="/testimonials">Verified Reviews</Link>
             <Link to="/arcade">Arcade</Link>
             <Link to="/estools">ES Tools</Link>
@@ -471,6 +483,9 @@ function Footer() {
           <div>
             <h3>Network</h3>
             <Link to="/about">About ESN</Link>
+            <Link to="/status">Network Status</Link>
+            <Link to="/updates">Release Center</Link>
+            <Link to="/timeline">Timeline</Link>
             <Link to="/leadership">Leadership</Link>
             <Link to="/faq">FAQ</Link>
             <a href={DISCORD_URL} target="_blank" rel="noreferrer">Discord Support</a>
@@ -563,6 +578,8 @@ function Home() {
           <Link to="/estools"><span>04</span><b>ES Tools</b><small>Free browser utilities</small><em>↗</em></Link>
         </div>
       </section>
+
+      <WhatsHappeningNow />
 
       <section className="section flagship-story-section">
         <div className="shell flagship-story">
@@ -1195,8 +1212,9 @@ function SMPPluginDownload() {
 }
 
 function ProductCard({ product }) {
+  const productId = 'product-' + product.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')
   return (
-    <article className="product-card store-product">
+    <article className="product-card store-product" id={productId}>
       <div className="product-topline">
         <span className="eyebrow">ESN SMP</span>
         <span className="product-price">{product.price}</span>
@@ -1331,6 +1349,7 @@ function App() {
   return (
     <div className="site">
       <a className="skip-link" href="#main-content">Skip to main content</a>
+      <StartupIntro />
       <MetaManager />
       <ScrollToHash />
       <ExperienceEffects />
@@ -1352,6 +1371,11 @@ function App() {
           <Route path="/smpconnection" element={<SMPConnection />} />
           <Route path="/smpconsole" element={<ConsoleConnection />} />
           <Route path="/smpplugin" element={<SMPPluginDownload />} />
+          <Route path="/status" element={<StatusCenter />} />
+          <Route path="/timeline" element={<TimelinePage />} />
+          <Route path="/updates" element={<UpdatesPage />} />
+          <Route path="/portfolio" element={<PortfolioPage />} />
+          <Route path="/vault" element={<VaultPage />} />
           <Route path="/estools" element={<ESToolsSuite />} />
           <Route path="/tools" element={<Navigate to="/estools" replace />} />
           <Route path="/arcade" element={<ArcadeHub />} />
