@@ -44,7 +44,7 @@ export default function TowerGame(){
     if(run.dangers.has(i)){
       if(run.shield>0){
         arcadeFeedback('safe')
-    const nextFloor=Math.min(122,run.floor+1)
+        const nextFloor=Math.min(122,run.floor+1)
         const nextData=floors[nextFloor-1]
         setRun({...run,floor:nextFloor,dangers:dangerDoors(nextData.hazards),picked:null,shield:run.shield-1,safeChain:0})
         setLast(`Shield absorbed a danger door on Floor ${run.floor}. Advanced to Floor ${nextFloor}.`)
@@ -59,6 +59,7 @@ export default function TowerGame(){
       return
     }
 
+    arcadeFeedback('safe')
     const nextFloor=Math.min(122,run.floor+1)
     const earnedShield=nextFloor%15===0&&run.shield<1
     const nextData=floors[nextFloor-1]
@@ -132,7 +133,7 @@ export default function TowerGame(){
       {!run&&<p>Full 122-floor ladder becomes focused around your current run after starting.</p>}
     </section>
 
-    <section className="oa-panel oa-tower-door-panel">
+    <section className={'oa-panel oa-tower-door-panel '+(run?.busted?'is-busted ':'')+(run&&floorData.hazards===2?'is-hazard':'')}>
       <div className="oa-section-head"><h3>Pick one of three doors on Floor {run?.floor||1}</h3>{run?.busted&&<span className="oa-busted">BUSTED</span>}</div>
       {run&&<div className="oa-tower-run-strip"><span>SAFE CHAIN <b>{run.safeChain||0}</b></span><span>SHIELD <b>{run.shield?'READY':'EMPTY'}</b></span><span>HAZARD <b>{floorData.hazards===2?'DOUBLE':'STANDARD'}</b></span></div>}
       <div className="oa-doors">
