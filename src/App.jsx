@@ -3,6 +3,8 @@ import { Link, Navigate, Route, Routes, useLocation } from 'react-router-dom'
 import ESToolsSuite from './Tools'
 import ES3DViewer from './ES3DViewer'
 import PremiumChrome from './PremiumChrome'
+import AccountPage from './account/AccountPage'
+import { useAuth } from './account/AuthProvider'
 import { VERIFIED_REVIEWS } from './reviews'
 import ClickerGame from './arcade/Clicker'
 import FactoryGame from './arcade/Factory'
@@ -159,6 +161,7 @@ const META = {
   '/smpconnection': ['ESN SMP Connection | Server IP & Port', 'Connect to the ESN SMP using the current server IP and port.'],
   '/smpconsole': ['ESN SMP Console Connection | Xbox, PlayStation & Switch', 'Step-by-step ESN console connection guide using Bedrock Connect for Xbox, PlayStation, and Nintendo Switch.'],
   '/smpplugin': ['Download ESNSMP Plugin | ES Network', 'Download the latest public ESNSMP Minecraft plugin release directly from the official ESNSMP GitHub release.'],
+  '/account': ['ESN Account | ES Network', 'Sign in or create your native ES Network account, member profile, and secure ESN identity.'],
   '/estools': ['ES Tools | Free Browser-Based Creator & Gaming Utilities', 'Free browser-based ES Network tools with no account required.'],
   '/about': ['About ES Network | ESN', 'Learn about ES Network, the current brand formerly known as EP1C Services.'],
   '/leadership': ['ES Network Leadership | Meet the Team', 'Meet the founders, co-founders, and administrators behind ES Network.'],
@@ -353,6 +356,8 @@ function Header() {
   const [open, setOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const location = useLocation()
+  const auth = useAuth()
+  const accountName = auth.user ? (auth.profile?.display_name || auth.user.user_metadata?.display_name || auth.user.email?.split('@')[0] || 'Account') : 'Account'
 
   useEffect(() => {
     const onScroll = () => setScrolled((current) => {
@@ -419,6 +424,9 @@ function Header() {
           </div>
 
           <Link className={location.pathname === '/estools' ? 'nav-direct active' : 'nav-direct'} onClick={close} to="/estools">ES Tools</Link>
+          <Link className={location.pathname === '/account' ? 'nav-direct active account-nav-link' : 'nav-direct account-nav-link'} onClick={close} to="/account">
+            <span className="account-nav-dot" />{accountName}
+          </Link>
 
           <div className={inGroup(['/about','/leadership','/testimonials','/faq']) ? 'nav-group active' : 'nav-group'}>
             <button className="nav-trigger" type="button" aria-haspopup="true">About</button>
@@ -472,6 +480,7 @@ function Footer() {
             <Link to="/about">About ESN</Link>
             <Link to="/leadership">Leadership</Link>
             <Link to="/faq">FAQ</Link>
+            <Link to="/account">ESN Account</Link>
             <a href={DISCORD_URL} target="_blank" rel="noreferrer">Discord Support</a>
           </div>
         </div>
@@ -1320,6 +1329,7 @@ function App() {
           <Route path="/smpconnection" element={<SMPConnection />} />
           <Route path="/smpconsole" element={<ConsoleConnection />} />
           <Route path="/smpplugin" element={<SMPPluginDownload />} />
+          <Route path="/account" element={<AccountPage />} />
           <Route path="/estools" element={<ESToolsSuite />} />
           <Route path="/tools" element={<Navigate to="/estools" replace />} />
           <Route path="/arcade" element={<ArcadeHub />} />
