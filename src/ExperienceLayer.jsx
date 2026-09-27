@@ -114,6 +114,12 @@ export function NotificationCenter(){
 
   useEffect(()=>setOpen(false),[location.pathname])
 
+  useEffect(()=>{
+    const openNotifications=()=>setOpen(true)
+    window.addEventListener('esn-open-notifications',openNotifications)
+    return()=>window.removeEventListener('esn-open-notifications',openNotifications)
+  },[])
+
   const notifications=[
     {
       type:'SMP',
