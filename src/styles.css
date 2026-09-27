@@ -7342,3 +7342,205 @@ html[data-motion="reduced"] .route-transition{
 @media(prefers-reduced-motion:reduce){
   .retention-reward-card::before,.oa-moto-exhaust,.oa-td-turret.firing,.oa-td-muzzle{animation:none!important}
 }
+
+
+/* =========================================================
+   ESN ARCADE PLATFORM PARITY — full PC + mobile support
+   Every game keeps its responsive phone layout and a full desktop play surface.
+   ========================================================= */
+.oa-mobile-focusbar{display:none}
+.oa-command-actions{
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  gap:10px;
+}
+.oa-desktop-play-toggle{
+  min-height:38px;
+  padding:0 14px;
+  border:1px solid rgba(103,239,250,.16);
+  border-radius:11px;
+  background:linear-gradient(145deg,rgba(34,75,128,.2),rgba(103,239,250,.045));
+  color:#c9fbff;
+  font-size:.58rem;
+  font-weight:950;
+  letter-spacing:.1em;
+  cursor:pointer;
+}
+.oa-desktop-play-toggle:hover,
+.oa-desktop-play-toggle.active{
+  border-color:rgba(103,239,250,.34);
+  background:linear-gradient(145deg,rgba(54,119,192,.25),rgba(103,239,250,.08));
+  box-shadow:0 0 24px rgba(103,239,250,.06);
+}
+
+html.oa-focus-play-active,
+html.oa-focus-play-active body{
+  overflow:hidden!important;
+  overscroll-behavior:none!important;
+}
+
+@media(min-width:761px) and (pointer:fine){
+  html.oa-focus-play-active .site-header,
+  html.oa-focus-play-active .premium-ticker,
+  html.oa-focus-play-active .premium-dock,
+  html.oa-focus-play-active .mobile-network-strip,
+  html.oa-focus-play-active .mobile-bottom-nav,
+  html.oa-focus-play-active .site-footer{
+    display:none!important;
+  }
+
+  .oa-focus-play-mode{
+    position:fixed!important;
+    inset:0!important;
+    z-index:500!important;
+    overflow:hidden!important;
+    background:
+      radial-gradient(circle at 50% 0%,rgba(52,121,255,.08),transparent 34rem),
+      #020711!important;
+  }
+  .oa-focus-play-mode .oa-game-shell{
+    width:100%!important;
+    max-width:none!important;
+    height:100dvh!important;
+    padding:12px!important;
+    display:grid!important;
+    grid-template-rows:60px minmax(0,1fr)!important;
+    gap:10px!important;
+    overflow:hidden!important;
+  }
+  .oa-focus-play-mode .oa-game-switcher,
+  .oa-focus-play-mode .oa-title-card,
+  .oa-focus-play-mode .oa-arcade-rank,
+  .oa-focus-play-mode .oa-endcap{
+    display:none!important;
+  }
+  .oa-focus-play-mode .oa-commandbar{
+    margin:0!important;
+    min-height:60px!important;
+    background:#06101f!important;
+    border-color:rgba(103,239,250,.14)!important;
+    box-shadow:0 10px 28px rgba(0,0,0,.24)!important;
+  }
+  .oa-focus-play-mode .oa-game-viewport{
+    min-height:0!important;
+    overflow:auto!important;
+    overscroll-behavior:contain!important;
+    padding:2px!important;
+  }
+
+  /* Desktop MOTO gets the same serious play-first treatment as mobile. */
+  .oa-focus-play-mode.oa-page-esmoto .oa-moto-career,
+  .oa-focus-play-mode.oa-page-esmoto .oa-moto-intro{
+    display:none!important;
+  }
+  .oa-focus-play-mode.oa-page-esmoto .oa-game-viewport{
+    overflow:hidden!important;
+  }
+  .oa-focus-play-mode.oa-page-esmoto .oa-moto-game-panel{
+    height:100%!important;
+    min-height:0!important;
+    display:grid!important;
+    grid-template-rows:auto auto minmax(0,1fr) auto auto auto!important;
+    overflow:hidden!important;
+    padding:18px!important;
+  }
+  .oa-focus-play-mode.oa-page-esmoto .oa-moto-stage{
+    height:auto!important;
+    min-height:0!important;
+  }
+
+  /* Desktop Tower becomes a focused tower run without losing full PC controls. */
+  .oa-focus-play-mode.oa-page-estower .oa-tower-career,
+  .oa-focus-play-mode.oa-page-estower .oa-tower-ladder-panel{
+    display:none!important;
+  }
+  .oa-focus-play-mode.oa-page-estower .oa-game-viewport{
+    grid-template-columns:minmax(280px,.7fr) minmax(0,1.3fr)!important;
+    overflow:hidden!important;
+  }
+  .oa-focus-play-mode.oa-page-estower .oa-tower-summary,
+  .oa-focus-play-mode.oa-page-estower .oa-tower-door-panel{
+    min-height:0!important;
+  }
+  .oa-focus-play-mode.oa-page-estower .oa-tower-door-panel{
+    height:100%!important;
+    overflow:auto!important;
+  }
+
+  /* Desktop Tower Defense gets a full command-grid battlefield. */
+  .oa-focus-play-mode.oa-page-estowerdefense .oa-td-career,
+  .oa-focus-play-mode.oa-page-estowerdefense .oa-td-overview-panel,
+  .oa-focus-play-mode.oa-page-estowerdefense .oa-td-abilities{
+    display:none!important;
+  }
+  .oa-focus-play-mode.oa-page-estowerdefense .oa-game-viewport{
+    grid-template-columns:minmax(0,1.5fr) minmax(320px,.5fr)!important;
+    overflow:hidden!important;
+  }
+  .oa-focus-play-mode.oa-page-estowerdefense .oa-td-board-panel{
+    min-height:0!important;
+    height:100%!important;
+    overflow:hidden!important;
+  }
+  .oa-focus-play-mode.oa-page-estowerdefense .oa-td-board{
+    min-height:0!important;
+    height:calc(100% - 54px)!important;
+    aspect-ratio:auto!important;
+  }
+  .oa-focus-play-mode.oa-page-estowerdefense .oa-td-loadout-panel{
+    height:100%!important;
+    overflow:auto!important;
+    position:relative!important;
+    top:0!important;
+  }
+
+  /* Desktop game layouts are intentionally richer than the compact phone versions. */
+  .oa-page-esmoto .oa-moto-controls{
+    grid-template-columns:repeat(5,minmax(0,1fr))!important;
+  }
+  .oa-page-esmoto .oa-moto-controls button{
+    min-height:92px;
+  }
+  .oa-page-esmoto .oa-moto-stage{
+    height:min(760px,70vh);
+    min-height:540px;
+  }
+
+  .oa-page-estower .oa-tower-scene{
+    min-height:360px;
+  }
+  .oa-page-estower .oa-doors button{
+    min-height:240px;
+  }
+
+  .oa-page-estowerdefense .oa-td-board{
+    min-height:620px;
+    aspect-ratio:1.75;
+  }
+  .oa-page-estowerdefense .oa-tower-roster{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+
+  .oa-page-esclicker .oa-clicker-forge .oa-upgrade-list{
+    grid-template-columns:repeat(3,minmax(0,1fr));
+  }
+  .oa-page-esfactory .oa-factory-machines .oa-machine-list{
+    grid-template-columns:repeat(3,minmax(0,1fr));
+  }
+}
+
+/* Mobile keeps its dedicated compact controls and focus bar. */
+@media(max-width:760px), (pointer:coarse){
+  .oa-mobile-focusbar{display:grid!important}
+  .oa-desktop-play-toggle{display:none!important}
+}
+
+/* Small laptop / tablet PC parity. */
+@media(min-width:761px) and (max-width:1100px){
+  .oa-page-esmoto .oa-moto-controls{grid-template-columns:repeat(5,minmax(0,1fr))}
+  .oa-page-esmoto .oa-moto-controls button{min-height:78px}
+  .oa-page-estowerdefense .oa-td-board{min-height:500px}
+  .oa-page-estower .oa-doors{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .oa-page-estower .oa-doors button{min-height:180px}
+}
