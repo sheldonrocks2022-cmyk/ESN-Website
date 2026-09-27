@@ -55,7 +55,7 @@ export default function ClickerGame(){
       return next
     })
   }
-  const visible=useMemo(()=>upgrades.slice(0,18),[])
+  const visible=useMemo(()=>upgrades,[])
   return <OriginalFrame title="ES Clicker" subtitle="Tap economy • live progression • power forge">
     <section className="oa-panel oa-stats">
       <div><span>LIVE BALANCE</span><b>{money(g.balance)} ES</b></div>
