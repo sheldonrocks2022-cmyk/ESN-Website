@@ -3,7 +3,7 @@ import { Link, useLocation } from 'react-router-dom'
 import { DISCORD_URL, SITE_RELEASE, SMP_ADDRESS, SMP_PORT, useLiveNetwork } from './liveNetwork'
 import { useArcadeProgress } from './arcade/shared'
 
-const RELEASE_ID='2026-09-27-expansion-20'
+const RELEASE_ID='2026-09-27-no-account-expansion'
 const RECENT_KEY='esn_recent_routes'
 const FAVORITES_KEY='esn_favorites'
 const PREF_KEY='esn_site_preferences'
@@ -34,6 +34,10 @@ const ROUTE_META={
   '/estools':{label:'ES Tools',category:'Tools'},
   '/status':{label:'Network Status',category:'Network'},
   '/networkstats':{label:'Network Statistics',category:'Network'},
+  '/nexus':{label:'Network Nexus',category:'Network'},
+  '/notifications':{label:'Notification Center',category:'Network'},
+  '/rewards':{label:'Reward Vault',category:'Network'},
+  '/challenges':{label:'Challenge Lab',category:'Arcade'},
   '/updates':{label:'Release Center',category:'Network'},
   '/whatsnew':{label:"What's New",category:'Network'},
   '/timeline':{label:'Timeline',category:'Network'},
