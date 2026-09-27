@@ -274,6 +274,7 @@ export default function PremiumChrome(){
         <button type="button" onClick={()=>{setOpen(false);window.dispatchEvent(new Event('esn-open-terminal'))}}><span>›_</span><b>Terminal</b><small>Network commands</small></button>
         <button type="button" onClick={()=>{setOpen(false);window.dispatchEvent(new Event('esn-open-passport'))}}><span>◎</span><b>Passport</b><small>Missions + XP</small></button>
         <button type="button" onClick={()=>{setOpen(false);navigate('/explore')}}><span>✦</span><b>Explore</b><small>All website features</small></button>
+        <button type="button" onClick={()=>{setOpen(false);navigate('/whatsnew')}}><span>NEW</span><b>What's New</b><small>Latest site changes</small></button>
         <button type="button" onClick={()=>{setOpen(false);navigate('/settings')}}><span>⚙</span><b>Settings</b><small>Performance + access</small></button>
         <button type="button" onClick={()=>window.dispatchEvent(new Event('esn-install-request'))}><span>↓</span><b>Install</b><small>Add ESN to device</small></button>
       </section>
