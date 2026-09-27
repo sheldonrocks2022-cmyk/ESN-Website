@@ -174,6 +174,21 @@ function MetaManager() {
     }
     descriptionTag.setAttribute('content', description)
 
+    let robotsTag = document.querySelector('meta[name="robots"]')
+    if (window.location.hostname === 'ep1cservices.shop') {
+      if (!robotsTag) {
+        robotsTag = document.createElement('meta')
+        robotsTag.setAttribute('name', 'robots')
+        document.head.appendChild(robotsTag)
+      }
+      robotsTag.setAttribute('content', 'noindex, nofollow')
+    } else if (robotsTag?.dataset?.testDomain === 'true') {
+      robotsTag.remove()
+    }
+    if (robotsTag && window.location.hostname === 'ep1cservices.shop') {
+      robotsTag.dataset.testDomain = 'true'
+    }
+
     let canonical = document.querySelector('link[rel="canonical"]')
     if (!canonical) {
       canonical = document.createElement('link')
@@ -516,17 +531,46 @@ function About() {
       <PageHero eyebrow="About" title="About ES Network" text="ES Network is the current organization and brand. EP1C Services was the former name — not a separate current division." />
       <section className="section">
         <div className="shell two-column">
-          <div><h2>One identity.</h2></div>
+          <div>
+            <span className="eyebrow">One network</span>
+            <h2>Gaming, creator services, tools, community, and ESN SMP.</h2>
+          </div>
           <div className="stack">
             <p className="large-copy">ESN brings together creator services, gaming, community projects, browser experiences, tools, and the ESN SMP under one recognizable name.</p>
-            <p className="muted">The rebuilt site keeps the history clear so visitors and search engines do not confuse the old EP1C Services name with a separate organization.</p>
+            <p className="muted">The website keeps the history clear: EP1C Services was the former name, while ES Network is the organization moving forward.</p>
+          </div>
+        </div>
+      </section>
+      <section className="section dark-section">
+        <div className="shell">
+          <div className="section-heading">
+            <div>
+              <span className="eyebrow">Why ES Network</span>
+              <h2>One place for the network’s public projects.</h2>
+            </div>
+          </div>
+          <div className="card-grid three">
+            <article className="feature-panel">
+              <span className="eyebrow">Services</span>
+              <h3>Direct ordering & support</h3>
+              <p>Service requests and support are routed through ESN Discord tickets so visitors have a clear place to start.</p>
+            </article>
+            <article className="feature-panel">
+              <span className="eyebrow">Gaming</span>
+              <h3>ESN SMP & Arcade</h3>
+              <p>The Minecraft server and rebuilt browser Arcade sit under the same ES Network identity.</p>
+            </article>
+            <article className="feature-panel">
+              <span className="eyebrow">Tools</span>
+              <h3>Free browser utilities</h3>
+              <p>ES Tools provides browser-first creator and gaming utilities without requiring an account.</p>
+            </article>
           </div>
         </div>
       </section>
     </>
   )
 }
-
 function Leadership() {
   return (
     <>
@@ -668,6 +712,9 @@ function SMPConnection() {
             <strong>{SMP_HOST}</strong>
             <span>Port {SMP_PORT}</span>
             <button className="button primary copy-button" type="button" onClick={copy}>{copied ? 'Copied' : 'Copy server address'}</button>
+          </div>
+          <div className="connection-actions">
+            <Link className="button secondary console-guide-link" to="/smpconsole">Playing on console? Open the console guide</Link>
           </div>
           <p className="muted center">Use the official ESN Discord for server announcements, support, and community updates.</p>
         </div>
