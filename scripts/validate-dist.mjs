@@ -1,0 +1,48 @@
+import fs from 'node:fs'
+import path from 'node:path'
+
+const routes = [
+  '/',
+  '/home',
+  '/serviceshowcase',
+  '/storesmp',
+  '/smpconnection',
+  '/estools',
+  '/arcade',
+  '/esclicker',
+  '/esfactory',
+  '/esmines',
+  '/esmoto',
+  '/estower',
+  '/estowerdefense',
+  '/about',
+  '/leadership',
+  '/testimonials',
+  '/faq',
+]
+
+const failures = []
+
+for (const route of routes) {
+  const file = route === '/'
+    ? path.join('dist', 'index.html')
+    : path.join('dist', route.slice(1), 'index.html')
+
+  if (!fs.existsSync(file)) {
+    failures.push(`Missing built route file: ${file}`)
+    continue
+  }
+
+  const html = fs.readFileSync(file, 'utf8')
+  if (!html.includes('<title>')) failures.push(`Missing title in ${file}`)
+  if (!html.includes('rel="canonical"')) failures.push(`Missing canonical tag in ${file}`)
+  if (!html.includes('name="description"')) failures.push(`Missing description in ${file}`)
+}
+
+if (failures.length) {
+  console.error('Built route validation failed:')
+  for (const failure of failures) console.error(`- ${failure}`)
+  process.exit(1)
+}
+
+console.log(`Built route validation passed for ${routes.length} routes.`)
