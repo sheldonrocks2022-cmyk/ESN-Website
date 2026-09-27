@@ -9,7 +9,8 @@
     "preview": "vite preview",
     "validate": "node scripts/validate-site.mjs",
     "build:app": "vite build",
-    "validate:dist": "node scripts/validate-dist.mjs"
+    "validate:dist": "node scripts/validate-dist.mjs",
+    "security:secrets": "node scripts/scan-secrets.mjs"
   },
   "dependencies": {
     "react": "^19.3.0",
