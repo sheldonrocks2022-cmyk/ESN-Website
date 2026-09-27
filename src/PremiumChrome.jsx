@@ -5,6 +5,15 @@ const DISCORD_URL='https://discord.gg/3gxA66KZ8'
 const SMP_HOST='esn.ggwp.cc'
 const PLUGIN_DOWNLOAD_URL='https://github.com/sheldonrocks2022-cmyk/ESNSMP/releases/latest/download/ESNSMP.jar'
 
+const compactRouteLabels={
+  '/':'Home','/serviceshowcase':'Services','/portfolio':'Portfolio','/testimonials':'Reviews',
+  '/smpconnection':'SMP','/smpconsole':'Console Guide','/smpplugin':'Plugin','/smpguide':'SMP Encyclopedia','/storesmp':'SMP Store',
+  '/arcade':'Arcade','/esclicker':'Clicker','/esfactory':'Factory','/esmines':'Mines','/esmoto':'MOTO','/estower':'Tower','/estowerdefense':'Tower Defense',
+  '/estools':'ES Tools','/status':'Status','/networkstats':'Network Stats','/updates':'Updates','/whatsnew':"What's New",'/timeline':'Timeline',
+  '/explore':'Explore ESN','/gallery':'Gallery','/settings':'Settings','/support':'Support','/about':'About','/leadership':'Leadership','/faq':'FAQ','/share':'Share'
+}
+function localList(key){try{const value=JSON.parse(localStorage.getItem(key)||'[]');return Array.isArray(value)?value:[]}catch{return []}}
+
 const routeThemes={
   home:['84 154 255','143 249 255'],
   services:['121 92 255','92 214 255'],
@@ -52,6 +61,7 @@ export default function PremiumChrome(){
   const [lighting,setLighting]=useState(()=>localStorage.getItem('esn_lighting_mode')||'night')
   const [vaultUnlocked,setVaultUnlocked]=useState(()=>localStorage.getItem('esn_vault_unlocked')==='1')
   const [secretPulse,setSecretPulse]=useState(false)
+  const [historyTick,setHistoryTick]=useState(0)
   const tapRef=useRef({count:0,timer:null})
 
   const arcadeRoutes=['/arcade','/esclicker','/esfactory','/esmines','/esmoto','/estower','/estowerdefense']
@@ -112,6 +122,12 @@ export default function PremiumChrome(){
     setQuery('')
     document.documentElement.classList.remove('premium-command-open')
   },[location.pathname])
+
+  useEffect(()=>{
+    const refresh=()=>setHistoryTick(value=>value+1)
+    window.addEventListener('esn-history-change',refresh)
+    return()=>window.removeEventListener('esn-history-change',refresh)
+  },[])
 
   useEffect(()=>{
     const openFromDeck=()=>setOpen(true)
@@ -191,6 +207,10 @@ export default function PremiumChrome(){
     tap.timer=setTimeout(()=>{tap.count=0},2600)
   }
 
+  const recentRoutes=localList('esn_recent_routes').filter(route=>compactRouteLabels[route]).slice(0,4)
+  const favoriteRoutes=localList('esn_favorites').filter(route=>compactRouteLabels[route]).slice(0,4)
+  void historyTick
+
   return <>
     <div className="lux-cursor-field" aria-hidden="true"/>
     <div className="lux-cursor-ring" aria-hidden="true"/>
@@ -253,7 +273,15 @@ export default function PremiumChrome(){
         <button type="button" onClick={()=>{setOpen(false);window.dispatchEvent(new Event('esn-open-universal-search'))}}><span>⌕</span><b>Search</b><small>Find anything ESN</small></button>
         <button type="button" onClick={()=>{setOpen(false);window.dispatchEvent(new Event('esn-open-terminal'))}}><span>›_</span><b>Terminal</b><small>Network commands</small></button>
         <button type="button" onClick={()=>{setOpen(false);window.dispatchEvent(new Event('esn-open-passport'))}}><span>◎</span><b>Passport</b><small>Missions + XP</small></button>
+        <button type="button" onClick={()=>{setOpen(false);navigate('/explore')}}><span>✦</span><b>Explore</b><small>All website features</small></button>
+        <button type="button" onClick={()=>{setOpen(false);navigate('/settings')}}><span>⚙</span><b>Settings</b><small>Performance + access</small></button>
+        <button type="button" onClick={()=>window.dispatchEvent(new Event('esn-install-request'))}><span>↓</span><b>Install</b><small>Add ESN to device</small></button>
       </section>
+
+      {(favoriteRoutes.length>0||recentRoutes.length>0)&&<section className="premium-local-history">
+        {favoriteRoutes.length>0&&<div><span>FAVORITES</span>{favoriteRoutes.map(route=><button type="button" key={'fav-'+route} onClick={()=>{setOpen(false);navigate(route)}}>{compactRouteLabels[route]} <b>★</b></button>)}</div>}
+        {recentRoutes.length>0&&<div><span>RECENT</span>{recentRoutes.map(route=><button type="button" key={'recent-'+route} onClick={()=>{setOpen(false);navigate(route)}}>{compactRouteLabels[route]} <b>↗</b></button>)}</div>}
+      </section>}
 
       <section className="visual-control-center">
         <div className="visual-control-head"><span>VISUAL SYSTEM</span><b>{lighting.toUpperCase()} MODE</b></div>
