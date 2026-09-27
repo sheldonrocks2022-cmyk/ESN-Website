@@ -8,6 +8,10 @@ const RECENT_KEY='esn_recent_routes'
 const FAVORITES_KEY='esn_favorites'
 const PREF_KEY='esn_site_preferences'
 const DAILY_KEY='esn_arcade_daily_v1'
+const RETENTION_KEY='esn_retention_v1'
+const WEEKLY_KEY='esn_weekly_missions_v1'
+const VOTE_KEY='esn_community_vote_v1'
+const GAME_ROUTES=['/esclicker','/esfactory','/esmines','/esmoto','/estower','/estowerdefense']
 const PLUGIN_SHA256='4439a6c8bf7ea6b0bf170098eeb1dff3f9f2f7008c06556140a1c1cfd8afd356'
 
 const ROUTE_META={
@@ -580,5 +584,200 @@ export function ArcadeProgressCenter(){
       const done=(latest.completed||[]).includes(challenge.id)||progress>=challenge.target
       return <article className={done?'complete':''} key={challenge.id}><span>{done?'COMPLETE':'60 XP'}</span><h3>{challenge.label}</h3><p>{challenge.copy}</p><div><i style={{width:Math.min(100,(progress/challenge.target)*100)+'%'}}/></div><small>{Math.min(progress,challenge.target)} / {challenge.target}</small></article>
     })}</div>
+  </div></section>
+}
+
+
+function weekKey(){
+  const now=new Date()
+  const first=new Date(now.getFullYear(),0,1)
+  const days=Math.floor((now-first)/86400000)
+  const week=Math.ceil((days+first.getDay()+1)/7)
+  return `${now.getFullYear()}-W${String(week).padStart(2,'0')}`
+}
+
+function previousDateKey(){
+  const d=new Date()
+  d.setDate(d.getDate()-1)
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`
+}
+
+const WEEKLY_POOL=[
+  {id:'weekly-clicker',label:'Reactor Operator',stat:'clickerTaps',target:1200,xp:180,copy:'Make 1,200 Clicker taps this week.'},
+  {id:'weekly-mines',label:'Deep Miner',stat:'minesSafe',target:75,xp:180,copy:'Reveal 75 safe Mines tiles this week.'},
+  {id:'weekly-moto',label:'Track Specialist',stat:'motoFinishes',target:5,xp:220,copy:'Finish five MOTO tracks this week.'},
+  {id:'weekly-tower',label:'Tower Veteran',stat:'towerFloors',target:60,xp:220,copy:'Advance 60 Tower floors this week.'},
+  {id:'weekly-defense',label:'Defense Commander',stat:'tdWaves',target:45,xp:240,copy:'Clear 45 Tower Defense waves this week.'},
+  {id:'weekly-factory',label:'Industrial Expansion',stat:'factoryMachines',target:15,xp:200,copy:'Purchase 15 Factory machines this week.'},
+]
+
+const VOTE_OPTIONS=[
+  ['arcade-event','Arcade event weekend','A rotating boosted Arcade event with special challenges.'],
+  ['smp-event','SMP event board expansion','More live SMP event information and event history.'],
+  ['vault-drop','Vault collectible drop','A limited collectible hunt hidden across ESN.'],
+  ['new-game-mode','New Arcade game mode','Add another mode to an existing ESN Arcade title.'],
+]
+
+function personalGameRecords(){
+  const clicker=readJson('esn_clicker_original_v1',{highest:0,totalClicks:0})
+  const factory=readJson('esn_factory_original_v1',{lifetimeMachines:0})
+  const mines=readJson('esn_mines_stats_v2',{bestMultiplier:1,safeTiles:0})
+  const moto=readJson('esn_moto_original_v1',{best:{},finishes:0,golds:0})
+  const tower=readJson('esn_tower_stats_v2',{bestFloor:1,cashouts:0})
+  const defense=readJson('esn_td_career_v2',{bestRound:1,waves:0})
+  const motoTimes=Object.values(moto.best||{}).filter(value=>Number.isFinite(value))
+  const bestMoto=motoTimes.length?Math.min(...motoTimes):null
+  return [
+    {name:'ES Clicker',route:'/esclicker',record:Math.floor(clicker.highest||0).toLocaleString()+' ES',score:Math.log10((clicker.highest||0)+1)*22+(clicker.totalClicks||0)/80},
+    {name:'ES Factory',route:'/esfactory',record:(factory.lifetimeMachines||0).toLocaleString()+' machines',score:(factory.lifetimeMachines||0)*2.2},
+    {name:'ES Mines',route:'/esmines',record:Number(mines.bestMultiplier||1).toFixed(2)+'× best',score:Number(mines.bestMultiplier||1)*18+(mines.safeTiles||0)/8},
+    {name:'ES MOTO',route:'/esmoto',record:bestMoto?bestMoto.toFixed(2)+'s best':'No finish yet',score:(moto.golds||0)*35+(moto.finishes||0)*5+(bestMoto?Math.max(0,50-bestMoto):0)},
+    {name:'ES Tower',route:'/estower',record:'Floor '+(tower.bestFloor||1),score:(tower.bestFloor||1)*3+(tower.cashouts||0)*8},
+    {name:'ES Tower Defense',route:'/estowerdefense',record:'Wave '+(defense.bestRound||1),score:(defense.bestRound||1)*3+(defense.waves||0)},
+  ].sort((a,b)=>b.score-a.score)
+}
+
+export function RetentionHub(){
+  const arcade=useArcadeProgress()
+  const [,refresh]=useState(0)
+  const today=dateKey()
+  const week=weekKey()
+  const totals=arcade.progress.totals||{}
+  const recent=readJson(RECENT_KEY,[])
+  const continueRoute=recent.find(route=>GAME_ROUTES.includes(route))||'/arcade'
+  const continueMeta=ROUTE_META[continueRoute]||{label:'ESN Arcade',category:'Arcade'}
+  const daily=readJson(DAILY_KEY,{date:today,completed:[],streak:0})
+  const current=readJson(RETENTION_KEY,{lastClaim:null,streak:0,networkXp:0,shards:0,collectibles:[],visits:0,lastVisit:null})
+  const weeklyStored=readJson(WEEKLY_KEY,{})
+  const weekSeed=Number(week.replace(/\D/g,''))||0
+  const weeklySelected=[0,1,2,3].map(offset=>WEEKLY_POOL[(weekSeed+offset*2)%WEEKLY_POOL.length])
+  const baseline=weeklyStored.week===week?weeklyStored.baseline:Object.fromEntries(Object.keys(totals).map(key=>[key,totals[key]||0]))
+  const weeklyCompleted=weeklyStored.week===week?(weeklyStored.completed||[]):[]
+  const weekend=[0,5,6].includes(new Date().getDay())
+  const records=personalGameRecords()
+  const eggs=readJson('esn_easter_eggs',[])
+
+  useEffect(()=>{
+    const state=readJson(RETENTION_KEY,{lastClaim:null,streak:0,networkXp:0,shards:0,collectibles:[],visits:0,lastVisit:null})
+    if(state.lastVisit!==today){
+      writeJson(RETENTION_KEY,{...state,lastVisit:today,visits:(state.visits||0)+1})
+      refresh(value=>value+1)
+    }
+  },[today])
+
+  useEffect(()=>{
+    if(weeklyStored.week!==week){
+      writeJson(WEEKLY_KEY,{week,baseline,completed:[],claimed:[]})
+      refresh(value=>value+1)
+      return
+    }
+    const latest=readJson(WEEKLY_KEY,{week,baseline,completed:[],claimed:[]})
+    const next=new Set(latest.completed||[])
+    let changed=false
+    weeklySelected.forEach(mission=>{
+      const progress=Math.max(0,(totals[mission.stat]||0)-(latest.baseline?.[mission.stat]||0))
+      if(progress>=mission.target&&!next.has(mission.id)){
+        next.add(mission.id)
+        arcade.gainXp(mission.xp,'Weekly mission: '+mission.label)
+        const retention=readJson(RETENTION_KEY,{networkXp:0,shards:0,collectibles:[]})
+        writeJson(RETENTION_KEY,{...retention,networkXp:(retention.networkXp||0)+mission.xp,shards:(retention.shards||0)+3})
+        window.dispatchEvent(new CustomEvent('esn-achievement',{detail:{title:'Weekly mission complete',copy:`${mission.label} • +${mission.xp} XP • +3 Network Shards`}}))
+        changed=true
+      }
+    })
+    if(changed){
+      writeJson(WEEKLY_KEY,{...latest,completed:[...next]})
+      refresh(value=>value+1)
+    }
+  },[week,totals.clickerTaps,totals.minesSafe,totals.motoFinishes,totals.towerFloors,totals.tdWaves,totals.factoryMachines])
+
+  useEffect(()=>{
+    const state=readJson(RETENTION_KEY,{networkXp:0,shards:0,collectibles:[]})
+    const unlocked=new Set(state.collectibles||[])
+    if((state.streak||0)>=3)unlocked.add('Streak Core')
+    if((state.streak||0)>=7)unlocked.add('Seven-Day Signal')
+    if(arcade.achievementCount>=5)unlocked.add('Arcade Crest')
+    if(eggs.length>=5)unlocked.add('Hidden Signal Fragment')
+    if(weeklyCompleted.length>=3)unlocked.add('Mission Prism')
+    if(weekend)unlocked.add('Surge Weekend Token')
+    if(unlocked.size!==(state.collectibles||[]).length){
+      writeJson(RETENTION_KEY,{...state,collectibles:[...unlocked]})
+      refresh(value=>value+1)
+    }
+  },[arcade.achievementCount,eggs.length,weeklyCompleted.length,weekend])
+
+  const claimDaily=()=>{
+    const state=readJson(RETENTION_KEY,{lastClaim:null,streak:0,networkXp:0,shards:0,collectibles:[],visits:0})
+    if(state.lastClaim===today)return
+    const streak=state.lastClaim===previousDateKey()?(state.streak||0)+1:1
+    const baseXp=75+Math.min(175,streak*10)
+    const xp=weekend?baseXp*2:baseXp
+    const shards=2+(streak%7===0?5:0)
+    const next={...state,lastClaim:today,streak,networkXp:(state.networkXp||0)+xp,shards:(state.shards||0)+shards}
+    writeJson(RETENTION_KEY,next)
+    arcade.gainXp(xp,'Daily ESN reward')
+    window.dispatchEvent(new CustomEvent('esn-achievement',{detail:{title:'Daily ESN reward claimed',copy:`Day ${streak} • +${xp} XP • +${shards} Network Shards`}}))
+    refresh(value=>value+1)
+  }
+
+  const voteState=readJson(VOTE_KEY,{week:null,choice:null})
+  const vote=choice=>{
+    writeJson(VOTE_KEY,{week,choice,at:Date.now()})
+    refresh(value=>value+1)
+  }
+
+  const state=readJson(RETENTION_KEY,{lastClaim:null,streak:0,networkXp:0,shards:0,collectibles:[],visits:0})
+  const voteNow=readJson(VOTE_KEY,{week:null,choice:null})
+  const claimed=state.lastClaim===today
+  const weeklyNow=readJson(WEEKLY_KEY,{week,baseline,completed:[],claimed:[]})
+
+  return <section className="section retention-hub-section"><div className="shell retention-hub">
+    <div className="section-heading retention-heading">
+      <div><span className="eyebrow">RETURN LOOP</span><h2>There is always something waiting.</h2><p>Daily rewards, weekly missions, records, rotating events, collectibles, and cross-system progression all feed the same ESN experience on this device.</p></div>
+      <div className={weekend?'retention-event live':'retention-event'}><span>{weekend?'LIMITED EVENT LIVE':'NEXT SURGE'}</span><strong>{weekend?'2× XP WEEKEND':'FRIDAY → SUNDAY'}</strong><small>{weekend?'Arcade + reward XP is boosted right now.':'Network Surge activates every weekend.'}</small></div>
+    </div>
+
+    <div className="retention-primary-grid">
+      <article className="retention-reward-card">
+        <span>DAILY REWARD</span><strong>DAY {state.streak||0}</strong>
+        <p>{claimed?'Today’s reward is secured. Come back tomorrow to keep the streak alive.':'Claim today’s XP and Network Shards. Consecutive days increase the reward.'}</p>
+        <div className="retention-metrics"><b>{Math.floor(state.networkXp||0).toLocaleString()}<small>Network XP</small></b><b>{state.shards||0}<small>Shards</small></b><b>{state.visits||0}<small>Visit days</small></b></div>
+        <button type="button" onClick={claimDaily} disabled={claimed}>{claimed?'CLAIMED TODAY':'CLAIM DAILY REWARD'}</button>
+      </article>
+
+      <article className="retention-continue-card">
+        <span>CONTINUE PLAYING</span><strong>{continueMeta.label}</strong>
+        <p>Jump straight back into the last ESN Arcade game you used instead of digging through the site again.</p>
+        <Link className="button primary" to={continueRoute}>Resume game →</Link>
+        <small>{daily.completed?.length||0}/3 daily challenges complete • Arcade Level {arcade.level}</small>
+      </article>
+
+      <article className="retention-collect-card">
+        <span>COLLECTION VAULT</span><strong>{(state.collectibles||[]).length} FOUND</strong>
+        <p>Collectibles unlock from streaks, missions, Arcade achievements, Easter eggs, and limited events.</p>
+        <div className="retention-collectibles">{(state.collectibles||[]).length?(state.collectibles||[]).map(item=><i key={item}>{item}</i>):<small>Complete missions and return on multiple days to discover your first collectible.</small>}</div>
+      </article>
+    </div>
+
+    <div className="retention-split">
+      <div className="retention-weekly">
+        <div className="retention-block-head"><div><span>WEEKLY MISSIONS</span><h3>{weeklyNow.completed?.length||0} / 4 complete</h3></div><b>{week}</b></div>
+        <div className="retention-weekly-grid">{weeklySelected.map(mission=>{
+          const progress=Math.max(0,(totals[mission.stat]||0)-(weeklyNow.baseline?.[mission.stat]||0))
+          const done=(weeklyNow.completed||[]).includes(mission.id)||progress>=mission.target
+          return <article className={done?'complete':''} key={mission.id}><span>{done?'COMPLETE':mission.xp+' XP'}</span><strong>{mission.label}</strong><p>{mission.copy}</p><div><i style={{width:Math.min(100,(progress/mission.target)*100)+'%'}}/></div><small>{Math.min(progress,mission.target)} / {mission.target}</small></article>
+        })}</div>
+      </div>
+
+      <div className="retention-leaderboard">
+        <div className="retention-block-head"><div><span>YOUR ARCADE LEADERBOARD</span><h3>Personal mastery ranking</h3></div><b>LOCAL</b></div>
+        <div className="retention-ranks">{records.map((record,index)=><Link to={record.route} key={record.route}><em>{String(index+1).padStart(2,'0')}</em><div><strong>{record.name}</strong><small>{record.record}</small></div><b>{Math.floor(record.score)} PTS</b></Link>)}</div>
+      </div>
+    </div>
+
+    <div className="retention-vote">
+      <div><span className="eyebrow">COMMUNITY BALLOT</span><h3>What should ESN push next?</h3><p>Your choice is remembered for this weekly ballot. The public community tally remains handled through ESN community channels until account-backed voting is available.</p></div>
+      <div className="retention-vote-options">{VOTE_OPTIONS.map(([id,title,copy])=><button type="button" className={voteNow.week===week&&voteNow.choice===id?'selected':''} onClick={()=>vote(id)} key={id}><strong>{title}</strong><small>{copy}</small></button>)}</div>
+    </div>
   </div></section>
 }
