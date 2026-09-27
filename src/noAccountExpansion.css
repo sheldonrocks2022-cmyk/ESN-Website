@@ -21,6 +21,9 @@
 .noacct-panel label,.staff-banner-editor label{display:grid;gap:7px;margin-top:14px;font-size:.7rem;letter-spacing:.12em;font-weight:900;color:var(--muted)}
 .noacct-panel input,.noacct-panel select,.staff-banner-editor input,.staff-banner-editor textarea,.staff-lock-card input{width:100%;border:1px solid var(--line);background:#080d1b;color:var(--white);border-radius:12px;padding:13px 14px;font:inherit}
 .staff-banner-editor textarea{min-height:120px;resize:vertical}
+.staff-permanent-toggle{display:flex!important;grid-template-columns:none!important;align-items:center;gap:12px!important;padding:14px 15px;border:1px solid var(--line);border-radius:14px;background:rgba(255,255,255,.025);cursor:pointer}
+.staff-permanent-toggle input{width:20px!important;height:20px;margin:0;accent-color:var(--cyan);flex:0 0 auto}
+.staff-permanent-toggle span{display:grid;gap:3px}.staff-permanent-toggle strong{color:var(--white);font-size:.82rem;letter-spacing:0}.staff-permanent-toggle small{color:var(--muted);font-size:.72rem;letter-spacing:0;font-weight:600}
 .incoming-challenge.complete{border-color:rgba(98,241,255,.6)}.incoming-challenge p{font-size:1.05rem}.challenge-progress{height:10px;background:rgba(255,255,255,.07);border-radius:999px;overflow:hidden;margin:18px 0}.challenge-progress i{display:block;height:100%;background:linear-gradient(90deg,var(--blue),var(--cyan));border-radius:inherit}
 .staff-lock{min-height:calc(100svh - 76px);display:grid;place-items:center;padding:40px 20px}
 .staff-lock-card{width:min(560px,100%);border:1px solid rgba(98,241,255,.2);border-radius:28px;padding:34px;background:linear-gradient(145deg,rgba(11,16,32,.97),rgba(5,7,17,.97));box-shadow:0 35px 120px rgba(0,0,0,.45)}
