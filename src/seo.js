@@ -174,6 +174,31 @@ export const SEO_ROUTES={
     description:'Explore the ES Network Nexus with connected XP, missions, achievements, Arcade competition, live activity, secret lore, dynamic events, 3D systems, and the ESN Guide.',
     index:true,
   },
+  '/notifications':{
+    label:'Notification Center',
+    title:'ESN Notification Center | Local Alerts & Network Activity',
+    description:'View account-free ES Network alerts for releases, achievements, rewards, SMP telemetry, and local browser notifications.',
+    index:true,
+  },
+  '/rewards':{
+    label:'Reward Vault',
+    title:'ESN Reward Vault | Network Shards, Cosmetics & Local Inventory',
+    description:'Spend locally earned ESN Network Shards on account-free cosmetic unlocks and manage a device-local ESN identity card.',
+    index:true,
+  },
+  '/challenges':{
+    label:'Challenge Lab',
+    title:'ESN Arcade Challenge Lab | Share Account-Free Game Challenges',
+    description:'Create and accept shareable ESN Arcade target challenges using real local game progress without accounts or fake global scores.',
+    index:true,
+  },
+  '/staff':{
+    label:'Staff Dashboard',
+    title:'ESN Staff Dashboard',
+    description:'Code-gated local ES Network operator dashboard.',
+    index:false,
+    nofollow:true,
+  },
   '/whatsnew':{
     label:"What's New",
     title:"What's New at ES Network | Latest Website Features",
