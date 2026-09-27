@@ -142,4 +142,20 @@ notFoundHtml = notFoundHtml
 
 fs.writeFileSync(path.join('dist', '404.html'), notFoundHtml)
 
-console.log(`Generated SEO-ready route HTML for ${Object.keys(SEO_ROUTES).length} routes plus noindex 404.html.`)
+// Generate the deployed sitemap from the same canonical SEO source.
+// Only canonical, indexable production routes are included.
+const sitemapUrls = [...new Set(
+  Object.entries(SEO_ROUTES)
+    .filter(([, meta]) => meta.index !== false)
+    .map(([route]) => canonicalUrl(route))
+)]
+const sitemap = [
+  '<?xml version="1.0" encoding="UTF-8"?>',
+  '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
+  ...sitemapUrls.map((url) => `  <url><loc>${url}</loc></url>`),
+  '</urlset>',
+  '',
+].join('\n')
+fs.writeFileSync(path.join('dist', 'sitemap.xml'), sitemap)
+
+console.log(`Generated SEO-ready route HTML for ${Object.keys(SEO_ROUTES).length} routes, noindex 404.html, and ${sitemapUrls.length} canonical sitemap URLs.`)
