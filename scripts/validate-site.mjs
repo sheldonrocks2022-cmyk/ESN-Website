@@ -123,7 +123,7 @@ if (!liveExperience.includes('ESN confirmed online • player telemetry unavaila
 if (!liveNetwork.includes("status:'unavailable'") || !liveNetwork.includes('sourceCount')) problems.push('SMP status needs an unavailable fallback when checks are inconclusive.')
 if (!liveNetwork.includes('api.github.com/repos/') || !liveNetwork.includes('releases/latest')) problems.push('Live ESNSMP release lookup missing.')
 if (!liveNetwork.includes('discord.com/api/v10/invites')) problems.push('Discord link/status lookup missing.')
-if (!liveExperience.includes('Not exposed by server ping')) problems.push('SMP uptime limitation is not explained honestly.')
+if (!liveExperience.includes('Historical uptime still requires a separate monitoring service') && !liveExperience.includes('Public Minecraft status providers are currently unable to read reliable telemetry')) problems.push('SMP telemetry and uptime limitations are not explained honestly.')
 if (!liveExperience.includes('EP1C Services') || !liveExperience.includes('Current Projects')) problems.push('Interactive ESN timeline content incomplete.')
 if (!liveExperience.includes('ILLUSTRATIVE PROCESS DEMO') || !liveExperience.includes('not a claimed customer result')) problems.push('Portfolio demos must remain clearly labeled as illustrative.')
 if (!startupIntro.includes('Initializing ESN') || startupIntro.includes('sessionStorage') || startupIntro.includes('localStorage')) problems.push('Startup intro must play on every full site load.')
