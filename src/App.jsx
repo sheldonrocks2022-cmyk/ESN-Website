@@ -295,6 +295,7 @@ function ExperienceEffects() {
 
   useEffect(() => {
     const interactive = '.service-card,.product-card,.review-card,.game-card,.tool-card,.feature-panel,.leader-tile,.connection-card,.store-security,.hero-control-panel,.page-hero-mark,.plugin-release-card,.console-step-card,.premium-connection'
+    const finePointer = window.matchMedia('(hover:hover) and (pointer:fine)').matches
     const move = (event) => {
       document.documentElement.style.setProperty('--cursor-x', `${event.clientX}px`)
       document.documentElement.style.setProperty('--cursor-y', `${event.clientY}px`)
@@ -324,13 +325,17 @@ function ExperienceEffects() {
       const value = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0
       document.documentElement.style.setProperty('--scroll-progress', value)
     }
-    document.addEventListener('pointermove', move, { passive: true })
-    document.addEventListener('pointerout', leave, { passive: true })
+    if (finePointer) {
+      document.addEventListener('pointermove', move, { passive: true })
+      document.addEventListener('pointerout', leave, { passive: true })
+    }
     window.addEventListener('scroll', scroll, { passive: true })
     scroll()
     return () => {
-      document.removeEventListener('pointermove', move)
-      document.removeEventListener('pointerout', leave)
+      if (finePointer) {
+        document.removeEventListener('pointermove', move)
+        document.removeEventListener('pointerout', leave)
+      }
       window.removeEventListener('scroll', scroll)
     }
   }, [])
