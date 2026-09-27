@@ -4,6 +4,14 @@ import { SEO_ROUTES, canonicalUrl, robotsContent } from '../src/seo.js'
 
 const failures = []
 
+function escapeHtml(value) {
+  return value
+    .replaceAll('&', '&amp;')
+    .replaceAll('"', '&quot;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+}
+
 for (const [route, meta] of Object.entries(SEO_ROUTES)) {
   const file = route === '/'
     ? path.join('dist', 'index.html')
@@ -18,8 +26,8 @@ for (const [route, meta] of Object.entries(SEO_ROUTES)) {
   const expectedCanonical = canonicalUrl(route)
   const expectedRobots = robotsContent(route)
 
-  if (!html.includes(`<title>${meta.title}</title>`)) failures.push(`Wrong or missing title in ${file}`)
-  if (!html.includes(`name="description" content="${meta.description.replaceAll('&','&amp;').replaceAll('"','&quot;')}`)) failures.push(`Wrong or missing description in ${file}`)
+  if (!html.includes(`<title>${escapeHtml(meta.title)}</title>`)) failures.push(`Wrong or missing title in ${file}`)
+  if (!html.includes(`name="description" content="${escapeHtml(meta.description)}`)) failures.push(`Wrong or missing description in ${file}`)
   if (!html.includes(`rel="canonical" href="${expectedCanonical}"`)) failures.push(`Wrong or missing canonical in ${file}`)
   if (!html.includes(`name="robots" content="${expectedRobots}"`)) failures.push(`Wrong or missing robots policy in ${file}`)
   if (!html.includes(`name="googlebot" content="${expectedRobots}"`)) failures.push(`Wrong or missing Googlebot policy in ${file}`)
