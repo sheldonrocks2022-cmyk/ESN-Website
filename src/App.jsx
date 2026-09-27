@@ -11,6 +11,7 @@ import NetworkEvolution, { NetworkEvolutionSection } from './NetworkEvolution'
 import { NetworkNexusPage, NexusEventLayer } from './NetworkNexus'
 import { ArcadeProgressCenter, ExplorePage, GalleryPage, NetworkStatsPage, RetentionHub, SettingsPage, SiteExpansionLayer, SMPEncyclopediaPage, SupportPage, WhatsNewPage } from './SiteExpansion'
 import ShareCenter from './ShareCenter'
+import { ChallengeLabPage, NoAccountExperienceLayer, NotificationCenterPage, RewardMarketPage, StaffDashboardPage } from './NoAccountExpansion'
 import { SOCIAL_IMAGE_ALT, SOCIAL_IMAGE_URL, canonicalUrl, getSeo, robotsContent, structuredDataFor } from './seo'
 import { PortfolioPage, StatusCenter, TimelinePage, UpdatesPage, VaultPage, WhatsHappeningNow } from './LiveExperience'
 import { VERIFIED_REVIEWS } from './reviews'
@@ -384,7 +385,7 @@ function Header() {
   const mobileSection = arcadeActive ? 'Arcade'
     : inGroup(['/smpconnection','/smpconsole','/smpplugin','/smpguide','/storesmp']) ? 'ESN SMP'
     : inGroup(['/serviceshowcase','/portfolio','/testimonials']) ? 'Services'
-    : inGroup(['/status','/networkstats','/updates','/whatsnew','/timeline','/explore','/gallery','/nexus']) ? 'Network'
+    : inGroup(['/status','/networkstats','/updates','/whatsnew','/timeline','/explore','/gallery','/nexus','/notifications','/rewards','/challenges']) ? 'Network'
     : location.pathname==='/estools' ? 'Tools'
     : location.pathname==='/settings' ? 'Settings'
     : location.pathname==='/support' ? 'Support'
@@ -448,13 +449,16 @@ function Header() {
 
           <Link className={location.pathname === '/estools' ? 'nav-direct active' : 'nav-direct'} onClick={close} to="/estools">ES Tools</Link>
 
-          <div className={inGroup(['/about','/leadership','/testimonials','/faq','/status','/networkstats','/timeline','/updates','/whatsnew','/explore','/gallery','/settings','/support','/share','/nexus']) ? 'nav-group active' : 'nav-group'}>
+          <div className={inGroup(['/about','/leadership','/testimonials','/faq','/status','/networkstats','/timeline','/updates','/whatsnew','/explore','/gallery','/settings','/support','/share','/nexus','/notifications','/rewards','/challenges']) ? 'nav-group active' : 'nav-group'}>
             <button className="nav-trigger" type="button" aria-haspopup="true">About</button>
             <div className="dropdown">
               <span className="dropdown-label">THE NETWORK</span>
               <Link onClick={close} to="/about">About ES Network</Link>
               <Link onClick={close} to="/status">Live Network Status</Link>
               <Link onClick={close} to="/nexus">Network Nexus</Link>
+              <Link onClick={close} to="/notifications">Notification Center</Link>
+              <Link onClick={close} to="/rewards">Reward Vault</Link>
+              <Link onClick={close} to="/challenges">Challenge Lab</Link>
               <Link onClick={close} to="/updates">Release Center</Link>
               <Link onClick={close} to="/timeline">Interactive Timeline</Link>
               <Link onClick={close} to="/share">Share Deck</Link>
@@ -1466,6 +1470,7 @@ function App() {
       <NetworkEvolution />
       <SiteExpansionLayer />
       <NexusEventLayer />
+      <NoAccountExperienceLayer />
       <main id="main-content">
         <Routes>
           <Route path="/" element={<Home />} />
@@ -1485,6 +1490,10 @@ function App() {
           <Route path="/status" element={<StatusCenter />} />
           <Route path="/networkstats" element={<NetworkStatsPage />} />
           <Route path="/nexus" element={<NetworkNexusPage />} />
+          <Route path="/notifications" element={<NotificationCenterPage />} />
+          <Route path="/rewards" element={<RewardMarketPage />} />
+          <Route path="/challenges" element={<ChallengeLabPage />} />
+          <Route path="/staff" element={<StaffDashboardPage />} />
           <Route path="/timeline" element={<TimelinePage />} />
           <Route path="/updates" element={<UpdatesPage />} />
           <Route path="/portfolio" element={<PortfolioPage />} />
