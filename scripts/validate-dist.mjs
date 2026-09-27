@@ -9,6 +9,7 @@ const routes = [
   '/store',
   '/store/smp',
   '/smpconnection',
+  '/smpconsole',
   '/estools',
   '/tools',
   '/arcade',
