@@ -156,6 +156,48 @@ export const SEO_ROUTES={
     description:'Play ES Tower Defense across 200 rounds using ten tower types, path-defense strategy, upgrades, coins, and 150 base HP.',
     index:true,
   },
+  '/smpguide':{
+    label:'SMP Encyclopedia',
+    title:'ESN SMP Encyclopedia | Commands, Bosses, Realms & Progression',
+    description:'Search ESN SMP commands and learn the current ESNSMP systems for Realm progression, economy, bosses, crates, gear, travel, seasons, and Adventure content.',
+    index:true,
+  },
+  '/networkstats':{
+    label:'Network Statistics',
+    title:'ES Network Statistics | Live Status & Local Progress',
+    description:'View ES Network live system information alongside local Arcade, Passport, Easter egg, recent-route, and favorite progress.',
+    index:true,
+  },
+  '/whatsnew':{
+    label:"What's New",
+    title:"What's New at ES Network | Latest Website Features",
+    description:'See the newest ES Network website features including PWA install, performance controls, SMP encyclopedia, Arcade challenges, accessibility, and discovery tools.',
+    index:true,
+  },
+  '/explore':{
+    label:'Explore ESN',
+    title:'Explore ES Network | Website Features, Favorites & Recents',
+    description:'Discover ES Network website features and revisit recent or favorite destinations across services, SMP, Arcade, tools, updates, accessibility, and support.',
+    index:true,
+  },
+  '/gallery':{
+    label:'Media Gallery',
+    title:'ES Network Media Gallery | Brand, SMP & Milestones',
+    description:'Explore official ES Network brand visuals, website milestones, ESNSMP releases, and space for approved SMP and community media.',
+    index:true,
+  },
+  '/settings':{
+    label:'Performance & Accessibility',
+    title:'ES Network Performance & Accessibility Settings',
+    description:'Control ES Network performance mode, motion, flashing, contrast, text size, touch target size, and install the website as a supported web app.',
+    index:true,
+  },
+  '/support':{
+    label:'Website Support',
+    title:'Report an ES Network Website Problem | ESN Support',
+    description:'Create a local diagnostic website bug report, copy the report details, and open ES Network Discord support.',
+    index:true,
+  },
   '/about':{
     label:'About',
     title:'About ES Network | Gaming, Creator Services & Community',
