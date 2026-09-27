@@ -1448,3 +1448,382 @@ body::before{
 @media(prefers-reduced-motion:reduce){
   .reveal-ready{opacity:1;transform:none;transition:none}
 }
+
+
+/* =========================================================
+   ESN ARCADE 29X — spacious responsive game experience
+   ========================================================= */
+.oa-game-shell{
+  width:min(1420px,calc(100% - 48px));
+  padding:54px 0 96px;
+}
+.oa-game-viewport{
+  display:grid;
+  gap:24px;
+}
+.oa-commandbar{
+  min-height:68px;
+  padding:14px 18px;
+}
+.oa-game-switcher{
+  grid-template-columns:repeat(6,minmax(150px,1fr));
+  overflow-x:auto;
+  scrollbar-width:thin;
+}
+.oa-game-switcher a{
+  min-height:76px;
+  padding:14px;
+}
+.oa-title-card{
+  padding:38px 42px;
+  margin-bottom:0;
+}
+.oa-title-card h1{
+  font-size:clamp(3.4rem,6vw,6.5rem);
+}
+.oa-panel,.oa-glow-panel{
+  margin:0;
+  padding:34px;
+  border-radius:28px;
+}
+.oa-panel p,.oa-glow-panel p{
+  max-width:900px;
+}
+.oa-section-head{
+  margin-bottom:20px;
+}
+.oa-section-head>div:first-child{
+  max-width:820px;
+}
+
+/* Clicker */
+.oa-page-esclicker .oa-stats{
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:14px;
+}
+.oa-page-esclicker .oa-stats>div{
+  min-height:120px;
+}
+.oa-page-esclicker .oa-tap-zone{
+  min-height:620px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+}
+.oa-page-esclicker .oa-coin{
+  width:min(430px,78vw);
+}
+.oa-clicker-forge{
+  padding:38px;
+}
+.oa-clicker-forge .oa-upgrade-list{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:14px;
+  max-height:920px;
+  overflow:auto;
+  padding:6px 8px 6px 0;
+  scrollbar-width:thin;
+}
+.oa-clicker-forge .oa-upgrade{
+  min-height:230px;
+  display:flex;
+  flex-direction:column;
+}
+.oa-clicker-forge .oa-buy-row{
+  margin-top:auto;
+}
+
+/* Factory */
+.oa-page-esfactory .oa-status-line{
+  display:flex;
+  align-items:center;
+  min-height:74px;
+  padding:20px 26px;
+}
+.oa-factory-zones .oa-zone-list{
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  max-height:760px;
+  overflow:auto;
+  padding-right:7px;
+}
+.oa-factory-zones .oa-zone{
+  min-height:112px;
+}
+.oa-factory-floors .oa-floor-grid{
+  grid-template-columns:repeat(4,minmax(0,1fr));
+}
+.oa-factory-floors .oa-floor-grid article{
+  min-height:210px;
+  display:flex;
+  flex-direction:column;
+}
+.oa-factory-floors .oa-online,
+.oa-factory-floors .oa-unlock-row{
+  margin-top:auto;
+}
+.oa-factory-machines .oa-machine-list{
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  max-height:980px;
+  overflow:auto;
+  padding-right:7px;
+}
+.oa-factory-machines .oa-machine{
+  min-height:260px;
+}
+.oa-factory-machines .oa-met,
+.oa-factory-machines .oa-locked{
+  margin-top:auto;
+}
+
+/* Mines */
+.oa-page-esmines .oa-game-viewport{
+  grid-template-columns:minmax(0,1.25fr) minmax(340px,.75fr);
+  align-items:start;
+}
+.oa-page-esmines .oa-balance-card,
+.oa-page-esmines .oa-discord-card,
+.oa-page-esmines .oa-mines-status-panel{
+  grid-column:1 / -1;
+}
+.oa-mines-board-panel{
+  min-height:670px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.oa-mines-board{
+  width:min(100%,680px);
+  gap:14px;
+}
+.oa-mines-board button{
+  min-width:0;
+  font-size:1.35rem;
+  transition:transform .16s ease,border-color .16s ease,background .16s ease;
+}
+.oa-mines-board button:not(:disabled):hover{
+  transform:translateY(-2px) scale(1.025);
+  border-color:#62eaf6;
+}
+.oa-mines-controls-panel{
+  position:sticky;
+  top:112px;
+}
+.oa-page-esmines .oa-choice-row{
+  display:grid;
+  grid-template-columns:repeat(5,minmax(0,1fr));
+}
+.oa-page-esmines .oa-choice-row:nth-of-type(2){
+  grid-template-columns:repeat(4,minmax(0,1fr));
+}
+.oa-page-esmines .oa-choice-row button{
+  padding:0 12px;
+}
+
+/* MOTO */
+.oa-moto-showcase{
+  display:grid;
+  grid-template-columns:minmax(0,1.1fr) minmax(320px,.9fr);
+  gap:22px;
+  align-items:stretch;
+}
+.oa-moto-showcase .oa-bike-mark,
+.oa-moto-showcase .oa-discord-card{
+  margin:0;
+}
+.oa-moto-game-panel{
+  padding:28px;
+}
+.oa-moto-stage{
+  height:min(720px,72vh);
+  min-height:520px;
+}
+.oa-moto-toolbar{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+}
+.oa-moto-toolbar>*{
+  min-height:58px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.oa-moto-hud{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+}
+.oa-moto-hud>*{
+  min-height:70px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.oa-moto-controls{
+  grid-template-columns:repeat(4,minmax(0,1fr));
+}
+.oa-moto-controls button{
+  min-height:108px;
+}
+.oa-moto-game-panel>.oa-primary-wide{
+  min-height:78px;
+}
+
+/* Tower */
+.oa-page-estower .oa-game-viewport{
+  grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);
+  align-items:start;
+}
+.oa-tower-summary{
+  grid-column:1 / -1;
+}
+.oa-tower-stats{
+  grid-template-columns:repeat(5,minmax(0,1fr));
+}
+.oa-tower-ladder-panel{
+  min-height:680px;
+}
+.oa-ladder{
+  max-height:560px;
+}
+.oa-tower-door-panel{
+  min-height:680px;
+  display:flex;
+  flex-direction:column;
+}
+.oa-doors{
+  grid-template-columns:repeat(3,minmax(0,1fr));
+}
+.oa-doors button{
+  min-height:220px;
+  text-align:center;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+}
+.oa-tower-door-panel .oa-primary-wide{
+  margin-top:auto;
+}
+
+/* Tower Defense */
+.oa-page-estowerdefense .oa-game-viewport{
+  grid-template-columns:minmax(0,1.35fr) minmax(360px,.65fr);
+  align-items:start;
+}
+.oa-td-overview-panel{
+  grid-column:1 / -1;
+}
+.oa-td-board-panel{
+  min-height:760px;
+}
+.oa-td-board{
+  aspect-ratio:1.7;
+  min-height:560px;
+}
+.oa-td-loadout-panel{
+  position:sticky;
+  top:112px;
+  max-height:calc(100vh - 132px);
+  overflow:auto;
+}
+.oa-tower-roster{
+  grid-template-columns:1fr;
+}
+.oa-tower-roster button{
+  min-height:92px;
+}
+.oa-page-estowerdefense .oa-mines-stats{
+  grid-template-columns:repeat(4,minmax(0,1fr));
+}
+.oa-td-actions{
+  grid-template-columns:1fr 1fr;
+}
+.oa-preview{
+  min-height:260px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+}
+
+/* Micro-interactions */
+.oa-upgrade,.oa-machine,.oa-zone,.oa-floor-grid article,.oa-tower-roster button,
+.oa-doors button,.oa-mines-board button{
+  transition:transform .16s ease,border-color .16s ease,background .16s ease,box-shadow .16s ease;
+}
+.oa-upgrade:hover,.oa-machine:hover,.oa-zone:hover,.oa-floor-grid article:hover,
+.oa-tower-roster button:hover,.oa-doors button:hover{
+  transform:translateY(-3px);
+  border-color:rgba(98,232,244,.36);
+  box-shadow:0 18px 42px rgba(0,0,0,.14);
+}
+.oa-primary-wide,.oa-secondary-wide,.oa-cash-wide,
+.oa-zone button,.oa-machine button,.oa-buy-row button{
+  min-height:52px;
+}
+
+/* Tablet */
+@media(max-width:1100px){
+  .oa-game-shell{width:min(100% - 28px,1180px)}
+  .oa-game-switcher{grid-template-columns:repeat(3,minmax(180px,1fr))}
+  .oa-factory-floors .oa-floor-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .oa-page-esmines .oa-game-viewport,
+  .oa-page-estower .oa-game-viewport,
+  .oa-page-estowerdefense .oa-game-viewport{grid-template-columns:1fr}
+  .oa-mines-controls-panel,.oa-td-loadout-panel{position:static;max-height:none}
+  .oa-tower-ladder-panel,.oa-tower-door-panel{min-height:auto}
+  .oa-td-board-panel{min-height:auto}
+  .oa-page-estower .oa-tower-summary,
+  .oa-page-estowerdefense .oa-td-overview-panel{grid-column:auto}
+  .oa-tower-stats{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+
+/* Mobile */
+@media(max-width:760px){
+  .oa-game-shell{width:min(100% - 18px,1180px);padding:24px 0 70px}
+  .oa-title-card{padding:26px 22px}
+  .oa-title-card h1{font-size:clamp(2.8rem,13vw,4.7rem)}
+  .oa-panel,.oa-glow-panel{padding:22px;border-radius:22px}
+  .oa-game-switcher{
+    grid-template-columns:none;
+    grid-auto-flow:column;
+    grid-auto-columns:minmax(160px,72vw);
+    overflow-x:auto;
+    scroll-snap-type:x proximity;
+  }
+  .oa-game-switcher a{scroll-snap-align:start}
+  .oa-page-esclicker .oa-stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .oa-page-esclicker .oa-tap-zone{min-height:520px}
+  .oa-clicker-forge .oa-upgrade-list{grid-template-columns:1fr;max-height:780px}
+  .oa-factory-zones .oa-zone-list,
+  .oa-factory-machines .oa-machine-list{grid-template-columns:1fr;max-height:720px}
+  .oa-factory-floors .oa-floor-grid{grid-template-columns:1fr}
+  .oa-mines-board-panel{min-height:auto}
+  .oa-mines-board{gap:9px}
+  .oa-page-esmines .oa-choice-row{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .oa-page-esmines .oa-choice-row:nth-of-type(2){grid-template-columns:repeat(2,minmax(0,1fr))}
+  .oa-moto-showcase{grid-template-columns:1fr}
+  .oa-moto-stage{height:460px;min-height:460px}
+  .oa-moto-toolbar{grid-template-columns:1fr 1fr}
+  .oa-moto-controls{grid-template-columns:1fr 1fr}
+  .oa-tower-stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .oa-doors{grid-template-columns:1fr}
+  .oa-doors button{min-height:130px}
+  .oa-page-estowerdefense .oa-mines-stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .oa-td-board{min-height:420px;aspect-ratio:1.2}
+  .oa-td-actions{grid-template-columns:1fr}
+}
+
+/* Small phones */
+@media(max-width:430px){
+  .oa-page-esclicker .oa-stats,
+  .oa-tower-stats,
+  .oa-page-estowerdefense .oa-mines-stats{grid-template-columns:1fr}
+  .oa-moto-toolbar,.oa-moto-hud{grid-template-columns:1fr}
+  .oa-moto-stage{height:390px;min-height:390px}
+  .oa-moto-controls button{min-height:88px}
+  .oa-mines-board{gap:6px}
+  .oa-mines-board button{border-radius:9px}
+  .oa-td-board{min-height:340px}
+}
