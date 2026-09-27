@@ -48,14 +48,6 @@ const sitemapRoutes = requiredRoutes
 
 const requiredMigrationFiles = [
   'src/Tools.jsx',
-  'src/arcade/profile.js',
-  'src/arcade/GameFrame.jsx',
-  'src/arcade/Clicker.jsx',
-  'src/arcade/Factory.jsx',
-  'src/arcade/Mines.jsx',
-  'src/arcade/Moto.jsx',
-  'src/arcade/Tower.jsx',
-  'src/arcade/TowerDefense.jsx',
 ]
 
 const problems = []
@@ -68,7 +60,8 @@ if (app.includes('example.com')) problems.push('Placeholder example.com URL foun
 for (const file of requiredMigrationFiles) {
   if (!fs.existsSync(file)) problems.push(`Missing migrated module: ${file}`)
 }
-if (app.includes('Protected game migration')) problems.push('Obsolete Arcade placeholder content returned.')
+if (!app.includes('This game will not be approximated')) problems.push('Arcade protection copy missing; do not replace original games with approximations.')
+if (app.includes('ESN Arcade 2.0')) problems.push('Inaccurate temporary Arcade 2.0 content returned.')
 if (app.includes('Tool logic is intentionally not being invented')) problems.push('Obsolete ES Tools placeholder content returned.')
 
 if (problems.length) {
