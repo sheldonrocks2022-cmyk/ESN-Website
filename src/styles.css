@@ -7544,3 +7544,103 @@ html.oa-focus-play-active body{
   .oa-page-estower .oa-doors{grid-template-columns:repeat(3,minmax(0,1fr))}
   .oa-page-estower .oa-doors button{min-height:180px}
 }
+
+
+/* =========================================================
+   TOWER DEFENSE AIMING + MOBILE STABILITY PASS
+   ========================================================= */
+.oa-td-turret-head{
+  transform-box:fill-box;
+  transform-origin:0 0;
+  transition:transform .07s linear;
+  will-change:transform;
+}
+.oa-td-shot{
+  pointer-events:none;
+  animation:oaTdShotFlash .15s ease-out both;
+}
+.oa-td-shot line{
+  filter:drop-shadow(0 0 2px rgba(174,249,255,.7));
+}
+.oa-td-muzzle{
+  animation:oaMuzzleBurst .14s ease-out both!important;
+  transform-box:fill-box;
+  transform-origin:center;
+}
+@keyframes oaTdShotFlash{
+  0%{opacity:1}
+  100%{opacity:0}
+}
+@keyframes oaMuzzleBurst{
+  0%{opacity:1;transform:scale(.55)}
+  55%{opacity:1;transform:scale(1.35)}
+  100%{opacity:0;transform:scale(.85)}
+}
+
+/* Keep the mobile battlefield geometrically stable and cheaper to render.
+   Aiming, tracers and muzzle flashes remain enabled. */
+@media(max-width:760px), (pointer:coarse){
+  .oa-page-estowerdefense .oa-td-board{
+    width:min(100%,430px)!important;
+    height:auto!important;
+    max-height:none!important;
+    min-height:0!important;
+    aspect-ratio:1/1!important;
+    margin:0 auto!important;
+    contain:layout paint!important;
+    transform:translateZ(0)!important;
+    backface-visibility:hidden!important;
+  }
+  .oa-page-estowerdefense .oa-td-board svg{
+    width:100%!important;
+    height:100%!important;
+    display:block!important;
+    filter:none!important;
+    overflow:visible!important;
+  }
+  .oa-page-estowerdefense .oa-td-enemy,
+  .oa-page-estowerdefense .oa-td-turret{
+    filter:none!important;
+  }
+  .oa-page-estowerdefense .oa-td-turret-head{
+    transition:transform .08s linear!important;
+  }
+  .oa-page-estowerdefense .oa-td-board.is-live::after{
+    animation:none!important;
+    opacity:.48!important;
+  }
+  .oa-page-estowerdefense .oa-td-board-panel{
+    overflow:hidden!important;
+    contain:layout!important;
+  }
+  .oa-page-estowerdefense .oa-td-mobile-command{
+    position:relative!important;
+    z-index:5!important;
+  }
+  .oa-page-estowerdefense .oa-td-mobile-towers{
+    touch-action:pan-x!important;
+    -webkit-overflow-scrolling:touch!important;
+  }
+  .oa-page-estowerdefense .oa-node{
+    touch-action:manipulation!important;
+  }
+
+  .oa-mobile-play-mode.oa-page-estowerdefense .oa-td-board-panel{
+    grid-template-rows:auto auto auto minmax(0,1fr)!important;
+    align-content:start!important;
+  }
+  .oa-mobile-play-mode.oa-page-estowerdefense .oa-td-board{
+    width:min(100%,calc(100dvh - 280px))!important;
+    min-width:250px!important;
+    max-width:430px!important;
+    height:auto!important;
+    aspect-ratio:1/1!important;
+    align-self:center!important;
+    justify-self:center!important;
+  }
+}
+
+@media(prefers-reduced-motion:reduce){
+  .oa-td-turret-head{transition:none!important}
+  .oa-td-shot,.oa-td-muzzle{animation:none!important}
+}
