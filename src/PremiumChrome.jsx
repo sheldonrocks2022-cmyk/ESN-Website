@@ -76,7 +76,7 @@ export default function PremiumChrome(){
 
     <div className={open?'premium-command-backdrop open':'premium-command-backdrop'} onClick={()=>setOpen(false)} aria-hidden={!open}/>
 
-    <aside className={open?'premium-command open':'premium-command'} aria-hidden={!open}>
+    <aside className={open?'premium-command open':'premium-command'} aria-hidden={!open} inert={!open}>
       <div className="premium-command-head">
         <div>
           <span>ES NETWORK</span>
