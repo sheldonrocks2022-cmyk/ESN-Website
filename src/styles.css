@@ -4939,3 +4939,159 @@ html[data-esn-season="summer"] .network-evolution-ambient{filter:hue-rotate(-14d
     transition:none!important;
   }
 }
+
+
+/* =========================================================
+   MOBILE SAFE MODE
+   One fixed navigation surface, no floating stacks, no motion flicker.
+   ========================================================= */
+.mobile-network-utilities{display:none}
+@media(max-width:860px), (pointer:coarse){
+  body{padding-bottom:86px!important}
+
+  /* Keep exactly one fixed navigation surface on phones. */
+  .ev-system-rail,
+  .ev-command-deck,
+  .ev-season-pill,
+  .notification-orb{
+    display:none!important;
+  }
+
+  .mobile-bottom-nav{
+    display:grid!important;
+    left:10px!important;
+    right:10px!important;
+    bottom:max(10px,env(safe-area-inset-bottom))!important;
+    min-height:64px!important;
+    z-index:300!important;
+    background:#07101f!important;
+    border:1px solid rgba(133,169,238,.14)!important;
+    box-shadow:0 12px 28px rgba(0,0,0,.28)!important;
+    -webkit-backdrop-filter:none!important;
+    backdrop-filter:none!important;
+    transform:none!important;
+    -webkit-transform:none!important;
+  }
+
+  /* All extra utilities live inside More instead of floating over page content. */
+  .mobile-network-utilities{
+    display:grid;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:8px;
+    padding:14px 16px;
+    border-top:1px solid rgba(255,255,255,.06);
+    border-bottom:1px solid rgba(255,255,255,.06);
+    background:#07101f;
+  }
+  .mobile-network-utilities button{
+    min-height:82px;
+    padding:10px 8px;
+    border:1px solid rgba(255,255,255,.065);
+    border-radius:14px;
+    background:#0a1426;
+    color:#e8f6ff;
+    display:grid;
+    place-items:center;
+    align-content:center;
+    gap:3px;
+    font:inherit;
+  }
+  .mobile-network-utilities button span{font-size:1rem;font-weight:950;color:#62f1ff}
+  .mobile-network-utilities button b{font-size:.64rem}
+  .mobile-network-utilities button small{font-size:.46rem;color:#70839b}
+
+  /* Hard stop on phone animation/transition flicker. */
+  .site *,
+  .site *::before,
+  .site *::after{
+    animation:none!important;
+    transition:none!important;
+    scroll-behavior:auto!important;
+  }
+
+  /* Preserve visibility and layout at all times. */
+  .reveal-ready,
+  .reveal-ready.is-visible,
+  .is-visible{
+    opacity:1!important;
+    visibility:visible!important;
+    transform:none!important;
+    filter:none!important;
+  }
+
+  /* Remove decorative fixed/composited layers that can blink with mobile browser chrome. */
+  .lux-cursor-field,
+  .lux-cursor-ring,
+  .lux-cursor-core,
+  .lux-edge-beam,
+  .premium-ambient,
+  .premium-ticker,
+  .route-lux-flare,
+  .network-evolution-ambient,
+  .ev-version{
+    display:none!important;
+  }
+
+  .site-header,
+  .mobile-bottom-nav,
+  .premium-command,
+  .premium-command-backdrop,
+  .ev-backdrop,
+  .ev-modal{
+    will-change:auto!important;
+    contain:none!important;
+  }
+
+  .premium-command{
+    left:8px!important;
+    right:8px!important;
+    bottom:calc(82px + env(safe-area-inset-bottom))!important;
+    width:auto!important;
+    max-height:calc(100dvh - 104px - env(safe-area-inset-bottom))!important;
+    background:#06101f!important;
+    -webkit-backdrop-filter:none!important;
+    backdrop-filter:none!important;
+  }
+
+  .premium-command-backdrop.open{
+    background:rgba(0,0,0,.82)!important;
+    -webkit-backdrop-filter:none!important;
+    backdrop-filter:none!important;
+  }
+
+  /* Avoid browser-chrome resize artifacts from dynamic viewport animations. */
+  .hero,
+  .page-hero,
+  .flagship-hero,
+  .flagship-hero-layout{
+    min-height:auto!important;
+  }
+
+  /* Disable all 3D/hover transforms on touch devices. */
+  [class*="tilt"],
+  .premium-tilt,
+  .premium-tilt:hover,
+  .network-node:hover,
+  .network-map-core:hover,
+  .service-card:hover,
+  .product-card:hover,
+  .review-card:hover,
+  .game-card:hover,
+  .tool-card:hover,
+  .feature-panel:hover,
+  .leader-tile:hover,
+  .connection-card:hover,
+  .story-panel:hover,
+  .flagship-game-card:hover,
+  .leadership-spotlight:hover{
+    transform:none!important;
+  }
+
+  /* Fixed header remains visually stable and opaque. */
+  .site-header,
+  .site-header .header-inner{
+    background:#07101f!important;
+    -webkit-backdrop-filter:none!important;
+    backdrop-filter:none!important;
+  }
+}
