@@ -19,6 +19,16 @@ const routes = {
     title: 'ESN SMP Store | ES Network Minecraft Items',
     description: 'Purchase ESN SMP digital items and bundles through official Stripe checkout links.',
   },
+  '/store': {
+    title: 'ESN SMP Store | ES Network Minecraft Items',
+    description: 'Purchase ESN SMP digital items and bundles through official Stripe checkout links.',
+    canonical: '/storesmp',
+  },
+  '/store/smp': {
+    title: 'ESN SMP Store | ES Network Minecraft Items',
+    description: 'Purchase ESN SMP digital items and bundles through official Stripe checkout links.',
+    canonical: '/storesmp',
+  },
   '/smpconnection': {
     title: 'ESN SMP Connection | Server IP & Port',
     description: 'Connect to the ESN SMP using esn.ggwp.cc and port 17058.',
@@ -26,6 +36,11 @@ const routes = {
   '/estools': {
     title: 'ES Tools | Free Browser-Based Creator & Gaming Utilities',
     description: 'Free browser-based ES Network tools with no account required.',
+  },
+  '/tools': {
+    title: 'ES Tools | Free Browser-Based Creator & Gaming Utilities',
+    description: 'Free browser-based ES Network tools with no account required.',
+    canonical: '/estools',
   },
   '/arcade': {
     title: 'ESN Arcade | Browser Games',
