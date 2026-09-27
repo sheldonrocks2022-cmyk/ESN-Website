@@ -5000,15 +5000,7 @@ html[data-esn-season="summer"] .network-evolution-ambient{filter:hue-rotate(-14d
   .mobile-network-utilities button b{font-size:.64rem}
   .mobile-network-utilities button small{font-size:.46rem;color:#70839b}
 
-  /* Hard stop on phone animation/transition flicker. */
-  .site *,
-  .site *::before,
-  .site *::after{
-    animation:none!important;
-    transition:none!important;
-    scroll-behavior:auto!important;
-  }
-
+  /* Keep motion available; only the known flicker sources are disabled below. */
   /* Preserve visibility and layout at all times. */
   .reveal-ready,
   .reveal-ready.is-visible,
@@ -5024,13 +5016,17 @@ html[data-esn-season="summer"] .network-evolution-ambient{filter:hue-rotate(-14d
   .lux-cursor-ring,
   .lux-cursor-core,
   .lux-edge-beam,
-  .premium-ambient,
-  .premium-ticker,
   .route-lux-flare,
   .network-evolution-ambient,
   .ev-version{
     display:none!important;
   }
+
+  .premium-ambient,
+  .premium-ticker{
+    display:block!important;
+  }
+  .premium-grain{display:none!important}
 
   .site-header,
   .mobile-bottom-nav,
@@ -5817,4 +5813,102 @@ html[data-target-size="large"] .nav a{min-height:48px}
 
   /* Restore visual update information inline instead of as another fixed card. */
   .site-update-badge{display:none!important}
+}
+
+
+/* =========================================================
+   MOBILE MOTION RESTORE
+   Restore the premium motion that Safe Mode removed, without restoring
+   WebGL, observer pop-in, touch tilt, or the old overlapping float stack.
+   ========================================================= */
+@media(max-width:860px), (pointer:coarse){
+  /* Startup stays cinematic on phones unless Reduced Motion is selected. */
+  html:not([data-motion="reduced"]) .startup-grid{animation:startupGrid 2.2s ease-out both!important}
+  html:not([data-motion="reduced"]) .startup-beam{animation:startupBeam 1.7s ease-in-out both!important}
+  html:not([data-motion="reduced"]) .startup-logo{animation:startupCore .75s cubic-bezier(.2,.8,.2,1) both!important}
+  html:not([data-motion="reduced"]) .startup-ring.ring-a{animation:startupRing 5s linear infinite!important}
+  html:not([data-motion="reduced"]) .startup-ring.ring-b{animation:startupRingReverse 3.6s linear infinite!important}
+  html:not([data-motion="reduced"]) .startup-progress span{animation:startupProgress 1.65s cubic-bezier(.2,.75,.2,1) both!important}
+  html:not([data-motion="reduced"]) .startup-intro.exit .startup-exit-scan{animation:startupExitScan .36s cubic-bezier(.2,.8,.2,1) both!important}
+
+  /* Lightweight live motion for capable phones. */
+  html[data-performance-mode="premium"]:not([data-motion="reduced"]) .premium-aurora{
+    display:block!important;
+    opacity:.075!important;
+    filter:blur(92px)!important;
+    animation:luxFloat 30s ease-in-out infinite alternate!important;
+  }
+  html[data-performance-mode="premium"]:not([data-motion="reduced"]) .premium-ticker-track{
+    animation:luxTicker 42s linear infinite!important;
+  }
+  html[data-performance-mode="premium"]:not([data-motion="reduced"]) .hero-scanline{
+    animation:esnScan 11s linear infinite!important;
+  }
+  html[data-performance-mode="premium"]:not([data-motion="reduced"]) .network-map-core::before{
+    animation:network-orbit-spin 14s linear infinite!important;
+  }
+  html[data-performance-mode="premium"]:not([data-motion="reduced"]) .network-map-core::after{
+    animation:network-orbit-spin 22s linear infinite reverse!important;
+  }
+  html[data-performance-mode="premium"]:not([data-motion="reduced"]) .network-node-dot{
+    animation:node-blink 2.4s ease-in-out infinite!important;
+  }
+  html[data-performance-mode="premium"]:not([data-motion="reduced"]) .leadership-scan{
+    animation:leadership-scan 7s ease-in-out infinite!important;
+  }
+  html[data-performance-mode="premium"]:not([data-motion="reduced"]) .leadership-monogram::after{
+    animation:founder-pulse 4s ease-in-out infinite!important;
+  }
+
+  /* One-shot route/content motion replaces the old glitchy full-screen route portal. */
+  .page-hero-copy,
+  .flagship-hero-copy,
+  .mobile-network-strip{
+    animation:mobileSafeEnter .42s cubic-bezier(.2,.8,.2,1) both!important;
+  }
+  @keyframes mobileSafeEnter{
+    from{opacity:.72;transform:translateY(10px)}
+    to{opacity:1;transform:none}
+  }
+
+  /* Restore responsive interaction polish without touch hover transforms. */
+  .button,
+  .mobile-bottom-nav a,
+  .mobile-bottom-nav button,
+  .mobile-network-strip button,
+  .mobile-network-strip a,
+  .premium-command button,
+  .premium-command a,
+  .command-category-row button,
+  .release-filter-row button,
+  .accessibility-grid button,
+  .mode-selector button{
+    transition:
+      background-color .18s ease,
+      border-color .18s ease,
+      color .18s ease,
+      box-shadow .18s ease,
+      opacity .18s ease!important;
+  }
+
+  /* Keep the proven anti-flicker protections. */
+  .route-transition{display:none!important}
+  .reveal-ready,
+  .reveal-ready.is-visible,
+  .is-visible{
+    opacity:1!important;
+    visibility:visible!important;
+    transform:none!important;
+    filter:none!important;
+    transition:none!important;
+  }
+}
+
+/* User accessibility choices always win over restored motion. */
+html[data-motion="reduced"] *,
+html[data-motion="reduced"] *::before,
+html[data-motion="reduced"] *::after{
+  animation:none!important;
+  transition:none!important;
+  scroll-behavior:auto!important;
 }
