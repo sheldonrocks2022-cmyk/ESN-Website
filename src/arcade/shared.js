@@ -77,7 +77,7 @@ export function useArcadeProgress(){
     setProgress(current=>{
       const next=typeof updater==='function'?updater(current):updater
       saveLocal(ARCADE_PROGRESS_KEY,next)
-      window.dispatchEvent(new CustomEvent(ARCADE_PROGRESS_EVENT,{detail:next}))
+      queueMicrotask(()=>window.dispatchEvent(new CustomEvent(ARCADE_PROGRESS_EVENT,{detail:next})))
       return next
     })
   },[])
