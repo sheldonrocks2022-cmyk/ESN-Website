@@ -46,6 +46,18 @@ const sitemapRoutes = requiredRoutes
   .filter((route) => !sitemapExcludedAliases.has(route))
   .filter((route) => !sitemap.includes(`https://esnoffical.com${route === '/' ? '/' : route}`))
 
+const requiredMigrationFiles = [
+  'src/Tools.jsx',
+  'src/arcade/profile.js',
+  'src/arcade/GameFrame.jsx',
+  'src/arcade/Clicker.jsx',
+  'src/arcade/Factory.jsx',
+  'src/arcade/Mines.jsx',
+  'src/arcade/Moto.jsx',
+  'src/arcade/Tower.jsx',
+  'src/arcade/TowerDefense.jsx',
+]
+
 const problems = []
 
 if (missingRoutes.length) problems.push(`Missing app routes: ${missingRoutes.join(', ')}`)
@@ -53,6 +65,11 @@ if (missingPayments.length) problems.push(`Missing payment links: ${missingPayme
 if (sitemapRoutes.length) problems.push(`Missing sitemap routes: ${sitemapRoutes.join(', ')}`)
 if (app.includes('mobile-coaching')) problems.push('Removed Mobile Coaching content was reintroduced.')
 if (app.includes('example.com')) problems.push('Placeholder example.com URL found.')
+for (const file of requiredMigrationFiles) {
+  if (!fs.existsSync(file)) problems.push(`Missing migrated module: ${file}`)
+}
+if (app.includes('Protected game migration')) problems.push('Obsolete Arcade placeholder content returned.')
+if (app.includes('Tool logic is intentionally not being invented')) problems.push('Obsolete ES Tools placeholder content returned.')
 
 if (problems.length) {
   console.error('Site validation failed:')
