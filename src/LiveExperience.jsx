@@ -1,0 +1,291 @@
+import { useMemo, useState } from 'react'
+import { Link, Navigate } from 'react-router-dom'
+import { DISCORD_URL, SITE_RELEASE, SMP_ADDRESS, SMP_PORT, useLiveNetwork } from './liveNetwork'
+
+function StatusPill({status}){
+  const normalized=status||'unknown'
+  const label=normalized==='online'||normalized==='operational'||normalized==='available'?'ONLINE'
+    :normalized==='configured'?'CONFIGURED'
+    :normalized==='checking'?'CHECKING'
+    :normalized==='connection-lost'?'CONNECTION LOST'
+    :normalized==='offline'?'OFFLINE':'UNAVAILABLE'
+  return <span className={`live-status-pill ${normalized}`}><i/>{label}</span>
+}
+
+export function WhatsHappeningNow(){
+  const live=useLiveNetwork()
+  return <section className="section now-section">
+    <div className="shell">
+      <div className="section-heading flagship-heading">
+        <div><span className="eyebrow">WHAT'S HAPPENING NOW</span><h2>Live across ES Network.</h2></div>
+        <Link className="text-link" to="/status">Open Network Status →</Link>
+      </div>
+
+      <div className="now-grid">
+        <article className="now-card now-smp">
+          <div className="now-card-top"><span>ESN SMP</span><StatusPill status={live.smp.status}/></div>
+          <strong>{live.smp.players??'—'}<small> / {live.smp.maxPlayers??'—'}</small></strong>
+          <p>Players online right now</p>
+          <div className="now-meta"><span>{SMP_ADDRESS}:{SMP_PORT}</span><span>{live.smp.version||'Version unavailable'}</span></div>
+        </article>
+
+        <article className="now-card">
+          <div className="now-card-top"><span>PLUGIN RELEASE</span><StatusPill status={live.plugin.status}/></div>
+          <strong>{live.plugin.version||'Checking…'}</strong>
+          <p>Latest public ESNSMP release</p>
+          <Link to="/updates">Release center →</Link>
+        </article>
+
+        <article className="now-card">
+          <div className="now-card-top"><span>WEBSITE</span><StatusPill status={live.website.status}/></div>
+          <strong>LIVE</strong>
+          <p>{SITE_RELEASE}</p>
+          <Link to="/updates">See what changed →</Link>
+        </article>
+
+        <article className="now-card">
+          <div className="now-card-top"><span>COMMUNITY</span><StatusPill status={live.discord.status}/></div>
+          <strong>{live.discord.onlineMembers??'ESN'}</strong>
+          <p>{live.discord.onlineMembers!=null?'Approx. Discord members online':'Discord is the source of truth for current announcements.'}</p>
+          <a href={DISCORD_URL} target="_blank" rel="noreferrer">Open Discord →</a>
+        </article>
+      </div>
+    </div>
+  </section>
+}
+
+export function StatusCenter(){
+  const live=useLiveNetwork()
+  const checked=live.checkedAt?new Date(live.checkedAt).toLocaleTimeString([], {hour:'numeric',minute:'2-digit',second:'2-digit'}):'—'
+
+  return <>
+    <section className="page-hero live-page-hero">
+      <div className="shell page-hero-inner">
+        <div className="page-hero-copy">
+          <span className="eyebrow">ESN LIVE NETWORK</span>
+          <h1>Network Status Center.</h1>
+          <p>Live website, SMP, plugin, Arcade, and community connection information in one place.</p>
+        </div>
+        <div className="page-hero-mark" aria-hidden="true"><span>LIVE</span><small>STATUS</small></div>
+      </div>
+    </section>
+
+    <section className="section compact-section">
+      <div className="shell live-status-summary">
+        <div><span>LAST CHECK</span><strong>{checked}</strong></div>
+        <div><span>AUTO REFRESH</span><strong>60 SEC</strong></div>
+        <button type="button" onClick={live.refresh}>Refresh now ↻</button>
+      </div>
+    </section>
+
+    <section className="section status-center-section">
+      <div className="shell status-center-grid">
+        <article className="status-system-card featured">
+          <div className="status-system-head"><div><span>01</span><h2>ESN SMP</h2></div><StatusPill status={live.smp.status}/></div>
+          <div className="status-player-display"><strong>{live.smp.players??'—'}</strong><span>of {live.smp.maxPlayers??'—'} players online</span></div>
+          <div className="status-detail-grid">
+            <div><span>SERVER</span><strong>{SMP_ADDRESS}:{SMP_PORT}</strong></div>
+            <div><span>VERSION</span><strong>{live.smp.version||'Unavailable'}</strong></div>
+            <div><span>SOFTWARE</span><strong>{live.smp.software||'Not exposed'}</strong></div>
+            <div><span>UPTIME</span><strong>Not exposed by server ping</strong></div>
+          </div>
+          <p className="status-note">A standard Minecraft status ping can safely expose online state, player counts, and version. Historical uptime requires a separate monitoring service, so ESN does not invent an uptime percentage.</p>
+          <Link className="button primary" to="/smpconnection">Connect to ESN SMP</Link>
+        </article>
+
+        <article className="status-system-card">
+          <div className="status-system-head"><div><span>02</span><h3>Website</h3></div><StatusPill status={live.website.status}/></div>
+          <strong className="status-big-value">ONLINE</strong>
+          <p>This page and the current ESN website bundle loaded successfully.</p>
+          <small>{SITE_RELEASE}</small>
+        </article>
+
+        <article className="status-system-card">
+          <div className="status-system-head"><div><span>03</span><h3>Arcade</h3></div><StatusPill status={live.arcade.status}/></div>
+          <strong className="status-big-value">{live.arcade.games}</strong>
+          <p>Original ESN browser games available through the current website build.</p>
+          <Link to="/arcade">Open Arcade →</Link>
+        </article>
+
+        <article className="status-system-card">
+          <div className="status-system-head"><div><span>04</span><h3>ESNSMP Plugin</h3></div><StatusPill status={live.plugin.status}/></div>
+          <strong className="status-big-value">{live.plugin.version||'—'}</strong>
+          <p>Latest public GitHub release detected from the official ESNSMP repository.</p>
+          <Link to="/smpplugin">Download plugin →</Link>
+        </article>
+
+        <article className="status-system-card">
+          <div className="status-system-head"><div><span>05</span><h3>Discord</h3></div><StatusPill status={live.discord.status}/></div>
+          <strong className="status-big-value">{live.discord.onlineMembers??'LIVE'}</strong>
+          <p>{live.discord.onlineMembers!=null?`${live.discord.onlineMembers.toLocaleString()} approximate members online • ${live.discord.members?.toLocaleString()||'—'} total`:'The official invite is configured. Live Discord counts may be unavailable if Discord blocks browser status requests.'}</p>
+          <a href={DISCORD_URL} target="_blank" rel="noreferrer">Open Discord →</a>
+        </article>
+      </div>
+    </section>
+  </>
+}
+
+const timelinePhases=[
+  {
+    id:'ep1c',
+    index:'01',
+    title:'EP1C Services',
+    eyebrow:'Former Name',
+    copy:'The organization began under the EP1C Services name. This is the historical name, not a separate current division.',
+    points:['Original service identity','Early creator/community work','Foundation for the current brand'],
+  },
+  {
+    id:'esn',
+    index:'02',
+    title:'ES Network',
+    eyebrow:'Current Brand',
+    copy:'EP1C Services was renamed to ES Network, bringing services, community projects, gaming, tools, and web experiences under one current identity.',
+    points:['One network identity','Unified navigation and branding','Services + community + digital experiences'],
+  },
+  {
+    id:'smp',
+    index:'03',
+    title:'ESN SMP',
+    eyebrow:'Minecraft Network',
+    copy:'ESN expanded into its Minecraft SMP ecosystem with custom items, crates, bosses, events, progression, store delivery, and the public ESNSMP plugin.',
+    points:['Custom Paper server systems','Official SMP Store','Public ESNSMP plugin'],
+  },
+  {
+    id:'arcade',
+    index:'04',
+    title:'ESN Arcade',
+    eyebrow:'Browser Games',
+    copy:'The network added six original browser game experiences: Clicker, Factory, Mines, MOTO, Tower, and Tower Defense.',
+    points:['Six original games','Shared ES Coin progression','Mobile-responsive controls'],
+  },
+  {
+    id:'current',
+    index:'05',
+    title:'Current Projects',
+    eyebrow:'Now',
+    copy:'ESN is currently focused on a premium unified website experience, live network systems, SMP development, Arcade improvements, tools, and public-facing infrastructure.',
+    points:['Flagship website experience','Live status + updates','Ongoing SMP and Arcade development'],
+  },
+]
+
+export function TimelinePage(){
+  const [active,setActive]=useState(1)
+  const phase=timelinePhases[active]
+
+  return <>
+    <section className="page-hero timeline-hero">
+      <div className="shell page-hero-inner">
+        <div className="page-hero-copy"><span className="eyebrow">ESN HISTORY</span><h1>From EP1C to ES Network.</h1><p>An interactive view of the major eras that shaped the current ESN ecosystem. Exact historical dates are intentionally omitted where they have not been verified.</p></div>
+        <div className="page-hero-mark" aria-hidden="true"><span>05</span><small>ERAS</small></div>
+      </div>
+    </section>
+
+    <section className="section timeline-section">
+      <div className="shell timeline-layout">
+        <nav className="timeline-nav" aria-label="ESN timeline">
+          {timelinePhases.map((item,index)=><button key={item.id} type="button" className={active===index?'active':''} onClick={()=>setActive(index)}>
+            <span>{item.index}</span><b>{item.title}</b><small>{item.eyebrow}</small>
+          </button>)}
+        </nav>
+
+        <article key={phase.id} className="timeline-detail">
+          <span className="timeline-detail-index">{phase.index}</span>
+          <span className="eyebrow">{phase.eyebrow}</span>
+          <h2>{phase.title}</h2>
+          <p>{phase.copy}</p>
+          <div className="timeline-points">{phase.points.map(point=><div key={point}><i/> {point}</div>)}</div>
+          <div className="timeline-position"><span>ERA {phase.index}</span><div><i style={{width:`${((active+1)/timelinePhases.length)*100}%`}}/></div><strong>{active+1} / {timelinePhases.length}</strong></div>
+        </article>
+      </div>
+    </section>
+  </>
+}
+
+export function UpdatesPage(){
+  const live=useLiveNetwork()
+
+  const releases=[
+    {type:'Website',status:'LIVE',version:SITE_RELEASE,title:'ESN Live Experience + Global 3D Lighting',copy:'Flagship architecture, global WebGL lighting, premium command center, live status systems, mobile navigation, themes, timeline, update center, portfolio demos, and cinematic startup.'},
+    {type:'ESNSMP Plugin',status:live.plugin.status==='available'?'LATEST':'CHECKING',version:live.plugin.version||'Checking…',title:'Latest public ESNSMP release',copy:'Detected live from the official ESNSMP GitHub Releases feed.'},
+    {type:'Arcade',status:'LIVE',version:'29× Responsive Pass',title:'Full Arcade layout upgrade',copy:'Wider game layouts, mobile-safe controls, full Clicker/Factory/Tower catalogs, and a consistent ESN shell across all six games.'},
+    {type:'Network',status:'LIVE',version:'Live Status',title:'Public network telemetry',copy:'Website, SMP player count/version, plugin release, Arcade status, and Discord connection information.'},
+  ]
+
+  const roadmap=[
+    ['SMP Encyclopedia','Candidate','Searchable custom items, bosses, crates, sets, and progression documentation.'],
+    ['Arcade Achievements','Candidate','Local device achievements and trophy progression without requiring accounts.'],
+    ['Verified Portfolio Cases','Waiting on source assets','Replace illustrative before/after demos with real client-approved work when originals are available.'],
+  ]
+
+  return <>
+    <section className="page-hero updates-hero"><div className="shell page-hero-inner"><div className="page-hero-copy"><span className="eyebrow">ESN RELEASE CENTER</span><h1>What changed. What's live. What's next.</h1><p>A single source for website upgrades, ESNSMP releases, Arcade work, and future project candidates.</p></div><div className="page-hero-mark" aria-hidden="true"><span>UP</span><small>DATES</small></div></div></section>
+    <section className="section"><div className="shell update-feed">
+      {releases.map((item,index)=><article className="update-entry" key={item.type}>
+        <div className="update-entry-rail"><span>{String(index+1).padStart(2,'0')}</span><i/></div>
+        <div><div className="update-entry-top"><span className="eyebrow">{item.type}</span><b>{item.status}</b></div><h2>{item.title}</h2><strong>{item.version}</strong><p>{item.copy}</p></div>
+      </article>)}
+    </div></section>
+    <section className="section dark-section"><div className="shell"><div className="section-heading"><div><span className="eyebrow">ROADMAP</span><h2>Future candidates.</h2><p>Items shown here are ideas or waiting states, not promises or fake completed work.</p></div></div><div className="roadmap-grid">{roadmap.map(([name,status,copy])=><article key={name}><span>{status}</span><h3>{name}</h3><p>{copy}</p></article>)}</div></div></section>
+  </>
+}
+
+const portfolioDemos=[
+  {
+    key:'editing',label:'Editing',title:'Raw timeline → polished creator cut',
+    before:['Untrimmed pacing','No visual hierarchy','Basic audio levels','No finishing pass'],
+    after:['Tighter pacing','Intentional impact moments','Balanced audio','Delivery-ready polish'],
+  },
+  {
+    key:'discord',label:'Discord Setup',title:'Unstructured server → organized community hub',
+    before:['Mixed channel purposes','Loose permissions','No onboarding path','Harder staff navigation'],
+    after:['Clear categories','Role-based permissions','Guided onboarding','Cleaner staff workflow'],
+  },
+  {
+    key:'website',label:'Website Creation',title:'Basic page → premium conversion-focused experience',
+    before:['Flat information layout','Weak mobile hierarchy','Minimal interaction','Generic calls-to-action'],
+    after:['Premium hierarchy','Responsive composition','Interactive depth','Clear conversion paths'],
+  },
+]
+
+function BeforeAfterDemo({demo}){
+  const [split,setSplit]=useState(50)
+  return <article className="portfolio-demo">
+    <div className="portfolio-demo-head"><div><span className="eyebrow">{demo.label}</span><h2>{demo.title}</h2></div><span className="portfolio-demo-note">ILLUSTRATIVE PROCESS DEMO</span></div>
+    <div className="before-after-stage">
+      <div className={`portfolio-visual before ${demo.key}`}>
+        <span>BEFORE</span>
+        <div className="portfolio-mock">{demo.before.map((item,index)=><div key={item}><i>{index+1}</i><b>{item}</b></div>)}</div>
+      </div>
+      <div className={`portfolio-visual after ${demo.key}`} style={{clipPath:`inset(0 0 0 ${split}%)`}}>
+        <span>AFTER</span>
+        <div className="portfolio-mock">{demo.after.map((item,index)=><div key={item}><i>{index+1}</i><b>{item}</b></div>)}</div>
+      </div>
+      <div className="before-after-divider" style={{left:`${split}%`}}><i>↔</i></div>
+    </div>
+    <input className="before-after-range" aria-label={`${demo.label} before and after comparison`} type="range" min="8" max="92" value={split} onChange={e=>setSplit(Number(e.target.value))}/>
+    <p className="portfolio-disclaimer">This is an illustrative ESN service transformation demo, not a claimed customer result. Real client before/after work can replace it when verified source assets are available.</p>
+  </article>
+}
+
+export function PortfolioPage(){
+  return <>
+    <section className="page-hero portfolio-hero"><div className="shell page-hero-inner"><div className="page-hero-copy"><span className="eyebrow">ESN PORTFOLIO LAB</span><h1>See the transformation.</h1><p>Interactive before/after demos for editing, Discord setup, and website creation. These demos describe the service process without inventing client work.</p></div><div className="page-hero-mark" aria-hidden="true"><span>↔</span><small>COMPARE</small></div></div></section>
+    <section className="section"><div className="shell portfolio-stack">{portfolioDemos.map(demo=><BeforeAfterDemo key={demo.key} demo={demo}/>)}</div></section>
+  </>
+}
+
+export function VaultPage(){
+  const unlocked=typeof window!=='undefined'&&localStorage.getItem('esn_vault_unlocked')==='1'
+  if(!unlocked)return <section className="page-hero vault-locked"><div className="shell narrow"><span className="eyebrow">RESTRICTED</span><h1>The ESN Vault is locked.</h1><p>There are things hidden around the network. Find the sequence, the command, or the right number of taps.</p><Link className="button secondary" to="/">Return to ESN</Link></div></section>
+
+  return <section className="vault-page">
+    <div className="vault-grid" aria-hidden="true"/>
+    <div className="shell vault-content">
+      <span className="eyebrow">SECRET // UNLOCKED</span>
+      <h1>Welcome to the ESN Vault.</h1>
+      <p>You found one of the hidden network layers. Unlocking the Vault also reveals the hidden <b>Midnight Core</b> visual theme inside the Command Center.</p>
+      <div className="vault-code">ESN // 07 // CORE ACCESS GRANTED</div>
+      <div className="vault-actions"><Link className="button primary" to="/arcade">Enter Arcade</Link><Link className="button secondary" to="/updates">Open Release Center</Link></div>
+    </div>
+  </section>
+}
