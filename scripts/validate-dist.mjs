@@ -13,6 +13,7 @@ const routes = [
   '/smpplugin',
   '/vault',
   '/portfolio',
+  '/share',
   '/updates',
   '/timeline',
   '/status',
