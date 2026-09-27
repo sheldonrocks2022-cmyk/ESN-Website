@@ -59,6 +59,11 @@ function terminalResolveDestination(raw){
   return partial?{path:partial.path,label:partial.label}:null
 }
 
+function terminalDateKey(){
+  const date=new Date()
+  return `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,'0')}-${String(date.getDate()).padStart(2,'0')}`
+}
+
 function terminalUnlockEgg(id){
   const allowed=['typed-kavero','typed-warden','typed-riftwalker','typed-void','typed-1337']
   if(!allowed.includes(id))return false
@@ -360,9 +365,7 @@ function TerminalPanel({onClose,onOpenPassport,onOpenSearch,soundEnabled,setSoun
     setHistory(nextHistory)
     writeJson(TERMINAL_HISTORY_KEY,nextHistory)
     setHistoryIndex(-1)
-    setClearArmed(false)
 
-    const gameMap={clicker:'/esclicker',factory:'/esfactory',mines:'/esmines',moto:'/esmoto',tower:'/estowerdefense'===command?'/estowerdefense':'/estower',defense:'/estowerdefense','tower defense':'/estowerdefense'}
     const protocolMap={kavero:'typed-kavero',warden:'typed-warden',riftwalker:'typed-riftwalker',void:'typed-void','1337':'typed-1337'}
 
     if(command==='help'){
@@ -454,7 +457,7 @@ function TerminalPanel({onClose,onOpenPassport,onOpenSearch,soundEnabled,setSoun
       MISSIONS.forEach(item=>push(complete.includes(item)?'ok':'system',(complete.includes(item)?'✓ ':'○ ')+item.title+' • '+item.xp+' XP'))
     }else if(command==='rewards'){
       const retention=readJson('esn_retention_v1',{lastClaim:null,streak:0,networkXp:0,shards:0,collectibles:[]})
-      const today=new Date().toISOString().slice(0,10)
+      const today=terminalDateKey()
       pushMany('ok',[
         'DAILY REWARD // '+(retention.lastClaim===today?'CLAIMED':'READY ON HOME / ARCADE'),
         'STREAK // '+(retention.streak||0)+' days',
@@ -570,7 +573,7 @@ function TerminalPanel({onClose,onOpenPassport,onOpenSearch,soundEnabled,setSoun
         'DAILY ARCADE CHALLENGES // '+(daily.completed?.length||0)+'/3 complete',
         'ARCADE DAILY STREAK // '+(daily.streak||0),
         'ESN RETURN STREAK // '+(retention.streak||0),
-        'DAILY REWARD // '+(retention.lastClaim===new Date().toISOString().slice(0,10)?'CLAIMED':'READY'),
+        'DAILY REWARD // '+(retention.lastClaim===terminalDateKey()?'CLAIMED':'READY'),
       ])
     }else if(command==='leaderboard')go('/arcade','Arcade records & mastery leaderboard')
     else if(command==='vote')go('/arcade#community-ballot','Community Ballot')
