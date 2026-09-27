@@ -1,4 +1,5 @@
 import fs from 'node:fs'
+import { SEO_ROUTES, canonicalUrl } from '../src/seo.js'
 
 const app = fs.readFileSync('src/App.jsx', 'utf8')
 const sitemap = fs.readFileSync('public/sitemap.xml', 'utf8')
