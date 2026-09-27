@@ -56,7 +56,7 @@ export default function MinesGame(){
       <a href="https://discord.gg/3gxA66KZ8" target="_blank" rel="noreferrer">JOIN & OPEN TICKET</a>
     </section>
 
-    <section className="oa-panel">
+    <section className="oa-panel oa-mines-status-panel">
       <div className="oa-status-chip">{status}</div>
       <p>{message}</p>
       <div className="oa-mines-stats">
@@ -69,7 +69,7 @@ export default function MinesGame(){
       </div>
     </section>
 
-    <section className="oa-panel">
+    <section className="oa-panel oa-mines-board-panel">
       <div className="oa-mines-board">
         {board.map(i=>{
           const opened=round?.safe.has(i)
@@ -78,7 +78,7 @@ export default function MinesGame(){
       </div>
     </section>
 
-    <section className="oa-panel">
+    <section className="oa-panel oa-mines-controls-panel">
       <span className="oa-kicker">SET WAGER</span>
       <div className="oa-choice-row">{[10,25,50,100,250].map(v=><button key={v} className={wager===v?'active':''} disabled={!!round} onClick={()=>setWager(v)}>{v}</button>)}</div>
       <span className="oa-kicker oa-spaced">CHOOSE MINE COUNT</span>
