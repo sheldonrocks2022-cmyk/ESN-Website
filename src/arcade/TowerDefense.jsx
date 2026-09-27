@@ -82,7 +82,7 @@ export default function TowerDefenseGame(){
     const tower=TOWERS[g.selected]
     if(g.coins<tower.cost)return
     arcadeFeedback('buy')
-    setG(s=>({...s,coins:s.coins-tower.cost,selectedNode:node,placed:{...s.placed,[node]:{type:s.selected,cool:0,level:1}}}))
+    setG(s=>({...s,coins:s.coins-tower.cost,selectedNode:node,placed:{...s.placed,[node]:{type:s.selected,cool:0,level:1,aim:-18,targetId:null,shot:null}}}))
   }
 
   const startWave=()=>{
@@ -102,31 +102,51 @@ export default function TowerDefenseGame(){
 
   useEffect(()=>{
     if(!g.running||g.paused)return
-    const tick=Math.max(32,80/g.speed)
+    // Fixed render cadence prevents the 2× mode from doubling React render frequency on phones.
+    // Speed now changes simulation distance rather than making the UI timer itself run twice as often.
+    const tick=64
+    const step=tick/80
     const t=setInterval(()=>setG(s=>{
       let placed={...s.placed}
-      let enemies=s.enemies.map(e=>({...e,t:e.t+.0045*s.speed*(e.boss?.62:e.elite?.82:1)}))
+      let enemies=s.enemies.map(e=>({...e,t:e.t+.0045*s.speed*step*(e.boss?.62:e.elite?.82:1)}))
 
       for(const [nodeKey,p] of Object.entries(placed)){
         const node=nodes[+nodeKey],tower=TOWERS[p.type]
         const stats=towerStats(tower,p.level)
-        const cool=Math.max(0,(p.cool||0)-s.speed)
-        let updated={...p,cool}
-        if(cool<=0){
-          let target=-1,best=-1
-          enemies.forEach((e,i)=>{
-            if(e.hp<=0||e.t<0)return
-            const [x,y]=lerpPath(e.t),d=Math.hypot(x-node[0],y-node[1])
-            if(d<stats.range&&e.t>best){best=e.t;target=i}
-          })
-          if(target>=0){
-            const enemy=enemies[target]
+        const cool=Math.max(0,(p.cool||0)-s.speed*step)
+        let target=-1,best=-1
+
+        enemies.forEach((e,i)=>{
+          if(e.hp<=0||e.t<0)return
+          const [x,y]=lerpPath(e.t)
+          const d=Math.hypot(x-node[0],y-node[1])
+          if(d<stats.range&&e.t>best){best=e.t;target=i}
+        })
+
+        let updated={
+          ...p,
+          cool,
+          shot:p.shot&&p.shot.life>1?{...p.shot,life:p.shot.life-1}:null,
+        }
+
+        if(target>=0){
+          const enemy=enemies[target]
+          const [ex,ey]=lerpPath(enemy.t)
+          const aim=Math.atan2(ey-node[1],ex-node[0])*180/Math.PI
+          updated.aim=aim
+          updated.targetId=enemy.id
+
+          if(cool<=0){
             const bossBonus=enemy.boss&&tower.name==='BOSS KILLER'?2.6:1
             const voidBonus=tower.name==='VOID'&&enemy.elite?1.5:1
             enemies[target]={...enemy,hp:enemy.hp-stats.damage*bossBonus*voidBonus}
             updated.cool=Math.max(1,Math.floor(12/stats.rate))
+            updated.shot={x:ex,y:ey,life:3,targetId:enemy.id}
           }
+        }else{
+          updated.targetId=null
         }
+
         placed[nodeKey]=updated
       }
 
@@ -263,7 +283,7 @@ export default function TowerDefenseGame(){
       </div>
       <div className={'oa-td-board '+(g.running&&!g.paused?'is-live ':'')+(g.round%10===0?'is-boss':'')}>
         <div className="oa-td-battle-label"><span>{g.paused?'PAUSED':g.running?'WAVE ACTIVE':'BUILD PHASE'}</span><b>WAVE {g.round}</b></div>
-        <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+        <svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet">
           <defs>
             <filter id="pathGlow"><feGaussianBlur stdDeviation="1.2" result="g"/><feMerge><feMergeNode in="g"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
             <linearGradient id="tdTerrain" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#173b3a"/><stop offset="100%" stopColor="#081826"/></linearGradient>
@@ -281,20 +301,42 @@ export default function TowerDefenseGame(){
           {nodes.map(([x,y],i)=>{
             const placed=g.placed[i]
             const tower=placed?TOWERS[placed.type]:null
-            const firing=Boolean(placed&&g.running&&!g.paused&&(placed.cool||0)>0)
+            const firing=Boolean(placed?.shot?.life>0)
             const tx=x*100,ty=y*100
+            const aim=Number.isFinite(placed?.aim)?placed.aim:-18
+            const aimRad=aim*Math.PI/180
+            const barrelLength=tower?.name==='SNIPER'?7.4:tower?.name==='CANNON'?5.6:tower?.name==='BOSS KILLER'?6.8:tower?.name==='VOID'?6.3:5.2
+            const barrelWidth=tower?.name==='CANNON'?1.35:tower?.name==='TANK'?1.25:.82
+            const muzzleX=tx+Math.cos(aimRad)*barrelLength
+            const muzzleY=ty+Math.sin(aimRad)*barrelLength
+            const bodyColor=tower?.name==='VOID'?'#3b286d':tower?.name==='CANNON'?'#4a3826':tower?.name==='TANK'?'#334757':'#174657'
             return <g key={i} onClick={()=>place(i)} className={g.selectedNode===i?'oa-node selected':'oa-node'}>
-              <ellipse cx={tx} cy={ty+4.7} rx="6.4" ry="2.4" fill="rgba(0,0,0,.32)"/>
-              <circle cx={tx} cy={ty} r="6.9" fill={placed?'rgba(15,48,56,.96)':'rgba(8,20,34,.92)'} stroke={g.selectedNode===i?'#ffffff':'#62eaf6'} strokeWidth={placed?'1':'.45'}/>
-              {placed?<g className={firing?'oa-td-turret firing':'oa-td-turret'} transform={`translate(${tx} ${ty})`}>
-                <rect x="-3.7" y=".8" width="7.4" height="2.6" rx=".7" fill="#102638" stroke="#78dae9" strokeWidth=".35"/>
-                <polygon points="-3.1,1.1 0,-3.5 3.1,1.1" fill={tower.name==='VOID'?'#382866':tower.name==='CANNON'?'#413326':'#174153'} stroke="#b9f8ff" strokeWidth=".32"/>
-                <circle cx="0" cy="-1.1" r="2.2" fill="#17384d" stroke="#d5fbff" strokeWidth=".38"/>
-                <rect x="1.2" y="-1.55" width={tower.name==='SNIPER'?5.8:4.4} height=".9" rx=".35" fill="#b9eaf2" transform="rotate(-18 1.2 -1.55)"/>
-                <circle cx="0" cy="-1.1" r=".7" fill={tower.name==='VOID'?'#a575ff':'#7ef4ff'}/>
-                {firing&&<g className="oa-td-muzzle"><circle cx="5.3" cy="-3.1" r="1.1" fill="#ffffff"/><circle cx="5.3" cy="-3.1" r="2.2" fill="rgba(103,239,250,.22)"/><path d="M5.3 -3.1 L10 -4.7" stroke="rgba(200,253,255,.8)" strokeWidth=".55"/></g>}
-                <text x="0" y="6.9" textAnchor="middle" fill="#93e9f4" fontSize="2.35">L{placed.level}</text>
-              </g>:<text x={tx} y={ty+1.6} textAnchor="middle" fill="#8df4ff" fontSize="4.8">+</text>}
+              <ellipse cx={tx} cy={ty+4.9} rx="6.4" ry="2.4" fill="rgba(0,0,0,.34)"/>
+              <circle cx={tx} cy={ty} r="6.9" fill={placed?'rgba(13,40,48,.97)':'rgba(8,20,34,.92)'} stroke={g.selectedNode===i?'#ffffff':'#62eaf6'} strokeWidth={placed?'1':'.45'}/>
+              {placed?<>
+                {firing&&<g className="oa-td-shot">
+                  <line x1={muzzleX} y1={muzzleY} x2={placed.shot.x*100} y2={placed.shot.y*100} stroke={tower.name==='VOID'?'#b88aff':'#d9fdff'} strokeWidth={tower.name==='SNIPER'?'.34':'.52'} strokeLinecap="round"/>
+                  <circle cx={placed.shot.x*100} cy={placed.shot.y*100} r={tower.name==='CANNON'?'2.2':'1.35'} fill={tower.name==='VOID'?'rgba(174,117,255,.34)':'rgba(132,245,255,.3)'}/>
+                </g>}
+                <g className={firing?'oa-td-turret firing':'oa-td-turret'} transform={`translate(${tx} ${ty})`}>
+                  <circle cx="0" cy="1.2" r="4.4" fill="#0b1b29" stroke="#507d8d" strokeWidth=".42"/>
+                  <circle cx="0" cy=".8" r="3.35" fill={bodyColor} stroke="#b8edf5" strokeWidth=".34"/>
+                  <path d="M-3.2 2.8 L-4.45 4.1 M3.2 2.8 L4.45 4.1" stroke="#5e7f8f" strokeWidth=".72" strokeLinecap="round"/>
+                  <g className="oa-td-turret-head" transform={`rotate(${aim} 0 0)`}>
+                    <rect x="-1.25" y={-barrelWidth/2} width={barrelLength+1.25} height={barrelWidth} rx=".42" fill={tower.name==='VOID'?'#9270e8':'#b8dbe3'} stroke="#edfefe" strokeWidth=".2"/>
+                    {['RAPID','RAPID FIRE','FURY'].includes(tower.name)&&<rect x=".2" y={barrelWidth*.65} width={barrelLength*.82} height=".48" rx=".2" fill="#81b9c7"/>}
+                    <rect x="-2.05" y="-1.65" width="3.7" height="3.3" rx="1" fill={bodyColor} stroke="#d0f7fb" strokeWidth=".28"/>
+                    <circle cx="-.25" cy="0" r=".76" fill={tower.name==='VOID'?'#aa7bff':'#7cf5ff'} stroke="#eaffff" strokeWidth=".18"/>
+                    {tower.name==='SNIPER'&&<rect x="-.45" y="-2.28" width="3.05" height=".46" rx=".2" fill="#6fd8e8"/>}
+                    {firing&&<g className="oa-td-muzzle" transform={`translate(${barrelLength} 0)`}>
+                      <circle r="1.65" fill="rgba(166,248,255,.25)"/>
+                      <circle r=".72" fill="#ffffff"/>
+                      <path d="M0 0 L2.7 0 M0 0 L1.75 -1.35 M0 0 L1.75 1.35" stroke="#dfffff" strokeWidth=".35" strokeLinecap="round"/>
+                    </g>}
+                  </g>
+                  <text x="0" y="7" textAnchor="middle" fill="#93e9f4" fontSize="2.35">L{placed.level}</text>
+                </g>
+              </>:<text x={tx} y={ty+1.6} textAnchor="middle" fill="#8df4ff" fontSize="4.8">+</text>}
             </g>
           })}
           {g.enemies.filter(e=>e.t>=0).map(e=>{
