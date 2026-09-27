@@ -7,7 +7,7 @@ import Global3DLighting from './Global3DLighting'
 import StartupIntro from './StartupIntro'
 import ExperienceLayer, { FooterCommandDeck, HeroReactor } from './ExperienceLayer'
 import ShareCenter from './ShareCenter'
-import { canonicalUrl, getSeo, robotsContent, structuredDataFor } from './seo'
+import { SOCIAL_IMAGE_ALT, SOCIAL_IMAGE_URL, canonicalUrl, getSeo, robotsContent, structuredDataFor } from './seo'
 import { PortfolioPage, StatusCenter, TimelinePage, UpdatesPage, VaultPage, WhatsHappeningNow } from './LiveExperience'
 import { VERIFIED_REVIEWS } from './reviews'
 import ClickerGame from './arcade/Clicker'
@@ -190,10 +190,17 @@ function MetaManager() {
     setMeta('meta[property="og:site_name"]', 'property', 'og:site_name', 'ES Network')
     setMeta('meta[property="og:locale"]', 'property', 'og:locale', 'en_US')
     setMeta('meta[property="og:url"]', 'property', 'og:url', url)
+    setMeta('meta[property="og:image"]', 'property', 'og:image', SOCIAL_IMAGE_URL)
+    setMeta('meta[property="og:image:alt"]', 'property', 'og:image:alt', SOCIAL_IMAGE_ALT)
+    setMeta('meta[property="og:image:type"]', 'property', 'og:image:type', 'image/svg+xml')
+    setMeta('meta[property="og:image:width"]', 'property', 'og:image:width', '1200')
+    setMeta('meta[property="og:image:height"]', 'property', 'og:image:height', '630')
 
-    setMeta('meta[name="twitter:card"]', 'name', 'twitter:card', 'summary')
+    setMeta('meta[name="twitter:card"]', 'name', 'twitter:card', 'summary_large_image')
     setMeta('meta[name="twitter:title"]', 'name', 'twitter:title', title)
     setMeta('meta[name="twitter:description"]', 'name', 'twitter:description', description)
+    setMeta('meta[name="twitter:image"]', 'name', 'twitter:image', SOCIAL_IMAGE_URL)
+    setMeta('meta[name="twitter:image:alt"]', 'name', 'twitter:image:alt', SOCIAL_IMAGE_ALT)
 
     let canonical = document.querySelector('link[rel="canonical"]')
     if (!canonical) {
@@ -202,6 +209,20 @@ function MetaManager() {
       document.head.appendChild(canonical)
     }
     canonical.setAttribute('href', url)
+
+    const setAlternate = (lang) => {
+      let link = document.querySelector(`link[rel="alternate"][hreflang="${lang}"]`)
+      if (!link) {
+        link = document.createElement('link')
+        link.setAttribute('rel', 'alternate')
+        link.setAttribute('hreflang', lang)
+        document.head.appendChild(link)
+      }
+      link.setAttribute('href', url)
+    }
+    setAlternate('en-US')
+    setAlternate('x-default')
+    document.documentElement.lang = 'en-US'
 
     let schema = document.getElementById('esn-route-schema')
     if (!schema) {
