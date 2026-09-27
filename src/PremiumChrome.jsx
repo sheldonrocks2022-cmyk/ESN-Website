@@ -16,9 +16,11 @@ export default function PremiumChrome(){
   const location=useLocation()
   const [open,setOpen]=useState(false)
   const [showTop,setShowTop]=useState(false)
+  const [query,setQuery]=useState('')
 
   useEffect(()=>{
     setOpen(false)
+    setQuery('')
     document.documentElement.classList.remove('premium-command-open')
   },[location.pathname])
 
@@ -42,7 +44,10 @@ export default function PremiumChrome(){
     return()=>document.documentElement.classList.remove('premium-command-open')
   },[open])
 
+  const filteredLinks=quickLinks.filter(([label,,meta])=>`${label} ${meta}`.toLowerCase().includes(query.trim().toLowerCase()))
+
   return <>
+    <div className="lux-cursor-field" aria-hidden="true"/>
     <div className="premium-ambient" aria-hidden="true">
       <span className="premium-aurora a"/>
       <span className="premium-aurora b"/>
@@ -90,12 +95,18 @@ export default function PremiumChrome(){
         <div><span>CURRENT</span><b>{location.pathname==='/'?'HOME':location.pathname.replace('/','').toUpperCase()}</b></div>
       </div>
 
+      <label className="premium-command-search">
+        <span>SEARCH ESN</span>
+        <input value={query} onChange={e=>setQuery(e.target.value)} placeholder="Services, Arcade, SMP, Tools…" />
+      </label>
+
       <nav className="premium-command-links">
-        {quickLinks.map(([label,to,meta],index)=><Link key={to} to={to} className={location.pathname===to?'active':''}>
+        {filteredLinks.map(([label,to,meta],index)=><Link key={to} to={to} className={location.pathname===to?'active':''}>
           <span className="premium-command-index">{String(index+1).padStart(2,'0')}</span>
           <span><b>{label}</b><small>{meta}</small></span>
           <em>↗</em>
         </Link>)}
+        {!filteredLinks.length&&<div className="premium-command-empty">No quick destination matches that search.</div>}
       </nav>
 
       <a className="premium-command-discord" href={DISCORD_URL} target="_blank" rel="noreferrer">
