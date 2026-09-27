@@ -67,17 +67,24 @@ function tone(enabled,kind='tap'){
 function passportSnapshot(visited,eggs){
   const completed=MISSIONS.filter(mission=>completeMission(mission,visited,eggs))
   const missionXp=completed.reduce((sum,item)=>sum+item.xp,0)
-  const xp=visited.length*18+eggs.length*12+missionXp
+  const arcade=readJson('esn_arcade_progress_v2',{achievements:{},xp:0})
+  const arcadeAchievements=Object.keys(arcade.achievements||{}).length
+  const daily=readJson('esn_arcade_daily_v1',{completed:[]})
+  const dailyCompleted=Array.isArray(daily.completed)?daily.completed.length:0
+  const arcadePassportXp=arcadeAchievements*35+dailyCompleted*15
+  const xp=visited.length*18+eggs.length*12+missionXp+arcadePassportXp
   const level=Math.max(1,Math.floor(xp/120)+1)
   const badges=[
     visited.length>=4&&'Network Explorer',
     completed.length>=4&&'Mission Operator',
     eggs.length>=3&&'Signal Hunter',
     GAME_ROUTES.every(route=>visited.includes(route))&&'Arcade Pathfinder',
+    arcadeAchievements>=3&&'Arcade Achiever',
+    arcadeAchievements>=6&&'Arcade Veteran',
     visited.includes('/vault')&&'Vault Witness',
     completed.length===MISSIONS.length&&'12X Completionist',
   ].filter(Boolean)
-  return {completed,xp,level,badges}
+  return {completed,xp,level,badges,arcadeAchievements,arcadePassportXp}
 }
 
 function SystemModal({title,kicker,onClose,children,className=''}) {
