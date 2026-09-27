@@ -227,6 +227,7 @@ export function UpdatesPage(){
   const [filter,setFilter]=useState('All')
 
   const releases=[
+    {category:'Mobile',type:'Touch Feedback',status:'LIVE',version:'Touch Energy Restore',title:'Mobile tap animation restored',copy:'Restored the ESN touch-energy feedback on phones as a lightweight tap ripple with a short six-particle burst. Continuous touch trails while scrolling remain disabled to protect mobile performance.'},
     {category:'Mobile',type:'Mobile Route Lock',status:'LIVE',version:'5-Second Blocking Transition',title:'Mobile transitions now fully cover and lock the page',copy:'During the full five-second mobile page transition, the overlay stays completely opaque and blocks scrolling, tapping, wheel input, overscroll, and interaction with the destination page until the transition finishes.'},
     {category:'Mobile',type:'Mobile Page Motion',status:'LIVE',version:'5-Second Route Sweep',title:'Mobile page transitions extended to five seconds',copy:'The mobile page-to-page route sweep now runs for a full five seconds, keeping the route label and scan visible through a longer cinematic hold before the next page is fully revealed.'},
     {category:'Mobile',type:'Mobile Page Motion',status:'SUPERSEDED',version:'Route Sweep Restore',title:'Moving page transitions restored on mobile',copy:'Restored the mobile route-sweep transition plus lightweight premium motion for hero text, network topology lines, core rings, and showcase sweep effects.'},
