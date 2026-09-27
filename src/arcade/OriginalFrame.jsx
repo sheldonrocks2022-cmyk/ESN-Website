@@ -18,8 +18,12 @@ export default function OriginalFrame({title,subtitle='Browser Arcade',children}
 
   useEffect(()=>{
     if(!playMode)return
-    document.documentElement.classList.add('oa-mobile-play-active')
-    return()=>document.documentElement.classList.remove('oa-mobile-play-active')
+    document.documentElement.classList.add('oa-focus-play-active')
+    if(window.matchMedia('(max-width:760px), (pointer:coarse)').matches)document.documentElement.classList.add('oa-mobile-play-active')
+    return()=>{
+      document.documentElement.classList.remove('oa-focus-play-active')
+      document.documentElement.classList.remove('oa-mobile-play-active')
+    }
   },[playMode])
 
   useEffect(()=>{
@@ -34,7 +38,7 @@ export default function OriginalFrame({title,subtitle='Browser Arcade',children}
     return()=>{window.removeEventListener('esn-arcade-fx',onFx);clearTimeout(timer)}
   },[])
 
-  return <div className={`oa-page oa-page-${slug} ${playMode?'oa-mobile-play-mode':''} ${fx?'oa-fx-'+fx.type:''}`}>
+  return <div className={`oa-page oa-page-${slug} ${playMode?'oa-focus-play-mode oa-mobile-play-mode':''} ${fx?'oa-fx-'+fx.type:''}`}>
     <div className="oa-world-layer" aria-hidden="true">
       <i className="oa-world-glow oa-world-glow-a"/><i className="oa-world-glow oa-world-glow-b"/>
       <i className="oa-world-horizon"/><i className="oa-world-fog"/>
@@ -42,7 +46,7 @@ export default function OriginalFrame({title,subtitle='Browser Arcade',children}
     </div>
     {fx&&<div key={fx.id} className={'oa-impact-layer oa-impact-'+fx.type} aria-hidden="true"><i/><b/></div>}
     <div className="oa-game-shell">
-      <section className="oa-mobile-focusbar" aria-label="Mobile Arcade controls">
+      <section className="oa-mobile-focusbar" aria-label="Arcade focus controls">
         <Link to="/arcade" aria-label="Back to Arcade">←</Link>
         <div><span>PLAYING</span><strong>{title}</strong><small>LV {arcade.level} • {Math.floor(arcade.progress.xp||0).toLocaleString()} XP</small></div>
         <label>
@@ -60,7 +64,10 @@ export default function OriginalFrame({title,subtitle='Browser Arcade',children}
           <span className="oa-command-divider">/</span>
           <strong>{title}</strong>
         </div>
-        <div className="oa-command-status"><i/> ORIGINAL ESN GAME • ENHANCED</div>
+        <div className="oa-command-actions">
+          <div className="oa-command-status"><i/> PC + MOBILE • ENHANCED</div>
+          <button className={playMode?'oa-desktop-play-toggle active':'oa-desktop-play-toggle'} type="button" onClick={()=>setPlayMode(value=>!value)}>{playMode?'EXIT FOCUS':'FOCUS PLAY'}</button>
+        </div>
       </section>
 
       <nav className="oa-game-switcher" aria-label="Arcade game switcher">
