@@ -7,6 +7,7 @@ import Global3DLighting from './Global3DLighting'
 import StartupIntro from './StartupIntro'
 import ExperienceLayer, { FooterCommandDeck, HeroReactor } from './ExperienceLayer'
 import NetworkShowcase, { EasterEggLayer } from './NetworkShowcase'
+import NetworkEvolution, { NetworkEvolutionSection } from './NetworkEvolution'
 import ShareCenter from './ShareCenter'
 import { SOCIAL_IMAGE_ALT, SOCIAL_IMAGE_URL, canonicalUrl, getSeo, robotsContent, structuredDataFor } from './seo'
 import { PortfolioPage, StatusCenter, TimelinePage, UpdatesPage, VaultPage, WhatsHappeningNow } from './LiveExperience'
@@ -592,6 +593,8 @@ function Home() {
       <WhatsHappeningNow />
 
       <NetworkShowcase />
+
+      <NetworkEvolutionSection />
 
       <section className="section flagship-story-section">
         <div className="shell flagship-story">
@@ -1413,6 +1416,7 @@ function App() {
       <PremiumChrome />
       <ExperienceLayer />
       <EasterEggLayer />
+      <NetworkEvolution />
       <main id="main-content">
         <Routes>
           <Route path="/" element={<Home />} />
