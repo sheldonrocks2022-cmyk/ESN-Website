@@ -15,7 +15,7 @@ This repository is the replacement build for the current ES Network website. The
 - Leadership separated from Administration
 - Landon Founder & CEO responsibility list
 - FAQ
-- Testimonials route with verified-content-only policy
+- 35 verified customer reviews migrated from the official site (12 Fortnite Coaching, 12 Editing, 11 Discord Server Setup)
 - Interactive ES Tools:
   - Fortnite / creator challenge generator
   - focus timer
@@ -31,6 +31,7 @@ This repository is the replacement build for the current ES Network website. The
   - ES Tower — 122-floor reward ladder, three-door progression, wager/cash-out flow
   - ES Tower Defense — 200 rounds, original route-map layout and 10-tower roster/costs
 - Current SMP host and port used by the rebuild
+- Riftwalker Bundle price restored to $0.50 from the official ESN SMP Store
 - Four verified Stripe Payment Links
 - Exact Minecraft username / leading-period delivery warning
 - SEO metadata, canonical tags, sitemap, robots.txt, structured data
@@ -54,7 +55,6 @@ Upgrades may improve responsiveness, persistence, animation smoothness, accessib
 The following items are still blocked by missing exact source data. They remain protected instead of being guessed:
 
 - Exact verified customer testimonial text
-- Exact current price for the Riftwalker Bundle
 - Exact Stripe Payment Link for the $0.50 Void Warrior Bundle
 - Any Service Showcase package price/detail that was not recoverable from previous scans
 - Any leadership/team change beyond the latest verified roster and role labels
