@@ -1,5 +1,12 @@
 import { useEffect, useState } from 'react'
 import { Link, Navigate, Route, Routes, useLocation } from 'react-router-dom'
+import ESToolsSuite from './Tools'
+import ClickerGame from './arcade/Clicker'
+import FactoryGame from './arcade/Factory'
+import MinesGame from './arcade/Mines'
+import MotoGame from './arcade/Moto'
+import TowerGame from './arcade/Tower'
+import TowerDefenseGame from './arcade/TowerDefense'
 
 const DISCORD_URL = 'https://discord.gg/3gxA66KZ8'
 const SMP_HOST = 'esn.ggwp.cc'
@@ -130,6 +137,7 @@ const META = {
   '/serviceshowcase': ['ES Network Services | Fortnite Coaching, Editing & Discord Setup', 'Explore ES Network services including Fortnite coaching, editing, Discord server setups, and selected digital projects.'],
   '/storesmp': ['ESN SMP Store | ES Network Minecraft Items', 'Purchase ESN SMP digital items and bundles through official Stripe checkout links.'],
   '/smpconnection': ['ESN SMP Connection | Server IP & Port', 'Connect to the ESN SMP using the current server IP and port.'],
+  '/smpconsole': ['ESN SMP Console Connection | Xbox, PlayStation & Switch', 'Console connection guidance for joining the ESN SMP from Xbox, PlayStation, or Nintendo Switch.'],
   '/estools': ['ES Tools | Free Browser-Based Creator & Gaming Utilities', 'Free browser-based ES Network tools with no account required.'],
   '/about': ['About ES Network | ESN', 'Learn about ES Network, the current brand formerly known as EP1C Services.'],
   '/leadership': ['ES Network Leadership | Meet the Team', 'Meet the founders, co-founders, and administrators behind ES Network.'],
@@ -250,6 +258,7 @@ function Header() {
             <button className="nav-trigger" type="button" aria-haspopup="true">ESN SMP</button>
             <div className="dropdown">
               <Link onClick={close} to="/smpconnection">SMP Connection</Link>
+              <Link onClick={close} to="/smpconsole">Console Connection</Link>
               <Link onClick={close} to="/storesmp">SMP Store</Link>
             </div>
           </div>
@@ -419,7 +428,7 @@ function Home() {
           <div className="section-heading">
             <div>
               <span className="eyebrow">Arcade</span>
-              <h2>Six protected browser-game routes.</h2>
+              <h2>Six upgraded browser games.</h2>
             </div>
             <Link className="text-link" to="/arcade">Open Arcade →</Link>
           </div>
@@ -620,6 +629,52 @@ function SMPConnection() {
   )
 }
 
+function ConsoleConnection() {
+  return (
+    <>
+      <PageHero
+        eyebrow="ESN SMP • Console"
+        title="Connect from Xbox, PlayStation, or Switch"
+        text="Consoles usually hide the normal Add Server button, so joining a third-party Bedrock/Geyser server needs an extra connection method."
+      />
+      <section className="section">
+        <div className="shell">
+          <div className="console-grid">
+            <article className="feature-panel">
+              <span className="eyebrow">SERVER DETAILS</span>
+              <h2>{SMP_HOST}</h2>
+              <p>Published ESN SMP port: <strong>{SMP_PORT}</strong></p>
+              <p className="muted">Keep these details ready. The console workaround opens a custom-server menu where you enter the ESN address and port.</p>
+            </article>
+            <article className="feature-panel">
+              <span className="eyebrow">XBOX</span>
+              <h2>Use a console custom-server workaround</h2>
+              <p>Geyser's console guide recommends methods such as BedrockConnect for Xbox when a server cannot be added normally.</p>
+              <ol className="connection-steps"><li>Open your console network settings.</li><li>Use a current BedrockConnect-compatible DNS/server-list method.</li><li>Launch Minecraft and open the Servers tab.</li><li>Open the custom-server menu and enter <b>{SMP_HOST}</b> with port <b>{SMP_PORT}</b>.</li></ol>
+            </article>
+            <article className="feature-panel">
+              <span className="eyebrow">PLAYSTATION</span>
+              <h2>Use a Bedrock LAN/custom-server method</h2>
+              <p>PlayStation also needs a workaround because Minecraft does not expose a normal third-party server field on console.</p>
+              <ol className="connection-steps"><li>Set up a supported BedrockConnect or LAN-proxy method on the same network.</li><li>Launch Minecraft.</li><li>Open the server/LAN entry exposed by that method.</li><li>Enter the ESN SMP address and port when prompted.</li></ol>
+            </article>
+            <article className="feature-panel">
+              <span className="eyebrow">NINTENDO SWITCH</span>
+              <h2>Use a custom-server list method</h2>
+              <p>Geyser notes that Switch players can use BedrockConnect-style workarounds to reach third-party servers.</p>
+              <ol className="connection-steps"><li>Open Switch Internet settings for your active network.</li><li>Configure a current supported custom-server/DNS method.</li><li>Restart Minecraft and open the Servers tab.</li><li>Select the custom-server option and enter the ESN SMP details.</li></ol>
+            </article>
+          </div>
+          <div className="notice">
+            <strong>Need help?</strong>
+            <span>Console workarounds can change when Minecraft or console networking changes. If a method stops working, use the ESN Discord for the current connection method.</span>
+          </div>
+        </div>
+      </section>
+    </>
+  )
+}
+
 function ProductCard({ product }) {
   return (
     <article className="product-card store-product">
@@ -690,7 +745,7 @@ function ESTools() {
 function ArcadeHub() {
   return (
     <>
-      <PageHero eyebrow="ESN Arcade" title="Six ES Network games" text="The current Arcade routes are preserved exactly while the original gameplay code and saves are migrated." />
+      <PageHero eyebrow="ESN Arcade" title="Six upgraded ES Network games" text="A rebuilt ESN Arcade with playable browser games, shared ES Coins, saved progress, mobile controls, and deeper progression." />
       <section className="section">
         <div className="shell card-grid two">
           {ARCADE_GAMES.map(([name, route, description]) => (
@@ -698,7 +753,7 @@ function ArcadeHub() {
               <span className="eyebrow">Arcade</span>
               <h2>{name}</h2>
               <p>{description}</p>
-              <Link to={route}>Open protected route →</Link>
+              <Link to={route}>Play now →</Link>
             </article>
           ))}
         </div>
@@ -761,12 +816,16 @@ function App() {
           <Route path="/store" element={<Navigate to="/storesmp" replace />} />
           <Route path="/store/smp" element={<Navigate to="/storesmp" replace />} />
           <Route path="/smpconnection" element={<SMPConnection />} />
-          <Route path="/estools" element={<ESTools />} />
+          <Route path="/smpconsole" element={<ConsoleConnection />} />
+          <Route path="/estools" element={<ESToolsSuite />} />
           <Route path="/tools" element={<Navigate to="/estools" replace />} />
           <Route path="/arcade" element={<ArcadeHub />} />
-          {ARCADE_GAMES.map(([name, route, description]) => (
-            <Route key={route} path={route} element={<ProtectedGame name={name} description={description} />} />
-          ))}
+          <Route path="/esclicker" element={<ClickerGame />} />
+          <Route path="/esfactory" element={<FactoryGame />} />
+          <Route path="/esmines" element={<MinesGame />} />
+          <Route path="/esmoto" element={<MotoGame />} />
+          <Route path="/estower" element={<TowerGame />} />
+          <Route path="/estowerdefense" element={<TowerDefenseGame />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
