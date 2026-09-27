@@ -134,3 +134,24 @@ export function useArcadeProgress(){
 }
 
 export const money=n=>Math.max(0,Math.floor(n)).toLocaleString()
+
+
+export function arcadeFeedback(type='tap'){
+  try{
+    const patterns={
+      tap:8,
+      buy:[8,18,10],
+      safe:[10,20,14],
+      danger:[34,28,52],
+      boost:[12,12,12],
+      impact:[24,18,28],
+      wave:[14,14,14,14,20],
+      win:[18,14,28,14,42],
+      power:[16,12,16,12,36],
+    }
+    if(typeof navigator!=='undefined'&&navigator.vibrate&&matchMedia('(pointer: coarse)').matches){
+      navigator.vibrate(patterns[type]||patterns.tap)
+    }
+    window.dispatchEvent(new CustomEvent('esn-arcade-fx',{detail:{type,at:Date.now()}}))
+  }catch{}
+}
