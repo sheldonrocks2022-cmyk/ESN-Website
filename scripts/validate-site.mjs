@@ -92,6 +92,14 @@ if (!app.includes("PLUGIN_VERSION = 'v2.9.4'")) problems.push('Verified ESNSMP v
 if (!app.includes('4439a6c8bf7ea6b0bf170098eeb1dff3f9f2f7008c06556140a1c1cfd8afd356')) problems.push('Verified v2.9.4 SHA-256 missing.')
 if (!app.includes('Add & Start') || !app.includes('Open Bedrock Connect on your phone') || !app.includes('Same Wi-Fi / internet required')) problems.push('Official ESN console connection flow missing.')
 if (!app.includes('<ExperienceEffects />')) problems.push('Premium interaction effects are not mounted.')
+const arcadeFrame = fs.readFileSync('src/arcade/OriginalFrame.jsx','utf8')
+const clicker = fs.readFileSync('src/arcade/Clicker.jsx','utf8')
+const factory = fs.readFileSync('src/arcade/Factory.jsx','utf8')
+const tower = fs.readFileSync('src/arcade/Tower.jsx','utf8')
+if (!arcadeFrame.includes('oa-game-viewport') || !arcadeFrame.includes('oa-page-')) problems.push('Arcade 29X layout scope missing.')
+if (clicker.includes('upgrades.slice(0,18)')) problems.push('Clicker catalog regressed to a partial upgrade list.')
+if (factory.includes('zoneNames.slice(0,12)') || factory.includes('.slice(0,18)')) problems.push('Factory regressed to partial zone or machine lists.')
+if (tower.includes('floors.slice(0,16)')) problems.push('Tower regressed to a partial floor ladder.')
 if (app.includes('Tool logic is intentionally not being invented')) problems.push('Obsolete ES Tools placeholder content returned.')
 
 if (problems.length) {
