@@ -128,6 +128,16 @@ export function StatusCenter(){
         </article>
       </div>
     </section>
+    <section className="section dark-section incident-history-section">
+      <div className="shell">
+        <div className="section-heading"><div><span className="eyebrow">INCIDENT HISTORY</span><h2>Transparent status history.</h2><p>ESN will only list outages or maintenance here when there is a verified public record. No uptime percentage or historical outage is invented.</p></div></div>
+        <div className="incident-history-empty">
+          <span>CURRENT PUBLIC RECORD</span>
+          <strong>No verified historical incident entries are published yet.</strong>
+          <p>Live status above remains the source for current availability. Future verified maintenance windows and resolved outages can be logged here with date, affected system, and resolution details.</p>
+        </div>
+      </div>
+    </section>
   </>
 }
 
@@ -214,34 +224,40 @@ export function TimelinePage(){
 
 export function UpdatesPage(){
   const live=useLiveNetwork()
+  const [filter,setFilter]=useState('All')
 
   const releases=[
-    {type:'Mobile Safe Mode',status:'LIVE',version:'Single-Surface UI',title:'Phone UI rebuilt for stability',copy:'Removed the extra floating Network Evolution bars and mobile notification orb, moved Search/Terminal/Passport into the existing More panel, disabled all mobile animations/transitions, removed decorative fixed layers, made the mobile header and bottom nav opaque, and eliminated dynamic-viewport/3D hover behavior that could flicker as the browser chrome resized.'},
-    {type:'Mobile Stability',status:'LIVE',version:'Anti-Flicker Pass',title:'Mobile flashing and pop-in removed',copy:'Disabled phone-only reveal observers and route overlays, removed mobile content-visibility pop-in, forced already-rendered sections to remain visible, stabilized fixed controls against browser viewport changes, and removed touch hover/tilt transforms that could flash or disappear during scrolling.'},
-    {type:'Mobile UI',status:'LIVE',version:'Floating Bar Fix',title:'Mobile command bars realigned',copy:'Realigned the Network Evolution utility rail, personal Command Deck, and mobile bottom navigation into a clean stacked layout with consistent edges, spacing, and safe-area padding so the floating bars no longer cross or overlap on phones.'},
-    {type:'Mobile',status:'LIVE',version:'Performance Mode',title:'Phone performance stabilization pass',copy:'Disabled continuous WebGL rendering on touch devices, removed touch particle spawning and random event load, stopped pointer-reactive repaint work during scrolling, disabled expensive mobile backdrop blurs and decorative animation loops, simplified touch route transitions, and added offscreen section rendering so the premium interface stays much smoother on phones.'},
-    {type:'Website 12X',status:'LIVE',version:'Network Evolution 12X',title:'12-system interactive network expansion',copy:'Added ESN Missions, local-device Passport progression, configurable Network Takeovers, seasonal network states, ESN Terminal commands, universal search, an upgraded timeline scrubber, optional muted-by-default sound design, a public SMP + network event board, a customizable personal Command Deck, shareable Passport achievement cards, and ultra-rare network events.'},
-    {type:'Website',status:'LIVE',version:SITE_RELEASE,title:'ESN Live Experience + stable cinematic transitions',copy:'Flagship architecture, global WebGL lighting, premium command center, live status systems, mobile navigation, themes, timeline, update center, portfolio demos, cinematic startup, and the corrected single-layer page transition system.'},
-    {type:'ESNSMP Plugin',status:live.plugin.status==='available'?'LATEST':'CHECKING',version:live.plugin.version||'Checking…',title:'Latest public ESNSMP release',copy:'Detected live from the official ESNSMP GitHub Releases feed.'},
-    {type:'Arcade',status:'LIVE',version:'29× Responsive Pass',title:'Full Arcade layout upgrade',copy:'Wider game layouts, mobile-safe controls, full Clicker/Factory/Tower catalogs, and a consistent ESN shell across all six games.'},
-    {type:'Network',status:'LIVE',version:'Live Status + Event Board',title:'Public network telemetry and event surface',copy:'Website, SMP player count/version, plugin release, Arcade status, Discord connection information, and a public event board that avoids inventing unannounced timed events.'},
+    {category:'Website',type:'Website Expansion',status:'LIVE',version:'Expansion 20',title:'20-system ESN website feature expansion',copy:'Added installable PWA support, automatic and manual performance modes, What\'s New, SMP Encyclopedia + command database, bug reporting, update filters, incident history, recent routes + favorites, Arcade daily challenges, cross-game achievements, global achievement alerts, media gallery, network statistics, quick-copy tools, smart mobile header, Accessibility Center, categorized search, and a full Explore ESN discovery page.'},
+    {category:'Mobile',type:'Mobile Safe Mode',status:'LIVE',version:'Single-Surface UI',title:'Phone UI rebuilt for stability',copy:'Removed the extra floating Network Evolution bars and mobile notification orb, moved Search/Terminal/Passport into the existing More panel, disabled all mobile animations/transitions, removed decorative fixed layers, made the mobile header and bottom nav opaque, and eliminated dynamic-viewport/3D hover behavior that could flicker as the browser chrome resized.'},
+    {category:'Mobile',type:'Mobile Stability',status:'LIVE',version:'Anti-Flicker Pass',title:'Mobile flashing and pop-in removed',copy:'Disabled phone-only reveal observers and route overlays, removed mobile content-visibility pop-in, forced already-rendered sections to remain visible, stabilized fixed controls against browser viewport changes, and removed touch hover/tilt transforms that could flash or disappear during scrolling.'},
+    {category:'Mobile',type:'Mobile UI',status:'LIVE',version:'Floating Bar Fix',title:'Mobile command bars realigned',copy:'Realigned the Network Evolution utility rail, personal Command Deck, and mobile bottom navigation into a clean stacked layout with consistent edges, spacing, and safe-area padding so the floating bars no longer cross or overlap on phones.'},
+    {category:'Mobile',type:'Mobile',status:'LIVE',version:'Performance Mode',title:'Phone performance stabilization pass',copy:'Disabled continuous WebGL rendering on touch devices, removed touch particle spawning and random event load, stopped pointer-reactive repaint work during scrolling, disabled expensive mobile backdrop blurs and decorative animation loops, and simplified touch rendering so the premium interface stays smoother on phones.'},
+    {category:'Website',type:'Website 12X',status:'LIVE',version:'Network Evolution 12X',title:'12-system interactive network expansion',copy:'Added ESN Missions, local-device Passport progression, configurable Network Takeovers, seasonal network states, ESN Terminal commands, universal search, an upgraded timeline scrubber, optional muted-by-default sound design, a public SMP + network event board, a customizable personal Command Deck, shareable Passport achievement cards, and ultra-rare network events.'},
+    {category:'Website',type:'Website',status:'LIVE',version:SITE_RELEASE,title:'ESN Live Experience + stable cinematic transitions',copy:'Flagship architecture, global WebGL lighting on capable desktop devices, premium command center, live status systems, mobile navigation, themes, timeline, update center, portfolio demos, cinematic startup, and corrected route transitions.'},
+    {category:'SMP',type:'ESNSMP Plugin',status:live.plugin.status==='available'?'LATEST':'CHECKING',version:live.plugin.version||'Checking…',title:'Latest public ESNSMP release',copy:'Detected live from the official ESNSMP GitHub Releases feed.'},
+    {category:'Arcade',type:'Arcade',status:'LIVE',version:'Shared Progression',title:'Arcade daily challenges + achievement expansion',copy:'The Arcade now has rotating daily challenges, local streak tracking, shared XP rewards, cross-game meta achievements, and clean achievement notifications tied to real local progress.'},
+    {category:'Network',type:'Network',status:'LIVE',version:'Live Status + Event Board',title:'Public network telemetry and event surface',copy:'Website, SMP player count/version, plugin release, Arcade status, Discord connection information, event surface, incident-history area, and local Network Statistics are now connected.'},
+    {category:'Security',type:'Security',status:'LIVE',version:'Protected CI',title:'Expansion features covered by validation and security workflows',copy:'Site route validation, production SEO checks, build verification, and CodeQL continue to run on website changes before the published build is treated as complete.'},
   ]
 
+  const categories=['All','Website','Mobile','SMP','Arcade','Network','Store','Security']
+  const visible=filter==='All'?releases:releases.filter(item=>item.category===filter)
+
   const roadmap=[
-    ['SMP Encyclopedia','Candidate','Searchable custom items, bosses, crates, sets, and progression documentation.'],
-    ['Arcade Achievements','Candidate','Local device achievements and trophy progression without requiring accounts.'],
     ['Verified Portfolio Cases','Waiting on source assets','Replace illustrative before/after demos with real client-approved work when originals are available.'],
+    ['Approved Media Uploads','Waiting on source assets','Add real SMP screenshots, builds, community event media, and promotional visuals once approved files are available.'],
   ]
 
   return <>
-    <section className="page-hero updates-hero"><div className="shell page-hero-inner"><div className="page-hero-copy"><span className="eyebrow">ESN RELEASE CENTER</span><h1>What changed. What's live. What's next.</h1><p>A single source for website upgrades, ESNSMP releases, Arcade work, and future project candidates.</p></div><div className="page-hero-mark" aria-hidden="true"><span>UP</span><small>DATES</small></div></div></section>
+    <section className="page-hero updates-hero"><div className="shell page-hero-inner"><div className="page-hero-copy"><span className="eyebrow">ESN RELEASE CENTER</span><h1>What changed. What's live. What's next.</h1><p>A single source for website upgrades, ESNSMP releases, Arcade work, mobile fixes, network changes, and security-related release information.</p></div><div className="page-hero-mark" aria-hidden="true"><span>UP</span><small>DATES</small></div></div></section>
+    <section className="section compact-section"><div className="shell release-filter-row">{categories.map(item=><button type="button" className={filter===item?'active':''} onClick={()=>setFilter(item)} key={item}>{item}</button>)}</div></section>
     <section className="section"><div className="shell update-feed">
-      {releases.map((item,index)=><article className="update-entry" key={item.type}>
+      {visible.map((item,index)=><article className="update-entry" key={item.type+item.version}>
         <div className="update-entry-rail"><span>{String(index+1).padStart(2,'0')}</span><i/></div>
         <div><div className="update-entry-top"><span className="eyebrow">{item.type}</span><b>{item.status}</b></div><h2>{item.title}</h2><strong>{item.version}</strong><p>{item.copy}</p></div>
       </article>)}
     </div></section>
-    <section className="section dark-section"><div className="shell"><div className="section-heading"><div><span className="eyebrow">ROADMAP</span><h2>Future candidates.</h2><p>Items shown here are ideas or waiting states, not promises or fake completed work.</p></div></div><div className="roadmap-grid">{roadmap.map(([name,status,copy])=><article key={name}><span>{status}</span><h3>{name}</h3><p>{copy}</p></article>)}</div></div></section>
+    <section className="section dark-section"><div className="shell"><div className="section-heading"><div><span className="eyebrow">ROADMAP</span><h2>Items waiting on real source material.</h2><p>Completed ideas were removed from the roadmap instead of being left labeled as future work.</p></div></div><div className="roadmap-grid">{roadmap.map(([name,status,copy])=><article key={name}><span>{status}</span><h3>{name}</h3><p>{copy}</p></article>)}</div></div></section>
   </>
 }
 
