@@ -283,27 +283,31 @@ export default function TowerDefenseGame(){
       </div>
       <div className={'oa-td-board '+(g.running&&!g.paused?'is-live ':'')+(g.round%10===0?'is-boss':'')}>
         <div className="oa-td-battle-label"><span>{g.paused?'PAUSED':g.running?'WAVE ACTIVE':'BUILD PHASE'}</span><b>WAVE {g.round}</b></div>
-        <svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet">
+        <svg viewBox="0 0 160 100" preserveAspectRatio="xMidYMid meet">
           <defs>
             <filter id="pathGlow"><feGaussianBlur stdDeviation="1.2" result="g"/><feMerge><feMergeNode in="g"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
             <linearGradient id="tdTerrain" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#173b3a"/><stop offset="100%" stopColor="#081826"/></linearGradient>
             <linearGradient id="tdRoad" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stopColor="#725d49"/><stop offset="100%" stopColor="#3f3540"/></linearGradient>
             <radialGradient id="tdBaseGlow"><stop offset="0%" stopColor="#c5ffff"/><stop offset="100%" stopColor="#4de7f4" stopOpacity=".08"/></radialGradient>
           </defs>
-          <rect width="100" height="100" fill="url(#tdTerrain)"/>
-          {[12,27,48,69,88].map((x,i)=><g key={'terrain-'+x} opacity=".3"><circle cx={x} cy={18+(i%3)*24} r={4+(i%2)*2} fill="#1f5a45"/><circle cx={x+4} cy={20+(i%3)*24} r="2.8" fill="#2b7458"/></g>)}
-          <polyline points={path.map(([x,y])=>`${x*100},${y*100}`).join(' ')} fill="none" stroke="#181720" strokeWidth="9" strokeLinejoin="round"/>
-          <polyline points={path.map(([x,y])=>`${x*100},${y*100}`).join(' ')} fill="none" stroke="url(#tdRoad)" strokeWidth="6.4" strokeLinejoin="round"/>
-          <polyline points={path.map(([x,y])=>`${x*100},${y*100}`).join(' ')} fill="none" stroke="rgba(140,225,242,.32)" strokeWidth=".65" filter="url(#pathGlow)" strokeDasharray="2 1.5" strokeLinejoin="round"/>
-          <g transform="translate(4 78)"><circle r="4.6" fill="#35193f" stroke="#b56cff" strokeWidth=".8"/><circle r="2.2" fill="#d38cff"/><text x="-2.8" y="8" fill="#f1c9ff" fontSize="3.2">SPAWN</text></g>
-          <g transform="translate(96 58)"><rect x="-4" y="-5" width="8" height="10" rx="1.3" fill="#102d46" stroke="#a9fbff" strokeWidth=".7"/><circle r="7" fill="url(#tdBaseGlow)" opacity=".28"/><text x="-8" y="11" fill="#d9ffff" fontSize="3.2">BASE</text></g>
-          {selectedPlaced&&selectedStats&&<circle cx={nodes[g.selectedNode][0]*100} cy={nodes[g.selectedNode][1]*100} r={selectedStats.range*100} fill="rgba(98,234,246,.055)" stroke="rgba(98,234,246,.35)" strokeWidth=".45" strokeDasharray="1.4 1.2"/>}
+          <rect width="160" height="100" fill="url(#tdTerrain)"/>
+          <path d="M0 18 C30 8 55 24 82 12 S132 20 160 8 L160 0 L0 0 Z" fill="rgba(105,160,180,.07)"/>
+          <path d="M0 88 C28 76 52 92 82 83 S130 89 160 76 L160 100 L0 100 Z" fill="rgba(1,8,14,.34)"/>
+          {[20,54,92,128,148].map((x,i)=><g key={'rock-'+x} opacity=".32"><ellipse cx={x} cy={72-(i%2)*34} rx="5.5" ry="2.1" fill="rgba(0,0,0,.26)"/><path d={`M${x-3.5} ${70-(i%2)*34} L${x-.7} ${65-(i%2)*34} L${x+3.9} ${69-(i%2)*34} L${x+2.3} ${73-(i%2)*34} L${x-2.7} ${73-(i%2)*34} Z`} fill="#29453f"/></g>)}
+          {[18,43,77,111,141].map((x,i)=><g key={'terrain-'+x} opacity=".28"><circle cx={x} cy={18+(i%3)*24} r={4+(i%2)*2} fill="#1f5a45"/><circle cx={x+4} cy={20+(i%3)*24} r="2.8" fill="#2b7458"/></g>)}
+          <polyline points={path.map(([x,y])=>`${x*160},${y*100}`).join(' ')} fill="none" stroke="#181720" strokeWidth="9" strokeLinejoin="round"/>
+          <polyline points={path.map(([x,y])=>`${x*160},${y*100}`).join(' ')} fill="none" stroke="url(#tdRoad)" strokeWidth="6.4" strokeLinejoin="round"/>
+          <polyline points={path.map(([x,y])=>`${x*160},${y*100}`).join(' ')} fill="none" stroke="rgba(140,225,242,.32)" strokeWidth=".65" filter="url(#pathGlow)" strokeDasharray="2 1.5" strokeLinejoin="round"/>
+          <g transform="translate(6.4 78)"><circle r="4.6" fill="#35193f" stroke="#b56cff" strokeWidth=".8"/><circle r="2.2" fill="#d38cff"/><text x="-2.8" y="8" fill="#f1c9ff" fontSize="3.2">SPAWN</text></g>
+          <g transform="translate(153.6 58)"><rect x="-4" y="-5" width="8" height="10" rx="1.3" fill="#102d46" stroke="#a9fbff" strokeWidth=".7"/><circle r="7" fill="url(#tdBaseGlow)" opacity=".28"/><text x="-8" y="11" fill="#d9ffff" fontSize="3.2">BASE</text></g>
+          {selectedPlaced&&selectedStats&&<ellipse cx={nodes[g.selectedNode][0]*160} cy={nodes[g.selectedNode][1]*100} rx={selectedStats.range*160} ry={selectedStats.range*100} fill="rgba(98,234,246,.05)" stroke="rgba(98,234,246,.28)" strokeWidth=".45" strokeDasharray="1.4 1.2"/>}
           {nodes.map(([x,y],i)=>{
             const placed=g.placed[i]
             const tower=placed?TOWERS[placed.type]:null
             const firing=Boolean(placed?.shot?.life>0)
-            const tx=x*100,ty=y*100
-            const aim=Number.isFinite(placed?.aim)?placed.aim:-18
+            const tx=x*160,ty=y*100
+            const logicalAim=Number.isFinite(placed?.aim)?placed.aim:-18
+            const aim=Math.atan2(Math.sin(logicalAim*Math.PI/180)*100,Math.cos(logicalAim*Math.PI/180)*160)*180/Math.PI
             const aimRad=aim*Math.PI/180
             const barrelLength=tower?.name==='SNIPER'?7.4:tower?.name==='CANNON'?5.6:tower?.name==='BOSS KILLER'?6.8:tower?.name==='VOID'?6.3:5.2
             const barrelWidth=tower?.name==='CANNON'?1.35:tower?.name==='TANK'?1.25:.82
@@ -311,12 +315,13 @@ export default function TowerDefenseGame(){
             const muzzleY=ty+Math.sin(aimRad)*barrelLength
             const bodyColor=tower?.name==='VOID'?'#3b286d':tower?.name==='CANNON'?'#4a3826':tower?.name==='TANK'?'#334757':'#174657'
             return <g key={i} onClick={()=>place(i)} className={g.selectedNode===i?'oa-node selected':'oa-node'}>
-              <ellipse cx={tx} cy={ty+4.9} rx="6.4" ry="2.4" fill="rgba(0,0,0,.34)"/>
-              <circle cx={tx} cy={ty} r="6.9" fill={placed?'rgba(13,40,48,.97)':'rgba(8,20,34,.92)'} stroke={g.selectedNode===i?'#ffffff':'#62eaf6'} strokeWidth={placed?'1':'.45'}/>
+              <circle cx={tx} cy={ty} r="8.2" fill="transparent" className="oa-td-hit-area"/>
+              <ellipse cx={tx} cy={ty+4.2} rx="4.9" ry="1.8" fill="rgba(0,0,0,.34)"/>
+              <circle cx={tx} cy={ty} r="5.15" fill={placed?'rgba(13,40,48,.97)':'rgba(8,20,34,.92)'} stroke={g.selectedNode===i?'#ffffff':'#62eaf6'} strokeWidth={placed?'.72':'.38'}/>
               {placed?<>
                 {firing&&<g className="oa-td-shot">
-                  <line x1={muzzleX} y1={muzzleY} x2={placed.shot.x*100} y2={placed.shot.y*100} stroke={tower.name==='VOID'?'#b88aff':'#d9fdff'} strokeWidth={tower.name==='SNIPER'?'.34':'.52'} strokeLinecap="round"/>
-                  <circle cx={placed.shot.x*100} cy={placed.shot.y*100} r={tower.name==='CANNON'?'2.2':'1.35'} fill={tower.name==='VOID'?'rgba(174,117,255,.34)':'rgba(132,245,255,.3)'}/>
+                  <line x1={muzzleX} y1={muzzleY} x2={placed.shot.x*160} y2={placed.shot.y*100} stroke={tower.name==='VOID'?'#b88aff':'#d9fdff'} strokeWidth={tower.name==='SNIPER'?'.34':'.52'} strokeLinecap="round"/>
+                  <circle cx={placed.shot.x*160} cy={placed.shot.y*100} r={tower.name==='CANNON'?'2.2':'1.35'} fill={tower.name==='VOID'?'rgba(174,117,255,.34)':'rgba(132,245,255,.3)'}/>
                 </g>}
                 <g className={firing?'oa-td-turret firing':'oa-td-turret'} transform={`translate(${tx} ${ty})`}>
                   <circle cx="0" cy="1.2" r="4.4" fill="#0b1b29" stroke="#507d8d" strokeWidth=".42"/>
@@ -336,11 +341,11 @@ export default function TowerDefenseGame(){
                   </g>
                   <text x="0" y="7" textAnchor="middle" fill="#93e9f4" fontSize="2.35">L{placed.level}</text>
                 </g>
-              </>:<text x={tx} y={ty+1.6} textAnchor="middle" fill="#8df4ff" fontSize="4.8">+</text>}
+              </>:<text x={tx} y={ty+1.35} textAnchor="middle" fill="#8df4ff" fontSize="3.8">+</text>}
             </g>
           })}
           {g.enemies.filter(e=>e.t>=0).map(e=>{
-            const [x,y]=lerpPath(e.t),cx=x*100,cy=y*100
+            const [x,y]=lerpPath(e.t),cx=x*160,cy=y*100
             const size=e.boss?3.2:e.elite?2.45:1.9
             const body=e.boss?'#7651c9':e.elite?'#d98c2f':'#ced8df'
             return <g key={e.id} className={e.boss?'oa-td-enemy boss':e.elite?'oa-td-enemy elite':'oa-td-enemy'}>
