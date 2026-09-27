@@ -4756,13 +4756,6 @@ html[data-esn-season="summer"] .network-evolution-ambient{filter:hue-rotate(-14d
   .premium-command-backdrop.open,
   .notification-backdrop.open{background:rgba(0,0,0,.76)!important}
 
-  /* Render long sections only when they approach the viewport. */
-  #main-content>.section,
-  #main-content>section.section{
-    content-visibility:auto;
-    contain-intrinsic-size:auto 760px;
-  }
-
   /* Keep route changes crisp instead of animating multiple rings on touch devices. */
   .route-transition{animation-duration:.34s!important}
   .route-transition-tunnel{display:none!important}
@@ -4856,5 +4849,93 @@ html[data-esn-season="summer"] .network-evolution-ambient{filter:hue-rotate(-14d
   .section-heading::before,
   .section-heading::after{
     pointer-events:none!important;
+  }
+}
+
+
+/* =========================================================
+   MOBILE STABILITY MODE
+   Prevent viewport-resize/repaint flicker on phone browsers.
+   ========================================================= */
+@media(max-width:860px), (pointer:coarse){
+  /* Never hide page content for entrance animations on phones. */
+  .reveal-ready,
+  .reveal-ready.is-visible,
+  .is-visible{
+    opacity:1!important;
+    transform:none!important;
+    filter:none!important;
+    transition:none!important;
+  }
+
+  /* Disable route overlay on touch devices; instant route swaps are more stable. */
+  .route-transition{display:none!important}
+
+  /* Fixed controls stay composited instead of blinking when the browser chrome moves. */
+  .mobile-bottom-nav,
+  .ev-system-rail,
+  .ev-command-deck,
+  .ev-season-pill,
+  .notification-orb{
+    transform:translate3d(0,0,0)!important;
+    -webkit-transform:translate3d(0,0,0)!important;
+    -webkit-backface-visibility:hidden!important;
+    backface-visibility:hidden!important;
+  }
+
+  /* Kill hover/tilt transforms that can get stuck after touch events. */
+  .premium-tilt,
+  .premium-tilt:hover,
+  .service-card:hover,
+  .product-card:hover,
+  .review-card:hover,
+  .game-card:hover,
+  .tool-card:hover,
+  .feature-panel:hover,
+  .leader-tile:hover,
+  .connection-card:hover,
+  .story-panel:hover,
+  .flagship-game-card:hover,
+  .leadership-spotlight:hover{
+    transform:none!important;
+  }
+
+  /* Avoid expensive filter transitions that sometimes flash during repaint. */
+  .page-hero,
+  .section,
+  .section>.shell,
+  .story-panel,
+  .service-card,
+  .product-card,
+  .review-card,
+  .game-card,
+  .tool-card,
+  .feature-panel,
+  .leader-tile,
+  .connection-card,
+  .leadership-spotlight{
+    filter:none!important;
+  }
+
+  /* Keep animated pseudo-layers from appearing/disappearing during scroll. */
+  .service-card::before,
+  .product-card::before,
+  .review-card::before,
+  .game-card::before,
+  .tool-card::before,
+  .feature-panel::before,
+  .leader-tile::before,
+  .connection-card::before,
+  .store-security::before,
+  .hero-control-panel::before,
+  .page-hero-mark::before,
+  .service-card::after,
+  .product-card::after,
+  .feature-panel::after,
+  .leader-tile::after,
+  .story-panel::after,
+  .flagship-game-card::after,
+  .leadership-spotlight::after{
+    transition:none!important;
   }
 }
