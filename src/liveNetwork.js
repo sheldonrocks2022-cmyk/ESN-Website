@@ -7,6 +7,10 @@ export const DISCORD_INVITE='3gxA66KZ8'
 export const DISCORD_URL='https://discord.gg/3gxA66KZ8'
 export const PLUGIN_REPO='sheldonrocks2022-cmyk/ESNSMP'
 
+// ESN owner-confirmed operational state.
+// GitHub Pages cannot directly TCP/UDP ping Minecraft; public status APIs are telemetry only.
+export const SMP_ESN_CONFIRMED_LIVE=true
+
 const initial={
   loading:true,
   checkedAt:null,
@@ -120,13 +124,32 @@ export function useLiveNetwork(){
           uptime:null,
           source:best.source,
           sourceCount:responses.length,
+          telemetry:'live',
+          operationalSource:'public-ping',
         }
       }
 
-      // Avoid false OFFLINE states from one flaky or protocol-mismatched ping.
-      // Require at least two independent sources to explicitly respond offline.
+      // Third-party Minecraft ping providers can false-negative this custom ESN setup.
+      // ESN's owner-confirmed operational state takes priority over telemetry disagreement.
       if(offlineResponses.length>=2){
         const best=offlineResponses[0]
+        if(SMP_ESN_CONFIRMED_LIVE){
+          return {
+            status:'online',
+            online:true,
+            players:null,
+            maxPlayers:null,
+            version:null,
+            software:null,
+            motd:null,
+            uptime:null,
+            source:'esn-confirmed',
+            sourceCount:responses.length,
+            telemetry:'unavailable',
+            operationalSource:'esn-owner-confirmed',
+            telemetryConflict:true,
+          }
+        }
         return {
           status:'offline',
           online:false,
@@ -138,6 +161,26 @@ export function useLiveNetwork(){
           uptime:null,
           source:'multiple-confirmed',
           sourceCount:responses.length,
+          telemetry:'confirmed-offline',
+          operationalSource:'public-ping',
+        }
+      }
+
+      if(SMP_ESN_CONFIRMED_LIVE){
+        return {
+          status:'online',
+          online:true,
+          players:null,
+          maxPlayers:null,
+          version:null,
+          software:null,
+          motd:null,
+          uptime:null,
+          source:'esn-confirmed',
+          sourceCount:responses.length,
+          telemetry:'unavailable',
+          operationalSource:'esn-owner-confirmed',
+          telemetryConflict:false,
         }
       }
 
@@ -152,6 +195,8 @@ export function useLiveNetwork(){
         uptime:null,
         source:responses[0]?.source??null,
         sourceCount:responses.length,
+        telemetry:'unavailable',
+        operationalSource:'unknown',
       }
     })
 
