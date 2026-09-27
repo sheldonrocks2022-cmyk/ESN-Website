@@ -53,6 +53,7 @@ export const SEARCH_INDEX=[
   {label:'Notification Center',meta:'Local ESN alerts, achievements, releases, rewards, and SMP notices',path:'/notifications',category:'Network'},
   {label:'Reward Vault',meta:'Account-free Network Shard marketplace, inventory, and local identity cosmetics',path:'/rewards',category:'Network'},
   {label:'Challenge Lab',meta:'Create and accept shareable ESN Arcade challenges without accounts',path:'/challenges',category:'Arcade'},
+  {label:'Staff Dashboard',meta:'Code-gated ESN operator console and local network notice controls',path:'/staff',category:'Network'},
   {label:'Release Center',meta:'Website, SMP, Arcade, and network update logs',path:'/updates',category:'Updates'},
   {label:"What's New",meta:'Changes since your last visit',path:'/whatsnew',category:'Updates'},
   {label:'Interactive Timeline',meta:'Explore ESN eras',path:'/timeline',category:'About'},
