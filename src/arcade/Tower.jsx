@@ -136,6 +136,21 @@ export default function TowerGame(){
     <section className={'oa-panel oa-tower-door-panel '+(run?.busted?'is-busted ':'')+(run&&floorData.hazards===2?'is-hazard':'')}>
       <div className="oa-section-head"><h3>Pick one of three doors on Floor {run?.floor||1}</h3>{run?.busted&&<span className="oa-busted">BUSTED</span>}</div>
       {run&&<div className="oa-tower-run-strip"><span>SAFE CHAIN <b>{run.safeChain||0}</b></span><span>SHIELD <b>{run.shield?'READY':'EMPTY'}</b></span><span>HAZARD <b>{floorData.hazards===2?'DOUBLE':'STANDARD'}</b></span></div>}
+      <div className="oa-tower-scene" aria-hidden="true">
+        <div className="oa-tower-sky"><i/><i/><i/></div>
+        <div className="oa-tower-building">
+          {Array.from({length:8},(_,index)=>{
+            const floor=Math.max(1,(run?.floor||1)-3+index)
+            const active=floor===(run?.floor||1)
+            return <div className={active?'oa-tower-building-floor active':'oa-tower-building-floor'} key={floor+'-'+index}>
+              <span>{String(floor).padStart(3,'0')}</span>
+              <i/><i/><i/><i/>
+            </div>
+          })}
+          <div className="oa-tower-roof"><span>ES</span><i/></div>
+        </div>
+        <div className="oa-tower-ground"/>
+      </div>
       <div className="oa-doors">
         {[0,1,2].map(i=>{
           let state='Closed'
