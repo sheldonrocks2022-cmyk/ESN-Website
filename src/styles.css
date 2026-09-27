@@ -5912,3 +5912,98 @@ html[data-motion="reduced"] *::after{
   transition:none!important;
   scroll-behavior:auto!important;
 }
+
+
+/* =========================================================
+   MOBILE PAGE TRANSITION + MOTION RESTORE 2
+   Restore the missing moving-page transition and more lightweight premium
+   motion, while keeping WebGL/touch-tilt/observer flicker disabled.
+   ========================================================= */
+@media(max-width:860px), (pointer:coarse){
+  html:not([data-motion="reduced"]) .route-transition{
+    display:grid!important;
+    place-items:center!important;
+    perspective:none!important;
+    background:
+      linear-gradient(115deg,rgba(5,10,22,.98),rgba(11,24,48,.98) 52%,rgba(6,11,24,.98))!important;
+    animation:mobileRouteSweep .48s cubic-bezier(.22,.78,.22,1) both!important;
+    will-change:transform,opacity!important;
+    overflow:hidden!important;
+  }
+
+  /* Keep the expensive 3D ring tunnel off on phones. */
+  .route-transition-tunnel{display:none!important}
+
+  html:not([data-motion="reduced"]) .route-transition-core{
+    display:grid!important;
+    animation:mobileRouteCore .42s cubic-bezier(.2,.8,.2,1) both!important;
+  }
+
+  html:not([data-motion="reduced"]) .route-transition-core strong{
+    width:68px!important;
+    height:68px!important;
+    border-radius:20px!important;
+    font-size:1.55rem!important;
+    background:#07101f!important;
+    box-shadow:0 0 28px rgb(var(--route-accent)/.16)!important;
+  }
+
+  html:not([data-motion="reduced"]) .route-transition-core span{
+    font-size:.54rem!important;
+    letter-spacing:.15em!important;
+  }
+
+  html:not([data-motion="reduced"]) .route-transition-scan{
+    display:block!important;
+    left:-20%!important;
+    right:auto!important;
+    top:0!important;
+    width:32%!important;
+    height:100%!important;
+    opacity:.72!important;
+    background:linear-gradient(90deg,transparent,rgb(var(--route-accent-2)/.18),rgb(var(--route-accent)/.36),transparent)!important;
+    box-shadow:none!important;
+    animation:mobileRouteScan .48s cubic-bezier(.2,.75,.2,1) both!important;
+  }
+
+  @keyframes mobileRouteSweep{
+    0%{transform:translate3d(-100%,0,0);opacity:1}
+    38%,62%{transform:translate3d(0,0,0);opacity:1}
+    100%{transform:translate3d(100%,0,0);opacity:1}
+  }
+  @keyframes mobileRouteCore{
+    0%{opacity:0;transform:translateX(-18px) scale(.92)}
+    35%,66%{opacity:1;transform:none}
+    100%{opacity:0;transform:translateX(18px) scale(1.03)}
+  }
+  @keyframes mobileRouteScan{
+    from{transform:translateX(-35vw)}
+    to{transform:translateX(155vw)}
+  }
+
+  /* Restore additional cheap motion that Safe Mode had also suppressed. */
+  html[data-performance-mode="premium"]:not([data-motion="reduced"]) .network-map-lines line,
+  html[data-performance-mode="premium"]:not([data-motion="reduced"]) .network-map-lines circle{
+    animation-play-state:running!important;
+  }
+
+  html[data-performance-mode="premium"]:not([data-motion="reduced"]) .control-main-3d::before,
+  html[data-performance-mode="premium"]:not([data-motion="reduced"]) .control-main-3d::after{
+    animation-play-state:running!important;
+  }
+
+  html[data-performance-mode="premium"]:not([data-motion="reduced"]) .hero h1 span{
+    animation-play-state:running!important;
+  }
+
+  /* Keep the unstable sources off. */
+  .global-3d-lighting canvas,
+  .energy-trail-particle{
+    display:none!important;
+  }
+}
+
+/* Accessibility always overrides page motion. */
+html[data-motion="reduced"] .route-transition{
+  display:none!important;
+}
