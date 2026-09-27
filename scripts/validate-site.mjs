@@ -204,7 +204,7 @@ if (!premiumChrome.includes('mobile-bottom-nav')) problems.push('Premium mobile 
 if (!premiumChrome.includes('esn-open-command') || !premiumChrome.includes('Share Deck')) problems.push('Footer Command Center event bridge or Share Deck command missing.')
 if (!premiumChrome.includes('esn_vault_unlocked') || !premiumChrome.includes('ArrowUp')) problems.push('Secret easter egg unlock system missing.')
 if (!app.includes("scrolled ? 'site-header scrolled' : 'site-header'")) problems.push('Scroll-reactive premium header missing.')
-if (!app.includes('route-premium-enter')) problems.push('Cinematic route entrance hook missing.')
+if (!immersiveLayer.includes('useLayoutEffect') || !immersiveLayer.includes('route-transition-scan') || !immersiveLayer.includes('RouteTransition')) problems.push('Stable cinematic route transition hook missing.')
 const styles = fs.readFileSync('src/styles.css','utf8')
 if (!styles.includes('ESN ULTRA LUXURY 100000X') || !styles.includes('.control-main-3d::before')) problems.push('Ultra Luxury 100000x visual layer missing.')
 if (!styles.includes('ESN FLAGSHIP LUXURY 1000000X') || !styles.includes('.lux-cursor-ring') || !styles.includes('.lux-route-rail')) problems.push('Flagship Luxury 1000000x visual layer missing.')
