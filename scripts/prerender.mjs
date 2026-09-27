@@ -41,10 +41,6 @@ const routes = {
     title: 'Download ESNSMP Plugin | ES Network',
     description: 'Download the latest public ESNSMP Minecraft plugin release directly from the official ESNSMP GitHub release.',
   },
-  '/account': {
-    title: 'ESN Account | ES Network',
-    description: 'Sign in or create your native ES Network account, member profile, and secure ESN identity.',
-  },
   '/estools': {
     title: 'ES Tools | Free Browser-Based Creator & Gaming Utilities',
     description: 'Free browser-based ES Network tools with no account required.',
