@@ -73,7 +73,7 @@ export default function ClickerGame(){
       <p>Each tap can trigger crit and burst payouts while idle progression keeps your clicker game economy climbing.</p>
     </section>
 
-    <section className="oa-glow-panel">
+    <section className="oa-glow-panel oa-clicker-forge">
       <span className="oa-kicker">PROGRESSION CORE</span>
       <h2>UPGRADE SHOP • POWER FORGE</h2>
       <p>Buy and stack upgrades to strengthen tap value, boost idle income, and extend long-session incremental game progression.</p>
