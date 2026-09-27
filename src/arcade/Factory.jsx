@@ -66,7 +66,7 @@ export default function FactoryGame(){
     const cost=Math.floor(280*Math.pow(1.45,i-3))
     if(spend(cost)){
       setG(x=>({...x,unlockedZones:Math.max(x.unlockedZones,i)}))
-      arcade.gainXp(35+​i,'Factory zone '+i)
+      arcade.gainXp(35+i,'Factory zone '+i)
       if(i>=10)arcade.unlock('factory-zone-10','Factory: Zone 10 Online',180)
     }
   }
