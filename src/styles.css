@@ -4654,3 +4654,118 @@ html[data-esn-season="summer"] .network-evolution-ambient{filter:hue-rotate(-14d
 @media(prefers-reduced-motion:reduce){
   .ev-takeover-grid,.ev-takeover-scan,.ev-rare-wave,.ev-modal,.ev-backdrop,.ev-takeover{animation:none!important}
 }
+
+
+/* =========================================================
+   MOBILE PERFORMANCE MODE
+   Keeps the premium design while removing continuous GPU/repaint load
+   ========================================================= */
+@media(max-width:860px), (pointer:coarse){
+  .global-3d-lighting canvas.mobile-static,
+  .global-3d-lighting canvas{display:none!important}
+  .global-3d-fallback{
+    background:
+      radial-gradient(circle at 18% 18%,rgb(var(--route-accent)/.12),transparent 26rem),
+      radial-gradient(circle at 82% 68%,rgb(var(--route-accent-2)/.075),transparent 30rem),
+      linear-gradient(180deg,#02050d,#040916 52%,#02050d)!important;
+  }
+
+  /* Avoid expensive live blurs on dozens of scrolling cards. */
+  .site-header,
+  .nav,
+  .dropdown,
+  .button.secondary,
+  .premium-stats,
+  .hero-control-panel,
+  .flagship-core-stage,
+  .story-panel,
+  .flagship-service-card,
+  .flagship-smp-stage,
+  .flagship-game-card,
+  .flagship-community-stage,
+  .flagship-leadership,
+  .review-card,
+  .service-card,
+  .product-card,
+  .tool-card,
+  .feature-panel,
+  .leader-tile,
+  .connection-card,
+  .plugin-release-card,
+  .console-step-card,
+  .premium-connection,
+  .flagship-route-strip,
+  .flagship-process,
+  .network-stat-grid>div,
+  .review-summary>div,
+  .network-map,
+  .activity-feed,
+  .ev-system-rail,
+  .ev-season-pill,
+  .ev-command-deck,
+  .ev-backdrop,
+  .ev-modal-head,
+  .notification-orb,
+  .notification-panel,
+  .premium-command,
+  .premium-command-backdrop{
+    -webkit-backdrop-filter:none!important;
+    backdrop-filter:none!important;
+  }
+
+  /* Stop always-running decorative animation loops while scrolling. */
+  .premium-aurora,
+  .premium-grain,
+  .hero-scanline,
+  .control-main-3d::before,
+  .control-main-3d::after,
+  .hero h1 span,
+  .premium-ticker-track,
+  .esn-global-grid,
+  .network-showcase-section::before,
+  .network-map-lines line,
+  .network-map-lines circle,
+  .network-map-core::before,
+  .network-map-core::after,
+  .network-node-dot,
+  .leadership-scan,
+  .leadership-monogram::after,
+  .network-evolution-ambient{
+    animation:none!important;
+  }
+
+  .esn-global-grid{display:none!important}
+  .premium-grain{display:none!important}
+  .premium-aurora{opacity:.14!important}
+  .network-map-lines{opacity:.45}
+  .flagship-smp-stage::after,
+  .flagship-community-stage::after,
+  .flagship-final-cta::after{display:none!important}
+
+  /* Fixed translucent layers repaint heavily on phones; use opaque equivalents. */
+  .ev-system-rail,
+  .ev-command-deck,
+  .ev-season-pill,
+  .notification-orb,
+  .premium-dock{
+    background:#07101f!important;
+    box-shadow:0 10px 28px rgba(0,0,0,.24)!important;
+  }
+
+  .ev-backdrop,
+  .premium-command-backdrop.open,
+  .notification-backdrop.open{background:rgba(0,0,0,.76)!important}
+
+  /* Render long sections only when they approach the viewport. */
+  #main-content>.section,
+  #main-content>section.section{
+    content-visibility:auto;
+    contain-intrinsic-size:auto 760px;
+  }
+
+  /* Keep route changes crisp instead of animating multiple rings on touch devices. */
+  .route-transition{animation-duration:.34s!important}
+  .route-transition-tunnel{display:none!important}
+  .route-transition-scan{animation-duration:.24s!important}
+  .route-transition-core{animation-duration:.28s!important}
+}
