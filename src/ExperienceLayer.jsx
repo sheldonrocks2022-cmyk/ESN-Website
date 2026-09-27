@@ -25,9 +25,10 @@ export function RouteTransition(){
   useLayoutEffect(()=>{
     if(first.current){first.current=false;return}
     const next=routeScene(location.pathname)
+    const mobile=window.matchMedia('(max-width: 860px), (pointer: coarse)').matches
     clearTimeout(timer.current)
     setScene({...next,id:location.pathname})
-    timer.current=window.setTimeout(()=>setScene(null),560)
+    timer.current=window.setTimeout(()=>setScene(null),mobile?5000:560)
     return()=>clearTimeout(timer.current)
   },[location.pathname])
 
