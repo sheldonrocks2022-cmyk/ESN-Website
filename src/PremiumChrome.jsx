@@ -10,7 +10,7 @@ const compactRouteLabels={
   '/smpconnection':'SMP','/smpconsole':'Console Guide','/smpplugin':'Plugin','/smpguide':'SMP Encyclopedia','/storesmp':'SMP Store',
   '/arcade':'Arcade','/esclicker':'Clicker','/esfactory':'Factory','/esmines':'Mines','/esmoto':'MOTO','/estower':'Tower','/estowerdefense':'Tower Defense',
   '/estools':'ES Tools','/status':'Status','/networkstats':'Network Stats','/updates':'Updates','/whatsnew':"What's New",'/timeline':'Timeline',
-  '/explore':'Explore ESN','/gallery':'Gallery','/settings':'Settings','/support':'Support','/about':'About','/leadership':'Leadership','/faq':'FAQ','/share':'Share'
+  '/nexus':'Network Nexus','/explore':'Explore ESN','/gallery':'Gallery','/settings':'Settings','/support':'Support','/about':'About','/leadership':'Leadership','/faq':'FAQ','/share':'Share'
 }
 function localList(key){try{const value=JSON.parse(localStorage.getItem(key)||'[]');return Array.isArray(value)?value:[]}catch{return []}}
 
@@ -35,6 +35,7 @@ const userThemes={
 }
 
 const baseCommands=[
+  {label:'Network Nexus',meta:'XP, missions, Arcade competition, lore, events, map, and ESN Guide',keywords:'nexus command center xp missions achievements leaderboard tournament lore guide map',kind:'route',value:'/nexus'},
   {label:'Join SMP',meta:'Open ESN SMP connection details',keywords:'join smp server ip port minecraft connect',kind:'route',value:'/smpconnection'},
   {label:'Open Riftwalker',meta:'Jump to the Riftwalker store bundle',keywords:'riftwalker bundle store buy',kind:'route',value:'/storesmp#product-esn-riftwalker-bundle'},
   {label:'Play Tower',meta:'Launch ES Tower',keywords:'play tower arcade',kind:'route',value:'/estower'},
@@ -71,7 +72,7 @@ export default function PremiumChrome(){
     :location.pathname==='/serviceshowcase'||location.pathname==='/portfolio'?'services'
     :location.pathname==='/estools'||location.pathname==='/tools'?'tools'
     :location.pathname==='/testimonials'?'reviews'
-    :['/about','/leadership','/faq','/timeline','/updates','/status','/share','/vault'].includes(location.pathname)?'about':'home'
+    :['/about','/leadership','/faq','/timeline','/updates','/status','/share','/vault','/nexus'].includes(location.pathname)?'about':'home'
 
   const routePalette=routeThemes[routeKey]||routeThemes.home
   const effectivePalette=theme==='dynamic'?routePalette:(userThemes[theme]?.colors||routePalette)
