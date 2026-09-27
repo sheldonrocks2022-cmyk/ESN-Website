@@ -473,6 +473,17 @@ function Home() {
         </div>
       </section>
 
+      <section className="section panel-section" id="home-tools">
+        <div className="shell split-panel">
+          <div>
+            <span className="eyebrow">ES Tools</span>
+            <h2>Free tools are back — and interactive.</h2>
+            <p>Use challenge generation, timers, prompt building, randomizers, quick coin/dice utilities, and website estimates directly in the browser.</p>
+          </div>
+          <Link className="button primary" to="/estools">Open ES Tools</Link>
+        </div>
+      </section>
+
       <section className="section dark-section" id="meet-the-team">
         <div className="shell">
           <div className="section-heading">
@@ -487,7 +498,10 @@ function Home() {
             <div>
               <span className="eyebrow">Founder & CEO</span>
               <h3>Landon</h3>
-              <p>Founder and CEO of ES Network, overseeing the organization, its services, community, and ESN SMP direction.</p>
+              <p>Founder & CEO of ES Network.</p>
+              <ul className="role-list compact-role-list">
+                {LANDON_RESPONSIBILITIES.slice(0, 3).map((item) => <li key={item}>{item}</li>)}
+              </ul>
             </div>
           </div>
         </div>
@@ -496,8 +510,8 @@ function Home() {
       <section className="section" id="reviews">
         <div className="shell">
           <span className="eyebrow">Customer Testimonials</span>
-          <h2>Community feedback belongs front and center.</h2>
-          <p className="large-copy max-copy">The rebuild preserves a dedicated testimonials route and a homepage review destination without inventing customer quotes that have not been verified.</p>
+          <h2>Verified feedback belongs front and center.</h2>
+          <p className="large-copy max-copy">The original reviews section is preserved while we recover the exact customer feedback. Only verified ESN reviews will be republished.</p>
           <Link className="button secondary" to="/testimonials">View testimonials</Link>
         </div>
       </section>
