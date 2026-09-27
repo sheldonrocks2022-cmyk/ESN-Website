@@ -107,6 +107,28 @@ export function NoAccountExperienceLayer(){
     }
   },[])
 
+  useEffect(()=>{
+    if(!banner?.active||banner.permanent||!banner.expiresAt)return
+    const remaining=Number(banner.expiresAt)-Date.now()
+    if(remaining<=0){
+      const next={...banner,active:false}
+      writeJson(STAFF_BANNER_KEY,next)
+      setBanner(next)
+      window.dispatchEvent(new Event('esn-staff-banner-change'))
+      return
+    }
+    const timer=window.setTimeout(()=>{
+      const current=readJson(STAFF_BANNER_KEY,null)
+      if(current?.active&&!current?.permanent&&Number(current.expiresAt)<=Date.now()){
+        const next={...current,active:false}
+        writeJson(STAFF_BANNER_KEY,next)
+        setBanner(next)
+        window.dispatchEvent(new Event('esn-staff-banner-change'))
+      }
+    },remaining)
+    return()=>window.clearTimeout(timer)
+  },[banner?.active,banner?.permanent,banner?.expiresAt])
+
   if(!banner?.active)return null
   return <div className="esn-staff-banner" role="status"><span>{banner.label||'ESN NETWORK NOTICE'}</span><strong>{banner.title||'Network notice'}</strong><small>{banner.copy||''}</small></div>
 }
@@ -317,7 +339,7 @@ export function StaffDashboardPage(){
   const [authorized,setAuthorized]=useState(()=>sessionStorage.getItem(STAFF_SESSION_KEY)==='1')
   const [code,setCode]=useState('')
   const [error,setError]=useState('')
-  const [banner,setBanner]=useState(()=>readJson(STAFF_BANNER_KEY,{active:false,label:'ESN NETWORK NOTICE',title:'',copy:''}))
+  const [banner,setBanner]=useState(()=>readJson(STAFF_BANNER_KEY,{active:false,label:'ESN NETWORK NOTICE',title:'',copy:'',permanent:false,expiresAt:null}))
   const notices=readJson(NOTICE_KEY,[])
 
   const unlock=async event=>{
@@ -331,7 +353,14 @@ export function StaffDashboardPage(){
     }catch{setError('SECURE CHECK UNAVAILABLE')}
   }
   const publishLocalBanner=()=>{
-    const next={...banner,active:true,updatedAt:nowIso()}
+    const permanent=Boolean(banner.permanent)
+    const next={
+      ...banner,
+      active:true,
+      permanent,
+      expiresAt:permanent?null:Date.now()+30000,
+      updatedAt:nowIso(),
+    }
     writeJson(STAFF_BANNER_KEY,next)
     setBanner(next)
     window.dispatchEvent(new Event('esn-staff-banner-change'))
@@ -373,7 +402,8 @@ export function StaffDashboardPage(){
         <label>LABEL<input value={banner.label||''} onChange={e=>setBanner({...banner,label:e.target.value.slice(0,30)})}/></label>
         <label>TITLE<input value={banner.title||''} onChange={e=>setBanner({...banner,title:e.target.value.slice(0,60)})}/></label>
         <label>MESSAGE<textarea value={banner.copy||''} onChange={e=>setBanner({...banner,copy:e.target.value.slice(0,180)})}/></label>
-        <div className="noacct-actions"><button type="button" onClick={publishLocalBanner}>SHOW LOCAL PREVIEW</button><button type="button" onClick={clearBanner}>CLEAR PREVIEW</button></div>
+        <label className="staff-permanent-toggle"><input type="checkbox" checked={Boolean(banner.permanent)} onChange={e=>setBanner({...banner,permanent:e.target.checked})}/><span><strong>Permanent notice</strong><small>{banner.permanent?'Stays visible until staff clears it.':'Default: automatically disappears after 30 seconds.'}</small></span></label>
+        <div className="noacct-actions"><button type="button" onClick={publishLocalBanner}>{banner.permanent?'SHOW PERMANENT NOTICE':'SHOW 30-SECOND NOTICE'}</button><button type="button" onClick={clearBanner}>CLEAR PREVIEW</button></div>
       </div>
       <div className="staff-quicklinks"><Link to="/updates">Release Center</Link><Link to="/nexus">Nexus</Link><Link to="/notifications">Notifications</Link><Link to="/rewards">Reward Vault</Link><Link to="/challenges">Challenge Lab</Link><a href={DISCORD_URL} target="_blank" rel="noreferrer">Discord</a></div>
       <button className="staff-lock-button" type="button" onClick={()=>{sessionStorage.removeItem(STAFF_SESSION_KEY);setAuthorized(false)}}>LOCK STAFF CONSOLE</button>
