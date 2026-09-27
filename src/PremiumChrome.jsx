@@ -35,6 +35,7 @@ const baseCommands=[
   {label:'Release Center',meta:'Website, plugin, Arcade, and roadmap updates',keywords:'updates releases roadmap changelog version',kind:'route',value:'/updates'},
   {label:'ESN Timeline',meta:'EP1C Services → ES Network → current projects',keywords:'timeline history ep1c es network',kind:'route',value:'/timeline'},
   {label:'Portfolio',meta:'Interactive service before/after demos',keywords:'portfolio before after editing discord website',kind:'route',value:'/portfolio'},
+  {label:'Share Deck',meta:'Generate branded ESN share cards',keywords:'share card png social smp arcade services store',kind:'route',value:'/share'},
   {label:'SMP Store',meta:'Official ESN SMP products',keywords:'store products keys relic warden void',kind:'route',value:'/storesmp'},
   {label:'ES Tools',meta:'Free browser utilities',keywords:'tools timer prompt randomizer',kind:'route',value:'/estools'},
   {label:'Verified Reviews',meta:'35 ESN customer reviews',keywords:'reviews testimonials verified',kind:'route',value:'/testimonials'},
@@ -60,7 +61,7 @@ export default function PremiumChrome(){
     :location.pathname==='/serviceshowcase'||location.pathname==='/portfolio'?'services'
     :location.pathname==='/estools'||location.pathname==='/tools'?'tools'
     :location.pathname==='/testimonials'?'reviews'
-    :['/about','/leadership','/faq','/timeline','/updates','/status','/vault'].includes(location.pathname)?'about':'home'
+    :['/about','/leadership','/faq','/timeline','/updates','/status','/share','/vault'].includes(location.pathname)?'about':'home'
 
   const routePalette=routeThemes[routeKey]||routeThemes.home
   const effectivePalette=theme==='dynamic'?routePalette:(userThemes[theme]?.colors||routePalette)
@@ -113,6 +114,8 @@ export default function PremiumChrome(){
   },[location.pathname])
 
   useEffect(()=>{
+    const openFromDeck=()=>setOpen(true)
+    window.addEventListener('esn-open-command',openFromDeck)
     const key=(e)=>{
       if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='k'){
         e.preventDefault();setOpen(v=>!v)
@@ -123,7 +126,7 @@ export default function PremiumChrome(){
     window.addEventListener('keydown',key)
     window.addEventListener('scroll',scroll,{passive:true})
     scroll()
-    return()=>{window.removeEventListener('keydown',key);window.removeEventListener('scroll',scroll)}
+    return()=>{window.removeEventListener('keydown',key);window.removeEventListener('scroll',scroll);window.removeEventListener('esn-open-command',openFromDeck)}
   },[])
 
   useEffect(()=>{
