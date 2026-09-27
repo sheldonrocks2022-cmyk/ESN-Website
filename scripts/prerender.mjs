@@ -41,6 +41,26 @@ const routes = {
     title: 'Download ESNSMP Plugin | ES Network',
     description: 'Download the latest public ESNSMP Minecraft plugin release directly from the official ESNSMP GitHub release.',
   },
+  '/status': {
+    title: 'ESN Network Status | Live SMP Players & Systems',
+    description: 'View live ES Network website, SMP player count, plugin release, Arcade, and Discord connection status.',
+  },
+  '/timeline': {
+    title: 'ES Network Timeline | EP1C Services to ESN',
+    description: 'Explore the ES Network timeline from the former EP1C Services name through ESN, SMP, Arcade, and current projects.',
+  },
+  '/updates': {
+    title: 'ES Network Release Center | Updates & Roadmap',
+    description: 'See current ES Network website, ESNSMP, Arcade, live-network releases, and future project candidates.',
+  },
+  '/portfolio': {
+    title: 'ES Network Portfolio | Interactive Before & After Demos',
+    description: 'Explore illustrative before-and-after ES Network service transformation demos for editing, Discord setup, and website creation.',
+  },
+  '/vault': {
+    title: 'ESN Vault | Secret Network Layer',
+    description: 'A hidden ES Network experience unlocked through easter eggs.',
+  },
   '/estools': {
     title: 'ES Tools | Free Browser-Based Creator & Gaming Utilities',
     description: 'Free browser-based ES Network tools with no account required.',
