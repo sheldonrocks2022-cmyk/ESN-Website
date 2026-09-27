@@ -15,7 +15,7 @@ export const SEO_ROUTES={
   },
   '/home':{
     label:'Home',
-    title:'ES Network (ESN) | Fortnite Coaching, Editing, Discord & Minecraft',
+    title:'ES Network (ESN) | Creator Services, Gaming & ESN SMP',
     description:'ES Network offers Fortnite coaching, creator editing, Discord server setups, website projects, ESN SMP, six browser games, free tools, and community support.',
     canonical:'/',
     index:false,
@@ -470,7 +470,6 @@ export function structuredDataFor(pathname){
         position:index+1,
         name,
         text,
-        url:url+'#step-'+(index+1),
       })),
     })
   }
