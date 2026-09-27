@@ -287,6 +287,10 @@ function ExperienceEffects() {
   useEffect(() => {
     const interactive = '.service-card,.product-card,.review-card,.game-card,.tool-card,.feature-panel,.leader-tile,.connection-card,.store-security,.hero-control-panel,.page-hero-mark,.plugin-release-card,.console-step-card,.premium-connection'
     const move = (event) => {
+      document.documentElement.style.setProperty('--cursor-x', `${event.clientX}px`)
+      document.documentElement.style.setProperty('--cursor-y', `${event.clientY}px`)
+      document.documentElement.style.setProperty('--pointer-x', ((event.clientX / Math.max(1, window.innerWidth)) - .5).toFixed(4))
+      document.documentElement.style.setProperty('--pointer-y', ((event.clientY / Math.max(1, window.innerHeight)) - .5).toFixed(4))
       const target = event.target.closest?.(interactive)
       if (!target) return
       const rect = target.getBoundingClientRect()
@@ -322,6 +326,14 @@ function ExperienceEffects() {
     }
   }, [])
 
+  useEffect(() => {
+    const main = document.getElementById('main-content')
+    if (!main) return
+    main.classList.remove('route-premium-enter')
+    const frame = requestAnimationFrame(() => main.classList.add('route-premium-enter'))
+    return () => cancelAnimationFrame(frame)
+  }, [location.pathname])
+
   return null
 }
 
@@ -339,13 +351,24 @@ function Brand() {
 
 function Header() {
   const [open, setOpen] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
   const location = useLocation()
+
+  useEffect(() => {
+    const onScroll = () => setScrolled((current) => {
+      const next = window.scrollY > 34
+      return current === next ? current : next
+    })
+    window.addEventListener('scroll', onScroll, { passive: true })
+    onScroll()
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
   const close = () => setOpen(false)
   const inGroup = (paths) => paths.some((path) => location.pathname === path || location.pathname.startsWith(path + '/'))
   const arcadeActive = location.pathname === '/arcade' || ARCADE_GAMES.some(([, route]) => route === location.pathname)
 
   return (
-    <header className="site-header">
+    <header className={scrolled ? 'site-header scrolled' : 'site-header'}>
       <div className="header-glow" aria-hidden="true" />
       <div className="shell header-inner">
         <Brand />
