@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react'
 import OriginalFrame from './OriginalFrame'
-import { money, useArcadeProgress, usePersistent, useSharedCoins } from './shared'
+import { arcadeFeedback, money, useArcadeProgress, usePersistent, useSharedCoins } from './shared'
 
 function makeMineSet(count){
   const set=new Set()
@@ -40,6 +40,7 @@ export default function MinesGame(){
 
   const start=()=>{
     if(!spend(wager)){setMessage('Not enough ES Coins for that wager.');return}
+    arcadeFeedback('tap')
     setRound({mines:makeMineSet(mineCount),safe:new Set(),multiplier:1,startedAt:Date.now()})
     setLastBoard(null)
     setStats(s=>({...s,games:s.games+1,totalWagered:s.totalWagered+wager}))
@@ -49,6 +50,7 @@ export default function MinesGame(){
   const pick=i=>{
     if(!round||round.safe.has(i))return
     if(round.mines.has(i)){
+      arcadeFeedback('danger')
       setLastBoard({mines:new Set(round.mines),safe:new Set(round.safe),hit:i})
       setRound(null)
       setStats(s=>({...s,losses:s.losses+1,streak:0,history:[{result:'MINE',wager,payout:0,mult:0,safe:round.safe.size,at:Date.now()},...(s.history||[])].slice(0,8)}))
@@ -59,6 +61,7 @@ export default function MinesGame(){
 
     const safe=new Set(round.safe)
     safe.add(i)
+    arcadeFeedback('safe')
     const multiplier=calcMultiplier(mineCount,safe.size)
     setRound({...round,safe,multiplier})
     setStats(s=>({...s,safeTiles:s.safeTiles+1,bestMultiplier:Math.max(s.bestMultiplier||1,multiplier)}))
@@ -72,6 +75,7 @@ export default function MinesGame(){
     const win=Math.floor(wager*round.multiplier)
     const nextStreak=(stats.streak||0)+1
     add(win)
+    arcadeFeedback('win')
     setLastBoard({mines:new Set(round.mines),safe:new Set(round.safe),hit:null})
     setRound(null)
     setStats(s=>({
