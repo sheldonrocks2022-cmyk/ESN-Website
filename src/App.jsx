@@ -3,6 +3,7 @@ import { Link, Navigate, Route, Routes, useLocation } from 'react-router-dom'
 import ESToolsSuite from './Tools'
 import ES3DViewer from './ES3DViewer'
 import PremiumChrome from './PremiumChrome'
+import Global3DLighting from './Global3DLighting'
 import { VERIFIED_REVIEWS } from './reviews'
 import ClickerGame from './arcade/Clicker'
 import FactoryGame from './arcade/Factory'
@@ -1333,6 +1334,7 @@ function App() {
       <MetaManager />
       <ScrollToHash />
       <ExperienceEffects />
+      <Global3DLighting />
       <Header />
       <PremiumChrome />
       <main id="main-content">
