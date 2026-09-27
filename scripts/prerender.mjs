@@ -123,4 +123,20 @@ for (const [route, meta] of Object.entries(routes)) {
   fs.writeFileSync(path.join(routeDirectory, 'index.html'), html)
 }
 
-console.log(`Generated route HTML for ${Object.keys(routes).length} routes.`)
+const notFoundHtml = source
+  .replace(/<title>.*?<\/title>/s, '<title>Page Not Found | ES Network</title>')
+  .replace(
+    /<meta name="description" content="[^"]*"\s*\/?>/,
+    '<meta name="description" content="The requested ES Network page could not be found." />',
+  )
+  .replace(
+    /<meta property="og:title" content="[^"]*"\s*\/?>/,
+    '<meta property="og:title" content="Page Not Found | ES Network" />',
+  )
+  .replace(
+    /<meta property="og:description" content="[^"]*"\s*\/?>/,
+    '<meta property="og:description" content="The requested ES Network page could not be found." />',
+  )
+fs.writeFileSync(path.join('dist', '404.html'), notFoundHtml)
+
+console.log(`Generated route HTML for ${Object.keys(routes).length} routes plus 404.html.`)
