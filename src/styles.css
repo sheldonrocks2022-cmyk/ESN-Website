@@ -6579,3 +6579,375 @@ html[data-motion="reduced"] .route-transition{
   .oa-moto-stage,.oa-td-board{border:1px solid rgba(168,245,255,.09)}
   .oa-moto-stage:hover,.oa-td-board:hover{box-shadow:inset 0 0 90px rgba(0,0,0,.36),0 30px 80px rgba(0,0,0,.28)}
 }
+
+
+/* =========================================================
+   ESN ARCADE HYPER REALISM — cinematic gameplay pass
+   Shared world atmosphere + per-game physical depth.
+   ========================================================= */
+.oa-page{
+  position:relative;
+  isolation:isolate;
+  overflow:hidden;
+}
+.oa-page .oa-game-shell{position:relative;z-index:2}
+.oa-world-layer{
+  position:absolute;
+  inset:0;
+  z-index:0;
+  pointer-events:none;
+  overflow:hidden;
+  background:
+    linear-gradient(180deg,rgba(3,8,18,.12),rgba(3,7,14,.52)),
+    radial-gradient(circle at 50% 16%,rgba(92,180,255,.06),transparent 38rem);
+}
+.oa-world-glow{
+  position:absolute;
+  width:44rem;
+  height:44rem;
+  border-radius:50%;
+  filter:blur(90px);
+  opacity:.12;
+  animation:oaWorldDrift 18s ease-in-out infinite alternate;
+}
+.oa-world-glow-a{left:-18rem;top:5rem;background:#1678ff}
+.oa-world-glow-b{right:-20rem;top:38rem;background:#5d2bff;animation-delay:-7s}
+.oa-world-horizon{
+  position:absolute;
+  left:-10%;
+  right:-10%;
+  top:24rem;
+  height:1px;
+  background:linear-gradient(90deg,transparent,rgba(116,227,255,.34),transparent);
+  box-shadow:0 0 34px rgba(92,210,255,.15);
+}
+.oa-world-fog{
+  position:absolute;
+  inset:0;
+  background:
+    radial-gradient(ellipse at 50% 32%,transparent 0 25%,rgba(5,12,24,.16) 54%,rgba(2,6,14,.52) 100%);
+}
+.oa-world-particles i{
+  position:absolute;
+  left:calc((var(--p) * 53 + 11) * 1%);
+  top:calc((var(--p) * 37 + 9) * 1%);
+  width:2px;height:2px;border-radius:50%;
+  background:#bffcff;
+  opacity:.16;
+  box-shadow:0 0 9px rgba(151,247,255,.68);
+  animation:oaParticleFloat calc(10s + (var(--p) * .65s)) ease-in-out infinite alternate;
+}
+@keyframes oaWorldDrift{
+  from{transform:translate3d(0,0,0) scale(1)}
+  to{transform:translate3d(5vw,-2vh,0) scale(1.08)}
+}
+@keyframes oaParticleFloat{
+  from{transform:translate3d(0,0,0);opacity:.06}
+  to{transform:translate3d(calc((var(--p) - 9) * 1px),-40px,0);opacity:.28}
+}
+
+/* Physical feedback surface */
+.oa-impact-layer{
+  position:fixed;
+  inset:0;
+  z-index:460;
+  pointer-events:none;
+  overflow:hidden;
+  animation:oaImpactFade .42s ease-out forwards;
+}
+.oa-impact-layer::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:radial-gradient(circle at 50% 50%,rgba(171,250,255,.14),transparent 38%);
+}
+.oa-impact-layer i{
+  position:absolute;
+  left:50%;top:50%;
+  width:9rem;height:9rem;
+  margin:-4.5rem;
+  border-radius:50%;
+  border:1px solid rgba(178,251,255,.72);
+  box-shadow:0 0 42px rgba(102,234,246,.23);
+  animation:oaImpactRing .42s ease-out forwards;
+}
+.oa-impact-layer b{
+  position:absolute;inset:0;
+  background:linear-gradient(115deg,transparent 44%,rgba(255,255,255,.08) 50%,transparent 56%);
+  animation:oaImpactSweep .38s ease-out forwards;
+}
+.oa-impact-danger{animation-duration:.62s}
+.oa-impact-danger::before{background:radial-gradient(circle at 50% 50%,rgba(255,53,89,.24),transparent 46%)}
+.oa-impact-danger i{border-color:rgba(255,91,119,.9);box-shadow:0 0 55px rgba(255,48,81,.34)}
+.oa-impact-win::before{background:radial-gradient(circle at 50% 50%,rgba(88,255,172,.18),transparent 44%)}
+.oa-impact-power::before,.oa-impact-boost::before{background:radial-gradient(circle at 50% 50%,rgba(95,229,255,.22),transparent 45%)}
+.oa-fx-danger .oa-game-shell{animation:oaDangerShake .34s ease-out}
+.oa-fx-impact .oa-game-shell,.oa-fx-power .oa-game-shell{animation:oaMicroShake .24s ease-out}
+@keyframes oaImpactFade{0%{opacity:0}16%{opacity:1}100%{opacity:0}}
+@keyframes oaImpactRing{from{transform:scale(.18);opacity:.95}to{transform:scale(4.6);opacity:0}}
+@keyframes oaImpactSweep{from{transform:translateX(-70%);opacity:0}35%{opacity:1}to{transform:translateX(70%);opacity:0}}
+@keyframes oaDangerShake{
+  0%,100%{transform:none}
+  20%{transform:translate3d(-5px,2px,0)}
+  40%{transform:translate3d(4px,-2px,0)}
+  60%{transform:translate3d(-3px,1px,0)}
+  80%{transform:translate3d(2px,0,0)}
+}
+@keyframes oaMicroShake{
+  0%,100%{transform:none}
+  45%{transform:translate3d(0,-2px,0) scale(1.002)}
+}
+
+/* CLICKER — reactor instead of flat button */
+.oa-page-esclicker .oa-tap-zone{
+  background:
+    radial-gradient(circle at 50% 56%,rgba(50,215,255,.11),transparent 21rem),
+    linear-gradient(180deg,rgba(5,18,34,.97),rgba(4,10,20,.98));
+}
+.oa-page-esclicker .oa-tap-zone::before{
+  content:"";
+  position:absolute;
+  width:min(620px,84vw);
+  aspect-ratio:1;
+  border-radius:50%;
+  border:1px solid rgba(103,239,250,.12);
+  background:
+    repeating-conic-gradient(from 0deg,rgba(103,239,250,.08) 0 2deg,transparent 2deg 17deg),
+    radial-gradient(circle,transparent 48%,rgba(103,239,250,.05) 49% 50%,transparent 51%);
+  animation:oaReactorSpin 22s linear infinite;
+}
+.oa-page-esclicker .oa-coin{
+  position:relative;
+  transform-style:preserve-3d;
+  background:
+    radial-gradient(circle at 34% 28%,rgba(255,255,255,.3),transparent 13%),
+    radial-gradient(circle at 50% 46%,#2d9bc4 0 8%,#0d3551 32%,#081828 62%,#030912 100%);
+  border:2px solid rgba(151,248,255,.6);
+  box-shadow:
+    0 34px 90px rgba(0,0,0,.42),
+    0 0 65px rgba(79,221,255,.18),
+    inset 0 0 45px rgba(95,229,255,.2),
+    inset 0 -20px 50px rgba(0,0,0,.42);
+}
+.oa-page-esclicker .oa-coin::before,
+.oa-page-esclicker .oa-coin::after{
+  content:"";
+  position:absolute;
+  inset:10%;
+  border-radius:50%;
+  border:1px solid rgba(162,249,255,.35);
+  animation:oaReactorSpin 8s linear infinite;
+}
+.oa-page-esclicker .oa-coin::after{inset:21%;animation-direction:reverse;animation-duration:5.5s}
+.oa-page-esclicker .oa-tap-zone.is-overdrive{
+  box-shadow:inset 0 0 90px rgba(94,136,255,.13),0 0 75px rgba(87,226,255,.09);
+}
+.oa-page-esclicker .oa-tap-zone.is-overdrive .oa-coin{
+  animation:oaOverdriveCore .58s ease-in-out infinite alternate;
+}
+.oa-page-esclicker .oa-tap-zone.is-combo::after{
+  content:"COMBO LOCK";
+  position:absolute;
+  right:20px;top:18px;
+  color:#b9fbff;
+  font-size:.58rem;font-weight:950;letter-spacing:.18em;
+  text-shadow:0 0 14px rgba(116,239,255,.7);
+}
+@keyframes oaReactorSpin{to{transform:rotate(360deg)}}
+@keyframes oaOverdriveCore{
+  from{transform:scale(1);box-shadow:0 0 55px rgba(86,222,255,.18),inset 0 0 40px rgba(94,216,255,.17)}
+  to{transform:scale(1.035);box-shadow:0 0 90px rgba(107,112,255,.34),inset 0 0 65px rgba(101,244,255,.26)}
+}
+
+/* FACTORY — active industrial machinery */
+.oa-page-esfactory .oa-factory-command::before{
+  content:"";
+  position:absolute;inset:0;
+  background:
+    linear-gradient(90deg,transparent 0 7%,rgba(118,237,255,.055) 7% 7.4%,transparent 7.4% 15%);
+  background-size:180px 100%;
+  animation:oaConveyor 9s linear infinite;
+  opacity:.45;
+}
+.oa-page-esfactory .oa-factory-command.is-surge{
+  border-color:rgba(102,239,250,.52);
+  box-shadow:0 0 46px rgba(83,220,255,.15),inset 0 0 52px rgba(82,212,255,.08);
+}
+.oa-page-esfactory .oa-factory-command.is-surge::after{
+  content:"CORE SURGE";
+  position:absolute;right:18px;top:14px;
+  color:#d7fdff;font-size:.52rem;font-weight:950;letter-spacing:.16em;
+  animation:oaFactoryAlarm .7s ease-in-out infinite alternate;
+}
+.oa-machine{
+  background:
+    linear-gradient(145deg,rgba(255,255,255,.025),transparent 22%),
+    linear-gradient(160deg,rgba(16,39,62,.94),rgba(5,15,27,.98));
+  box-shadow:inset 0 -18px 42px rgba(0,0,0,.2);
+}
+.oa-machine::before{
+  content:"";
+  position:absolute;
+  left:14px;top:14px;
+  width:7px;height:7px;border-radius:50%;
+  background:#51e994;
+  box-shadow:0 0 12px rgba(81,233,148,.72);
+  animation:oaMachineStatus 1.5s ease-in-out infinite alternate;
+}
+@keyframes oaConveyor{to{background-position:180px 0}}
+@keyframes oaFactoryAlarm{from{opacity:.45}to{opacity:1;text-shadow:0 0 15px #80f6ff}}
+@keyframes oaMachineStatus{from{opacity:.35}to{opacity:1}}
+
+/* MINES — weighted tiles, suspense, explosion read */
+.oa-mines-board-panel{
+  perspective:1000px;
+}
+.oa-mines-board-panel.is-active{
+  box-shadow:0 0 42px rgba(63,189,255,.08),inset 0 0 55px rgba(24,82,116,.08);
+}
+.oa-mines-board-panel.is-active::before{
+  content:"ROUND LIVE";
+  position:absolute;left:16px;top:12px;
+  color:#8ff7ff;font-size:.48rem;font-weight:950;letter-spacing:.16em;
+  animation:oaMineTension 1.3s ease-in-out infinite alternate;
+}
+.oa-mines-board button{
+  transform-style:preserve-3d;
+  border-bottom-width:3px;
+  box-shadow:
+    inset 0 1px rgba(255,255,255,.07),
+    inset 0 -10px 18px rgba(0,0,0,.25),
+    0 6px 0 rgba(1,6,13,.55),
+    0 10px 22px rgba(0,0,0,.2);
+}
+.oa-mines-board button:not(:disabled):active{transform:translateY(4px);box-shadow:inset 0 1px rgba(255,255,255,.05),0 2px 0 rgba(1,6,13,.5)}
+.oa-mines-board button.safe{animation:oaSafeReveal .34s ease-out}
+.oa-mines-board button.mine{animation:oaMineReveal .46s ease-out}
+.oa-mines-board button.mine.hit{box-shadow:0 0 42px rgba(255,63,94,.38),inset 0 0 35px rgba(255,40,74,.22)}
+@keyframes oaMineTension{from{opacity:.45}to{opacity:1}}
+@keyframes oaSafeReveal{0%{transform:rotateX(70deg) scale(.92)}100%{transform:none}}
+@keyframes oaMineReveal{0%{transform:scale(.72);filter:brightness(2)}45%{transform:scale(1.12)}100%{transform:none}}
+
+/* MOTO — speed, suspension, parallax and boost */
+.oa-moto-stage{position:relative;isolation:isolate}
+.oa-moto-stage::before{
+  content:"";
+  position:absolute;inset:0;z-index:2;pointer-events:none;
+  background:
+    repeating-linear-gradient(100deg,transparent 0 13%,rgba(207,249,255,.03) 13.2% 13.6%,transparent 13.8% 22%);
+  transform:translateX(-8%);
+  opacity:.18;
+}
+.oa-moto-stage.is-racing::before{animation:oaRoadParallax 2.4s linear infinite}
+.oa-moto-stage.is-fast::before{animation-duration:.8s;opacity:.38}
+.oa-moto-stage.is-fast{
+  box-shadow:inset 0 0 90px rgba(0,0,0,.34),0 0 46px rgba(93,219,255,.13),0 28px 75px rgba(0,0,0,.25);
+}
+.oa-moto-stage.is-fast .oa-moto-speed-lines{
+  animation:oaSpeedPulse .35s ease-in-out infinite alternate;
+}
+.oa-moto-stage svg g:last-of-type{
+  transform-box:fill-box;
+  transform-origin:center;
+  animation:oaBikeSuspension .34s ease-in-out infinite alternate;
+}
+.oa-moto-touch-deck button,.oa-moto-controls button{
+  box-shadow:inset 0 1px rgba(255,255,255,.05),inset 0 -10px 22px rgba(0,0,0,.24),0 6px 14px rgba(0,0,0,.18);
+}
+.oa-moto-touch-deck button:active,.oa-moto-controls button:active{transform:translateY(2px) scale(.985)}
+@keyframes oaRoadParallax{to{transform:translateX(10%)}}
+@keyframes oaSpeedPulse{from{filter:blur(0);opacity:.3}to{filter:blur(1px);opacity:.75}}
+@keyframes oaBikeSuspension{from{translate:0 0}to{translate:0 -1px}}
+
+/* TOWER — heavy doors and threat atmosphere */
+.oa-tower-door-panel{
+  background:
+    radial-gradient(circle at 50% 20%,rgba(89,119,255,.07),transparent 24rem),
+    linear-gradient(180deg,#0a1728,#050c17);
+}
+.oa-tower-door-panel.is-hazard{
+  box-shadow:inset 0 0 70px rgba(255,87,70,.045),0 24px 60px rgba(0,0,0,.2);
+}
+.oa-tower-door-panel.is-busted{
+  animation:oaTowerBust .52s ease-out;
+}
+.oa-doors button{
+  position:relative;
+  border:1px solid rgba(130,170,220,.2);
+  border-bottom-width:4px;
+  background:
+    linear-gradient(90deg,rgba(255,255,255,.035),transparent 12%,transparent 88%,rgba(255,255,255,.02)),
+    linear-gradient(180deg,#152941,#081220 68%,#040910);
+  box-shadow:
+    inset 0 0 0 4px rgba(255,255,255,.015),
+    inset 0 -28px 50px rgba(0,0,0,.3),
+    0 10px 0 #03070d,
+    0 18px 42px rgba(0,0,0,.24);
+}
+.oa-doors button::after{
+  content:"";
+  position:absolute;right:14%;top:48%;
+  width:8px;height:8px;border-radius:50%;
+  background:#82efff;
+  box-shadow:0 0 12px rgba(130,239,255,.55);
+}
+.oa-doors button:not(:disabled):active{transform:translateY(5px);box-shadow:inset 0 -16px 35px rgba(0,0,0,.3),0 4px 0 #03070d}
+.oa-doors button.danger{
+  background:linear-gradient(180deg,#4d1320,#1e0810);
+  border-color:rgba(255,75,104,.6);
+}
+@keyframes oaTowerBust{0%{filter:brightness(1)}28%{filter:brightness(1.8) saturate(1.4)}100%{filter:none}}
+
+/* TOWER DEFENSE — live battlefield energy */
+.oa-td-board{
+  position:relative;
+  isolation:isolate;
+}
+.oa-td-board::before{
+  content:"";
+  position:absolute;inset:0;z-index:2;pointer-events:none;
+  background:
+    radial-gradient(circle at 14% 24%,rgba(77,255,168,.045),transparent 20%),
+    radial-gradient(circle at 76% 72%,rgba(70,187,255,.05),transparent 22%);
+}
+.oa-td-board.is-live::after{
+  content:"";
+  position:absolute;inset:0;z-index:3;pointer-events:none;
+  border:1px solid rgba(99,235,246,.14);
+  box-shadow:inset 0 0 45px rgba(74,224,255,.06);
+  animation:oaBattlePulse 1.4s ease-in-out infinite alternate;
+}
+.oa-td-board.is-boss{
+  box-shadow:inset 0 0 85px rgba(124,76,255,.13),0 0 45px rgba(124,76,255,.08),0 26px 70px rgba(0,0,0,.24);
+}
+.oa-td-board.is-boss .oa-td-battle-label{color:#d5c5ff;text-shadow:0 0 12px rgba(155,102,255,.45)}
+.oa-td-board .oa-node{transition:filter .16s ease,transform .16s ease}
+.oa-td-board .oa-node:hover{filter:brightness(1.35);transform-origin:center;transform:scale(1.025)}
+.oa-td-board svg g:not(.oa-node){filter:drop-shadow(0 2px 2px rgba(0,0,0,.35))}
+@keyframes oaBattlePulse{from{opacity:.35}to{opacity:1}}
+
+/* Desktop gets stronger scene depth; mobile keeps the same identity with lighter cost. */
+@media(min-width:1101px){
+  .oa-game-viewport{perspective:1500px}
+  .oa-panel,.oa-glow-panel{transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease}
+  .oa-panel:hover,.oa-glow-panel:hover{border-color:rgba(108,210,255,.22)}
+}
+@media(max-width:760px),(pointer:coarse){
+  .oa-world-glow{filter:blur(68px);opacity:.075;animation-duration:28s}
+  .oa-world-particles i:nth-child(n+9){display:none}
+  .oa-impact-layer{z-index:520}
+  .oa-page-esclicker .oa-tap-zone::before{width:78vw}
+  .oa-page-esclicker .oa-coin{box-shadow:0 20px 48px rgba(0,0,0,.36),0 0 30px rgba(79,221,255,.12),inset 0 0 32px rgba(95,229,255,.14)}
+  .oa-moto-stage svg g:last-of-type{animation-duration:.44s}
+  .oa-doors button::after{width:7px;height:7px}
+}
+@media(prefers-reduced-motion:reduce){
+  .oa-world-glow,.oa-world-particles i,.oa-page-esclicker .oa-tap-zone::before,
+  .oa-page-esclicker .oa-coin::before,.oa-page-esclicker .oa-coin::after,
+  .oa-machine::before,.oa-mines-board-panel.is-active::before,
+  .oa-moto-stage::before,.oa-moto-stage .oa-moto-speed-lines,
+  .oa-moto-stage svg g:last-of-type,.oa-td-board.is-live::after{
+    animation:none!important;
+  }
+  .oa-impact-layer{display:none!important}
+}
