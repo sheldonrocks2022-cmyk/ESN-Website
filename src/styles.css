@@ -5689,3 +5689,132 @@ html[data-target-size="large"] .nav a{min-height:48px}
 @media(max-width:560px){
   .known-item-grid{grid-template-columns:1fr}
 }
+
+
+/* =========================================================
+   MOBILE NETWORK CONTROLS RESTORE
+   Bring back the removed mobile ESN controls without floating overlap.
+   ========================================================= */
+.mobile-network-strip{display:none}
+
+@media(max-width:860px), (pointer:coarse){
+  .mobile-network-strip{
+    display:grid!important;
+    gap:8px;
+    padding:10px;
+    margin:0;
+    border-top:1px solid rgba(98,241,255,.08);
+    border-bottom:1px solid rgba(98,241,255,.08);
+    background:#06101f;
+    position:relative;
+    z-index:40;
+  }
+
+  .mobile-network-strip-top{
+    display:grid;
+    grid-template-columns:1fr auto;
+    gap:8px;
+    align-items:center;
+  }
+
+  .mobile-season-chip,
+  .mobile-update-chip{
+    min-height:38px;
+    border:1px solid rgba(255,255,255,.07);
+    border-radius:12px;
+    background:#091426;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    padding:0 11px;
+  }
+
+  .mobile-season-chip i{
+    width:7px;
+    height:7px;
+    border-radius:50%;
+    background:#62f1ff;
+    box-shadow:0 0 10px rgba(98,241,255,.45);
+  }
+
+  .mobile-season-chip span,
+  .mobile-update-chip span{
+    color:#dcecff;
+    font-size:.52rem;
+    font-weight:900;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+  }
+
+  .mobile-update-chip b{
+    padding:4px 6px;
+    border-radius:7px;
+    background:rgba(98,241,255,.07);
+    color:#62f1ff;
+    font-size:.42rem;
+    letter-spacing:.08em;
+  }
+
+  .mobile-network-strip-actions{
+    display:grid;
+    grid-template-columns:repeat(4,minmax(0,1fr));
+    gap:6px;
+  }
+
+  .mobile-network-strip-actions button,
+  .mobile-pinned-deck a,
+  .mobile-pinned-deck button{
+    min-width:0;
+    min-height:48px;
+    border:1px solid rgba(255,255,255,.06);
+    border-radius:11px;
+    background:#081321;
+    color:#e7f4ff;
+    display:grid;
+    place-items:center;
+    align-content:center;
+    gap:2px;
+    text-decoration:none;
+    font:inherit;
+  }
+
+  .mobile-network-strip-actions button.active{
+    border-color:rgba(98,241,255,.2);
+    background:rgba(98,241,255,.05);
+  }
+
+  .mobile-network-strip-actions span,
+  .mobile-pinned-deck span{
+    font-size:.72rem;
+    font-weight:950;
+  }
+
+  .mobile-network-strip-actions small,
+  .mobile-pinned-deck small{
+    color:#7688a1;
+    font-size:.4rem;
+    font-weight:900;
+  }
+
+  .mobile-pinned-deck{
+    display:grid;
+    grid-auto-flow:column;
+    grid-auto-columns:minmax(46px,1fr);
+    gap:6px;
+    overflow-x:auto;
+    scrollbar-width:none;
+  }
+
+  .mobile-pinned-deck::-webkit-scrollbar{display:none}
+
+  /* The old floating versions remain disabled in Mobile Safe Mode. */
+  .ev-system-rail,
+  .ev-command-deck,
+  .ev-season-pill,
+  .notification-orb{
+    display:none!important;
+  }
+
+  /* Restore visual update information inline instead of as another fixed card. */
+  .site-update-badge{display:none!important}
+}
