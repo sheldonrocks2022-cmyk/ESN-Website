@@ -8,6 +8,7 @@ import StartupIntro from './StartupIntro'
 import ExperienceLayer, { FooterCommandDeck, HeroReactor } from './ExperienceLayer'
 import NetworkShowcase, { EasterEggLayer } from './NetworkShowcase'
 import NetworkEvolution, { NetworkEvolutionSection } from './NetworkEvolution'
+import { ArcadeProgressCenter, ExplorePage, GalleryPage, NetworkStatsPage, SettingsPage, SiteExpansionLayer, SMPEncyclopediaPage, SupportPage, WhatsNewPage } from './SiteExpansion'
 import ShareCenter from './ShareCenter'
 import { SOCIAL_IMAGE_ALT, SOCIAL_IMAGE_URL, canonicalUrl, getSeo, robotsContent, structuredDataFor } from './seo'
 import { PortfolioPage, StatusCenter, TimelinePage, UpdatesPage, VaultPage, WhatsHappeningNow } from './LiveExperience'
@@ -379,6 +380,16 @@ function Header() {
   const close = () => setOpen(false)
   const inGroup = (paths) => paths.some((path) => location.pathname === path || location.pathname.startsWith(path + '/'))
   const arcadeActive = location.pathname === '/arcade' || ARCADE_GAMES.some(([, route]) => route === location.pathname)
+  const mobileSection = arcadeActive ? 'Arcade'
+    : inGroup(['/smpconnection','/smpconsole','/smpplugin','/smpguide','/storesmp']) ? 'ESN SMP'
+    : inGroup(['/serviceshowcase','/portfolio','/testimonials']) ? 'Services'
+    : inGroup(['/status','/networkstats','/updates','/whatsnew','/timeline','/explore','/gallery']) ? 'Network'
+    : location.pathname==='/estools' ? 'Tools'
+    : location.pathname==='/settings' ? 'Settings'
+    : location.pathname==='/support' ? 'Support'
+    : location.pathname==='/leadership' ? 'Leadership'
+    : location.pathname==='/about' ? 'About'
+    : 'Home'
 
   return (
     <header className={scrolled ? 'site-header scrolled' : 'site-header'}>
@@ -390,6 +401,7 @@ function Header() {
           <i />
           <span>ESN ONLINE</span>
         </div>
+        <span className="mobile-current-section" aria-label="Current section">{mobileSection}</span>
 
         <button className="menu-toggle" type="button" onClick={() => setOpen((v) => !v)} aria-expanded={open} aria-label="Toggle navigation">
           <span />
@@ -419,6 +431,7 @@ function Header() {
               <Link onClick={close} to="/smpconnection">SMP Connection</Link>
               <Link onClick={close} to="/smpconsole">Console Connection</Link>
               <Link onClick={close} to="/smpplugin">Download ESNSMP Plugin</Link>
+              <Link onClick={close} to="/smpguide">SMP Encyclopedia</Link>
               <Link onClick={close} to="/storesmp">SMP Store</Link>
             </div>
           </div>
@@ -443,6 +456,12 @@ function Header() {
               <Link onClick={close} to="/updates">Release Center</Link>
               <Link onClick={close} to="/timeline">Interactive Timeline</Link>
               <Link onClick={close} to="/share">Share Deck</Link>
+              <Link onClick={close} to="/explore">Explore ESN</Link>
+              <Link onClick={close} to="/whatsnew">What's New</Link>
+              <Link onClick={close} to="/networkstats">Network Statistics</Link>
+              <Link onClick={close} to="/gallery">Media Gallery</Link>
+              <Link onClick={close} to="/settings">Performance & Accessibility</Link>
+              <Link onClick={close} to="/support">Report a Problem</Link>
               <Link onClick={close} to="/leadership">Leadership</Link>
               <Link onClick={close} to="/testimonials">35 Verified Reviews</Link>
               <Link onClick={close} to="/faq">FAQ</Link>
@@ -483,6 +502,7 @@ function Footer() {
             <Link to="/smpconnection">Connect</Link>
             <Link to="/smpconsole">Console Guide</Link>
             <Link to="/smpplugin">Download Plugin</Link>
+            <Link to="/smpguide">SMP Encyclopedia</Link>
             <Link to="/storesmp">SMP Store</Link>
             <span>{SMP_HOST}</span>
           </div>
@@ -493,6 +513,12 @@ function Footer() {
             <Link to="/updates">Release Center</Link>
             <Link to="/timeline">Timeline</Link>
             <Link to="/share">Share Deck</Link>
+            <Link to="/explore">Explore ESN</Link>
+            <Link to="/whatsnew">What's New</Link>
+            <Link to="/networkstats">Network Stats</Link>
+            <Link to="/gallery">Media Gallery</Link>
+            <Link to="/settings">Accessibility</Link>
+            <Link to="/support">Report a Problem</Link>
             <Link to="/leadership">Leadership</Link>
             <Link to="/faq">FAQ</Link>
             <a href={DISCORD_URL} target="_blank" rel="noreferrer">Discord Support</a>
@@ -1379,6 +1405,8 @@ function ArcadeHub() {
         </div>
       </section>
 
+      <ArcadeProgressCenter />
+
       <section className="section arcade-hub-section">
         <div className="shell arcade-hub-grid">
           {ARCADE_GAMES.map(([name, route, description], index) => (
@@ -1429,6 +1457,7 @@ function App() {
       <ExperienceLayer />
       <EasterEggLayer />
       <NetworkEvolution />
+      <SiteExpansionLayer />
       <main id="main-content">
         <Routes>
           <Route path="/" element={<Home />} />
@@ -1444,11 +1473,18 @@ function App() {
           <Route path="/smpconnection" element={<SMPConnection />} />
           <Route path="/smpconsole" element={<ConsoleConnection />} />
           <Route path="/smpplugin" element={<SMPPluginDownload />} />
+          <Route path="/smpguide" element={<SMPEncyclopediaPage />} />
           <Route path="/status" element={<StatusCenter />} />
+          <Route path="/networkstats" element={<NetworkStatsPage />} />
           <Route path="/timeline" element={<TimelinePage />} />
           <Route path="/updates" element={<UpdatesPage />} />
           <Route path="/portfolio" element={<PortfolioPage />} />
           <Route path="/share" element={<ShareCenter />} />
+          <Route path="/explore" element={<ExplorePage />} />
+          <Route path="/whatsnew" element={<WhatsNewPage />} />
+          <Route path="/gallery" element={<GalleryPage />} />
+          <Route path="/settings" element={<SettingsPage />} />
+          <Route path="/support" element={<SupportPage />} />
           <Route path="/vault" element={<VaultPage />} />
           <Route path="/estools" element={<ESToolsSuite />} />
           <Route path="/tools" element={<Navigate to="/estools" replace />} />
