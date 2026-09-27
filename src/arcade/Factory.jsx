@@ -15,6 +15,7 @@ export default function FactoryGame(){
   const {wallet,add,spend}=useSharedCoins()
   const [g,setG]=usePersistent('esn_factory_original_v1',{unlockedZones:3,unlockedFloors:2,owned:{0:6,1:1,2:0},lastSync:Date.now()})
   const [filter,setFilter]=useState('AVAILABLE')
+  const [zoneFilter,setZoneFilter]=useState('ALL')
   const floorBonus=useMemo(()=>1+Array.from({length:g.unlockedFloors},(_,i)=>.04+Math.floor(i/2)*.01).reduce((a,b)=>a+b,0),[g.unlockedFloors])
   const rate=useMemo(()=>machines.reduce((sum,m)=>sum+(g.owned[m.id]||0)*m.cps,0)*floorBonus,[g.owned,floorBonus])
   useEffect(()=>{
@@ -34,14 +35,15 @@ export default function FactoryGame(){
     if(m.zone>g.unlockedZones||m.floor>g.unlockedFloors||!spend(cost))return
     setG(x=>({...x,owned:{...x.owned,[m.id]:n+1}}))
   }
-  const shown=machines.filter(m=>filter==='ALL'||(filter==='UNLOCKED ZONES'?m.zone<=g.unlockedZones:(m.zone<=g.unlockedZones&&m.floor<=g.unlockedFloors))).slice(0,18)
+  const shown=machines.filter(m=>filter==='ALL'||(filter==='UNLOCKED ZONES'?m.zone<=g.unlockedZones:(m.zone<=g.unlockedZones&&m.floor<=g.unlockedFloors)))
+  const zones=zoneNames.map((name,i)=>({name,n:i+1})).filter(z=>zoneFilter==='ALL'||(zoneFilter==='UNLOCKED'?z.n<=g.unlockedZones:z.n>g.unlockedZones))
   return <OriginalFrame title="ES Factory" subtitle="53 zones • production floors • 112-machine catalog">
     <section className="oa-panel oa-status-line">Live auto-save active • last sync {Math.max(0,Math.floor((Date.now()-g.lastSync)/1000))}s ago • no offline earnings.</section>
     <section className="oa-panel oa-factory-zones">
       <div className="oa-section-head"><div><span className="oa-kicker">FACTORY ZONES</span><p>Zone map for this browser factory game with 53 unlockable sectors and staged progression tied to factory level milestones.</p></div><div><b>{money(wallet.coins)} ES</b><small>{rate.toFixed(2)} CPS</small></div></div>
-      <div className="oa-filter-row"><button>ALL</button><button>UNLOCKED</button><button>LOCKED</button></div>
+      <div className="oa-filter-row">{['ALL','UNLOCKED','LOCKED'].map(x=><button className={zoneFilter===x?'active':''} onClick={()=>setZoneFilter(x)} key={x}>{x}</button>)}</div>
       <div className="oa-zone-list">
-        {zoneNames.slice(0,12).map((name,i)=>{const n=i+1,open=n<=g.unlockedZones,cost=Math.floor(280*Math.pow(1.45,Math.max(0,n-3)));return <article className={open?'oa-zone active':'oa-zone'} key={name}><div><b>{n}. {name}</b><span>{open?'Unlocked':`Requires Lv.${Math.max(2,n-2)} • ${money(cost)} ES Coins`}</span></div><button disabled={open||wallet.coins<cost} onClick={()=>unlockZone(n)}>{open?'ONLINE':'UNLOCK'}</button></article>})}
+        {zones.map(({name,n})=>{const open=n<=g.unlockedZones,cost=Math.floor(280*Math.pow(1.45,Math.max(0,n-3)));return <article className={open?'oa-zone active':'oa-zone'} key={name}><div><b>{n}. {name}</b><span>{open?'Unlocked':`Requires Lv.${Math.max(2,n-2)} • ${money(cost)} ES Coins`}</span></div><button disabled={open||wallet.coins<cost} onClick={()=>unlockZone(n)}>{open?'ONLINE':'UNLOCK'}</button></article>})}
       </div>
     </section>
 
