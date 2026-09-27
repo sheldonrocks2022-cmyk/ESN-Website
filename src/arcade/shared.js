@@ -4,6 +4,11 @@ const SHARED_KEY='esn_arcade_shared_original_v1'
 const ARCADE_PROGRESS_KEY='esn_arcade_progress_v2'
 const ARCADE_PROGRESS_EVENT='esn-arcade-progress'
 
+function arcadeXpMultiplier(){
+  const day=new Date().getDay()
+  return day===0||day===5||day===6?2:1
+}
+
 export function loadLocal(key,fallback){
   try { return {...fallback,...JSON.parse(localStorage.getItem(key)||'{}')} }
   catch { return fallback }
@@ -83,7 +88,7 @@ export function useArcadeProgress(){
   },[])
 
   const gainXp=useCallback((amount,label='Arcade activity')=>{
-    const value=Math.max(0,Math.floor(amount))
+    const value=Math.max(0,Math.floor(amount))*arcadeXpMultiplier()
     if(!value)return
     commit(p=>({
       ...p,
@@ -95,9 +100,9 @@ export function useArcadeProgress(){
   const track=useCallback((stat,amount=1,xp=0,label='')=>{
     commit(p=>({
       ...p,
-      xp:(p.xp||0)+Math.max(0,Math.floor(xp)),
+      xp:(p.xp||0)+Math.max(0,Math.floor(xp))*arcadeXpMultiplier(),
       totals:{...(p.totals||defaultProgress.totals),[stat]:Math.max(0,(p.totals?.[stat]||0)+amount)},
-      recent:xp>0?[{label:label||stat,xp:Math.floor(xp),at:Date.now()},...(p.recent||[])].slice(0,8):(p.recent||[]),
+      recent:xp>0?[{label:label||stat,xp:Math.floor(xp)*arcadeXpMultiplier(),at:Date.now()},...(p.recent||[])].slice(0,8):(p.recent||[]),
     }))
   },[commit])
 
@@ -108,9 +113,9 @@ export function useArcadeProgress(){
       unlocked=true
       return {
         ...p,
-        xp:(p.xp||0)+xp,
-        achievements:{...(p.achievements||{}),[id]:{label,at:Date.now(),xp}},
-        recent:[{label:'Achievement: '+label,xp,at:Date.now()},...(p.recent||[])].slice(0,8),
+        xp:(p.xp||0)+xp*arcadeXpMultiplier(),
+        achievements:{...(p.achievements||{}),[id]:{label,at:Date.now(),xp:xp*arcadeXpMultiplier()}},
+        recent:[{label:'Achievement: '+label,xp:xp*arcadeXpMultiplier(),at:Date.now()},...(p.recent||[])].slice(0,8),
       }
     })
     return unlocked
