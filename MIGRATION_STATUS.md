@@ -80,3 +80,5 @@ Mobile Coaching is discontinued and must not be restored.
 ## Launch rule
 
 Do not point esnoffical.com at this repository until the test domain has been fully reviewed and every remaining exact-content item is either recovered, corrected by the owner, or deliberately omitted.
+
+- Immersive Systems 7X: 3D route portal transitions; interactive homepage reactor with charge/overdrive; desktop cursor and mobile touch energy trails; live ESN notification center; rare non-blocking visual network events; /share branded 1200x630 PNG card generator with native share/save support for SMP, Arcade, services, releases, and current store products; interactive footer command deck with live telemetry and Command Center bridge. ESN Profiles were intentionally excluded.
