@@ -179,10 +179,10 @@ export function HeroReactor(){
     <div className="flagship-core-visual">
       <ES3DViewer variant="hero" label="Interactive 3D ES Network reactor" />
       <div className="reactor-burst" key={burst} aria-hidden="true"/>
-      <div className="core-orbit-label label-a">SERVICES</div>
-      <div className="core-orbit-label label-b">ARCADE</div>
-      <div className="core-orbit-label label-c">SMP</div>
-      <div className="core-orbit-label label-d">TOOLS</div>
+      <Link className="core-orbit-label label-a" to="/serviceshowcase">SERVICES</Link>
+      <Link className="core-orbit-label label-b" to="/arcade">ARCADE</Link>
+      <Link className="core-orbit-label label-c" to="/smpconnection">SMP</Link>
+      <Link className="core-orbit-label label-d" to="/estools">TOOLS</Link>
       <div className="reactor-energy-ring" style={{'--energy':(energy*3.6)+'deg'}} aria-hidden="true"/>
     </div>
     <div className="reactor-console">
