@@ -3127,6 +3127,9 @@ html[data-lux-route="services"] .service-card:hover{box-shadow:0 30px 88px rgba(
 }
 @media(prefers-reduced-motion:reduce){
   .global-3d-lighting canvas{opacity:.72}
+  .startup-intro.exit .startup-core,
+  .startup-intro.exit .startup-corner{transition:none}
+  .startup-intro.exit .startup-exit-scan{animation:none}
 }
 
 
@@ -3143,9 +3146,49 @@ html[data-lux-route="services"] .service-card:hover{box-shadow:0 30px 88px rgba(
     radial-gradient(circle at 50% 70%,rgb(var(--route-accent-2)/.06),transparent 32rem),
     #02050d;
   opacity:1;visibility:visible;
-  transition:opacity .38s ease,visibility .38s ease;
+  transition:opacity .11s linear,visibility 0s linear .11s;
 }
-.startup-intro.exit{opacity:0;visibility:hidden}
+.startup-intro.exit{
+  opacity:1;
+  visibility:visible;
+}
+.startup-intro.reveal{
+  opacity:0;
+  visibility:hidden;
+}
+.startup-intro.exit .startup-core,
+.startup-intro.exit .startup-corner{
+  opacity:0;
+  transform:translateY(-8px) scale(.985);
+  filter:blur(3px);
+  transition:opacity .3s ease,transform .38s cubic-bezier(.2,.8,.2,1),filter .3s ease;
+}
+.startup-intro.exit .startup-grid,
+.startup-intro.exit .startup-beam{
+  opacity:.08;
+  transition:opacity .32s ease;
+}
+.startup-exit-scan{
+  position:absolute;
+  left:0;
+  right:0;
+  top:-4px;
+  height:2px;
+  z-index:5;
+  opacity:0;
+  background:linear-gradient(90deg,transparent,rgb(var(--route-accent-2)/.3),#fff,rgb(var(--route-accent)/.7),transparent);
+  box-shadow:0 0 22px rgb(var(--route-accent-2)/.5);
+}
+.startup-intro.exit .startup-exit-scan{
+  opacity:1;
+  animation:startupExitScan .36s cubic-bezier(.2,.8,.2,1) both;
+}
+@keyframes startupExitScan{
+  from{top:8%;opacity:0}
+  18%{opacity:1}
+  82%{opacity:1}
+  to{top:92%;opacity:0}
+}
 .startup-grid{
   position:absolute;inset:-15%;opacity:.22;
   background-image:
