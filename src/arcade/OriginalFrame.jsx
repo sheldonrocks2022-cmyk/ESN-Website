@@ -34,6 +34,19 @@ export default function OriginalFrame({title,subtitle='Browser Arcade',children}
       </section>
       {children}
     </main>
+    <footer className="oa-footer">
+      <h2>ES NETWORK (ESN) • GAMING & CREATOR SERVICES</h2>
+      <p>ES Network is the gaming and creator support hub for Fortnite coaching, digital editing, Discord server setups, browser games, tools, and community-first service delivery through Discord tickets.</p>
+      <div>
+        <Link to="/">ESN Official Hub</Link>
+        <Link to="/serviceshowcase">Services</Link>
+        <Link to="/arcade">Arcade</Link>
+        <Link to="/estools">Tools</Link>
+        <Link to="/about">ESN Team & Community</Link>
+        <a href="https://discord.gg/3gxA66KZ8" target="_blank" rel="noreferrer">Order & Support on Discord</a>
+      </div>
+      <small>© {new Date().getFullYear()} ES Network (ESN). All rights reserved.</small>
+    </footer>
     <button className="oa-audio" onClick={()=>setMuted(v=>!v)} aria-label={muted?'Unmute game audio':'Mute game audio'}>{muted?'🔇':'🔊'}</button>
   </div>
 }
