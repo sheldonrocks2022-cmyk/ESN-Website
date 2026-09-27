@@ -239,16 +239,52 @@ export default function TowerDefenseGame(){
 
     <section className="oa-panel oa-td-board-panel">
       <div className="oa-td-hud"><span>COINS: <b>{g.coins}</b></span><span>ROUND: <b>{g.round} / 200</b></span><span>BASE HP: <b>{g.base}</b></span><span>{g.paused?'PAUSED':g.running?'WAVE ACTIVE':'BUILD PHASE'}</span></div>
-      <div className="oa-td-board">
-        <svg viewBox="0 0 100 100" preserveAspectRatio="none">
-          <defs><filter id="pathGlow"><feGaussianBlur stdDeviation="1.2" result="g"/><feMerge><feMergeNode in="g"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
-          <polyline points={path.map(([x,y])=>`${x*100},${y*100}`).join(' ')} fill="none" stroke="rgba(164,210,229,.35)" strokeWidth="7" strokeLinejoin="round"/>
-          <polyline points={path.map(([x,y])=>`${x*100},${y*100}`).join(' ')} fill="none" stroke="rgba(140,225,242,.34)" strokeWidth="3" filter="url(#pathGlow)" strokeLinejoin="round"/>
-          <text x="4" y="84" fill="#ffb62f" fontSize="4">SPAWN</text><text x="85" y="63" fill="#d9ffff" fontSize="4">BASE</text>
-          {nodes.map(([x,y],i)=><g key={i} onClick={()=>place(i)} className={g.selectedNode===i?'oa-node selected':'oa-node'}><circle cx={x*100} cy={y*100} r="6.6" fill={g.placed[i]?'rgba(64,177,194,.32)':'#0c1833'} stroke={g.selectedNode===i?'#ffffff':'#62eaf6'} strokeWidth={g.placed[i]?'1':'.35'}/><text x={x*100} y={y*100+1.3} textAnchor="middle" fill="#dffcff" fontSize="4">{g.placed[i]?TOWERS[g.placed[i].type].mark:g.selectedNode===i?'•':'+'}</text>{g.placed[i]&&<text x={x*100} y={y*100+7.8} textAnchor="middle" fill="#8ddff0" fontSize="2.6">L{g.placed[i].level}</text>}</g>)}
-          {g.enemies.filter(e=>e.t>=0).map(e=>{const [x,y]=lerpPath(e.t);return <g key={e.id}><rect x={x*100-1.8} y={y*100-1.8} width="3.6" height="3.6" rx=".5" fill={e.boss?'#9a63ff':e.elite?'#ffb84d':'#e8f4ff'} stroke="#061224" strokeWidth=".4"/><rect x={x*100-2.2} y={y*100-3.1} width="4.4" height=".55" fill="#1a2847"/><rect x={x*100-2.2} y={y*100-3.1} width={4.4*Math.max(0,e.hp/e.max)} height=".55" fill={e.boss?'#b277ff':e.elite?'#ffc45c':'#50e28c'}/></g>})}
-        </svg>
+      <div className="oa-mobile-only oa-td-mobile-command">
+        <div className="oa-td-mobile-actions">
+          <button onClick={startWave} disabled={g.running||g.base<=0||g.completed}>{g.running?'WAVE LIVE':'START'}</button>
+          <button onClick={()=>setG(s=>({...s,paused:!s.paused}))} disabled={!g.running}>{g.paused?'RESUME':'PAUSE'}</button>
+          <button onClick={()=>setG(s=>({...s,speed:s.speed===1?2:1}))}>{g.speed}×</button>
+          <button onClick={pulse} disabled={!pulseReady||!g.running}>{pulseReady?'PULSE':'COOL'}</button>
+          <button onClick={repair} disabled={g.coins<220||g.base>=150}>REPAIR</button>
+        </div>
+        <div className="oa-td-mobile-towers">
+          {TOWERS.map((t,i)=><button className={g.selected===i?'active':''} key={'mobile-'+t.name} onClick={()=>setG(s=>({...s,selected:i}))}><b>{t.mark}</b><span>{t.name}</span><small>{t.cost}C</small></button>)}
+        </div>
+        {selectedPlaced&&<div className="oa-td-mobile-selected">
+          <div><span>SELECTED</span><b>{selectedPlacedTower.name} L{selectedPlaced.level}</b><small>DMG {selectedStats.damage.toFixed(1)} • RNG {Math.round(selectedStats.range*100)}</small></div>
+          <button onClick={upgradeSelected} disabled={selectedPlaced.level>=8||g.coins<upgradeCost(selectedPlacedTower,selectedPlaced.level)}>{selectedPlaced.level>=8?'MAX':'UP '+upgradeCost(selectedPlacedTower,selectedPlaced.level)+'C'}</button>
+          <button onClick={sellSelected}>SELL</button>
+        </div>}
       </div>
+      <div className="oa-td-board">
+        <div className="oa-td-battle-label"><span>{g.paused?'PAUSED':g.running?'WAVE ACTIVE':'BUILD PHASE'}</span><b>WAVE {g.round}</b></div>
+        <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+          <defs>
+            <filter id="pathGlow"><feGaussianBlur stdDeviation="1.2" result="g"/><feMerge><feMergeNode in="g"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+            <linearGradient id="tdTerrain" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#173b3a"/><stop offset="100%" stopColor="#081826"/></linearGradient>
+            <linearGradient id="tdRoad" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stopColor="#725d49"/><stop offset="100%" stopColor="#3f3540"/></linearGradient>
+            <radialGradient id="tdBaseGlow"><stop offset="0%" stopColor="#c5ffff"/><stop offset="100%" stopColor="#4de7f4" stopOpacity=".08"/></radialGradient>
+          </defs>
+          <rect width="100" height="100" fill="url(#tdTerrain)"/>
+          {[12,27,48,69,88].map((x,i)=><g key={'terrain-'+x} opacity=".3"><circle cx={x} cy={18+(i%3)*24} r={4+(i%2)*2} fill="#1f5a45"/><circle cx={x+4} cy={20+(i%3)*24} r="2.8" fill="#2b7458"/></g>)}
+          <polyline points={path.map(([x,y])=>`${x*100},${y*100}`).join(' ')} fill="none" stroke="#181720" strokeWidth="9" strokeLinejoin="round"/>
+          <polyline points={path.map(([x,y])=>`${x*100},${y*100}`).join(' ')} fill="none" stroke="url(#tdRoad)" strokeWidth="6.4" strokeLinejoin="round"/>
+          <polyline points={path.map(([x,y])=>`${x*100},${y*100}`).join(' ')} fill="none" stroke="rgba(140,225,242,.32)" strokeWidth=".65" filter="url(#pathGlow)" strokeDasharray="2 1.5" strokeLinejoin="round"/>
+          <g transform="translate(4 78)"><circle r="4.6" fill="#35193f" stroke="#b56cff" strokeWidth=".8"/><circle r="2.2" fill="#d38cff"/><text x="-2.8" y="8" fill="#f1c9ff" fontSize="3.2">SPAWN</text></g>
+          <g transform="translate(96 58)"><rect x="-4" y="-5" width="8" height="10" rx="1.3" fill="#102d46" stroke="#a9fbff" strokeWidth=".7"/><circle r="7" fill="url(#tdBaseGlow)" opacity=".28"/><text x="-8" y="11" fill="#d9ffff" fontSize="3.2">BASE</text></g>
+          {selectedPlaced&&selectedStats&&<circle cx={nodes[g.selectedNode][0]*100} cy={nodes[g.selectedNode][1]*100} r={selectedStats.range*100} fill="rgba(98,234,246,.055)" stroke="rgba(98,234,246,.35)" strokeWidth=".45" strokeDasharray="1.4 1.2"/>}
+          {nodes.map(([x,y],i)=><g key={i} onClick={()=>place(i)} className={g.selectedNode===i?'oa-node selected':'oa-node'}>
+            <circle cx={x*100} cy={y*100} r="6.9" fill={g.placed[i]?'rgba(22,59,67,.92)':'rgba(8,20,34,.92)'} stroke={g.selectedNode===i?'#ffffff':'#62eaf6'} strokeWidth={g.placed[i]?'1':'.45'}/>
+            {g.placed[i]?<><circle cx={x*100} cy={y*100} r="3.7" fill="#173a55" stroke="#b8fbff" strokeWidth=".5"/><rect x={x*100-.7} y={y*100-5.1} width="1.4" height="5" rx=".5" fill="#c4fbff"/><text x={x*100} y={y*100+1.25} textAnchor="middle" fill="#efffff" fontSize="3.6">{TOWERS[g.placed[i].type].mark}</text><text x={x*100} y={y*100+8.2} textAnchor="middle" fill="#8ddff0" fontSize="2.5">L{g.placed[i].level}</text></>:<text x={x*100} y={y*100+1.6} textAnchor="middle" fill="#8df4ff" fontSize="4.8">+</text>}
+          </g>)}
+          {g.enemies.filter(e=>e.t>=0).map(e=>{const [x,y]=lerpPath(e.t);const size=e.boss?2.8:e.elite?2.15:1.7;return <g key={e.id}>
+            <circle cx={x*100} cy={y*100} r={size+1.1} fill={e.boss?'rgba(159,89,255,.16)':e.elite?'rgba(255,184,77,.13)':'rgba(230,246,255,.1)'}/>
+            <circle cx={x*100} cy={y*100} r={size} fill={e.boss?'#9a63ff':e.elite?'#ffb84d':'#e8f4ff'} stroke="#061224" strokeWidth=".45"/>
+            <rect x={x*100-2.6} y={y*100-4.2} width="5.2" height=".65" rx=".2" fill="#1a2847"/>
+            <rect x={x*100-2.6} y={y*100-4.2} width={5.2*Math.max(0,e.hp/e.max)} height=".65" rx=".2" fill={e.boss?'#b277ff':e.elite?'#ffc45c':'#50e28c'}/>
+          </g>})}
+        </svg>
+      </div>>
     </section>
 
     <section className="oa-panel oa-td-loadout-panel">
