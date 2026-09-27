@@ -149,7 +149,7 @@ if (!immersiveLayer.includes('NotificationCenter') || !immersiveLayer.includes('
 if (!immersiveLayer.includes('NetworkEvents') || !immersiveLayer.includes('VISUAL EVENT ONLY')) problems.push('Rare visual network event system missing.')
 if (!immersiveLayer.includes('FooterCommandDeck') || !immersiveLayer.includes('ESN COMMAND DECK')) problems.push('Interactive footer command deck missing.')
 if (!shareCenter.includes('1200') || !shareCenter.includes('630') || !shareCenter.includes('toBlob') || !shareCenter.includes('toDataURL') || !shareCenter.includes('navigator.share')) problems.push('Share Deck must generate real 1200x630 PNG cards and support native sharing.')
-if (!seo.includes("export const SEO_ROUTES=") || !seo.includes("export const SEO_LAUNCH_MODE='staging'")) problems.push('Shared SEO route configuration missing or staging launch protection disabled before cutover.')
+if (!seo.includes("export const SEO_ROUTES=") || !seo.includes("export const SEO_LAUNCH_MODE='production'")) problems.push('Shared SEO route configuration missing or production launch mode is not enabled.')
 if (!seo.includes("SOCIAL_IMAGE_URL=SITE_URL+'/esn-social-card.svg'") || !seo.includes('SOCIAL_IMAGE_ALT')) problems.push('Shared ESN social preview metadata missing.')
 if (!socialPreview.includes('width="1200"') || !socialPreview.includes('height="630"') || !socialPreview.includes('BUILD. PLAY. CREATE.')) problems.push('ESN 1200x630 social preview asset is missing or malformed.')
 if (!app.includes('SOCIAL_IMAGE_URL') || !app.includes("setAlternate('en-US')") || !app.includes("setAlternate('x-default')")) problems.push('Live SEO manager is missing social image or hreflang support.')
@@ -181,7 +181,7 @@ for (const [route,meta] of indexedSeoEntries) {
 }
 if (!app.includes("from './seo'") || !app.includes('structuredDataFor(location.pathname)') || !app.includes('robotsContent(location.pathname')) problems.push('Live React SEO manager is not using the shared SEO source.')
 if (!prerender.includes("from '../src/seo.js'") || !prerender.includes('structuredDataFor(route)') || !prerender.includes("path.join('dist', 'sitemap.xml')")) problems.push('Prerendered SEO or generated sitemap is not using the shared SEO source.')
-if (!indexHtml.includes('name="robots" content="noindex, nofollow"') || !indexHtml.includes('name="googlebot" content="noindex, nofollow"')) problems.push('Staging base HTML must remain statically noindex until the .com cutover.')
+if (!indexHtml.includes('name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"') || !indexHtml.includes('name="googlebot" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"')) problems.push('Production base HTML crawler directives are not enabled for the .com launch.')
 if (!seo.includes("'@type':'FAQPage'") || !seo.includes("'@type':'Service'") || !seo.includes("'@type':'VideoGame'")) problems.push('SEO structured-data coverage is incomplete.')
 if (!seo.includes("max-image-preview:large") || !seo.includes("max-snippet:-1")) problems.push('Production crawler directives are incomplete.')
 if (!seo.includes("'/vault':") || !seo.includes("nofollow:true")) problems.push('Secret Vault must remain excluded from search indexing.')
