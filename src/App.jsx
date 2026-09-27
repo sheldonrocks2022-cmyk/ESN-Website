@@ -508,224 +508,254 @@ function PageHero({ eyebrow, title, text, actions }) {
 function Home() {
   return (
     <>
-      <section className="hero" id="hero-banner">
+      <section className="hero flagship-hero" id="hero-banner">
         <div className="hero-grid" aria-hidden="true" />
         <div className="hero-orb orb-one" aria-hidden="true" />
         <div className="hero-orb orb-two" aria-hidden="true" />
         <div className="hero-scanline" aria-hidden="true" />
+        <div className="flagship-horizon" aria-hidden="true" />
+        <div className="flagship-lines" aria-hidden="true" />
 
-        <div className="shell hero-layout">
-          <div className="hero-content">
+        <div className="shell flagship-hero-layout">
+          <div className="flagship-hero-copy">
             <div className="hero-badge-row">
               <span className="signal-badge"><i /> ESN SYSTEMS ONLINE</span>
-              <span className="hero-version">NETWORK // 2026</span>
+              <span className="hero-version">ES NETWORK // 2026</span>
             </div>
 
-            <span className="eyebrow">ES NETWORK • OFFICIAL DIGITAL HUB</span>
-            <h1>One network.<br /><span>Everything ESN.</span></h1>
-            <p>Creator services, verified customer reviews, six browser games, free tools, community support, and the ESN SMP — built into one connected experience.</p>
+            <span className="eyebrow">OFFICIAL ES NETWORK DIGITAL HUB</span>
+            <h1><span className="hero-line-small">One network.</span><br /><span className="hero-line-main">Everything ESN.</span></h1>
+            <p>Creator services, verified customer reviews, six original browser games, free tools, community support, and the ESN SMP — built as one connected digital network.</p>
 
-            <div className="hero-actions">
-              <Link className="button primary" to="/serviceshowcase">Explore ESN <span>↗</span></Link>
+            <div className="hero-actions flagship-actions">
+              <Link className="button primary" to="/serviceshowcase">Enter ES Network <span>↗</span></Link>
               <a className="button secondary" href={DISCORD_URL} target="_blank" rel="noreferrer">Join the community</a>
             </div>
 
-            <div className="hero-stats premium-stats">
-              <div><strong>35</strong><span>Verified reviews</span></div>
-              <div><strong>6</strong><span>Browser Arcade games</span></div>
-              <div><strong>{SMP_HOST}</strong><span>ESN SMP</span></div>
+            <div className="flagship-metrics">
+              <div><span>01</span><strong>35</strong><small>Verified reviews</small></div>
+              <div><span>02</span><strong>6</strong><small>Original Arcade games</small></div>
+              <div><span>03</span><strong>{SMP_HOST}</strong><small>ESN SMP</small></div>
             </div>
           </div>
 
-          <aside className="hero-control-panel">
-            <div className="control-panel-top">
-              <span>NETWORK STATUS</span>
-              <i />
-            </div>
-            <div className="control-main control-main-3d">
+          <aside className="flagship-core-stage">
+            <div className="flagship-core-top"><span>ESN CORE</span><i /><b>LIVE</b></div>
+            <div className="flagship-core-visual">
               <ES3DViewer variant="hero" label="Interactive 3D ES Network centerpiece" />
-              <div className="control-3d-label">
-                <span>ES NETWORK</span>
-                <strong>INTERACTIVE 3D CORE</strong>
-              </div>
+              <div className="core-orbit-label label-a">SERVICES</div>
+              <div className="core-orbit-label label-b">ARCADE</div>
+              <div className="core-orbit-label label-c">SMP</div>
+              <div className="core-orbit-label label-d">TOOLS</div>
             </div>
-            <div className="control-grid">
-              <Link to="/serviceshowcase"><span>01</span><b>Services</b><small>Creator & gaming</small></Link>
-              <Link to="/arcade"><span>02</span><b>Arcade</b><small>6 original games</small></Link>
-              <Link to="/smpconnection"><span>03</span><b>ESN SMP</b><small>Connect & play</small></Link>
-              <Link to="/testimonials"><span>04</span><b>Reviews</b><small>35 verified</small></Link>
+            <div className="flagship-core-footer">
+              <span>INTERACTIVE NETWORK CORE</span>
+              <strong>DRAG • ROTATE • EXPLORE</strong>
             </div>
           </aside>
         </div>
+
+        <div className="shell flagship-route-strip">
+          <Link to="/serviceshowcase"><span>01</span><b>Services</b><small>Creator & gaming</small><em>↗</em></Link>
+          <Link to="/arcade"><span>02</span><b>Arcade</b><small>Six original games</small><em>↗</em></Link>
+          <Link to="/smpconnection"><span>03</span><b>ESN SMP</b><small>Connect & play</small><em>↗</em></Link>
+          <Link to="/estools"><span>04</span><b>ES Tools</b><small>Free browser utilities</small><em>↗</em></Link>
+        </div>
       </section>
 
-      <section className="section" aria-labelledby="services-title">
+      <section className="section flagship-story-section">
+        <div className="shell flagship-story">
+          <aside className="flagship-story-sticky">
+            <span className="eyebrow">THE NETWORK</span>
+            <h2>Not a collection of pages.<br />One connected experience.</h2>
+            <p>Every major part of ESN now lives inside the same premium system — same navigation, same identity, same visual language.</p>
+            <Link className="text-link" to="/about">About ES Network →</Link>
+          </aside>
+
+          <div className="flagship-story-stack">
+            <article className="story-panel story-services" id="fortnite-coaching">
+              <span className="story-index">01</span>
+              <div><span className="eyebrow">CREATOR & GAMING SERVICES</span><h3>Work directly with ESN.</h3><p>Fortnite coaching, editing, Discord server setups, website projects, and other selected digital services.</p><Link to="/serviceshowcase">Explore services →</Link></div>
+              <strong>SERVICES</strong>
+            </article>
+
+            <article className="story-panel story-smp">
+              <span className="story-index">02</span>
+              <div><span className="eyebrow">ESN SMP</span><h3>A Minecraft world inside the network.</h3><p>Join at {SMP_HOST}:{SMP_PORT}, browse the official store, use the console guide, or download the public ESNSMP plugin.</p><Link to="/smpconnection">Enter the SMP hub →</Link></div>
+              <strong>SMP</strong>
+            </article>
+
+            <article className="story-panel story-arcade">
+              <span className="story-index">03</span>
+              <div><span className="eyebrow">ESN ARCADE</span><h3>Six original browser games.</h3><p>Clicker, Factory, Mines, MOTO, Tower, and Tower Defense — all inside the same ESN shell.</p><Link to="/arcade">Open the Arcade →</Link></div>
+              <strong>PLAY</strong>
+            </article>
+
+            <article className="story-panel story-tools" id="home-tools">
+              <span className="story-index">04</span>
+              <div><span className="eyebrow">ES TOOLS</span><h3>Fast utilities with no account wall.</h3><p>Challenge generation, timers, prompt building, randomizers, coin/dice tools, and website estimates.</p><Link to="/estools">Open ES Tools →</Link></div>
+              <strong>TOOLS</strong>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section className="section flagship-services-section" aria-labelledby="services-title">
         <div className="shell">
-          <div className="section-heading">
-            <div>
-              <span className="eyebrow">What we do</span>
-              <h2 id="services-title">Built for players, creators, and communities.</h2>
-            </div>
+          <div className="section-heading flagship-heading">
+            <div><span className="eyebrow">WHAT WE DO</span><h2 id="services-title">Built for players, creators, and communities.</h2></div>
             <Link className="text-link" to="/serviceshowcase">View full showcase →</Link>
           </div>
-          <div className="card-grid three">
-            {SERVICES.map((service, index) => (
-              <article className="service-card" id={service.id} key={service.id}>
-                <span className="card-number">0{index + 1}</span>
+
+          <div className="flagship-service-bento">
+            {SERVICES.map((service,index)=>(
+              <article className={`service-card flagship-service-card service-${index+1}`} id={service.id} key={service.id}>
+                <div className="service-card-top"><span className="card-number">0{index+1}</span><span className="service-live"><i/> AVAILABLE</span></div>
                 <span className="eyebrow">{service.eyebrow}</span>
                 <h3>{service.title}</h3>
                 <p>{service.text}</p>
-                <a href={DISCORD_URL} target="_blank" rel="noreferrer">Open a Discord ticket →</a>
+                <a href={DISCORD_URL} target="_blank" rel="noreferrer">Open a Discord ticket <span>↗</span></a>
               </article>
+            ))}
+
+            <article className="service-card flagship-service-card service-more">
+              <span className="eyebrow">MORE FROM ESN</span>
+              <h3>Website projects, branding, memberships, and custom work.</h3>
+              <p>Explore the full Service Showcase for additional ESN categories and project types.</p>
+              <Link to="/serviceshowcase">See everything ESN offers →</Link>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section className="section flagship-smp-section">
+        <div className="shell flagship-smp-stage">
+          <div className="flagship-smp-copy">
+            <div className="flagship-big-index">ESN // SMP</div>
+            <span className="eyebrow">MINECRAFT NETWORK</span>
+            <h2>The network has its own world.</h2>
+            <p>Connect to the ESN SMP, shop official server items, use the console walkthrough, or download the latest public ESNSMP plugin release.</p>
+            <div className="flagship-smp-address"><span>SERVER</span><strong>{SMP_HOST}</strong><small>PORT {SMP_PORT}</small></div>
+            <div className="hero-actions">
+              <Link className="button primary" to="/smpconnection">Connection details</Link>
+              <Link className="button secondary" to="/storesmp">Open SMP Store</Link>
+            </div>
+          </div>
+
+          <div className="flagship-smp-grid">
+            <Link to="/smpconsole"><span>01</span><strong>Console Guide</strong><small>Xbox • PlayStation • Switch</small><em>↗</em></Link>
+            <Link to="/smpplugin"><span>02</span><strong>Public Plugin</strong><small>Download ESNSMP.jar</small><em>↓</em></Link>
+            <Link to="/storesmp"><span>03</span><strong>SMP Store</strong><small>Official Stripe checkout</small><em>↗</em></Link>
+            <a href={DISCORD_URL} target="_blank" rel="noreferrer"><span>04</span><strong>Support</strong><small>ESN Discord</small><em>↗</em></a>
+          </div>
+        </div>
+      </section>
+
+      <section className="section flagship-arcade-section">
+        <div className="shell">
+          <div className="section-heading flagship-heading">
+            <div><span className="eyebrow">ESN ARCADE</span><h2>Six worlds. One launch deck.</h2></div>
+            <Link className="text-link" to="/arcade">Enter Arcade →</Link>
+          </div>
+
+          <div className="flagship-arcade-rail">
+            {ARCADE_GAMES.map(([name,route,description],index)=>(
+              <Link className="flagship-game-card" to={route} key={route}>
+                <span className="flagship-game-index">{String(index+1).padStart(2,'0')}</span>
+                <div className="flagship-game-glow" aria-hidden="true"/>
+                <span className="eyebrow">ORIGINAL ESN GAME</span>
+                <h3>{name}</h3>
+                <p>{description}</p>
+                <div className="flagship-game-launch"><span>LAUNCH</span><b>↗</b></div>
+              </Link>
             ))}
           </div>
         </div>
       </section>
 
-      <section className="section panel-section" id="discord-exclusive-services">
-        <div className="shell split-panel">
+      <section className="section flagship-community-section" id="discord-exclusive-services">
+        <div className="shell flagship-community-stage">
           <div>
-            <span className="eyebrow">Community first</span>
+            <span className="eyebrow">COMMUNITY FIRST</span>
             <h2>ES Network lives where the community does.</h2>
             <p>Service support, updates, announcements, SMP information, and community access all connect back to the official ESN Discord.</p>
           </div>
-          <a className="button primary" href={DISCORD_URL} target="_blank" rel="noreferrer">Join ESN Discord</a>
-        </div>
-      </section>
-
-      <section className="section" id="community-safety">
-        <div className="shell two-column">
-          <div>
-            <span className="eyebrow">Community Safety</span>
-            <h2>A clearer place to connect.</h2>
+          <div className="flagship-community-actions">
+            <a className="button primary" href={DISCORD_URL} target="_blank" rel="noreferrer">Join ESN Discord</a>
+            <div className="flagship-community-status"><i/><span>COMMUNITY ACCESS</span><strong>OPEN</strong></div>
           </div>
-          <p className="large-copy">ESN is built around organized support channels, community rules, and direct ticket-based help for services and account questions.</p>
         </div>
       </section>
 
-      <section className="section dark-section">
+      <section className="section flagship-safety-section" id="community-safety">
+        <div className="shell flagship-safety-grid">
+          <div><span className="eyebrow">COMMUNITY SAFETY</span><h2>A clearer place to connect.</h2></div>
+          <div className="flagship-safety-copy"><span>DIRECT SUPPORT</span><p>ESN uses organized support channels, community rules, and ticket-based help for services, SMP support, and general community questions.</p></div>
+        </div>
+      </section>
+
+      <section className="section flagship-leadership-section" id="meet-the-team">
+        <div className="shell flagship-leadership">
+          <div className="flagship-leader-mark">L</div>
+          <div className="flagship-leader-copy">
+            <span className="eyebrow">FOUNDER & CEO</span>
+            <h2>Landon</h2>
+            <p>Founder & CEO of ES Network.</p>
+            <div className="responsibility-tags">{LANDON_RESPONSIBILITIES.slice(0,3).map(item=><span key={item}>{item}</span>)}</div>
+          </div>
+          <Link className="flagship-leader-link" to="/leadership"><span>Meet the team</span><b>↗</b></Link>
+        </div>
+      </section>
+
+      <section className="section flagship-reviews-section" id="reviews">
         <div className="shell">
-          <div className="section-heading">
-            <div>
-              <span className="eyebrow">ESN SMP</span>
-              <h2>The network has its own Minecraft world.</h2>
-            </div>
-            <Link className="text-link" to="/smpconnection">Connection details →</Link>
+          <div className="flagship-review-header">
+            <div><span className="eyebrow">VERIFIED SOCIAL PROOF</span><h2>35 real ESN customer reviews.</h2><p>Discord feedback from Fortnite coaching, editing, and Discord server setup clients.</p></div>
+            <div className="flagship-review-score"><strong>35</strong><span>VERIFIED</span><small>Discord reviews</small></div>
           </div>
-          <div className="card-grid two">
-            <article className="feature-panel">
-              <span className="eyebrow">Server</span>
-              <h3>{SMP_HOST}</h3>
-              <p>Port {SMP_PORT}. Join the ESN SMP using the current connection details.</p>
-              <Link to="/smpconnection">View connection page →</Link>
-            </article>
-            <article className="feature-panel">
-              <span className="eyebrow">Store</span>
-              <h3>Official SMP Store</h3>
-              <p>Realm keys and current ESN SMP bundles with Stripe checkout and username-based delivery.</p>
-              <Link to="/storesmp">Open store →</Link>
-            </article>
-          </div>
-        </div>
-      </section>
-
-      <section className="section">
-        <div className="shell">
-          <div className="section-heading">
-            <div>
-              <span className="eyebrow">Arcade</span>
-              <h2>Six upgraded browser games.</h2>
-            </div>
-            <Link className="text-link" to="/arcade">Open Arcade →</Link>
-          </div>
-          <div className="game-strip">
-            {ARCADE_GAMES.map(([name, route]) => <Link to={route} key={route}>{name}</Link>)}
-          </div>
-        </div>
-      </section>
-
-      <section className="section panel-section" id="home-tools">
-        <div className="shell split-panel">
-          <div>
-            <span className="eyebrow">ES Tools</span>
-            <h2>Free tools are back — and interactive.</h2>
-            <p>Use challenge generation, timers, prompt building, randomizers, quick coin/dice utilities, and website estimates directly in the browser.</p>
-          </div>
-          <Link className="button primary" to="/estools">Open ES Tools</Link>
-        </div>
-      </section>
-
-      <section className="section dark-section" id="meet-the-team">
-        <div className="shell">
-          <div className="section-heading">
-            <div>
-              <span className="eyebrow">Leadership</span>
-              <h2>People behind ES Network.</h2>
-            </div>
-            <Link className="text-link" to="/leadership">Meet leadership →</Link>
-          </div>
-          <div className="feature-card">
-            <div className="avatar-placeholder">L</div>
-            <div>
-              <span className="eyebrow">Founder & CEO</span>
-              <h3>Landon</h3>
-              <p>Founder & CEO of ES Network.</p>
-              <ul className="role-list compact-role-list">
-                {LANDON_RESPONSIBILITIES.slice(0, 3).map((item) => <li key={item}>{item}</li>)}
-              </ul>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="section" id="reviews">
-        <div className="shell">
-          <div className="section-heading">
-            <div>
-              <span className="eyebrow">Social Proof</span>
-              <h2>Verified ESN customer reviews.</h2>
-              <p className="large-copy max-copy">Real Discord feedback from Fortnite coaching, editing, and Discord server setup clients.</p>
-            </div>
-            <Link className="text-link" to="/testimonials">View all 35 reviews →</Link>
-          </div>
-          <div className="reviews-grid review-preview-grid">
-            {[VERIFIED_REVIEWS[0], VERIFIED_REVIEWS[12], VERIFIED_REVIEWS[24]].map((review) => (
-              <ReviewCard key={review.handle} review={review} />
+          <div className="flagship-review-wall">
+            {[VERIFIED_REVIEWS[0],VERIFIED_REVIEWS[12],VERIFIED_REVIEWS[24]].map((review,index)=>(
+              <div className={`flagship-review-slot slot-${index+1}`} key={review.handle}><ReviewCard review={review}/></div>
             ))}
           </div>
+          <Link className="flagship-review-link" to="/testimonials"><span>View all 35 verified reviews</span><b>↗</b></Link>
         </div>
       </section>
 
-      <section className="section panel-section" id="how-it-works">
+      <section className="section flagship-process-section" id="how-it-works">
         <div className="shell">
-          <span className="eyebrow">How it works</span>
-          <div className="steps">
-            <div><strong>01</strong><h3>Choose</h3><p>Find the ESN service, tool, Arcade game, or SMP destination you need.</p></div>
-            <div><strong>02</strong><h3>Connect</h3><p>Use the official Discord for service ordering and support.</p></div>
-            <div><strong>03</strong><h3>Complete</h3><p>Work through the correct ESN channel for delivery, support, or community access.</p></div>
+          <div className="section-heading flagship-heading"><div><span className="eyebrow">HOW IT WORKS</span><h2>Three steps. One network.</h2></div></div>
+          <div className="flagship-process">
+            <div><span>01</span><strong>Choose</strong><p>Find the service, tool, Arcade game, or SMP destination you need.</p></div>
+            <div><span>02</span><strong>Connect</strong><p>Use the official ESN Discord for service ordering and support.</p></div>
+            <div><span>03</span><strong>Complete</strong><p>Work through the correct ESN channel for delivery, support, or community access.</p></div>
           </div>
         </div>
       </section>
 
-      <section className="section" id="faq">
-        <div className="shell narrow">
-          <span className="eyebrow">FAQ</span>
-          <h2>Quick answers.</h2>
+      <section className="section flagship-faq-section" id="faq">
+        <div className="shell flagship-faq-layout">
+          <div><span className="eyebrow">FAQ</span><h2>Quick answers.</h2><p>Everything important without digging through the site.</p><Link className="text-link" to="/faq">Full FAQ →</Link></div>
           <div className="faq-list">
-            {FAQ_ITEMS.slice(0, 4).map(([q, a]) => (
-              <details key={q}>
-                <summary>{q}</summary>
-                <p>{a}</p>
-              </details>
-            ))}
+            {FAQ_ITEMS.slice(0,4).map(([q,a])=><details key={q}><summary>{q}</summary><p>{a}</p></details>)}
           </div>
-          <Link className="text-link" to="/faq">Read the full FAQ →</Link>
+        </div>
+      </section>
+
+      <section className="section flagship-final-section">
+        <div className="shell flagship-final-cta">
+          <span className="flagship-final-kicker">ES NETWORK</span>
+          <h2>Build. Play. Create.<br/><span>Stay inside the network.</span></h2>
+          <p>Everything ESN — services, community, tools, Arcade, and SMP — in one connected experience.</p>
+          <div className="hero-actions">
+            <Link className="button primary" to="/serviceshowcase">Explore ESN</Link>
+            <a className="button secondary" href={DISCORD_URL} target="_blank" rel="noreferrer">Join Discord</a>
+          </div>
         </div>
       </section>
     </>
   )
 }
-
 function About() {
   return (
     <>
