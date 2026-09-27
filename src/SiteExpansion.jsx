@@ -71,6 +71,9 @@ const EXPLORE_FEATURES=[
   ['Accessibility Center','Text size, contrast, motion, flashing, target-size, and performance controls.','/settings','ACCESS'],
   ['Search Categories','Universal Search now groups ESN results by category.','/explore','SEARCH'],
   ['Feature Discovery','This page shows the major systems the ESN website can actually do.','/explore','DISCOVER'],
+  ['Notification Center','Keep release, reward, achievement, SMP, and local browser alerts in one account-free inbox.','/notifications','ALERTS'],
+  ['Reward Vault','Spend locally earned Network Shards on cosmetic core skins and profile titles.','/rewards','REWARDS'],
+  ['Challenge Lab','Create and accept shareable Arcade target challenges without accounts or fake opponents.','/challenges','CHALLENGE'],
 ]
 
 const COMMANDS=[
@@ -219,6 +222,7 @@ const KNOWN_ITEMS=[
 ]
 
 const WHAT_IS_NEW=[
+  ['No-Account Expansion','Notification Center, Reward Vault, shareable Challenge Lab, stronger Nexus actions, richer SMP telemetry, and the code-gated Staff Dashboard are now wired into ESN.'],
   ['Expansion 20','20 requested website systems added in one connected feature batch.'],
   ['Installable ESN','PWA manifest, service worker registration, install prompt support, home-screen launch, and standalone display mode.'],
   ['Adaptive Performance','Automatic device-aware mode plus manual Auto, Performance, and Premium selection.'],
@@ -389,7 +393,7 @@ export function SettingsPage(){
 export function WhatsNewPage(){
   useEffect(()=>{localStorage.setItem('esn_last_seen_release',RELEASE_ID)},[])
   return <>
-    <section className="page-hero"><div className="shell page-hero-inner"><div className="page-hero-copy"><span className="eyebrow">WHAT'S NEW</span><h1>Everything added in the latest ESN expansion.</h1><p>This center marks the current feature batch as seen on this device and keeps the major changes easy to find.</p></div><div className="page-hero-mark"><span>NEW</span><small>20 SYSTEMS</small></div></div></section>
+    <section className="page-hero"><div className="shell page-hero-inner"><div className="page-hero-copy"><span className="eyebrow">WHAT'S NEW</span><h1>Everything added in the latest ESN expansion.</h1><p>This center marks the current feature batch as seen on this device and keeps the major changes easy to find.</p></div><div className="page-hero-mark"><span>NEW</span><small>NO-ACCOUNT EXPANSION</small></div></div></section>
     <section className="section"><div className="shell whats-new-grid">{WHAT_IS_NEW.map(([title,copy],index)=><article key={title}><span>{String(index+1).padStart(2,'0')}</span><h2>{title}</h2><p>{copy}</p></article>)}</div></section>
     <section className="section compact-section dark-section"><div className="shell expansion-callout"><div><span className="eyebrow">FULL CHANGELOG</span><h2>Release Center keeps the long-term history.</h2></div><Link className="button secondary" to="/updates">Open Release Center</Link></div></section>
   </>
@@ -507,7 +511,7 @@ export function ExplorePage(){
     force(value=>value+1)
   }
   return <>
-    <section className="page-hero"><div className="shell page-hero-inner"><div className="page-hero-copy"><span className="eyebrow">EXPLORE ESN</span><h1>Everything the website can do.</h1><p>Discover the systems behind ESN instead of relying on hidden UI or floating controls to explain themselves.</p></div><div className="page-hero-mark"><span>20</span><small>FEATURES</small></div></div></section>
+    <section className="page-hero"><div className="shell page-hero-inner"><div className="page-hero-copy"><span className="eyebrow">EXPLORE ESN</span><h1>Everything the website can do.</h1><p>Discover the systems behind ESN instead of relying on hidden UI or floating controls to explain themselves.</p></div><div className="page-hero-mark"><span>{EXPLORE_FEATURES.length}</span><small>FEATURES</small></div></div></section>
     <section className="section"><div className="shell"><div className="section-heading"><div><span className="eyebrow">FEATURE DISCOVERY</span><h2>Built into the current ESN experience.</h2></div></div><div className="feature-discovery-grid">{EXPLORE_FEATURES.map(([title,copy,to,tag])=><Link to={to} key={title}><span>{tag}</span><h3>{title}</h3><p>{copy}</p><b>Explore →</b></Link>)}</div></div></section>
     <section className="section dark-section"><div className="shell recent-favorite-layout">
       <div><div className="section-heading"><div><span className="eyebrow">RECENTLY VISITED</span><h2>Continue where you left off.</h2></div></div><div className="recent-route-list">{recent.length?recent.map(route=><div key={route}><Link to={route}><strong>{ROUTE_META[route].label}</strong><small>{ROUTE_META[route].category}</small></Link><button type="button" onClick={()=>toggleFavorite(route)}>{favorites.includes(route)?'★':'☆'}</button></div>):<p>Explore ESN and your recent destinations will appear here.</p>}</div></div>
