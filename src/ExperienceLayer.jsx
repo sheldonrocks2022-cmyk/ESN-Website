@@ -32,6 +32,44 @@ export function RouteTransition(){
     return()=>clearTimeout(timer.current)
   },[location.pathname])
 
+  useEffect(()=>{
+    if(!scene)return
+    const mobile=window.matchMedia('(max-width: 860px), (pointer: coarse)').matches
+    if(!mobile)return
+
+    const root=document.documentElement
+    const body=document.body
+    const previous={
+      rootOverflow:root.style.overflow,
+      rootOverscroll:root.style.overscrollBehavior,
+      bodyOverflow:body.style.overflow,
+      bodyOverscroll:body.style.overscrollBehavior,
+      bodyTouchAction:body.style.touchAction,
+    }
+
+    root.classList.add('route-transition-locked')
+    root.style.overflow='hidden'
+    root.style.overscrollBehavior='none'
+    body.style.overflow='hidden'
+    body.style.overscrollBehavior='none'
+    body.style.touchAction='none'
+
+    const block=event=>event.preventDefault()
+    window.addEventListener('touchmove',block,{passive:false})
+    window.addEventListener('wheel',block,{passive:false})
+
+    return()=>{
+      window.removeEventListener('touchmove',block)
+      window.removeEventListener('wheel',block)
+      root.classList.remove('route-transition-locked')
+      root.style.overflow=previous.rootOverflow
+      root.style.overscrollBehavior=previous.rootOverscroll
+      body.style.overflow=previous.bodyOverflow
+      body.style.overscrollBehavior=previous.bodyOverscroll
+      body.style.touchAction=previous.bodyTouchAction
+    }
+  },[scene])
+
   if(!scene)return null
   return <div className={'route-transition route-transition-'+scene.key} aria-hidden="true">
     <div className="route-transition-tunnel">
