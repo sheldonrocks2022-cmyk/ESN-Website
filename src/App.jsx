@@ -26,6 +26,14 @@ const SERVICES = [
   },
 ]
 
+const SHOWCASE_EXTRAS = [
+  ['Website Creation', 'Web Projects', 'Website and digital-project work handled through ES Network. Exact scope and pricing depend on the project.'],
+  ['Memberships', 'Community', 'Existing ESN membership offers preserved from the current Service Showcase. Exact current tiers and prices will only be migrated once verified.'],
+  ['Hashtag Packs', 'Creator Growth', 'Existing hashtag-pack offers preserved from the current Service Showcase without inventing package details.'],
+  ['Stream Branding', 'Creator Branding', 'Branding work for streams and creator channels, preserved as an existing ESN showcase category.'],
+  ['Custom Services', 'Custom Projects', 'For ESN work that does not fit a standard package, handled through Discord tickets.'],
+]
+
 const LEADERS = [
   ['Landon', 'Founder & CEO'],
   ['Mark', 'Founder'],
@@ -568,12 +576,14 @@ function ServicesShowcase() {
               <a href={DISCORD_URL} target="_blank" rel="noreferrer">Open a ticket →</a>
             </article>
           ))}
-          <article className="service-card static-card">
-            <span className="eyebrow">Digital Projects</span>
-            <h2>Website Creation</h2>
-            <p>Website and digital-project work is handled case-by-case through ES Network. Exact scope, pricing, and delivery depend on the project.</p>
-            <a href={DISCORD_URL} target="_blank" rel="noreferrer">Discuss a project →</a>
-          </article>
+          {SHOWCASE_EXTRAS.map(([title, type, text]) => (
+            <article className="service-card static-card" key={title}>
+              <span className="eyebrow">{type}</span>
+              <h2>{title}</h2>
+              <p>{text}</p>
+              <a href={DISCORD_URL} target="_blank" rel="noreferrer">Discuss in Discord →</a>
+            </article>
+          ))}
         </div>
       </section>
     </>
