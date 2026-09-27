@@ -44,8 +44,9 @@ export function RouteTransition(){
 export function EnergyTrail(){
   useEffect(()=>{
     const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches
-    if(reduce)return
     const fine=matchMedia('(hover:hover) and (pointer:fine)').matches
+    // Touch devices already have plenty of visual feedback; skip DOM particle spawning on mobile.
+    if(reduce||!fine)return
     let last=0
     const spawn=(x,y,burst=false)=>{
       const node=document.createElement('i')
@@ -63,13 +64,8 @@ export function EnergyTrail(){
       last=now
       spawn(e.clientX,e.clientY)
     }
-    const down=e=>{
-      if(fine)return
-      for(let i=0;i<4;i++)window.setTimeout(()=>spawn(e.clientX,e.clientY,true),i*28)
-    }
     window.addEventListener('pointermove',move,{passive:true})
-    window.addEventListener('pointerdown',down,{passive:true})
-    return()=>{window.removeEventListener('pointermove',move);window.removeEventListener('pointerdown',down)}
+    return()=>window.removeEventListener('pointermove',move)
   },[])
   return null
 }
@@ -88,7 +84,8 @@ export function NetworkEvents(){
   useEffect(()=>{
     if(gameRoutes.includes(location.pathname))return
     const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches
-    if(reduce)return
+    const mobile=matchMedia('(max-width: 860px), (pointer: coarse)').matches
+    if(reduce||mobile)return
     let timeout
     const schedule=(first=false)=>{
       const delay=first?45000:90000+Math.floor(Math.random()*90000)
