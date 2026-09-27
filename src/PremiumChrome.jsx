@@ -4,6 +4,16 @@ import { Link, useLocation } from 'react-router-dom'
 const DISCORD_URL='https://discord.gg/3gxA66KZ8'
 const SMP_HOST='esn.ggwp.cc'
 
+const routeThemes={
+  home:['84 154 255','143 249 255'],
+  services:['121 92 255','92 214 255'],
+  smp:['69 229 157','82 180 255'],
+  arcade:['167 93 255','90 220 255'],
+  tools:['255 174 82','112 216 255'],
+  reviews:['255 207 96','176 108 255'],
+  about:['91 160 255','122 240 255'],
+}
+
 const quickLinks=[
   ['Services','/serviceshowcase','Creator & gaming services'],
   ['Arcade','/arcade','Six original ESN games'],
@@ -44,10 +54,55 @@ export default function PremiumChrome(){
     return()=>document.documentElement.classList.remove('premium-command-open')
   },[open])
 
+  useEffect(()=>{
+    const root=document.documentElement
+    root.dataset.luxRoute=routeKey
+    root.style.setProperty('--route-accent',routeAccent)
+    root.style.setProperty('--route-accent-2',routeAccent2)
+    return()=>delete root.dataset.luxRoute
+  },[routeKey,routeAccent,routeAccent2])
+
+  useEffect(()=>{
+    const fine=window.matchMedia('(hover:hover) and (pointer:fine)').matches
+    const reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    if(!fine||reduce)return
+    const selector='.button,.nav-cta,.footer-discord,.premium-command-discord,.text-link,.plugin-download-button'
+    const move=e=>{
+      const target=e.target.closest?.(selector)
+      if(!target)return
+      const rect=target.getBoundingClientRect()
+      const dx=(e.clientX-(rect.left+rect.width/2))*0.08
+      const dy=(e.clientY-(rect.top+rect.height/2))*0.1
+      target.style.setProperty('--mag-x',`${Math.max(-7,Math.min(7,dx)).toFixed(2)}px`)
+      target.style.setProperty('--mag-y',`${Math.max(-5,Math.min(5,dy)).toFixed(2)}px`)
+    }
+    const out=e=>{
+      const target=e.target.closest?.(selector)
+      if(!target||target.contains(e.relatedTarget))return
+      target.style.setProperty('--mag-x','0px')
+      target.style.setProperty('--mag-y','0px')
+    }
+    document.addEventListener('pointermove',move,{passive:true})
+    document.addEventListener('pointerout',out,{passive:true})
+    return()=>{document.removeEventListener('pointermove',move);document.removeEventListener('pointerout',out)}
+  },[])
+
+  const routeKey=location.pathname.startsWith('/smp')||location.pathname.startsWith('/store')?'smp'
+    :location.pathname==='/arcade'||location.pathname.startsWith('/es')?'arcade'
+    :location.pathname==='/serviceshowcase'?'services'
+    :location.pathname==='/estools'||location.pathname==='/tools'?'tools'
+    :location.pathname==='/testimonials'?'reviews'
+    :['/about','/leadership','/faq'].includes(location.pathname)?'about':'home'
+  const [routeAccent,routeAccent2]=routeThemes[routeKey]
+  const routeLabel=routeKey.toUpperCase()
   const filteredLinks=quickLinks.filter(([label,,meta])=>`${label} ${meta}`.toLowerCase().includes(query.trim().toLowerCase()))
 
   return <>
     <div className="lux-cursor-field" aria-hidden="true"/>
+    <div className="lux-cursor-ring" aria-hidden="true"/>
+    <div className="lux-cursor-core" aria-hidden="true"/>
+    <div className="lux-edge-beam top" aria-hidden="true"/>
+    <div className="lux-edge-beam right" aria-hidden="true"/>
     <div className="premium-ambient" aria-hidden="true">
       <span className="premium-aurora a"/>
       <span className="premium-aurora b"/>
@@ -69,6 +124,13 @@ export default function PremiumChrome(){
           <span>FREE ES TOOLS</span>
         </div>)}
       </div>
+    </div>
+
+    <div className="lux-route-rail" aria-hidden="true">
+      <span>ESN</span>
+      <i/>
+      <b>{routeLabel}</b>
+      <em>PREMIUM NETWORK</em>
     </div>
 
     <div className="premium-dock" aria-label="ESN quick actions">
