@@ -28,6 +28,16 @@ export default function PremiumChrome(){
   const [showTop,setShowTop]=useState(false)
   const [query,setQuery]=useState('')
 
+  const routeKey=location.pathname.startsWith('/smp')||location.pathname.startsWith('/store')?'smp'
+    :location.pathname==='/arcade'||location.pathname.startsWith('/es')?'arcade'
+    :location.pathname==='/serviceshowcase'?'services'
+    :location.pathname==='/estools'||location.pathname==='/tools'?'tools'
+    :location.pathname==='/testimonials'?'reviews'
+    :['/about','/leadership','/faq'].includes(location.pathname)?'about':'home'
+  const [routeAccent,routeAccent2]=routeThemes[routeKey]||routeThemes.home
+  const routeLabel=routeKey.toUpperCase()
+  const filteredLinks=quickLinks.filter(([label,,meta])=>`${label} ${meta}`.toLowerCase().includes(query.trim().toLowerCase()))
+
   useEffect(()=>{
     setOpen(false)
     setQuery('')
@@ -86,16 +96,6 @@ export default function PremiumChrome(){
     document.addEventListener('pointerout',out,{passive:true})
     return()=>{document.removeEventListener('pointermove',move);document.removeEventListener('pointerout',out)}
   },[])
-
-  const routeKey=location.pathname.startsWith('/smp')||location.pathname.startsWith('/store')?'smp'
-    :location.pathname==='/arcade'||location.pathname.startsWith('/es')?'arcade'
-    :location.pathname==='/serviceshowcase'?'services'
-    :location.pathname==='/estools'||location.pathname==='/tools'?'tools'
-    :location.pathname==='/testimonials'?'reviews'
-    :['/about','/leadership','/faq'].includes(location.pathname)?'about':'home'
-  const [routeAccent,routeAccent2]=routeThemes[routeKey]
-  const routeLabel=routeKey.toUpperCase()
-  const filteredLinks=quickLinks.filter(([label,,meta])=>`${label} ${meta}`.toLowerCase().includes(query.trim().toLowerCase()))
 
   return <>
     <div className="lux-cursor-field" aria-hidden="true"/>
