@@ -373,3 +373,100 @@ summary:focus-visible {
     scroll-behavior: auto !important;
   }
 }
+
+
+/* ES Tools migration */
+.tools-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:18px; }
+.tool-card { border:1px solid var(--line); border-radius:24px; background:linear-gradient(150deg,rgba(255,255,255,.055),rgba(255,255,255,.015)); padding:28px; display:flex; flex-direction:column; gap:16px; min-height:330px; }
+.tool-card h2 { margin:0; }
+.tool-card input,.tool-card select,.tool-card textarea,.moto-controls-top input { width:100%; background:#070b16; color:#f4f8ff; border:1px solid var(--line); border-radius:12px; padding:12px 14px; font:inherit; }
+.tool-card textarea { resize:vertical; }
+.segmented { display:flex; flex-wrap:wrap; gap:8px; }
+.segmented button,.random-pair button,.mines-toolbar>button:not(.button) { border:1px solid var(--line); background:rgba(255,255,255,.04); color:#dbe5f6; border-radius:999px; padding:9px 13px; cursor:pointer; font-weight:800; }
+.segmented button.active,.mines-toolbar>button.active { border-color:rgba(98,241,255,.55); background:rgba(98,241,255,.12); color:#fff; }
+.tool-output { border:1px solid var(--line); border-radius:16px; background:rgba(255,255,255,.03); padding:18px; min-height:92px; line-height:1.6; }
+.tool-output.selectable { user-select:text; }
+.big-output { display:grid; place-items:center; font-size:1.4rem; font-weight:900; }
+.timer-readout { font-size:clamp(3rem,8vw,5rem); font-weight:950; letter-spacing:-.04em; }
+.tool-actions { display:flex; gap:10px; flex-wrap:wrap; }
+.random-pair { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+.random-pair>div { border:1px solid var(--line); border-radius:18px; min-height:180px; display:grid; place-items:center; padding:18px; }
+.random-pair strong { font-size:2.5rem; }
+.estimate { margin-top:auto; padding:22px; border-radius:18px; border:1px solid rgba(98,241,255,.25); background:rgba(98,241,255,.06); display:flex; align-items:center; justify-content:space-between; gap:20px; }
+.estimate strong { font-size:2rem; }
+
+/* Console connection */
+.console-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:18px; margin-bottom:24px; }
+.connection-steps { color:#cbd3e3; line-height:1.7; padding-left:20px; }
+.connection-steps li+li { margin-top:7px; }
+
+/* ESN Arcade 2.0 */
+.arcade-shell { min-height:calc(100vh - 70px); padding:105px 0 80px; background:radial-gradient(circle at 20% 0%,rgba(98,241,255,.08),transparent 34%),#050711; }
+.arcade-topbar { display:flex; justify-content:space-between; align-items:flex-end; gap:24px; margin-bottom:28px; }
+.arcade-topbar h1 { margin:.2rem 0 .5rem; font-size:clamp(2.3rem,6vw,4.8rem); }
+.arcade-topbar p { max-width:720px; }
+.arcade-wallet { display:grid; gap:6px; min-width:210px; padding:16px 18px; border:1px solid var(--line); border-radius:18px; background:rgba(255,255,255,.04); text-align:right; }
+.game-layout { display:grid; grid-template-columns:minmax(0,1.5fr) minmax(280px,.5fr); gap:18px; }
+.game-stage,.game-panel { border:1px solid var(--line); border-radius:28px; background:rgba(255,255,255,.025); padding:28px; }
+.center-stage { min-height:520px; display:grid; place-items:center; align-content:center; gap:28px; }
+.click-core { width:min(300px,70vw); aspect-ratio:1; border-radius:50%; border:1px solid rgba(98,241,255,.4); background:radial-gradient(circle at 35% 30%,rgba(255,255,255,.18),rgba(98,241,255,.12) 25%,rgba(108,81,255,.18) 58%,#090d1a 72%); color:white; box-shadow:0 0 80px rgba(98,241,255,.12),inset 0 0 50px rgba(98,241,255,.08); cursor:pointer; display:grid; place-items:center; align-content:center; transition:transform .08s ease; }
+.click-core:active { transform:scale(.96); }
+.click-core span { font-size:5rem; font-weight:950; letter-spacing:-.08em; }
+.click-core small { font-weight:900; color:#bffaff; }
+.stat-row { width:100%; display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
+.stat-row span,.factory-head>div,.td-head>span { border:1px solid var(--line); background:rgba(255,255,255,.025); border-radius:14px; padding:12px; text-align:center; color:var(--muted); }
+.stat-row b,.factory-head strong,.td-head b { color:#fff; display:block; }
+.game-panel { display:flex; flex-direction:column; gap:12px; }
+.upgrade-card,.machine-card { width:100%; border:1px solid var(--line); background:rgba(255,255,255,.035); color:#fff; border-radius:16px; padding:16px; cursor:pointer; text-align:left; display:flex; justify-content:space-between; gap:16px; }
+.upgrade-card span { display:grid; gap:4px; }
+.upgrade-card small,.machine-card small,.machine-card span { color:var(--muted); }
+.upgrade-card:disabled,.machine-card:disabled { opacity:.45; cursor:not-allowed; }
+.factory-head { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:18px; }
+.machine-grid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:14px; }
+.machine-card { min-height:190px; flex-direction:column; position:relative; overflow:hidden; }
+.factory-upgrade { margin-top:18px; }
+.mines-toolbar { display:flex; flex-wrap:wrap; gap:10px; margin-bottom:16px; }
+.game-message { min-height:30px; color:#dce7f7; }
+.mines-grid { max-width:650px; display:grid; grid-template-columns:repeat(5,1fr); gap:10px; }
+.mines-grid button { aspect-ratio:1; border:1px solid var(--line); border-radius:16px; background:rgba(255,255,255,.04); color:#93a0b6; font-size:1.6rem; cursor:pointer; }
+.mines-grid button.safe { background:rgba(98,241,255,.12); color:#caffff; border-color:rgba(98,241,255,.4); }
+.moto-controls-top,.moto-hud,.td-head { display:flex; flex-wrap:wrap; align-items:center; gap:12px; margin-bottom:14px; }
+.moto-controls-top label { display:flex; align-items:center; gap:8px; }
+.moto-controls-top input { width:110px; }
+.moto-road { position:relative; height:520px; overflow:hidden; border:1px solid var(--line); border-radius:28px; background:linear-gradient(90deg,#0b1020 0 3%,transparent 3% 32%,rgba(255,255,255,.08) 32% 33%,transparent 33% 66%,rgba(255,255,255,.08) 66% 67%,transparent 67% 97%,#0b1020 97%),linear-gradient(#10172a,#070a12); }
+.moto-road.crash { box-shadow:inset 0 0 50px rgba(255,80,80,.2); }
+.finish-line { position:absolute; top:12px; left:50%; transform:translateX(-50%); letter-spacing:.25em; font-weight:900; font-size:.75rem; }
+.moto-bike,.moto-obstacle { position:absolute; transform:translateX(-50%); transition:left .12s ease,bottom .1s linear; z-index:2; }
+.moto-bike { bottom:24px; font-size:2.5rem; }
+.moto-obstacle { font-size:1.5rem; }
+.lane-0 { left:17%; }.lane-1 { left:50%; }.lane-2 { left:83%; }
+.moto-hud { justify-content:space-between; margin-top:12px; }
+.mobile-race-controls { display:grid; grid-template-columns:1fr 2fr 1fr; gap:10px; margin-top:14px; }
+.mobile-race-controls button { min-height:64px; border:1px solid var(--line); border-radius:16px; background:rgba(255,255,255,.04); color:#fff; font-weight:900; cursor:pointer; }
+.tower-wrap { display:grid; grid-template-columns:minmax(0,1fr) 260px; gap:18px; }
+.tower-stage { height:600px; position:relative; overflow:hidden; border:1px solid var(--line); border-radius:28px; background:linear-gradient(#080d1a,#0c1325); cursor:pointer; }
+.tower-moving { height:24px; position:absolute; top:18px; border-radius:7px; background:linear-gradient(90deg,rgba(98,241,255,.75),rgba(108,81,255,.85)); }
+.tower-stack { position:absolute; bottom:18px; left:0; right:0; display:flex; flex-direction:column-reverse; gap:3px; }
+.tower-stack>div { height:24px; border-radius:7px; background:linear-gradient(90deg,rgba(98,241,255,.7),rgba(108,81,255,.7)); }
+.tower-side { border:1px solid var(--line); border-radius:24px; background:rgba(255,255,255,.03); padding:24px; display:flex; flex-direction:column; gap:14px; }
+.tower-side>strong { font-size:5rem; }
+.td-head { padding:14px; border:1px solid var(--line); border-radius:18px; background:rgba(255,255,255,.025); }
+.td-board { display:grid; gap:10px; margin-top:18px; }
+.td-lane { height:120px; position:relative; overflow:hidden; border:1px solid var(--line); border-radius:18px; background:linear-gradient(90deg,rgba(98,241,255,.035),rgba(108,81,255,.04)); }
+.turret-slot { position:absolute; left:10px; top:50%; transform:translateY(-50%); z-index:3; border:1px solid rgba(98,241,255,.35); border-radius:12px; background:#0b1220; color:#fff; padding:12px; cursor:pointer; }
+.enemy { position:absolute; top:50%; transform:translate(-50%,-50%); color:#ffb3b3; font-size:1.5rem; display:grid; text-align:center; }
+.enemy small { font-size:.65rem; color:#fff; }
+
+@media (max-width:900px){
+  .tools-grid,.console-grid,.game-layout,.tower-wrap { grid-template-columns:1fr; }
+  .machine-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .arcade-topbar { align-items:flex-start; flex-direction:column; }
+  .arcade-wallet { text-align:left; width:100%; }
+}
+@media (max-width:560px){
+  .tools-grid,.machine-grid { grid-template-columns:1fr; }
+  .random-pair,.stat-row,.factory-head { grid-template-columns:1fr; }
+  .moto-road { height:440px; }
+  .tower-stage { height:500px; }
+  .tool-card { padding:20px; }
+}
