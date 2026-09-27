@@ -5926,7 +5926,7 @@ html[data-motion="reduced"] *::after{
     perspective:none!important;
     background:
       linear-gradient(115deg,rgba(5,10,22,.98),rgba(11,24,48,.98) 52%,rgba(6,11,24,.98))!important;
-    animation:mobileRouteSweep .48s cubic-bezier(.22,.78,.22,1) both!important;
+    animation:mobileRouteSweep 5s cubic-bezier(.22,.78,.22,1) both!important;
     will-change:transform,opacity!important;
     overflow:hidden!important;
   }
@@ -5936,7 +5936,7 @@ html[data-motion="reduced"] *::after{
 
   html:not([data-motion="reduced"]) .route-transition-core{
     display:grid!important;
-    animation:mobileRouteCore .42s cubic-bezier(.2,.8,.2,1) both!important;
+    animation:mobileRouteCore 5s cubic-bezier(.2,.8,.2,1) both!important;
   }
 
   html:not([data-motion="reduced"]) .route-transition-core strong{
@@ -5963,17 +5963,18 @@ html[data-motion="reduced"] *::after{
     opacity:.72!important;
     background:linear-gradient(90deg,transparent,rgb(var(--route-accent-2)/.18),rgb(var(--route-accent)/.36),transparent)!important;
     box-shadow:none!important;
-    animation:mobileRouteScan .48s cubic-bezier(.2,.75,.2,1) both!important;
+    animation:mobileRouteScan 5s cubic-bezier(.2,.75,.2,1) both!important;
   }
 
   @keyframes mobileRouteSweep{
     0%{transform:translate3d(-100%,0,0);opacity:1}
-    38%,62%{transform:translate3d(0,0,0);opacity:1}
+    12%{transform:translate3d(0,0,0);opacity:1}
+    82%{transform:translate3d(0,0,0);opacity:1}
     100%{transform:translate3d(100%,0,0);opacity:1}
   }
   @keyframes mobileRouteCore{
     0%{opacity:0;transform:translateX(-18px) scale(.92)}
-    35%,66%{opacity:1;transform:none}
+    12%,82%{opacity:1;transform:none}
     100%{opacity:0;transform:translateX(18px) scale(1.03)}
   }
   @keyframes mobileRouteScan{
