@@ -7858,3 +7858,144 @@ html.oa-focus-play-active body{
   .oa-mobile-focusbar{display:none!important}
   .oa-desktop-play-toggle{display:block!important}
 }
+
+
+/* =========================================================
+   ESN TERMINAL COMMAND CORE
+   Full operator console, history, autocomplete, diagnostics.
+   ========================================================= */
+.ev-terminal-modal{
+  width:min(940px,calc(100vw - 24px));
+  overflow:hidden;
+  border-color:rgba(98,241,255,.15);
+  box-shadow:0 34px 110px rgba(0,0,0,.58),inset 0 1px rgba(255,255,255,.035);
+}
+.ev-terminal-toolbar{
+  display:grid;
+  grid-template-columns:auto auto 1fr;
+  align-items:center;
+  gap:10px;
+  padding:10px 22px;
+  border-bottom:1px solid rgba(98,241,255,.08);
+  background:
+    linear-gradient(90deg,rgba(98,241,255,.035),transparent 42%),
+    rgba(3,10,22,.95);
+  font:800 .55rem/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;
+  letter-spacing:.12em;
+}
+.ev-terminal-toolbar>span{color:#62f1ff}
+.ev-terminal-toolbar>b{
+  padding:5px 8px;
+  border:1px solid rgba(91,236,168,.16);
+  border-radius:999px;
+  color:#7cf0aa;
+  font-size:.48rem;
+}
+.ev-terminal-toolbar>small{
+  justify-self:end;
+  min-width:0;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  color:#60738c;
+  font-size:.48rem;
+}
+.ev-terminal-output{
+  min-height:430px;
+  max-height:56vh;
+  background:
+    linear-gradient(rgba(32,68,92,.025) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(32,68,92,.018) 1px,transparent 1px),
+    radial-gradient(circle at 50% 0%,rgba(38,158,183,.035),transparent 28rem),
+    #020711;
+  background-size:24px 24px,24px 24px,auto,auto;
+  scrollbar-color:rgba(98,241,255,.18) transparent;
+}
+.ev-terminal-output>div{
+  position:relative;
+  padding-left:14px;
+  white-space:pre-wrap;
+  overflow-wrap:anywhere;
+}
+.ev-terminal-output>div::before{
+  content:"";
+  position:absolute;
+  left:0;
+  top:.72em;
+  width:4px;
+  height:4px;
+  border-radius:50%;
+  background:currentColor;
+  opacity:.45;
+}
+.ev-terminal-output .system{color:#75c7df}
+.ev-terminal-output .ok{color:#7cf0aa}
+.ev-terminal-output .error{color:#ff8a9d}
+.ev-terminal-output .input{color:#edf7ff;margin-top:6px}
+.ev-terminal-suggestions{
+  display:flex;
+  gap:6px;
+  overflow-x:auto;
+  padding:8px 18px 9px;
+  border-top:1px solid rgba(255,255,255,.035);
+  background:#030a16;
+  scrollbar-width:none;
+}
+.ev-terminal-suggestions::-webkit-scrollbar{display:none}
+.ev-terminal-suggestions button{
+  flex:0 0 auto;
+  min-height:28px;
+  padding:0 9px;
+  border:1px solid rgba(98,241,255,.085);
+  border-radius:8px;
+  background:rgba(98,241,255,.025);
+  color:#7991a9;
+  font:750 .5rem ui-monospace,SFMono-Regular,Menlo,monospace;
+  cursor:pointer;
+}
+.ev-terminal-suggestions button:hover{
+  color:#dffcff;
+  border-color:rgba(98,241,255,.22);
+  background:rgba(98,241,255,.05);
+}
+.ev-terminal-input{
+  min-height:68px;
+  padding:12px 18px;
+}
+.ev-terminal-input input::placeholder{color:#43536a}
+.ev-terminal-input:focus-within{
+  box-shadow:inset 0 1px rgba(98,241,255,.08);
+}
+
+@media(max-width:700px){
+  .ev-terminal-modal{
+    width:calc(100vw - 12px);
+    max-height:calc(100dvh - 18px);
+  }
+  .ev-terminal-toolbar{
+    grid-template-columns:auto auto;
+    padding:8px 12px;
+  }
+  .ev-terminal-toolbar>small{
+    grid-column:1/-1;
+    justify-self:start;
+    width:100%;
+  }
+  .ev-terminal-output{
+    min-height:0;
+    height:min(54dvh,480px);
+    max-height:none;
+    padding:14px 12px;
+    font-size:.67rem;
+    line-height:1.58;
+  }
+  .ev-terminal-suggestions{padding:7px 10px}
+  .ev-terminal-input{
+    min-height:62px;
+    grid-template-columns:auto minmax(0,1fr) auto;
+    padding:9px 10px;
+  }
+  .ev-terminal-input span{font-size:.62rem}
+  .ev-terminal-input input{min-width:0;font-size:.73rem}
+  .ev-terminal-input button{padding:0 10px}
+}
