@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link, Navigate, Route, Routes, useLocation } from 'react-router-dom'
 import ESToolsSuite from './Tools'
+import { VERIFIED_REVIEWS } from './reviews'
 import ClickerGame from './arcade/Clicker'
 import FactoryGame from './arcade/Factory'
 import MinesGame from './arcade/Mines'
@@ -81,8 +82,8 @@ const STORE_PRODUCTS = [
     items: ['Angel Wings', 'Inferno Scepter', 'Storm Crystal', 'Tideheart', 'Void Relic', 'Celestial Star'],
   },
   {
-    name: 'Riftwalker Bundle',
-    price: 'Stripe checkout',
+    name: 'ESN Riftwalker Bundle',
+    price: '$0.50',
     stripe: 'https://buy.stripe.com/00w3cw6tB7Ej9Nl19JdnW02',
     summary: 'A six-item mobility and utility bundle centered around rift abilities.',
     items: [
@@ -155,7 +156,7 @@ const META = {
   '/about': ['About ES Network | ESN', 'Learn about ES Network, the current brand formerly known as EP1C Services.'],
   '/leadership': ['ES Network Leadership | Meet the Team', 'Meet the founders, co-founders, and administrators behind ES Network.'],
   '/faq': ['ES Network FAQ | Services, Ordering & Support', 'Answers about ES Network services, SMP purchases, support, community access, and tools.'],
-  '/testimonials': ['ES Network Customer Testimonials', 'Customer and community feedback for ES Network services and projects.'],
+  '/testimonials': ['ES Network Customer Testimonials', 'Read 35 verified ES Network reviews for Fortnite coaching, editing, and Discord server setup services.'],
   '/arcade': ['ESN Arcade | Browser Games', 'The ES Network Arcade routes are preserved while the original game experiences are faithfully migrated.'],
   '/esclicker': ['ES Clicker | ESN Arcade', 'Original ES Clicker route preserved for faithful migration.'],
   '/esfactory': ['ES Factory | ESN Arcade', 'Original ES Factory route preserved for faithful migration.'],
@@ -508,10 +509,19 @@ function Home() {
 
       <section className="section" id="reviews">
         <div className="shell">
-          <span className="eyebrow">Customer Testimonials</span>
-          <h2>Verified feedback belongs front and center.</h2>
-          <p className="large-copy max-copy">The original reviews section is preserved while we recover the exact customer feedback. Only verified ESN reviews will be republished.</p>
-          <Link className="button secondary" to="/testimonials">View testimonials</Link>
+          <div className="section-heading">
+            <div>
+              <span className="eyebrow">Social Proof</span>
+              <h2>Verified ESN customer reviews.</h2>
+              <p className="large-copy max-copy">Real Discord feedback from Fortnite coaching, editing, and Discord server setup clients.</p>
+            </div>
+            <Link className="text-link" to="/testimonials">View all 35 reviews →</Link>
+          </div>
+          <div className="reviews-grid review-preview-grid">
+            {[VERIFIED_REVIEWS[0], VERIFIED_REVIEWS[12], VERIFIED_REVIEWS[24]].map((review) => (
+              <ReviewCard key={review.handle} review={review} />
+            ))}
+          </div>
         </div>
       </section>
 
@@ -659,24 +669,67 @@ function FAQ() {
   )
 }
 
+function ReviewCard({ review }) {
+  return (
+    <article className="review-card">
+      <div className="review-topline">
+        <div>
+          <h3>{review.name}</h3>
+          <span className="review-handle">{review.handle}</span>
+        </div>
+        <span className="review-rating">{review.rating}</span>
+      </div>
+      <p>{review.text}</p>
+      <div className="review-meta">
+        <span>{review.category}</span>
+        <span>Verified on Discord</span>
+      </div>
+    </article>
+  )
+}
+
 function Testimonials() {
+  const [filter, setFilter] = useState('All')
+  const categories = ['All', 'Fortnite Coaching', 'Editing', 'Discord Server Setup']
+  const shown = filter === 'All' ? VERIFIED_REVIEWS : VERIFIED_REVIEWS.filter((review) => review.category === filter)
+
   return (
     <>
-      <PageHero eyebrow="Customer Testimonials" title="ESN community feedback" text="This page is reserved for real customer and community feedback carried over from verified ESN sources." />
+      <PageHero
+        eyebrow="Customer Testimonials"
+        title="35 verified ESN reviews"
+        text="Real Discord feedback from Fortnite coaching, editing, and Discord server setup clients."
+      />
       <section className="section">
         <div className="shell">
-          <div className="empty-state">
-            <span className="eyebrow">Migration in progress</span>
-            <h2>Verified reviews are being restored.</h2>
-            <p>Only reviews that can be matched to existing ESN feedback will be published here. Until the original review text is recovered, this page will not substitute made-up quotes or ratings.</p>
-            <a className="button secondary" href={DISCORD_URL} target="_blank" rel="noreferrer">Visit ESN Discord</a>
+          <div className="review-summary">
+            <div><strong>35</strong><span>Verified reviews</span></div>
+            <div><strong>12</strong><span>Fortnite Coaching</span></div>
+            <div><strong>12</strong><span>Editing</span></div>
+            <div><strong>11</strong><span>Discord Server Setup</span></div>
+          </div>
+
+          <div className="review-filters" aria-label="Filter customer reviews">
+            {categories.map((category) => (
+              <button
+                type="button"
+                key={category}
+                className={filter === category ? 'active' : ''}
+                onClick={() => setFilter(category)}
+              >
+                {category}
+              </button>
+            ))}
+          </div>
+
+          <div className="reviews-grid">
+            {shown.map((review) => <ReviewCard key={review.handle} review={review} />)}
           </div>
         </div>
       </section>
     </>
   )
 }
-
 function ServicesShowcase() {
   return (
     <>
