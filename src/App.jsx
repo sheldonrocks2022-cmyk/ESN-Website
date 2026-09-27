@@ -237,7 +237,7 @@ function Header() {
 
         <nav className={open ? 'nav open' : 'nav'} aria-label="Main navigation">
           <div className="nav-group">
-            <button className="nav-trigger" type="button">Services</button>
+            <button className="nav-trigger" type="button" aria-haspopup="true">Services</button>
             <div className="dropdown">
               <Link onClick={close} to="/serviceshowcase">Service Showcase</Link>
               <Link onClick={close} to="/#fortnite-coaching">Fortnite Coaching</Link>
@@ -247,7 +247,7 @@ function Header() {
           </div>
 
           <div className="nav-group">
-            <button className="nav-trigger" type="button">ESN SMP</button>
+            <button className="nav-trigger" type="button" aria-haspopup="true">ESN SMP</button>
             <div className="dropdown">
               <Link onClick={close} to="/smpconnection">SMP Connection</Link>
               <Link onClick={close} to="/storesmp">SMP Store</Link>
@@ -255,7 +255,7 @@ function Header() {
           </div>
 
           <div className="nav-group">
-            <button className="nav-trigger" type="button">Arcade</button>
+            <button className="nav-trigger" type="button" aria-haspopup="true">Arcade</button>
             <div className="dropdown">
               <Link onClick={close} to="/arcade">Arcade Hub</Link>
               {ARCADE_GAMES.map(([name, route]) => <Link onClick={close} key={route} to={route}>{name}</Link>)}
@@ -265,7 +265,7 @@ function Header() {
           <Link onClick={close} to="/estools">ES Tools</Link>
 
           <div className="nav-group">
-            <button className="nav-trigger" type="button">About</button>
+            <button className="nav-trigger" type="button" aria-haspopup="true">About</button>
             <div className="dropdown">
               <Link onClick={close} to="/about">About ES Network</Link>
               <Link onClick={close} to="/leadership">Leadership</Link>
@@ -744,10 +744,11 @@ function NotFound() {
 function App() {
   return (
     <div className="site">
+      <a className="skip-link" href="#main-content">Skip to main content</a>
       <MetaManager />
       <ScrollToHash />
       <Header />
-      <main>
+      <main id="main-content">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/home" element={<Home />} />
