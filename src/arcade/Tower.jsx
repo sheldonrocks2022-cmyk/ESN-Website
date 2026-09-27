@@ -139,6 +139,12 @@ export default function TowerGame(){
           return <button key={i} className={cls} onClick={()=>choose(i)} disabled={!run||run.picked!==null||run.busted}><span>DOOR {i+1}</span><b>{state}</b></button>
         })}
       </div>
+      <div className="oa-mobile-only oa-tower-mobile-live">
+        <span>FLOOR <b>{run?.floor||1}</b></span>
+        <span>WIN <b>{run?money(potential):wager}</b></span>
+        <span>SAFE <b>{successRate}%</b></span>
+        <span>SHIELD <b>{run?.shield?'YES':'NO'}</b></span>
+      </div>
       <button className="oa-primary-wide" onClick={cashOut} disabled={!run||run.busted}>CASH OUT {run?money(potential)+' ES':''}</button>
       <button className="oa-secondary-wide" onClick={newGame}>{run?'START NEW RUN':'NEW GAME'}</button>
       <div className="oa-subpanel"><p>{last}</p></div>
