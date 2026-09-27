@@ -1,0 +1,26 @@
+{
+  "name": "ES Network",
+  "short_name": "ESN",
+  "description": "The official ES Network digital hub for creator services, ESN SMP, Arcade games, tools, updates, and community.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#050711",
+  "theme_color": "#050711",
+  "orientation": "any",
+  "categories": ["games", "utilities", "social"],
+  "icons": [
+    {
+      "src": "/esn-mark.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {"name":"ESN SMP","short_name":"SMP","url":"/smpconnection","icons":[{"src":"/esn-mark.svg","sizes":"any","type":"image/svg+xml"}]},
+    {"name":"ESN Arcade","short_name":"Arcade","url":"/arcade","icons":[{"src":"/esn-mark.svg","sizes":"any","type":"image/svg+xml"}]},
+    {"name":"Network Status","short_name":"Status","url":"/status","icons":[{"src":"/esn-mark.svg","sizes":"any","type":"image/svg+xml"}]},
+    {"name":"Explore ESN","short_name":"Explore","url":"/explore","icons":[{"src":"/esn-mark.svg","sizes":"any","type":"image/svg+xml"}]}
+  ]
+}
