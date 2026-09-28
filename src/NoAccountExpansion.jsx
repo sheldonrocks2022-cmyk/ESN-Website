@@ -493,7 +493,7 @@ export function StaffDashboardPage(){
   }
 
   const runRouteScan=async()=>{
-    const routes=['/','/nexus','/arcade','/storesmp','/status','/notifications','/rewards','/challenges','/staff']
+    const routes=['/','/nexus','/arcade','/storesmp','/status','/notifications','/rewards','/challenges','/operations','/incidents','/changelog','/diagnostics','/smpcheck','/blueprint','/session','/staff']
     setScan({running:true,results:[],lastRun:null})
     const results=await Promise.all(routes.map(async route=>{
       const started=performance.now()
