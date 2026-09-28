@@ -76,7 +76,7 @@ export function GlobalOpsLayer(){
   return <>
     {location.pathname==='/'&&<div className="ops-home-state"><span>ESN LIVE STATE</span><strong>{homeState}</strong><small>{maintenance.active?'Local maintenance presentation is enabled on this device.':openIncidents.length?openIncidents[0].title:live.smp.online?'SMP and website systems are reporting operational.':'Public telemetry is being checked.'}</small><Link to="/operations">OPEN OPERATIONS</Link></div>}
     {countdown?.active&&cd&&!cd.done&&<div className="ops-countdown-bar"><span>{countdown.label||'ESN EVENT'}</span><strong>{cd.days?cd.days+'d ':''}{String(cd.hours).padStart(2,'0')}:{String(cd.minutes).padStart(2,'0')}:{String(cd.seconds).padStart(2,'0')}</strong><small>{countdown.copy||'Upcoming ES Network event'}</small></div>}
-    {maintenance?.active&&location.pathname!=='/staff'&&<div className="ops-maintenance-cover">
+    {maintenance?.active&&!['/staff','/status'].includes(location.pathname)&&<div className="ops-maintenance-cover">
       <div className="ops-maintenance-core"><span>ESN MAINTENANCE MODE</span><h1>{maintenance.title||'Network maintenance in progress.'}</h1><p>{maintenance.copy||'Some ES Network systems may be temporarily unavailable.'}</p>
         <div className="ops-maintenance-tags">{(maintenance.affected||['Website']).map(item=><b key={item}>{item}</b>)}</div>
         {maintenance.estimate&&<small>ESTIMATED RESTORATION: {maintenance.estimate}</small>}
