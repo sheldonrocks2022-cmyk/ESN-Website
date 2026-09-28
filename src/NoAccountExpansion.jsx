@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { useArcadeProgress } from './arcade/shared'
 import { SITE_RELEASE, SMP_ADDRESS, SMP_PORT, DISCORD_URL, useLiveNetwork } from './liveNetwork'
 import './noAccountExpansion.css'
+import { StaffOpsExpansion } from './OpsExpansion'
 
 const NOTICE_KEY='esn_notification_center_v1'
 const ALERT_PREF_KEY='esn_browser_alerts_v1'
@@ -632,6 +633,8 @@ export function StaffDashboardPage(){
         </div>
       </article>
     </div></section>
+
+    <StaffOpsExpansion />
 
     <section className="section dark-section"><div className="shell">
       <div className="section-heading"><div><span className="eyebrow">STAFF ACTIVITY</span><h2>Local operator log.</h2><p>Tracks actions performed from this browser’s Staff Dashboard.</p></div><button className="staff-secondary-action" type="button" onClick={()=>{writeJson(STAFF_ACTIVITY_KEY,[]);setActivity([])}}>CLEAR ACTIVITY</button></div>
