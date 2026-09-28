@@ -9,7 +9,8 @@ const ROUTE_LABELS={
   '/':'Home','/arcade':'Arcade','/storesmp':'SMP Store','/smpconnection':'SMP','/estools':'ES Tools',
   '/status':'Status','/updates':'Updates','/timeline':'Timeline','/vault':'Vault','/explore':'Explore',
   '/gallery':'Gallery','/serviceshowcase':'Services','/portfolio':'Portfolio','/about':'About','/nexus':'Nexus',
-  '/notifications':'Notifications','/rewards':'Reward Vault','/challenges':'Challenge Lab'
+  '/notifications':'Notifications','/rewards':'Reward Vault','/challenges':'Challenge Lab',
+  '/operations':'Operations','/diagnostics':'Diagnostics','/smpcheck':'SMP Tester','/blueprint':'Blueprint','/incidents':'Incidents','/session':'Session','/changelog':'Changelog'
 }
 
 const PROJECTS=[
@@ -307,6 +308,13 @@ function Guide(){
 
     const routeRules=[
       [['notification','alerts','inbox'],'/notifications','Opening your ESN Notification Center.'],
+      [['operations','ops map','network map'],'/operations','Opening the ESN Operations Map.'],
+      [['diagnostic','diagnostics','self test'],'/diagnostics','Opening the ESN Diagnostic Center.'],
+      [['smp test','connection test'],'/smpcheck','Opening the SMP Connection Tester.'],
+      [['blueprint','system map'],'/blueprint','Opening the ESN System Blueprint.'],
+      [['incident','incidents'],'/incidents','Opening the ESN Incident History.'],
+      [['session stats','session'],'/session','Opening your local Session Stats.'],
+      [['changelog','release timeline'],'/changelog','Opening the Network Changelog.'],
       [['reward','market','inventory'],'/rewards','Opening the account-free Reward Vault and Shard Market.'],
       [['challenge','compete'],'/challenges','Opening the Challenge Lab so you can create or accept a shareable Arcade challenge.'],
       [['staff','operator console'],'/staff','Opening the code-gated Staff Dashboard.'],
