@@ -386,7 +386,7 @@ function Header() {
   const mobileSection = arcadeActive ? 'Arcade'
     : inGroup(['/smpconnection','/smpconsole','/smpplugin','/smpguide','/storesmp']) ? 'ESN SMP'
     : inGroup(['/serviceshowcase','/portfolio','/testimonials']) ? 'Services'
-    : inGroup(['/status','/networkstats','/updates','/whatsnew','/timeline','/explore','/gallery','/nexus','/notifications','/rewards','/challenges','/staff']) ? 'Network'
+    : inGroup(['/status','/networkstats','/updates','/whatsnew','/timeline','/explore','/gallery','/nexus','/notifications','/rewards','/challenges','/staff','/operations','/incidents','/changelog','/diagnostics','/smpcheck','/blueprint','/session']) ? 'Network'
     : location.pathname==='/estools' ? 'Tools'
     : location.pathname==='/settings' ? 'Settings'
     : location.pathname==='/support' ? 'Support'
