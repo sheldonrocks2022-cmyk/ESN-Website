@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 
-export const SITE_RELEASE='ESN No-Account Expansion • 2026.09.27'
+export const SITE_RELEASE='ESN Operations Expansion • 2026.09.28'
 export const SMP_ADDRESS='esn.ggwp.cc'
 export const SMP_PORT='17058'
 export const DISCORD_INVITE='3gxA66KZ8'
