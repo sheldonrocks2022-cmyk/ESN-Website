@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://esnoffical.com/</loc></url>
-  <url><loc>https://esnoffical.com/serviceshowcase</loc></url>
-  <url><loc>https://esnoffical.com/storesmp</loc></url>
-  <url><loc>https://esnoffical.com/smpconnection</loc></url>
-  <url><loc>https://esnoffical.com/estools</loc></url>
+  <url><loc>https://esnoffical.com/serviceshowcase</loc></url>  <url><loc>https://esnoffical.com/estools</loc></url>
   <url><loc>https://esnoffical.com/arcade</loc></url>
   <url><loc>https://esnoffical.com/esclicker</loc></url>
   <url><loc>https://esnoffical.com/esfactory</loc></url>
@@ -15,16 +12,11 @@
   <url><loc>https://esnoffical.com/about</loc></url>
   <url><loc>https://esnoffical.com/leadership</loc></url>
   <url><loc>https://esnoffical.com/testimonials</loc></url>
-  <url><loc>https://esnoffical.com/faq</loc></url>
-  <url><loc>https://esnoffical.com/smpconsole</loc></url>
-  <url><loc>https://esnoffical.com/smpplugin</loc></url>
-  <url><loc>https://esnoffical.com/status</loc></url>
+  <url><loc>https://esnoffical.com/faq</loc></url>  <url><loc>https://esnoffical.com/status</loc></url>
   <url><loc>https://esnoffical.com/timeline</loc></url>
   <url><loc>https://esnoffical.com/updates</loc></url>
   <url><loc>https://esnoffical.com/portfolio</loc></url>
-  <url><loc>https://esnoffical.com/share</loc></url>
-  <url><loc>https://esnoffical.com/smpguide</loc></url>
-  <url><loc>https://esnoffical.com/networkstats</loc></url>
+  <url><loc>https://esnoffical.com/share</loc></url>  <url><loc>https://esnoffical.com/networkstats</loc></url>
   <url><loc>https://esnoffical.com/nexus</loc></url>
   <url><loc>https://esnoffical.com/notifications</loc></url>
   <url><loc>https://esnoffical.com/rewards</loc></url>
@@ -32,9 +24,7 @@
   <url><loc>https://esnoffical.com/operations</loc></url>
   <url><loc>https://esnoffical.com/incidents</loc></url>
   <url><loc>https://esnoffical.com/changelog</loc></url>
-  <url><loc>https://esnoffical.com/diagnostics</loc></url>
-  <url><loc>https://esnoffical.com/smpcheck</loc></url>
-  <url><loc>https://esnoffical.com/blueprint</loc></url>
+  <url><loc>https://esnoffical.com/diagnostics</loc></url>  <url><loc>https://esnoffical.com/blueprint</loc></url>
   <url><loc>https://esnoffical.com/session</loc></url>
   <url><loc>https://esnoffical.com/whatsnew</loc></url>
   <url><loc>https://esnoffical.com/explore</loc></url>
