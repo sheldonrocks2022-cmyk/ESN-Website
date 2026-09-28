@@ -12,6 +12,7 @@ import { NetworkNexusPage, NexusEventLayer } from './NetworkNexus'
 import { ArcadeProgressCenter, ExplorePage, GalleryPage, NetworkStatsPage, RetentionHub, SettingsPage, SiteExpansionLayer, SMPEncyclopediaPage, SupportPage, WhatsNewPage } from './SiteExpansion'
 import ShareCenter from './ShareCenter'
 import { ChallengeLabPage, NoAccountExperienceLayer, NotificationCenterPage, RewardMarketPage, StaffDashboardPage } from './NoAccountExpansion'
+import SMPStaffGate from './SMPStaffGate'
 import { ChangelogTimelinePage, DiagnosticCenterPage, GlobalOpsLayer, OperationsMapPage, PublicIncidentsPage, SessionStatsPage, SMPConnectionTesterPage, SystemBlueprintPage } from './OpsExpansion'
 import { SOCIAL_IMAGE_ALT, SOCIAL_IMAGE_URL, canonicalUrl, getSeo, robotsContent, structuredDataFor } from './seo'
 import { PortfolioPage, StatusCenter, TimelinePage, UpdatesPage, VaultPage, WhatsHappeningNow } from './LiveExperience'
@@ -1490,13 +1491,13 @@ function App() {
           <Route path="/faq" element={<FAQ />} />
           <Route path="/testimonials" element={<Testimonials />} />
           <Route path="/serviceshowcase" element={<ServicesShowcase />} />
-          <Route path="/storesmp" element={<SMPStore />} />
+          <Route path="/storesmp" element={<SMPStaffGate label="ESN SMP Store"><SMPStore /></SMPStaffGate>} />
           <Route path="/store" element={<Navigate to="/storesmp" replace />} />
           <Route path="/store/smp" element={<Navigate to="/storesmp" replace />} />
-          <Route path="/smpconnection" element={<SMPConnection />} />
-          <Route path="/smpconsole" element={<ConsoleConnection />} />
-          <Route path="/smpplugin" element={<SMPPluginDownload />} />
-          <Route path="/smpguide" element={<SMPEncyclopediaPage />} />
+          <Route path="/smpconnection" element={<SMPStaffGate label="ESN SMP Connection"><SMPConnection /></SMPStaffGate>} />
+          <Route path="/smpconsole" element={<SMPStaffGate label="ESN SMP Console"><ConsoleConnection /></SMPStaffGate>} />
+          <Route path="/smpplugin" element={<SMPStaffGate label="ESN SMP Plugin"><SMPPluginDownload /></SMPStaffGate>} />
+          <Route path="/smpguide" element={<SMPStaffGate label="ESN SMP Guide"><SMPEncyclopediaPage /></SMPStaffGate>} />
           <Route path="/status" element={<StatusCenter />} />
           <Route path="/networkstats" element={<NetworkStatsPage />} />
           <Route path="/nexus" element={<NetworkNexusPage />} />
@@ -1508,7 +1509,7 @@ function App() {
           <Route path="/incidents" element={<PublicIncidentsPage />} />
           <Route path="/changelog" element={<ChangelogTimelinePage />} />
           <Route path="/diagnostics" element={<DiagnosticCenterPage />} />
-          <Route path="/smpcheck" element={<SMPConnectionTesterPage />} />
+          <Route path="/smpcheck" element={<SMPStaffGate label="ESN SMP Connection Tester"><SMPConnectionTesterPage /></SMPStaffGate>} />
           <Route path="/blueprint" element={<SystemBlueprintPage />} />
           <Route path="/session" element={<SessionStatsPage />} />
           <Route path="/timeline" element={<TimelinePage />} />
