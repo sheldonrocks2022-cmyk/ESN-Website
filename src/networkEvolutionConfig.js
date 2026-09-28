@@ -54,6 +54,13 @@ export const SEARCH_INDEX=[
   {label:'Reward Vault',meta:'Account-free Network Shard marketplace, inventory, and local identity cosmetics',path:'/rewards',category:'Network'},
   {label:'Challenge Lab',meta:'Create and accept shareable ESN Arcade challenges without accounts',path:'/challenges',category:'Arcade'},
   {label:'Staff Dashboard',meta:'Code-gated ESN operator console and local network notice controls',path:'/staff',category:'Network'},
+  {label:'Operations Map',meta:'Connected ESN system map with website, SMP, Arcade, Terminal, Store, Nexus, and Staff status',path:'/operations',category:'Network'},
+  {label:'Diagnostic Center',meta:'Run account-free browser, cache, service worker, SMP, plugin, and Discord checks',path:'/diagnostics',category:'Help'},
+  {label:'SMP Connection Tester',meta:'Test ESN SMP address, port, public telemetry, plugin release, and website reachability',path:'/smpcheck',category:'SMP'},
+  {label:'System Blueprint',meta:'Interactive diagram explaining how major ESN website systems connect',path:'/blueprint',category:'Network'},
+  {label:'Incident History',meta:'View staff-published local incident history and resolution state',path:'/incidents',category:'Network'},
+  {label:'Session Stats',meta:'View current local ESN visit time, routes, Arcade XP, Terminal commands, and hidden signals',path:'/session',category:'Network'},
+  {label:'Network Changelog',meta:'Animated major ESN release timeline with system filters',path:'/changelog',category:'Updates'},
   {label:'Release Center',meta:'Website, SMP, Arcade, and network update logs',path:'/updates',category:'Updates'},
   {label:"What's New",meta:'Changes since your last visit',path:'/whatsnew',category:'Updates'},
   {label:'Interactive Timeline',meta:'Explore ESN eras',path:'/timeline',category:'About'},
@@ -80,6 +87,9 @@ export const DECK_DESTINATIONS=[
   {id:'notifications',label:'Alerts',path:'/notifications',glyph:'!'},
   {id:'rewards',label:'Rewards',path:'/rewards',glyph:'R'},
   {id:'challenges',label:'Challenge',path:'/challenges',glyph:'C'},
+  {id:'operations',label:'Ops',path:'/operations',glyph:'O'},
+  {id:'diagnostics',label:'Diagnose',path:'/diagnostics',glyph:'D'},
+  {id:'session',label:'Session',path:'/session',glyph:'S'},
 ]
 
 export const SMP_EVENT_BOARD=[
