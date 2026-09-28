@@ -27,6 +27,7 @@ const TERMINAL_CRT_KEY='esn_terminal_crt_v1'
 const TERMINAL_NOTICE_CLEAR_KEY='esn_terminal_notice_clear_v1'
 const TERMINAL_CHALLENGE_KEY='esn_terminal_challenge_v1'
 const TERMINAL_SIGNAL_KEY='esn_terminal_signal_v1'
+const TERMINAL_CAMPAIGN_KEY='esn_terminal_campaign_v1'
 const TERMINAL_PLUGIN_URL='https://github.com/sheldonrocks2022-cmyk/ESNSMP/releases/latest/download/ESNSMP.jar'
 const TERMINAL_UI_THEMES=['cyan','green','amber','void','warden','crt','minimal']
 const TERMINAL_WATCHABLE=['network','smp status','arcade stats','daily','rewards','uptime','diagnostics','session','notifications','dashboard network','dashboard arcade']
@@ -43,7 +44,7 @@ const TERMINAL_COMMANDS=[
   'performance auto','performance performance','performance premium','motion full','motion reduced',
   'copy smp','copy discord','copy plugin','copy website','copy diagnostics',
   'qr smp','qr discord','qr website','session','profiler','diagnostics','diagnostics export','ping','uptime',
-  'random','daily','leaderboard','vote','challenge','fortune','signal','search','sound on','sound off','event',
+  'random','daily','leaderboard','vote','challenge','fortune','signal','campaign','protocol alpha','protocol midnight','protocol overdrive','protocol origin','search','sound on','sound off','event',
   'terminal export','terminal import ','repeat 3 network','dev info','dev routes','dev release','dev storage',
   'ls /network/archive','cat /network/archive/origin.txt','cat /network/archive/founder.log','cat /network/archive/arcade.sys',
   'clear','clear data',
@@ -66,6 +67,7 @@ const TERMINAL_MAN={
   dashboard:['dashboard [arcade|network|missions]','Prints a compact ASCII/Unicode dashboard in the Terminal.'],
   challenge:['challenge','Shows today’s Terminal challenge. Complete its requested command for bonus Network XP.'],
   signal:['signal','Tunes into a daily ESN signal. Rare signals can contain a Terminal-only collectible.'],
+  campaign:['campaign | protocol <alpha|midnight|overdrive|origin>','Runs the hidden multi-stage ESN Terminal protocol campaign. Each stage unlocks only after the previous stage is complete.'],
   fortune:['fortune','Returns a random ESN network message, hint, or operator line.'],
   repeat:['repeat <1-10> <safe command>','Repeats a safe local/read-only command up to ten times.'],
   terminal:['terminal export | terminal import <code> | terminal theme <theme>','Moves Terminal setup between devices or changes the Terminal-only visual theme.'],
@@ -856,6 +858,64 @@ function TerminalPanel({onClose,onOpenPassport,onOpenSearch,soundEnabled,setSoun
       window.dispatchEvent(new CustomEvent('esn-terminal-theme',{detail:{theme:'midnight',vault:true}}))
       awardOperator('vault-terminal','Terminal Vault Authorization',80,'Midnight Authorization Chip')
       push('ok','VAULT AUTHORIZATION ACCEPTED // Midnight Core enabled.')
+    }else if(command==='campaign'){
+      const state=readJson(TERMINAL_CAMPAIGN_KEY,{stage:0,complete:false,startedAt:null})
+      const labels=['LOCKED SIGNAL','ALPHA HANDSHAKE','MIDNIGHT AUTHORIZATION','CORE OVERDRIVE','ORIGIN COMPLETE']
+      const hints=[
+        'Begin with: protocol alpha',
+        'The second protocol is tied to the Vault and Midnight Core.',
+        'The third protocol is named after the Reactor state beyond 100% charge.',
+        'One archive file keeps returning to the beginning. Try its name as a protocol.',
+        'Campaign complete. Classified Core Token retained locally.',
+      ]
+      pushMany(state.complete?'ok':'system',[
+        'ESN CLASSIFIED PROTOCOL CAMPAIGN',
+        'STAGE // '+Math.min(4,state.stage||0)+'/4 • '+labels[Math.min(4,state.stage||0)],
+        'CLUE // '+hints[Math.min(4,state.stage||0)],
+        'SCOPE // Local device progression. No account required.',
+      ])
+    }else if(command==='protocol alpha'){
+      const state=readJson(TERMINAL_CAMPAIGN_KEY,{stage:0,complete:false})
+      if((state.stage||0)>0)push('system','ALPHA PROTOCOL // already synchronized.')
+      else{
+        writeJson(TERMINAL_CAMPAIGN_KEY,{...state,stage:1,startedAt:Date.now(),alphaAt:Date.now()})
+        awardOperator('campaign-alpha','Alpha Signal Decoder',60,'Alpha Handshake Key')
+        pushMany('ok',['ALPHA PROTOCOL ACCEPTED','Carrier lock established.','NEXT CLUE // The Vault knows Midnight.'])
+      }
+    }else if(command==='protocol midnight'){
+      const state=readJson(TERMINAL_CAMPAIGN_KEY,{stage:0,complete:false})
+      if((state.stage||0)<1)push('error','MIDNIGHT PROTOCOL // Alpha handshake required first.')
+      else if(localStorage.getItem('esn_vault_unlocked')!=='1')push('error','MIDNIGHT PROTOCOL // Vault authorization required.')
+      else if((state.stage||0)>1)push('system','MIDNIGHT PROTOCOL // already synchronized.')
+      else{
+        writeJson(TERMINAL_CAMPAIGN_KEY,{...state,stage:2,midnightAt:Date.now()})
+        awardOperator('campaign-midnight','Midnight Protocol',75,'Midnight Cipher Fragment')
+        pushMany('ok',['MIDNIGHT PROTOCOL ACCEPTED','Vault carrier linked to Terminal.','NEXT CLUE // Push the Core into OVERDRIVE.'])
+      }
+    }else if(command==='protocol overdrive'){
+      const state=readJson(TERMINAL_CAMPAIGN_KEY,{stage:0,complete:false})
+      if((state.stage||0)<2)push('error','OVERDRIVE PROTOCOL // Midnight authorization required first.')
+      else if((state.stage||0)>2)push('system','OVERDRIVE PROTOCOL // already synchronized.')
+      else{
+        writeJson(TERMINAL_CAMPAIGN_KEY,{...state,stage:3,overdriveAt:Date.now()})
+        awardOperator('campaign-overdrive','Core Overdrive Link',90,'Overdrive Reactor Seal')
+        window.dispatchEvent(new CustomEvent('esn-local-notification',{detail:{type:'PROTOCOL',title:'Core protocol synchronized',copy:'Terminal campaign stage 3/4 complete.'}}))
+        pushMany('ok',['OVERDRIVE PROTOCOL ACCEPTED','Core channel at classified resonance.','FINAL CLUE // Every network has an ORIGIN.'])
+      }
+    }else if(command==='protocol origin'){
+      const state=readJson(TERMINAL_CAMPAIGN_KEY,{stage:0,complete:false})
+      if((state.stage||0)<3)push('error','ORIGIN PROTOCOL // Core Overdrive synchronization required first.')
+      else if(state.complete)push('ok','ORIGIN PROTOCOL // campaign already complete.')
+      else{
+        const next={...state,stage:4,complete:true,completedAt:Date.now()}
+        writeJson(TERMINAL_CAMPAIGN_KEY,next)
+        awardOperator('campaign-origin','Classified Network Operator',150,'Classified Core Token')
+        const retention=readJson('esn_retention_v1',{networkXp:0,shards:0,collectibles:[]})
+        writeJson('esn_retention_v1',{...retention,networkXp:(retention.networkXp||0)+150,shards:(retention.shards||0)+5,collectibles:[...new Set([...(retention.collectibles||[]),'Classified Core Token'])]})
+        window.dispatchEvent(new Event('esn-progress-change'))
+        window.dispatchEvent(new CustomEvent('esn-local-notification',{detail:{type:'PROTOCOL',title:'Classified campaign complete',copy:'Classified Core Token + 5 Network Shards unlocked.'}}))
+        pushMany('ok',['ORIGIN PROTOCOL ACCEPTED','CLASSIFIED CAMPAIGN COMPLETE','REWARD // Classified Core Token • +150 Network XP • +5 Shards'])
+      }
     }else if(command==='search'){
       onClose();onOpenSearch()
     }else if(command.startsWith('search ')){
