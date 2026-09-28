@@ -1,0 +1,12 @@
+.smp-staff-lock{min-height:calc(100svh - 72px);display:grid;place-items:center;padding:110px 20px 60px;background:radial-gradient(circle at 50% 30%,rgba(98,241,255,.08),transparent 28rem),#030711}
+.smp-staff-lock-card{width:min(620px,100%);padding:34px;border:1px solid rgba(98,241,255,.2);border-radius:28px;background:linear-gradient(145deg,rgba(9,19,37,.98),rgba(4,8,18,.98));box-shadow:0 35px 120px rgba(0,0,0,.48),inset 0 1px rgba(255,255,255,.04)}
+.smp-staff-lock-card>span{font-size:.68rem;letter-spacing:.18em;font-weight:950;color:var(--cyan)}
+.smp-staff-lock-card h1{font-size:clamp(3rem,9vw,5.8rem);margin:12px 0 14px;letter-spacing:-.055em}
+.smp-staff-lock-card p{max-width:520px;line-height:1.6}
+.smp-staff-lock-card form{display:grid;gap:10px;margin:24px 0 14px}
+.smp-staff-lock-card input{width:100%;min-height:50px;border:1px solid var(--line);border-radius:13px;background:#07101f;color:#fff;padding:0 14px;font:inherit}
+.smp-staff-lock-card button,.smp-staff-lock-actions a{min-height:48px;border:1px solid rgba(98,241,255,.2);border-radius:12px;background:rgba(98,241,255,.07);color:#fff;padding:0 15px;font-weight:900;display:flex;align-items:center;justify-content:center;cursor:pointer;text-align:center}
+.smp-staff-lock-card>strong{display:block;color:#ff8196;margin:10px 0;font-size:.8rem;letter-spacing:.08em}
+.smp-staff-lock-actions{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:18px 0}
+.smp-staff-lock-card>small{display:block;color:var(--muted);line-height:1.5}
+@media(max-width:560px){.smp-staff-lock{padding:92px 14px 40px}.smp-staff-lock-card{padding:26px 20px}.smp-staff-lock-actions{grid-template-columns:1fr}}
