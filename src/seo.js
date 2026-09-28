@@ -199,6 +199,48 @@ export const SEO_ROUTES={
     index:false,
     nofollow:true,
   },
+  '/operations':{
+    label:'Operations Map',
+    title:'ESN Operations Map | Live Network Systems & Status',
+    description:'Explore a connected ES Network operations map for the website, Nexus, SMP, Arcade, Terminal, Store, Staff tools, and current system telemetry.',
+    index:true,
+  },
+  '/incidents':{
+    label:'Incident History',
+    title:'ESN Incident History | Network Issues & Resolutions',
+    description:'View ES Network incident records explicitly published from the local Staff Dashboard, including severity, current status, details, and resolution times.',
+    index:true,
+  },
+  '/changelog':{
+    label:'Network Changelog',
+    title:'ESN Network Changelog | Website, Staff, Terminal & Arcade',
+    description:'Explore an interactive ES Network changelog timeline covering major website, Staff, Network, Terminal, Arcade, and infrastructure releases.',
+    index:true,
+  },
+  '/diagnostics':{
+    label:'Diagnostic Center',
+    title:'ESN Diagnostic Center | Browser, Network & SMP Checks',
+    description:'Run safe account-free ES Network diagnostics for browser connectivity, local storage, notifications, service workers, cache, SMP telemetry, plugin releases, and Discord.',
+    index:true,
+  },
+  '/smpcheck':{
+    label:'SMP Connection Tester',
+    title:'ESN SMP Connection Tester | Server, Port & Telemetry Check',
+    description:'Test the current ESN SMP hostname, port, website reachability, public Minecraft telemetry, plugin release channel, and Discord connection from one page.',
+    index:true,
+  },
+  '/blueprint':{
+    label:'System Blueprint',
+    title:'ESN System Blueprint | Nexus, Terminal, SMP, Arcade & Staff',
+    description:'Explore an interactive ES Network system blueprint showing how Nexus, Terminal, Vault, Arcade, SMP, Staff tools, Operations, and other systems connect.',
+    index:true,
+  },
+  '/session':{
+    label:'Session Stats',
+    title:'ESN Session Stats | Local Visit, Arcade & Terminal Activity',
+    description:'View account-free local ES Network session statistics including visit duration, pages explored, Arcade XP, hidden signals, Terminal commands, and session rank.',
+    index:true,
+  },
   '/whatsnew':{
     label:"What's New",
     title:"What's New at ES Network | Latest Website Features",
