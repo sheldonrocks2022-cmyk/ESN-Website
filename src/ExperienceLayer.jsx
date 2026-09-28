@@ -12,7 +12,7 @@ function routeScene(path){
   if(path==='/serviceshowcase'||path==='/portfolio')return {key:'services',label:'SERVICE DECK',glyph:'◇'}
   if(path==='/estools'||path==='/tools')return {key:'tools',label:'TOOLS HUD',glyph:'⌁'}
   if(path==='/vault')return {key:'vault',label:'VAULT ACCESS',glyph:'◈'}
-  if(['/status','/updates','/timeline','/share','/nexus','/notifications','/rewards','/challenges','/staff','/networkstats','/whatsnew','/explore','/gallery','/settings','/support'].includes(path))return {key:'network',label:'NETWORK CORE',glyph:'◎'}
+  if(['/status','/updates','/timeline','/share','/nexus','/notifications','/rewards','/challenges','/staff','/networkstats','/whatsnew','/explore','/gallery','/settings','/support','/operations','/incidents','/changelog','/diagnostics','/smpcheck','/blueprint','/session'].includes(path))return {key:'network',label:'NETWORK CORE',glyph:'◎'}
   return {key:'home',label:'ES NETWORK',glyph:'ES'}
 }
 
