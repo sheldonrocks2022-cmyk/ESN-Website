@@ -34,6 +34,13 @@ const ROUTE_META={
   '/estools':{label:'ES Tools',category:'Tools'},
   '/status':{label:'Network Status',category:'Network'},
   '/networkstats':{label:'Network Statistics',category:'Network'},
+  '/operations':{label:'Operations Map',category:'Network'},
+  '/incidents':{label:'Incident History',category:'Network'},
+  '/changelog':{label:'Network Changelog',category:'Updates'},
+  '/diagnostics':{label:'Diagnostic Center',category:'Help'},
+  '/smpcheck':{label:'SMP Connection Tester',category:'SMP'},
+  '/blueprint':{label:'System Blueprint',category:'Network'},
+  '/session':{label:'Session Stats',category:'Network'},
   '/nexus':{label:'Network Nexus',category:'Network'},
   '/notifications':{label:'Notification Center',category:'Network'},
   '/rewards':{label:'Reward Vault',category:'Network'},
@@ -74,6 +81,11 @@ const EXPLORE_FEATURES=[
   ['Notification Center','Keep release, reward, achievement, SMP, and local browser alerts in one account-free inbox.','/notifications','ALERTS'],
   ['Reward Vault','Spend locally earned Network Shards on cosmetic core skins and profile titles.','/rewards','REWARDS'],
   ['Challenge Lab','Create and accept shareable Arcade target challenges without accounts or fake opponents.','/challenges','CHALLENGE'],
+  ['Operations Map','See Website, Nexus, SMP, Arcade, Terminal, Store, and Staff as one connected live system.','/operations','OPS'],
+  ['Diagnostic Center','Run safe browser, service worker, cache, SMP, plugin, and Discord checks before opening support.','/diagnostics','DIAG'],
+  ['SMP Connection Tester','Test the current SMP address, port, telemetry, plugin release, and website reachability.','/smpcheck','SMP'],
+  ['System Blueprint','Explore how Nexus, Terminal, Vault, Arcade, SMP, Staff, and Operations connect.','/blueprint','SYSTEM'],
+  ['Session Stats','See account-free local visit time, routes, Arcade XP, hidden signals, and Terminal activity.','/session','LOCAL'],
 ]
 
 const COMMANDS=[
@@ -222,6 +234,7 @@ const KNOWN_ITEMS=[
 ]
 
 const WHAT_IS_NEW=[
+  ['Operations Expansion','Operations Map, maintenance mode, public incident controls, changelog timeline, diagnostics, SMP connection testing, Terminal campaign, dynamic homepage state, blueprint, recovery console, session stats, broadcast previews, countdowns, emergency themes, and staff macros are now active.'],
   ['No-Account Expansion','Notification Center, Reward Vault, shareable Challenge Lab, stronger Nexus actions, richer SMP telemetry, and the code-gated Staff Dashboard are now wired into ESN.'],
   ['Expansion 20','20 requested website systems added in one connected feature batch.'],
   ['Installable ESN','PWA manifest, service worker registration, install prompt support, home-screen launch, and standalone display mode.'],
