@@ -40,6 +40,13 @@ const requiredRoutes = [
   '/leadership',
   '/testimonials',
   '/faq',
+  '/operations',
+  '/incidents',
+  '/changelog',
+  '/diagnostics',
+  '/smpcheck',
+  '/blueprint',
+  '/session',
 ]
 
 const requiredPaymentLinks = [
@@ -75,6 +82,8 @@ const requiredMigrationFiles = [
   'src/NetworkEvolution.jsx',
   'src/networkEvolutionConfig.js',
   'src/SiteExpansion.jsx',
+  'src/OpsExpansion.jsx',
+  'src/opsExpansion.css',
   'src/reviews.js',
   'src/arcade/shared.js',
   'src/arcade/OriginalFrame.jsx',
@@ -126,9 +135,14 @@ for (const route of ['/smpguide','/networkstats','/whatsnew','/explore','/galler
   if (!app.includes(`path="${route}"`)) problems.push(`Expansion 20 route missing: ${route}`)
 }
 const siteExpansion = fs.readFileSync('src/SiteExpansion.jsx','utf8')
+const opsExpansion = fs.readFileSync('src/OpsExpansion.jsx','utf8')
 if (!siteExpansion.includes('SMPEncyclopediaPage') || !siteExpansion.includes('SettingsPage') || !siteExpansion.includes('ArcadeProgressCenter')) problems.push('Expansion 20 SMP, settings, or Arcade systems missing.')
 if (!siteExpansion.includes('beforeinstallprompt') || !fs.existsSync('public/site.webmanifest') || !fs.existsSync('public/sw.js')) problems.push('Installable ESN PWA system missing.')
 if (!siteExpansion.includes('REPORT PREVIEW') || !siteExpansion.includes('NetworkStatsPage') || !siteExpansion.includes('ExplorePage')) problems.push('Bug report, network stats, or feature discovery system missing.')
+for (const marker of ['OperationsMapPage','PublicIncidentsPage','ChangelogTimelinePage','DiagnosticCenterPage','SMPConnectionTesterPage','SystemBlueprintPage','SessionStatsPage','StaffOpsExpansion','GlobalOpsLayer']) { if (!opsExpansion.includes(marker)) problems.push(`Operations expansion missing: ${marker}.`) }
+for (const marker of ['OPS_MAINTENANCE_KEY','OPS_COUNTDOWN_KEY','OPS_EMERGENCY_KEY','BROADCAST SIMULATOR','RECOVERY CONSOLE','COMMAND MACROS']) { if (!opsExpansion.includes(marker)) problems.push(`Operations control missing: ${marker}.`) }
+if (!networkEvolution.includes('TERMINAL_CAMPAIGN_KEY') || !networkEvolution.includes("protocol alpha") || !networkEvolution.includes("protocol midnight") || !networkEvolution.includes("protocol overdrive") || !networkEvolution.includes("protocol origin")) problems.push('Secret Terminal protocol campaign missing or incomplete.')
+if (!app.includes('<GlobalOpsLayer />') || !app.includes('path="/operations"') || !app.includes('path="/diagnostics"') || !app.includes('path="/smpcheck"') || !app.includes('path="/blueprint"') || !app.includes('path="/session"')) problems.push('Operations expansion routes or global layer missing from App.')
 if (!liveExperience.includes('Expansion 20') || !liveExperience.includes('release-filter-row') || !liveExperience.includes('INCIDENT HISTORY')) problems.push('Expansion 20 release log, filters, or incident history missing.')
 if (!indexHtml.includes('site.webmanifest')) problems.push('PWA manifest link missing from base HTML.')
 if (!networkEvolution.includes('ESN Passport') || !networkEvolution.includes('ESN Terminal') || !networkEvolution.includes('Universal ESN Search')) problems.push('Network Evolution Passport, Terminal, or universal search system missing.')
