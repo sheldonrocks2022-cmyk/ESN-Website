@@ -12,6 +12,7 @@ import { NetworkNexusPage, NexusEventLayer } from './NetworkNexus'
 import { ArcadeProgressCenter, ExplorePage, GalleryPage, NetworkStatsPage, RetentionHub, SettingsPage, SiteExpansionLayer, SMPEncyclopediaPage, SupportPage, WhatsNewPage } from './SiteExpansion'
 import ShareCenter from './ShareCenter'
 import { ChallengeLabPage, NoAccountExperienceLayer, NotificationCenterPage, RewardMarketPage, StaffDashboardPage } from './NoAccountExpansion'
+import { ChangelogTimelinePage, DiagnosticCenterPage, GlobalOpsLayer, OperationsMapPage, PublicIncidentsPage, SessionStatsPage, SMPConnectionTesterPage, SystemBlueprintPage } from './OpsExpansion'
 import { SOCIAL_IMAGE_ALT, SOCIAL_IMAGE_URL, canonicalUrl, getSeo, robotsContent, structuredDataFor } from './seo'
 import { PortfolioPage, StatusCenter, TimelinePage, UpdatesPage, VaultPage, WhatsHappeningNow } from './LiveExperience'
 import { VERIFIED_REVIEWS } from './reviews'
@@ -449,7 +450,7 @@ function Header() {
 
           <Link className={location.pathname === '/estools' ? 'nav-direct active' : 'nav-direct'} onClick={close} to="/estools">ES Tools</Link>
 
-          <div className={inGroup(['/about','/leadership','/testimonials','/faq','/status','/networkstats','/timeline','/updates','/whatsnew','/explore','/gallery','/settings','/support','/share','/nexus','/notifications','/rewards','/challenges','/staff']) ? 'nav-group active' : 'nav-group'}>
+          <div className={inGroup(['/about','/leadership','/testimonials','/faq','/status','/networkstats','/timeline','/updates','/whatsnew','/explore','/gallery','/settings','/support','/share','/nexus','/notifications','/rewards','/challenges','/staff','/operations','/incidents','/changelog','/diagnostics','/smpcheck','/blueprint','/session']) ? 'nav-group active' : 'nav-group'}>
             <button className="nav-trigger" type="button" aria-haspopup="true">About</button>
             <div className="dropdown">
               <span className="dropdown-label">THE NETWORK</span>
@@ -460,6 +461,13 @@ function Header() {
               <Link onClick={close} to="/rewards">Reward Vault</Link>
               <Link onClick={close} to="/challenges">Challenge Lab</Link>
               <Link onClick={close} to="/staff">Staff Dashboard</Link>
+              <Link onClick={close} to="/operations">Operations Map</Link>
+              <Link onClick={close} to="/diagnostics">Diagnostic Center</Link>
+              <Link onClick={close} to="/smpcheck">SMP Connection Tester</Link>
+              <Link onClick={close} to="/blueprint">System Blueprint</Link>
+              <Link onClick={close} to="/incidents">Incident History</Link>
+              <Link onClick={close} to="/session">Session Stats</Link>
+              <Link onClick={close} to="/changelog">Network Changelog</Link>
               <Link onClick={close} to="/updates">Release Center</Link>
               <Link onClick={close} to="/timeline">Interactive Timeline</Link>
               <Link onClick={close} to="/share">Share Deck</Link>
@@ -1472,6 +1480,7 @@ function App() {
       <SiteExpansionLayer />
       <NexusEventLayer />
       <NoAccountExperienceLayer />
+      <GlobalOpsLayer />
       <main id="main-content">
         <Routes>
           <Route path="/" element={<Home />} />
@@ -1495,6 +1504,13 @@ function App() {
           <Route path="/rewards" element={<RewardMarketPage />} />
           <Route path="/challenges" element={<ChallengeLabPage />} />
           <Route path="/staff" element={<StaffDashboardPage />} />
+          <Route path="/operations" element={<OperationsMapPage />} />
+          <Route path="/incidents" element={<PublicIncidentsPage />} />
+          <Route path="/changelog" element={<ChangelogTimelinePage />} />
+          <Route path="/diagnostics" element={<DiagnosticCenterPage />} />
+          <Route path="/smpcheck" element={<SMPConnectionTesterPage />} />
+          <Route path="/blueprint" element={<SystemBlueprintPage />} />
+          <Route path="/session" element={<SessionStatsPage />} />
           <Route path="/timeline" element={<TimelinePage />} />
           <Route path="/updates" element={<UpdatesPage />} />
           <Route path="/portfolio" element={<PortfolioPage />} />
