@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import './domains.css'
 
 const ROOT_DOMAIN='esnoffical.com'
-const API_BASE=(import.meta.env.VITE_ESN_DOMAINS_API||'').replace(/\/$/,'')
+const API_BASE=(import.meta.env.VITE_ESN_DOMAINS_API||'https://domains-api.esnoffical.com').replace(/\/$/,'')
 const STAFF_HASH='645569b472b3670b547fd45aa2a626177a8fb71f722bb7c3dc07d0d670311cab'
 const RESERVED=new Set(['www','api','admin','staff','store','store-ai','smp','status','support','mail','billing','domains','dns','ftp','cpanel','webmail','discord','nexus','arcade','tools','assets','cdn','static','auth','login','dashboard','root','esn','official','offical'])
 
