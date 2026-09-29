@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react'
+import { Link } from 'react-router-dom'
 import './domains.css'
 
 const ROOT_DOMAIN='esnoffical.com'
@@ -268,6 +269,11 @@ export default function DomainsPage(){
       <div className="domains-safety-strip">
         <strong>NO NAMESERVER CHANGE</strong>
         <span>ESN stays on Spaceship DNS. Free subdomains create only their own CNAME record — the main ESN nameservers are never changed.</span>
+      </div>
+
+      <div className="domains-builder-callout">
+        <div><span>NEW // ESN WEBSITE BUILDER</span><strong>Build the website for your subdomain.</strong><p>Generate a site from a prompt, edit every section, preview phone/desktop, export HTML, and publish a safe ESN-hosted preview.</p></div>
+        <Link to="/site-builder">OPEN SITE BUILDER →</Link>
       </div>
 
       <div className="domains-payment-flow" aria-label="ESN Hosting payment workflow">
