@@ -22,6 +22,7 @@ import { ChangelogTimelinePage, DiagnosticCenterPage, GlobalOpsLayer, Operations
 import { SOCIAL_IMAGE_ALT, SOCIAL_IMAGE_URL, canonicalUrl, getSeo, robotsContent, structuredDataFor } from './seo'
 import { PortfolioPage, StatusCenter, TimelinePage, UpdatesPage, VaultPage, WhatsHappeningNow } from './LiveExperience'
 import { VERIFIED_REVIEWS } from './reviews'
+import HomeControlCenter from './HomeControlCenter'
 import ClickerGame from './arcade/Clicker'
 import FactoryGame from './arcade/Factory'
 import MinesGame from './arcade/Mines'
@@ -698,6 +699,8 @@ function Home() {
           <Link to="/estools"><span>04</span><b>ES Tools</b><small>Free browser utilities</small><em>↗</em></Link>
         </div>
       </section>
+
+      <HomeControlCenter />
 
       <NetworkDirectory />
 
