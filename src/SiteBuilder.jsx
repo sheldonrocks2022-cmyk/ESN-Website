@@ -790,6 +790,83 @@ function accessibilityReadiness(site){
   return Math.min(100,score)
 }
 
+function healthReport(site,prompt){
+  const s=safeSite(site)
+  const seo=Math.min(100,(s.seoTitle.length>=20?35:15)+(s.seoDescription.length>=80?35:15)+(s.multiPage?15:5)+(s.pages.every(function(page){return page.title&&page.headline})?15:5))
+  const content=Math.min(100,(s.heroCopy.length>=80?20:10)+(s.aboutCopy.length>=100?20:10)+(s.cards.every(function(card){return card.copy.length>=50})?20:10)+(s.faq.every(function(item){return item.a.length>=40})?20:10)+(promptScore(prompt)>=70?20:10))
+  const mobile=Math.min(100,70+(s.visual.density!=='dense'?10:5)+(s.pages.length===3?10:5)+(s.ctaLabel?10:0))
+  const media=Math.min(100,45+s.gallery.filter(function(item){return item.image&&item.alt}).length*12+(s.galleryMode==='carousel'?7:0))
+  const navigation=Math.min(100,55+(s.multiPage?20:5)+(s.pages.every(function(page){return page.slug&&page.title})?15:5)+(s.ctaUrl?10:0))
+  return {seo,content,mobile,media,navigation,overall:Math.round((seo+content+mobile+media+navigation+accessibilityReadiness(s))/6)}
+}
+function rewriteCopy(value,mode){
+  const text=String(value||'').trim()
+  if(!text)return text
+  if(mode==='shorter'){
+    const sentence=text.split(/(?<=[.!?])\s+/)[0]||text
+    return clamp(sentence.length>170?sentence.slice(0,167)+'…':sentence,190)
+  }
+  if(mode==='professional'){
+    return clamp(text.replace(/\bawesome\b/gi,'strong').replace(/\bcool\b/gi,'distinctive').replace(/\ba lot\b/gi,'significantly').replace(/\bget\b/gi,'access'),320)
+  }
+  if(mode==='hype'){
+    return clamp(text.replace(/[.!?]+$/,'')+' — built to stand out, move fast, and give visitors a reason to keep exploring.',320)
+  }
+  if(mode==='human'){
+    return clamp(text.replace(/This website/gi,'This place').replace(/visitors/gi,'people').replace(/utilize/gi,'use').replace(/provides/gi,'gives'),320)
+  }
+  return text
+}
+function orderStyle(site,key){
+  const list=site.sectionOrder||STARTER.sectionOrder
+  const index=list.indexOf(key)
+  return {order:index<0?60:index+10}
+}
+function CountdownBlock({site}){
+  const s=safeSite(site)
+  const target=s.countdown.target
+  const [left,setLeft]=useState({days:0,hours:0,minutes:0,seconds:0,done:false})
+  useEffect(function(){
+    if(!target)return
+    const update=function(){
+      const diff=new Date(target).getTime()-Date.now()
+      if(!Number.isFinite(diff)||diff<=0){setLeft({days:0,hours:0,minutes:0,seconds:0,done:true});return}
+      setLeft({days:Math.floor(diff/86400000),hours:Math.floor(diff/3600000)%24,minutes:Math.floor(diff/60000)%60,seconds:Math.floor(diff/1000)%60,done:false})
+    }
+    update();const timer=setInterval(update,1000);return function(){clearInterval(timer)}
+  },[target])
+  if(!target)return null
+  return <section className="generated-countdown"><span>{s.countdown.label}</span><h2>{s.countdown.title}</h2>{left.done?<strong>IT’S HERE</strong>:<div>{[['DAYS',left.days],['HOURS',left.hours],['MIN',left.minutes],['SEC',left.seconds]].map(function(item){return <article key={item[0]}><strong>{String(item[1]).padStart(2,'0')}</strong><small>{item[0]}</small></article>})}</div>}</section>
+}
+function MinecraftStatusWidget({site}){
+  const s=safeSite(site)
+  const cfg=s.minecraft
+  const [state,setState]=useState({loading:false,data:null,error:''})
+  useEffect(function(){
+    if(!cfg.address)return
+    let cancelled=false
+    setState({loading:true,data:null,error:''})
+    const endpoint='https://api.mcsrvstat.us/'+(cfg.bedrock?'bedrock/':'')+'3/'+encodeURIComponent(cfg.address)
+    fetch(endpoint).then(function(r){if(!r.ok)throw new Error('Status unavailable');return r.json()}).then(function(data){if(!cancelled)setState({loading:false,data,error:''})}).catch(function(error){if(!cancelled)setState({loading:false,data:null,error:error.message||'Status unavailable'})})
+    return function(){cancelled=true}
+  },[cfg.address,cfg.bedrock])
+  if(!cfg.address)return null
+  const online=state.data?.online===true
+  return <section className="generated-minecraft-status"><div><span>MINECRAFT STATUS</span><h2>{cfg.title}</h2><p>{cfg.address}</p></div><div className={online?'online':'offline'}><i/>{state.loading?'CHECKING':online?'ONLINE':'OFFLINE'}<strong>{online?(state.data?.players?.online||0)+' / '+(state.data?.players?.max||'?'):'—'}</strong><small>{online?(state.data?.version||state.data?.protocol?.name||'Minecraft'):(state.error||'Server not reachable')}</small></div></section>
+}
+function VisitorPulse({site}){
+  const s=safeSite(site)
+  const [count,setCount]=useState(1)
+  useEffect(function(){
+    const key='esn_builder_local_visits_'+(s.slug||'preview')
+    try{const next=(Number(localStorage.getItem(key))||0)+1;localStorage.setItem(key,String(next));setCount(next)}catch{}
+  },[s.slug])
+  return <section className="generated-visitor-pulse"><span>VISITOR PULSE</span><strong>{count}</strong><p>{s.visitor.label} <small>on this device</small></p></section>
+}
+function GeneratedNotFound({site,preview=false,onPageChange}){
+  const s=safeSite(site)
+  return <div className={'esn-built-site generated-not-found theme-'+s.theme+' '+visualClassNames(s)}><main><span>404 // {s.brand.toUpperCase()}</span><h1>{s.notFound.title}</h1><p>{s.notFound.copy}</p>{preview?<button type="button" onClick={function(){onPageChange?.('home')}}>{s.notFound.buttonLabel}</button>:<a href={'/sites/'+s.slug}>{s.notFound.buttonLabel}</a>}</main></div>
+}
 function generateSite(prompt,brand,slug,variant){
   const analysis=analyzePrompt(prompt)
   const preset=PRESETS[analysis.category]||PRESETS.creator
