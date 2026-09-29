@@ -10,7 +10,7 @@ const ROUTE_LABELS={
   '/status':'Status','/updates':'Updates','/timeline':'Timeline','/vault':'Vault','/explore':'Explore',
   '/gallery':'Gallery','/serviceshowcase':'Services','/portfolio':'Portfolio','/about':'About','/nexus':'Nexus',
   '/notifications':'Notifications','/rewards':'Reward Vault','/challenges':'Challenge Lab',
-  '/operations':'Operations','/diagnostics':'Diagnostics','/smpcheck':'SMP Tester','/blueprint':'Blueprint','/incidents':'Incidents','/session':'Session','/changelog':'Changelog','/store-ai':'Store AI','/hosting':'Hosting'
+  '/operations':'Operations','/diagnostics':'Diagnostics','/smpcheck':'SMP Tester','/blueprint':'Blueprint','/incidents':'Incidents','/session':'Session','/changelog':'Changelog','/store-ai':'Store AI','/hosting':'Hosting','/site-builder':'Site Builder'
 }
 
 const PROJECTS=[
