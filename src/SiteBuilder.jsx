@@ -968,8 +968,10 @@ export default function SiteBuilderPage(){
   const [message,setMessage]=useState('')
   const [generation,setGeneration]=useState(0)
   const [history,setHistory]=useState([])
+  const [previewPage,setPreviewPage]=useState('home')
   const analysis=useMemo(function(){return analyzePrompt(prompt)},[prompt])
   const quality=useMemo(function(){return siteQuality(site,prompt)},[site,prompt])
+  const accessibility=useMemo(function(){return accessibilityReadiness(site)},[site])
 
   const remember=function(snapshot){setHistory(function(current){return [safeSite(snapshot),...current].slice(0,8)})}
   const update=function(key,value){setSite(function(current){return {...current,[key]:value}})}
@@ -982,6 +984,9 @@ export default function SiteBuilderPage(){
   const updateTestimonial=function(index,key,value){setSite(function(current){return {...current,testimonials:(current.testimonials||STARTER.testimonials).map(function(item,i){return i===index?{...item,[key]:value}:item})}})}
   const updateGallery=function(index,key,value){setSite(function(current){return {...current,gallery:(current.gallery||STARTER.gallery).map(function(item,i){return i===index?{...item,[key]:value}:item})}})}
   const updateSocial=function(index,key,value){setSite(function(current){return {...current,socials:(current.socials||STARTER.socials).map(function(item,i){return i===index?{...item,[key]:value}:item})}})}
+  const updateVisual=function(key,value){setSite(function(current){return {...current,visual:{...STARTER.visual,...current.visual,[key]:value}}})}
+  const updatePage=function(index,key,value){setSite(function(current){return {...current,pages:(current.pages||STARTER.pages).map(function(item,i){return i===index?{...item,[key]:key==='slug'?cleanSlug(value):value}:item})}})}
+  const updatePageItem=function(pageIndex,itemIndex,key,value){setSite(function(current){return {...current,pages:(current.pages||STARTER.pages).map(function(page,i){return i===pageIndex?{...page,items:(page.items||[]).map(function(item,j){return j===itemIndex?{...item,[key]:value}:item})}:page})}})}
   const toggleSection=function(key){setSite(function(current){return {...current,sections:{...STARTER.sections,...current.sections,[key]:!(current.sections?.[key]!==false)}}})}
   const setPack=function(pack){setSite(function(current){return applyExperiencePack(current,pack)})}
 
@@ -992,6 +997,7 @@ export default function SiteBuilderPage(){
     remember(site)
     setGeneration(variant)
     setSite(generateSite(prompt,site.brand,site.slug,variant))
+    setPreviewPage('home')
     setMessage('Generated version '+String.fromCharCode(64+variant)+' for '+analysis.label+'. You can edit or try another version.')
   }
   const generate=function(){generateVariant((generation%3)+1)}
@@ -1019,7 +1025,7 @@ export default function SiteBuilderPage(){
   }
 
   return <>
-    <section className="page-hero builder-hero"><div className="shell page-hero-inner"><div className="page-hero-copy"><span className="eyebrow">ESN WEBSITE BUILDER // 100X GENERATOR V5</span><h1>Generate a full digital experience, not a template.</h1><p>V5 adds experience packs, ten visual themes, announcement systems, live-status panels, timelines, galleries, testimonial walls, social link decks, section controls, and stronger ESN-style flagship composition — while published sites remain structured and script-free.</p></div><div className="page-hero-mark"><span>V5</span><small>100X EXPERIENCE ENGINE</small></div></div></section>
+    <section className="page-hero builder-hero"><div className="shell page-hero-inner"><div className="page-hero-copy"><span className="eyebrow">ESN WEBSITE BUILDER // 1000X GENERATOR V6</span><h1>Generate an actual site system.</h1><p>V6 turns one prompt into a branded multi-page website with category-specific page architecture, adaptive navigation, generated brand DNA, responsive desktop/tablet/phone previews, accessibility readiness checks, and the full V5 experience engine underneath it.</p></div><div className="page-hero-mark"><span>V6</span><small>1000X SITE SYSTEM</small></div></div></section>
     <section className="section"><div className="shell builder-layout">
       <div className="builder-controls">
         <div className="builder-panel"><span className="eyebrow">01 // IDEA + GENERATION</span>
@@ -1046,6 +1052,12 @@ export default function SiteBuilderPage(){
           <div className="builder-layout-picks">{LAYOUTS.map(function(layout){return <button type="button" className={site.layout===layout?'active':''} onClick={function(){update('layout',layout)}} key={layout}>{layout.toUpperCase()}</button>})}</div>
           <div className="builder-themes">{THEMES.map(function(theme){return <button type="button" className={site.theme===theme?'active':''} onClick={function(){update('theme',theme)}} key={theme}>{theme.toUpperCase()}</button>})}</div>
           <div className="builder-pack-picks">{EXPERIENCE_PACKS.map(function(pack){return <button type="button" className={(site.pack||'full')===pack?'active':''} onClick={function(){setPack(pack)}} key={pack}>{pack.toUpperCase()}</button>})}</div>
+          <div className="builder-brand-dna">
+            <div><span>ACCENT</span><input type="text" value={site.visual?.accent||themeAccent(site.theme)} onChange={function(e){updateVisual('accent',e.target.value)}} maxLength="7"/></div>
+            <div><span>SHAPE</span><select value={site.visual?.shape||'rounded'} onChange={function(e){updateVisual('shape',e.target.value)}}>{SHAPES.map(function(item){return <option value={item} key={item}>{item.toUpperCase()}</option>})}</select></div>
+            <div><span>DENSITY</span><select value={site.visual?.density||'balanced'} onChange={function(e){updateVisual('density',e.target.value)}}>{DENSITIES.map(function(item){return <option value={item} key={item}>{item.toUpperCase()}</option>})}</select></div>
+            <div><span>MOTION</span><select value={site.visual?.motion||'dynamic'} onChange={function(e){updateVisual('motion',e.target.value)}}>{MOTIONS.map(function(item){return <option value={item} key={item}>{item.toUpperCase()}</option>})}</select></div>
+          </div>
           <label>AUDIENCE<input value={site.audience||''} onChange={function(e){update('audience',e.target.value)}}/></label>
           <label>HERO HEADLINE<input value={site.heroTitle} onChange={function(e){update('heroTitle',e.target.value)}}/></label>
           <label>HERO TEXT<textarea value={site.heroCopy} onChange={function(e){update('heroCopy',e.target.value)}}/></label>
@@ -1077,27 +1089,38 @@ export default function SiteBuilderPage(){
           {(site.socials||STARTER.socials).map(function(item,index){return <div className="builder-inline-editor" key={index}><input value={item.label} onChange={function(e){updateSocial(index,'label',e.target.value)}}/><input value={item.url} onChange={function(e){updateSocial(index,'url',e.target.value)}} placeholder="https://..."/></div>})}
         </div>
 
-        <div className="builder-panel"><div className="builder-panel-head"><span className="eyebrow">07 // SEO</span><button type="button" onClick={function(){regenerate('seo')}}>REGENERATE SEO</button></div>
+        <div className="builder-panel builder-pages-panel">
+          <div className="builder-panel-head"><span className="eyebrow">07 // MULTI-PAGE ARCHITECTURE</span><button type="button" onClick={function(){regenerate('pages')}}>REGENERATE PAGES</button></div>
+          <div className="builder-page-map"><button type="button" className={previewPage==='home'?'active':''} onClick={function(){setPreviewPage('home')}}><span>HOME</span><strong>/sites/{site.slug||'yourname'}</strong></button>{(site.pages||STARTER.pages).map(function(page){return <button type="button" className={previewPage===page.slug?'active':''} onClick={function(){setPreviewPage(page.slug)}} key={page.slug}><span>{page.title}</span><strong>/{page.slug}</strong></button>})}</div>
+          {(site.pages||STARTER.pages).map(function(page,pageIndex){return <div className="builder-page-editor" key={pageIndex}>
+            <div className="builder-inline-editor"><input value={page.title} onChange={function(e){updatePage(pageIndex,'title',e.target.value)}}/><input value={page.slug} onChange={function(e){updatePage(pageIndex,'slug',e.target.value)}}/></div>
+            <input value={page.headline} onChange={function(e){updatePage(pageIndex,'headline',e.target.value)}}/>
+            <textarea value={page.copy} onChange={function(e){updatePage(pageIndex,'copy',e.target.value)}}/>
+            {(page.items||[]).map(function(item,itemIndex){return <div className="builder-page-item" key={itemIndex}><input value={item.title} onChange={function(e){updatePageItem(pageIndex,itemIndex,'title',e.target.value)}}/><textarea value={item.copy} onChange={function(e){updatePageItem(pageIndex,itemIndex,'copy',e.target.value)}}/></div>})}
+          </div>})}
+        </div>
+
+        <div className="builder-panel"><div className="builder-panel-head"><span className="eyebrow">08 // SEO</span><button type="button" onClick={function(){regenerate('seo')}}>REGENERATE SEO</button></div>
           <label>SEARCH TITLE<input value={site.seoTitle||''} onChange={function(e){update('seoTitle',e.target.value)}}/></label>
           <small className="builder-char-count">{(site.seoTitle||'').length}/70</small>
           <label>SEARCH DESCRIPTION<textarea value={site.seoDescription||''} onChange={function(e){update('seoDescription',e.target.value)}}/></label>
           <small className="builder-char-count">{(site.seoDescription||'').length}/160</small>
         </div>
 
-        <div className="builder-panel"><div className="builder-panel-head"><span className="eyebrow">08 // FINAL CTA</span><button type="button" onClick={function(){regenerate('cta')}}>REGENERATE CTA</button></div>
+        <div className="builder-panel"><div className="builder-panel-head"><span className="eyebrow">09 // FINAL CTA</span><button type="button" onClick={function(){regenerate('cta')}}>REGENERATE CTA</button></div>
           <label>CTA TITLE<input value={site.ctaTitle} onChange={function(e){update('ctaTitle',e.target.value)}}/></label>
           <label>CTA TEXT<textarea value={site.ctaCopy} onChange={function(e){update('ctaCopy',e.target.value)}}/></label>
           <label>BUTTON TEXT<input value={site.ctaLabel} onChange={function(e){update('ctaLabel',e.target.value)}}/></label>
           <label>BUTTON LINK<input value={site.ctaUrl} onChange={function(e){update('ctaUrl',e.target.value)}} placeholder="https://..."/></label>
-          <div className="builder-quality"><div><span>SITE QUALITY</span><strong>{quality}/100</strong></div><meter min="0" max="100" value={quality}>{quality}</meter><small>{quality>=90?'Publish-ready structure.':quality>=70?'Strong structure — review the copy before publishing.':'Add more detail to the prompt and fill the weaker sections.'}</small></div>
+          <div className="builder-quality"><div><span>SITE QUALITY</span><strong>{quality}/100</strong></div><meter min="0" max="100" value={quality}>{quality}</meter><small>{quality>=90?'Publish-ready structure.':quality>=70?'Strong structure — review the copy before publishing.':'Add more detail to the prompt and fill the weaker sections.'}</small><div><span>ACCESSIBILITY READINESS</span><strong>{accessibility}/100</strong></div><meter min="0" max="100" value={accessibility}>{accessibility}</meter></div>
           <div className="builder-action-grid"><button type="button" onClick={function(){downloadHtml(site)}}>DOWNLOAD HTML</button><button className="primary" type="button" onClick={publish}>PUBLISH BUILD</button></div>
           <small>The generator creates structured, script-free pages. Publishing verifies the GitHub account owns the claimed ESN site name before updating the public /sites page.</small>
         </div>
       </div>
 
       <div className="builder-preview-column">
-        <div className="builder-preview-toolbar"><div><span>LIVE PREVIEW</span><strong>{ROOT_DOMAIN}/sites/{site.slug||'yourname'}</strong></div><div><button className={device==='desktop'?'active':''} onClick={function(){setDevice('desktop')}}>DESKTOP</button><button className={device==='mobile'?'active':''} onClick={function(){setDevice('mobile')}}>PHONE</button></div></div>
-        <div className={'builder-preview-frame '+device}><SitePreview site={site}/></div>
+        <div className="builder-preview-toolbar"><div><span>LIVE PREVIEW</span><strong>{ROOT_DOMAIN}/sites/{site.slug||'yourname'}{previewPage==='home'?'':'/'+previewPage}</strong></div><div><button className={device==='desktop'?'active':''} onClick={function(){setDevice('desktop')}}>DESKTOP</button><button className={device==='tablet'?'active':''} onClick={function(){setDevice('tablet')}}>TABLET</button><button className={device==='mobile'?'active':''} onClick={function(){setDevice('mobile')}}>PHONE</button></div></div>
+        <div className={'builder-preview-frame '+device}><SitePreview site={site} page={previewPage} preview onPageChange={setPreviewPage}/></div>
         <div className="builder-publish-note"><strong>PUBLIC SITE</strong><span>Published ESN Builder websites currently use https://{ROOT_DOMAIN}/sites/yourname. Direct subdomain hosting is not the advertised public builder URL yet.</span></div>
       </div>
     </div></section>
@@ -1107,14 +1130,20 @@ export default function SiteBuilderPage(){
 export function HostedSitePage(){
   const params=useParams()
   const clean=cleanSlug(params.slug||'')
+  const requestedPage=cleanSlug(params.page||'')||'home'
   const [state,setState]=useState({loading:true,site:null,error:''})
   useEffect(function(){
     if(!clean){setState({loading:false,site:null,error:'Invalid site name.'});return}
     let cancelled=false
-    fetch('/generated-sites/'+encodeURIComponent(clean)+'.json',{cache:'no-store'}).then(function(response){if(!response.ok)throw new Error('Site not published yet.');return response.json()}).then(function(site){if(!cancelled)setState({loading:false,site:safeSite(site),error:''})}).catch(function(error){if(!cancelled)setState({loading:false,site:null,error:error.message||'Site unavailable.'})})
+    fetch('/generated-sites/'+encodeURIComponent(clean)+'.json',{cache:'no-store'}).then(function(response){if(!response.ok)throw new Error('Site not published yet.');return response.json()}).then(function(site){
+      if(cancelled)return
+      const safe=safeSite(site)
+      if(requestedPage!=='home'&&(!safe.multiPage||!safe.pages.some(function(page){return page.slug===requestedPage}))){setState({loading:false,site:null,error:'That page does not exist on this site.'});return}
+      setState({loading:false,site:safe,error:''})
+    }).catch(function(error){if(!cancelled)setState({loading:false,site:null,error:error.message||'Site unavailable.'})})
     return function(){cancelled=true}
-  },[clean])
+  },[clean,requestedPage])
   if(state.loading)return <section className="section"><div className="shell"><div className="builder-public-state">Loading site…</div></div></section>
   if(state.error)return <section className="section"><div className="shell"><div className="builder-public-state"><strong>ESN SITE NOT READY</strong><span>{state.error}</span></div></div></section>
-  return <div className="hosted-site-shell"><SitePreview site={state.site}/></div>
+  return <div className="hosted-site-shell"><SitePreview site={state.site} page={requestedPage}/></div>
 }
