@@ -1091,6 +1091,8 @@ export default function SiteBuilderPage(){
   const [generation,setGeneration]=useState(0)
   const [history,setHistory]=useState([])
   const [previewPage,setPreviewPage]=useState('home')
+  const [referenceUrl,setReferenceUrl]=useState('')
+  const [remixSource,setRemixSource]=useState('')
   const analysis=useMemo(function(){return analyzePrompt(prompt)},[prompt])
   const quality=useMemo(function(){return siteQuality(site,prompt)},[site,prompt])
   const accessibility=useMemo(function(){return accessibilityReadiness(site)},[site])
@@ -1122,6 +1124,63 @@ export default function SiteBuilderPage(){
   const applyDesignStyle=function(style){setSite(function(current){const recipe=STYLE_RECIPES[style]||STYLE_RECIPES.studio;return {...current,visual:{...STARTER.visual,...current.visual,...recipe,style}}})}
   const autoStyle=function(){setSite(function(current){return {...current,visual:inferVisual(prompt,analysis)}});setMessage('Style Lab rebuilt the visual system from your prompt.')}
   const remixStyle=function(){const current=site.visual?.style||'studio';const index=STYLE_PRESETS.indexOf(current);const next=STYLE_PRESETS[(index+1+STYLE_PRESETS.length)%STYLE_PRESETS.length];applyDesignStyle(next);setMessage('Remixed the site into the '+next+' design system.')}
+  const applyTemplate=function(template){
+    remember(site)
+    const next=generateSite(template.prompt,site.brand,site.slug,template.layout==='flagship'?3:1)
+    const recipe=STYLE_RECIPES[template.style]||STYLE_RECIPES.studio
+    next.theme=template.theme
+    next.layout=template.layout
+    next.visual={...next.visual,...recipe,style:template.style,accent:themeAccent(template.theme)}
+    setPrompt(template.prompt)
+    setSite(next)
+    setPreviewPage('home')
+    setMessage(template.name+' template loaded. Everything is editable.')
+  }
+  const remixPublishedSite=async function(value){
+    const raw=String(value||remixSource||'').trim()
+    const match=raw.match(/(?:\/sites\/)?([a-z0-9-]{1,48})(?:\/|$)/i)
+    const slug=cleanSlug(match?.[1]||raw)
+    if(!slug){setMessage('Enter an ESN site name or /sites/name link first.');return}
+    try{
+      setMessage('Loading public ESN design…')
+      const response=await fetch('/generated-sites/'+encodeURIComponent(slug)+'.json',{cache:'no-store'})
+      if(!response.ok)throw new Error('That ESN site is not published.')
+      const source=safeSite(await response.json())
+      const basePrompt=prompt.trim()||('Create an original '+(source.category||'creator')+' website with a premium design and original content.')
+      const next=generateSite(basePrompt,site.brand,site.slug,1)
+      next.theme=source.theme
+      next.layout=source.layout
+      next.visual={...next.visual,...source.visual}
+      next.pack=source.pack
+      next.sections={...source.sections}
+      setSite(next)
+      setPreviewPage('home')
+      setMessage('Remixed the public design system from '+slug+'. Text and content stay original.')
+    }catch(error){setMessage(error.message||'Could not remix that site.')}
+  }
+  const useReferenceScreenshot=async function(file){
+    try{
+      setMessage('Analyzing screenshot colors and composition…')
+      const result=await analyzeReferenceImage(file)
+      setSite(function(current){
+        const dark=result.dark
+        const nextTheme=dark?'midnight':'clean'
+        return {...current,theme:nextTheme,layout:result.wide?'split':'stacked',visual:{...STARTER.visual,...current.visual,accent:result.accent,style:dark?'cinematic':'editorial',background:dark?'spotlight':'paper',surface:dark?'glass':'flat',hero:result.wide?'split':'stacked',cards:dark?'glass':'outline',contrast:dark?'high':'normal'}}
+      })
+      setMessage('Screenshot reference applied: color mood, contrast, and composition updated. ESN does not copy the source text or protected assets.')
+    }catch(error){setMessage(error.message||'Could not analyze that screenshot.')}
+  }
+  const useReferenceUrl=function(){
+    const raw=String(referenceUrl||'').trim()
+    if(!raw){setMessage('Paste a public website URL first.');return}
+    try{
+      const url=new URL(raw)
+      if(url.hostname===ROOT_DOMAIN&&/\/sites\//.test(url.pathname)){remixPublishedSite(url.pathname);return}
+      const host=url.hostname.replace(/^www\./,'')
+      setPrompt(function(current){return clamp((current?current+' ':'')+'Use '+host+' as a general design reference. Keep all wording, branding, images, and content original. Upload a screenshot below so ESN can analyze the visual style.',2000)})
+      setMessage('Reference URL saved. For external sites, upload a screenshot so the browser can analyze the visual design without copying site content.')
+    }catch{setMessage('Enter a full URL beginning with https://')}
+  }
 
   useEffect(function(){try{localStorage.setItem(DRAFT_KEY,JSON.stringify(safeSite(site)))}catch{}},[site])
 
