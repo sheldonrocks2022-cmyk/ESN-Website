@@ -5,7 +5,7 @@ const ACTIVE_SUBDOMAIN_LABEL='free-subdomain-active'
 const PUBLISHED_LABEL='site-builder-published'
 const REJECTED_LABEL='site-builder-rejected'
 const THEMES=new Set(['midnight','neon','clean','ember','ocean'])
-const LAYOUTS=new Set(['spotlight','split','editorial'])
+const LAYOUTS=new Set(['spotlight','split','editorial','flagship'])
 const BLOCKED=/password|passcode|seed phrase|wallet recovery|credit card|social security|bank login|verify your account|sign in to continue/i
 const SLUG_RE=/^[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?$/
 
