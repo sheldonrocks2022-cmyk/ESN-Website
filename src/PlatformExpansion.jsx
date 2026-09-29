@@ -29,6 +29,16 @@ const MODULES=[
 
 const SEARCH_INDEX=[
   ...MODULES.map(([to,label,copy,tag])=>({to,label,copy,category:tag,keywords:label+' '+copy})),
+  {to:'/minecraft-server',label:'Minecraft Server',copy:'ESN Minecraft server status, resources, guides, and official links.',category:'DISCOVER',keywords:'minecraft server ip join java bedrock smp'},
+  {to:'/minecraft-smp',label:'Minecraft SMP',copy:'ESN SMP survival, progression, bosses, economy, gear, and Adventure systems.',category:'DISCOVER',keywords:'minecraft smp survival realms bosses economy'},
+  {to:'/fortnite-coaching',label:'Fortnite Coaching',copy:'Practical ESN Fortnite coaching and project scoping.',category:'SERVICES',keywords:'fortnite coach coaching improve gaming'},
+  {to:'/video-editing',label:'Video Editing Services',copy:'Creator and gaming video editing support through ES Network.',category:'SERVICES',keywords:'video edit editing creator gaming'},
+  {to:'/discord-server-setup',label:'Discord Server Setup',copy:'Roles, channels, moderation, onboarding, and gaming community structure.',category:'SERVICES',keywords:'discord server setup roles channels moderation'},
+  {to:'/website-builder',label:'Website Builder',copy:'Build, preview, publish, and share websites with ESN.',category:'BUILDER',keywords:'website builder create publish sites'},
+  {to:'/free-browser-tools',label:'Free Browser Tools',copy:'Free ES Tools for creators and gamers.',category:'TOOLS',keywords:'free browser tools prompt timer randomizer'},
+  {to:'/guides',label:'ESN Guides + News',copy:'Minecraft, Discord, website guides, plus current ESN releases.',category:'GUIDES',keywords:'guides articles news help minecraft discord website'},
+  {to:'/es-network',label:'What is ES Network?',copy:'Official ES Network brand, projects, services, SMP, tools, and community.',category:'ABOUT',keywords:'es network esn ep1c services official brand'},
+
   {to:'/serviceshowcase',label:'ESN Services',copy:'Fortnite coaching, editing, Discord setups, website projects, and custom work.',category:'SERVICES',keywords:'order coaching edit discord website service'},
   {to:'/site-builder',label:'ESN Website Builder',copy:'Build and publish a website under the ESN /sites path.',category:'BUILDER',keywords:'ai website builder publish site generate'},
   {to:'/storesmp',label:'SMP Store',copy:'Official ESN SMP products and Stripe checkout.',category:'SMP',keywords:'buy keys relic warden riftwalker void store'},
