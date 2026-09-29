@@ -3,6 +3,7 @@ import { Link, Navigate, Route, Routes, useLocation } from 'react-router-dom'
 import ESToolsSuite from './Tools'
 import ES3DViewer from './ES3DViewer'
 import PremiumChrome from './PremiumChrome'
+import UltraExperience from './UltraExperience'
 import Global3DLighting from './Global3DLighting'
 import StartupIntro from './StartupIntro'
 import ExperienceLayer, { FooterCommandDeck, HeroReactor } from './ExperienceLayer'
@@ -1529,6 +1530,7 @@ function App() {
       {!standaloneSite&&<ScrollToHash />}
       {!standaloneSite&&<ExperienceEffects />}
       {!standaloneSite&&<Global3DLighting />}
+      {!standaloneSite&&<UltraExperience />}
       {!standaloneSite&&<Header />}
       {!standaloneSite&&<PremiumChrome />}
       {!standaloneSite&&<ExperienceLayer />}
