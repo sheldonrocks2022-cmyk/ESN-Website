@@ -1,6 +1,7 @@
 import fs from 'node:fs'
 
-// Spaceship API key must have dnsrecords:read and dnsrecords:write permissions.\nconst ROOT_DOMAIN='esnoffical.com'
+// Spaceship API key must have dnsrecords:read and dnsrecords:write permissions.
+const ROOT_DOMAIN='esnoffical.com'
 const ACTIVE_LABEL='free-subdomain-active'
 const REJECTED_LABEL='free-subdomain-rejected'
 const RESERVED=new Set(['www','api','admin','staff','store','store-ai','smp','status','support','mail','billing','domains','hosting','dns','ftp','cpanel','webmail','discord','nexus','arcade','tools','assets','cdn','static','auth','login','dashboard','root','esn','official','offical'])
