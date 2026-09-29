@@ -761,6 +761,7 @@ export default function SiteBuilderPage(){
   const updateStat=function(index,key,value){setSite(function(current){return {...current,stats:(current.stats||STARTER.stats).map(function(item,i){return i===index?{...item,[key]:value}:item})}})}
   const updateFaq=function(index,key,value){setSite(function(current){return {...current,faq:(current.faq||STARTER.faq).map(function(item,i){return i===index?{...item,[key]:value}:item})}})}
   const updateAnnouncement=function(key,value){setSite(function(current){return {...current,announcement:{...(current.announcement||STARTER.announcement),[key]:value}}})}
+  const updateStatus=function(index,key,value){setSite(function(current){return {...current,status:(current.status||STARTER.status).map(function(item,i){return i===index?{...item,[key]:value}:item})}})}
   const updateTimeline=function(index,key,value){setSite(function(current){return {...current,timeline:(current.timeline||STARTER.timeline).map(function(item,i){return i===index?{...item,[key]:value}:item})}})}
   const updateTestimonial=function(index,key,value){setSite(function(current){return {...current,testimonials:(current.testimonials||STARTER.testimonials).map(function(item,i){return i===index?{...item,[key]:value}:item})}})}
   const updateGallery=function(index,key,value){setSite(function(current){return {...current,gallery:(current.gallery||STARTER.gallery).map(function(item,i){return i===index?{...item,[key]:value}:item})}})}
@@ -809,7 +810,7 @@ export default function SiteBuilderPage(){
           <label>ESN SITE NAME<div className="builder-domain"><span>/sites/</span><input value={site.slug} onChange={function(e){update('slug',cleanSlug(e.target.value))}} placeholder="yourname"/></div></label>
           <small className="builder-public-url">Public link: https://{ROOT_DOMAIN}/sites/{site.slug||'yourname'}</small>
           <label>SITE / BRAND NAME<input value={site.brand} onChange={function(e){update('brand',e.target.value.slice(0,60))}} placeholder="My Brand"/></label>
-          <label>DESCRIBE THE WEBSITE<textarea value={prompt} onChange={function(e){setPrompt(e.target.value.slice(0,1200))}} placeholder="Make a dark Fortnite fan site for returning players. Explain why Fortnite is worth playing, compare the different modes, add a FAQ, and link to https://www.fortnite.com/"/></label>
+          <label>DESCRIBE THE WEBSITE<textarea value={prompt} onChange={function(e){setPrompt(e.target.value.slice(0,2000))}} placeholder="Make a dark Fortnite fan site for returning players. Explain why Fortnite is worth playing, compare the different modes, add a FAQ, and link to https://www.fortnite.com/"/></label>
           <div className="builder-quick-prompts">{QUICK_PROMPTS.map(function(example,index){return <button type="button" key={index} onClick={function(){setPrompt(example)}}>{index+1}</button>})}<span>EXAMPLE PROMPTS</span></div>
           <div className="builder-ai-readout">
             <div><span>TOPIC</span><strong>{analysis.label}</strong></div>
@@ -848,6 +849,8 @@ export default function SiteBuilderPage(){
           <div className="builder-section-switches">{Object.keys(STARTER.sections).map(function(key){const on=site.sections?.[key]!==false;return <button type="button" className={on?'active':''} onClick={function(){toggleSection(key)}} key={key}><span>{on?'ON':'OFF'}</span>{key.toUpperCase()}</button>})}</div>
           <span className="builder-subhead">ANNOUNCEMENT STRIP</span>
           <div className="builder-triple-editor"><input value={site.announcement?.label||''} onChange={function(e){updateAnnouncement('label',e.target.value)}} placeholder="NEW"/><input value={site.announcement?.title||''} onChange={function(e){updateAnnouncement('title',e.target.value)}} placeholder="Announcement title"/><textarea value={site.announcement?.copy||''} onChange={function(e){updateAnnouncement('copy',e.target.value)}} placeholder="Announcement details"/></div>
+          <span className="builder-subhead">LIVE STATUS PANEL</span>
+          {(site.status||STARTER.status).map(function(item,index){return <div className="builder-status-editor" key={index}><input value={item.label} onChange={function(e){updateStatus(index,'label',e.target.value)}}/><input value={item.value} onChange={function(e){updateStatus(index,'value',e.target.value)}}/><select value={item.state} onChange={function(e){updateStatus(index,'state',e.target.value)}}><option value="live">LIVE</option><option value="ready">READY</option><option value="offline">OFFLINE</option></select></div>})}
           <span className="builder-subhead">TIMELINE</span>
           {(site.timeline||STARTER.timeline).map(function(item,index){return <div className="builder-timeline-editor" key={index}><input value={item.kicker} onChange={function(e){updateTimeline(index,'kicker',e.target.value)}}/><input value={item.title} onChange={function(e){updateTimeline(index,'title',e.target.value)}}/><textarea value={item.copy} onChange={function(e){updateTimeline(index,'copy',e.target.value)}}/></div>})}
           <span className="builder-subhead">TESTIMONIAL WALL</span>
