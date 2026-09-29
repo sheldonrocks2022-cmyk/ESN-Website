@@ -24,6 +24,7 @@ import { PortfolioPage, StatusCenter, TimelinePage, UpdatesPage, VaultPage, What
 import { VERIFIED_REVIEWS } from './reviews'
 import HomeControlCenter from './HomeControlCenter'
 import { ActivityTimelinePage, BuilderShowcasePage, DataBackupPage, GlobalSearchPage, LabsPage, LaunchpadPage, NetworkMapPage, PlatformHomeSection, PlatformLayer, ProjectEstimatePage, ServiceConfiguratorPage, ShareGeneratorV2Page, SMPItemsPage, SMPWorldHubPage, TrustCenterPage } from './PlatformExpansion'
+import { BrandAuthorityPage, GuideArticlePage, GuidesHubPage, RelatedVisibilityLinks, SearchLandingPage, SMPFeaturePage, VisibilityInsightsPage, VisibilityLayer } from './VisibilityExpansion'
 import ClickerGame from './arcade/Clicker'
 import FactoryGame from './arcade/Factory'
 import MinesGame from './arcade/Mines'
@@ -392,10 +393,10 @@ function Header() {
   const close = () => setOpen(false)
   const inGroup = (paths) => paths.some((path) => location.pathname === path || location.pathname.startsWith(path + '/'))
   const arcadeActive = location.pathname === '/arcade' || ARCADE_GAMES.some(([, route]) => route === location.pathname)
-  const createActive = inGroup(['/serviceshowcase','/portfolio','/store-ai','/hosting','/domains','/site-builder','/estools','/configure','/estimate','/showcase'])
-  const playActive = arcadeActive || inGroup(['/smpconnection','/smpconsole','/smpplugin','/smpguide','/storesmp','/smpcheck','/smp-hub','/smp-items'])
-  const networkActive = inGroup(['/status','/networkstats','/updates','/whatsnew','/timeline','/explore','/gallery','/nexus','/notifications','/rewards','/challenges','/operations','/incidents','/changelog','/diagnostics','/blueprint','/session','/share','/launchpad','/search','/labs','/activity','/share-generator','/network-map','/backup'])
-  const aboutActive = inGroup(['/about','/leadership','/testimonials','/faq','/settings','/support','/staff','/trust'])
+  const createActive = inGroup(['/serviceshowcase','/portfolio','/store-ai','/hosting','/domains','/site-builder','/estools','/configure','/estimate','/showcase','/fortnite-coaching','/video-editing','/discord-server-setup','/website-builder'])
+  const playActive = arcadeActive || inGroup(['/smpconnection','/smpconsole','/smpplugin','/smpguide','/storesmp','/smpcheck','/smp-hub','/smp-items','/minecraft-server','/minecraft-smp'])
+  const networkActive = inGroup(['/status','/networkstats','/updates','/whatsnew','/timeline','/explore','/gallery','/nexus','/notifications','/rewards','/challenges','/operations','/incidents','/changelog','/diagnostics','/blueprint','/session','/share','/launchpad','/search','/labs','/activity','/share-generator','/network-map','/backup','/guides','/visibility','/free-browser-tools'])
+  const aboutActive = inGroup(['/about','/leadership','/testimonials','/faq','/settings','/support','/staff','/trust','/es-network'])
   const mobileSection = playActive ? (arcadeActive ? 'Arcade' : 'ESN SMP')
     : createActive ? 'Create'
     : networkActive ? 'Network'
@@ -1540,6 +1541,7 @@ function App() {
       {!standaloneSite&&<UltraExperience />}
       {!standaloneSite&&<ExperienceCoreV2 />}
       {!standaloneSite&&<PlatformLayer />}
+      {!standaloneSite&&<VisibilityLayer />}
       {!standaloneSite&&<Header />}
       {!standaloneSite&&<PremiumChrome />}
       {!standaloneSite&&<ExperienceLayer />}
@@ -1585,6 +1587,18 @@ function App() {
           <Route path="/showcase" element={<BuilderShowcasePage />} />
           <Route path="/network-map" element={<NetworkMapPage />} />
           <Route path="/backup" element={<DataBackupPage />} />
+          <Route path="/minecraft-server" element={<SearchLandingPage />} />
+          <Route path="/minecraft-smp" element={<SearchLandingPage />} />
+          <Route path="/fortnite-coaching" element={<SearchLandingPage />} />
+          <Route path="/video-editing" element={<SearchLandingPage />} />
+          <Route path="/discord-server-setup" element={<SearchLandingPage />} />
+          <Route path="/website-builder" element={<SearchLandingPage />} />
+          <Route path="/free-browser-tools" element={<SearchLandingPage />} />
+          <Route path="/guides" element={<GuidesHubPage />} />
+          <Route path="/guides/:slug" element={<GuideArticlePage />} />
+          <Route path="/es-network" element={<BrandAuthorityPage />} />
+          <Route path="/smp/:feature" element={<SMPFeaturePage />} />
+          <Route path="/visibility" element={<VisibilityInsightsPage />} />
           <Route path="/status" element={<StatusCenter />} />
           <Route path="/networkstats" element={<NetworkStatsPage />} />
           <Route path="/nexus" element={<NetworkNexusPage />} />
@@ -1620,6 +1634,7 @@ function App() {
           <Route path="/estowerdefense" element={<TowerDefenseGame />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
+        {!standaloneSite&&<RelatedVisibilityLinks />}
       </main>
       {!standaloneSite&&<Footer />}
     </div>
