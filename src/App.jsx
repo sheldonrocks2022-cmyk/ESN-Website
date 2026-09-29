@@ -384,18 +384,18 @@ function Header() {
     onScroll()
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
+
   const close = () => setOpen(false)
   const inGroup = (paths) => paths.some((path) => location.pathname === path || location.pathname.startsWith(path + '/'))
   const arcadeActive = location.pathname === '/arcade' || ARCADE_GAMES.some(([, route]) => route === location.pathname)
-  const mobileSection = arcadeActive ? 'Arcade'
-    : inGroup(['/smpconnection','/smpconsole','/smpplugin','/smpguide','/storesmp']) ? 'ESN SMP'
-    : inGroup(['/serviceshowcase','/portfolio','/testimonials','/store-ai','/hosting','/domains','/site-builder']) ? 'Services'
-    : inGroup(['/status','/networkstats','/updates','/whatsnew','/timeline','/explore','/gallery','/nexus','/notifications','/rewards','/challenges','/staff','/operations','/incidents','/changelog','/diagnostics','/smpcheck','/blueprint','/session']) ? 'Network'
-    : location.pathname==='/estools' ? 'Tools'
-    : location.pathname==='/settings' ? 'Settings'
-    : location.pathname==='/support' ? 'Support'
-    : location.pathname==='/leadership' ? 'Leadership'
-    : location.pathname==='/about' ? 'About'
+  const createActive = inGroup(['/serviceshowcase','/portfolio','/store-ai','/hosting','/domains','/site-builder','/estools'])
+  const playActive = arcadeActive || inGroup(['/smpconnection','/smpconsole','/smpplugin','/smpguide','/storesmp','/smpcheck'])
+  const networkActive = inGroup(['/status','/networkstats','/updates','/whatsnew','/timeline','/explore','/gallery','/nexus','/notifications','/rewards','/challenges','/operations','/incidents','/changelog','/diagnostics','/blueprint','/session','/share'])
+  const aboutActive = inGroup(['/about','/leadership','/testimonials','/faq','/settings','/support','/staff'])
+  const mobileSection = playActive ? (arcadeActive ? 'Arcade' : 'ESN SMP')
+    : createActive ? 'Create'
+    : networkActive ? 'Network'
+    : aboutActive ? 'About'
     : 'Home'
 
   return (
@@ -416,81 +416,94 @@ function Header() {
           <span />
         </button>
 
-        <nav className={open ? 'nav open' : 'nav'} aria-label="Main navigation">
+        <nav className={open ? 'nav open organized-nav' : 'nav organized-nav'} aria-label="Main navigation">
           <Link className={location.pathname === '/' || location.pathname === '/home' ? 'nav-direct active' : 'nav-direct'} onClick={close} to="/">Home</Link>
 
-          <div className={inGroup(['/serviceshowcase','/portfolio','/store-ai','/hosting','/domains','/site-builder']) ? 'nav-group active' : 'nav-group'}>
-            <button className="nav-trigger" type="button" aria-haspopup="true">Services</button>
-            <div className="dropdown">
-              <span className="dropdown-label">ESN SERVICES</span>
-              <Link onClick={close} to="/serviceshowcase">Service Showcase</Link>
-              <Link onClick={close} to="/portfolio">Before / After Portfolio</Link>
-              <Link onClick={close} to="/store-ai">ESN Store AI</Link>
-              <Link onClick={close} to="/hosting">ESN Hosting & Domains</Link>
-              <Link onClick={close} to="/site-builder">AI Website Builder</Link>
-              <Link onClick={close} to="/#fortnite-coaching">Fortnite Coaching</Link>
-              <Link onClick={close} to="/#editing-services">Editing Services</Link>
-              <Link onClick={close} to="/#discord-server-setups">Discord Server Setups</Link>
+          <div className={createActive ? 'nav-group active' : 'nav-group'}>
+            <button className="nav-trigger" type="button" aria-haspopup="true">Create</button>
+            <div className="dropdown organized-dropdown">
+              <div className="dropdown-section">
+                <span className="dropdown-label">SERVICES</span>
+                <Link onClick={close} to="/serviceshowcase">Service Showcase</Link>
+                <Link onClick={close} to="/portfolio">Portfolio & Results</Link>
+                <Link onClick={close} to="/testimonials">Verified Reviews</Link>
+              </div>
+              <div className="dropdown-section">
+                <span className="dropdown-label">BUILD</span>
+                <Link onClick={close} to="/site-builder">AI Website Builder</Link>
+                <Link onClick={close} to="/hosting">ESN Hosting & Domains</Link>
+                <Link onClick={close} to="/store-ai">ESN Store AI</Link>
+                <Link onClick={close} to="/estools">ES Tools</Link>
+              </div>
             </div>
           </div>
 
-          <Link className={location.pathname === '/store-ai' ? 'nav-direct active' : 'nav-direct'} onClick={close} to="/store-ai">Store AI</Link>
-          <Link className={location.pathname === '/hosting' ? 'nav-direct active' : 'nav-direct'} onClick={close} to="/hosting">Hosting</Link>
-          <Link className={location.pathname === '/site-builder' ? 'nav-direct active' : 'nav-direct'} onClick={close} to="/site-builder">Site Builder</Link>
-
-          <div className={inGroup(['/smpconnection','/smpconsole','/smpplugin','/smpguide','/storesmp']) ? 'nav-group active' : 'nav-group'}>
-            <button className="nav-trigger" type="button" aria-haspopup="true">ESN SMP</button>
-            <div className="dropdown">
-              <span className="dropdown-label">MINECRAFT NETWORK</span>
-              <Link onClick={close} to="/smpconnection">SMP Connection</Link>
-              <Link onClick={close} to="/smpconsole">Console Connection</Link>
-              <Link onClick={close} to="/smpplugin">Download ESNSMP Plugin</Link>
-              <Link onClick={close} to="/smpguide">SMP Encyclopedia</Link>
-              <Link onClick={close} to="/storesmp">SMP Store</Link>
+          <div className={playActive ? 'nav-group active' : 'nav-group'}>
+            <button className="nav-trigger" type="button" aria-haspopup="true">Play</button>
+            <div className="dropdown organized-dropdown play-dropdown">
+              <div className="dropdown-section">
+                <span className="dropdown-label">ESN SMP</span>
+                <Link onClick={close} to="/smpconnection">Connect to SMP</Link>
+                <Link onClick={close} to="/smpconsole">Console Connection</Link>
+                <Link onClick={close} to="/smpguide">SMP Encyclopedia</Link>
+                <Link onClick={close} to="/storesmp">SMP Store</Link>
+                <Link onClick={close} to="/smpplugin">Download ESNSMP Plugin</Link>
+              </div>
+              <div className="dropdown-section">
+                <span className="dropdown-label">ESN ARCADE</span>
+                <Link onClick={close} to="/arcade">Arcade Hub</Link>
+                {ARCADE_GAMES.map(([name, route]) => <Link onClick={close} key={route} to={route}>{name}</Link>)}
+              </div>
             </div>
           </div>
 
-          <div className={arcadeActive ? 'nav-group active' : 'nav-group'}>
-            <button className="nav-trigger" type="button" aria-haspopup="true">Arcade</button>
-            <div className="dropdown arcade-dropdown">
-              <span className="dropdown-label">PLAY ESN</span>
-              <Link onClick={close} to="/arcade">Arcade Hub</Link>
-              {ARCADE_GAMES.map(([name, route]) => <Link onClick={close} key={route} to={route}>{name}</Link>)}
+          <div className={networkActive ? 'nav-group active' : 'nav-group'}>
+            <button className="nav-trigger" type="button" aria-haspopup="true">Network</button>
+            <div className="dropdown organized-dropdown network-dropdown">
+              <div className="dropdown-section">
+                <span className="dropdown-label">LIVE</span>
+                <Link onClick={close} to="/status">Network Status</Link>
+                <Link onClick={close} to="/nexus">Network Nexus</Link>
+                <Link onClick={close} to="/notifications">Notifications</Link>
+                <Link onClick={close} to="/networkstats">Network Statistics</Link>
+              </div>
+              <div className="dropdown-section">
+                <span className="dropdown-label">DISCOVER</span>
+                <Link onClick={close} to="/explore">Explore ESN</Link>
+                <Link onClick={close} to="/whatsnew">What's New</Link>
+                <Link onClick={close} to="/updates">Release Center</Link>
+                <Link onClick={close} to="/timeline">Timeline</Link>
+                <Link onClick={close} to="/gallery">Media Gallery</Link>
+                <Link onClick={close} to="/share">Share Deck</Link>
+              </div>
+              <div className="dropdown-section">
+                <span className="dropdown-label">SYSTEM</span>
+                <Link onClick={close} to="/operations">Operations Map</Link>
+                <Link onClick={close} to="/diagnostics">Diagnostic Center</Link>
+                <Link onClick={close} to="/blueprint">System Blueprint</Link>
+                <Link onClick={close} to="/incidents">Incident History</Link>
+                <Link onClick={close} to="/changelog">Network Changelog</Link>
+                <Link onClick={close} to="/session">Session Stats</Link>
+              </div>
             </div>
           </div>
 
-          <Link className={location.pathname === '/estools' ? 'nav-direct active' : 'nav-direct'} onClick={close} to="/estools">ES Tools</Link>
-
-          <div className={inGroup(['/about','/leadership','/testimonials','/faq','/status','/networkstats','/timeline','/updates','/whatsnew','/explore','/gallery','/settings','/support','/share','/nexus','/notifications','/rewards','/challenges','/staff','/operations','/incidents','/changelog','/diagnostics','/smpcheck','/blueprint','/session']) ? 'nav-group active' : 'nav-group'}>
+          <div className={aboutActive ? 'nav-group active' : 'nav-group'}>
             <button className="nav-trigger" type="button" aria-haspopup="true">About</button>
-            <div className="dropdown">
-              <span className="dropdown-label">THE NETWORK</span>
-              <Link onClick={close} to="/about">About ES Network</Link>
-              <Link onClick={close} to="/status">Live Network Status</Link>
-              <Link onClick={close} to="/nexus">Network Nexus</Link>
-              <Link onClick={close} to="/notifications">Notification Center</Link>
-              <Link onClick={close} to="/rewards">Reward Vault</Link>
-              <Link onClick={close} to="/challenges">Challenge Lab</Link>
-              <Link onClick={close} to="/staff">Staff Dashboard</Link>
-              <Link onClick={close} to="/operations">Operations Map</Link>
-              <Link onClick={close} to="/diagnostics">Diagnostic Center</Link>
-              <Link onClick={close} to="/smpcheck">SMP Connection Tester</Link>
-              <Link onClick={close} to="/blueprint">System Blueprint</Link>
-              <Link onClick={close} to="/incidents">Incident History</Link>
-              <Link onClick={close} to="/session">Session Stats</Link>
-              <Link onClick={close} to="/changelog">Network Changelog</Link>
-              <Link onClick={close} to="/updates">Release Center</Link>
-              <Link onClick={close} to="/timeline">Interactive Timeline</Link>
-              <Link onClick={close} to="/share">Share Deck</Link>
-              <Link onClick={close} to="/explore">Explore ESN</Link>
-              <Link onClick={close} to="/whatsnew">What's New</Link>
-              <Link onClick={close} to="/networkstats">Network Statistics</Link>
-              <Link onClick={close} to="/gallery">Media Gallery</Link>
-              <Link onClick={close} to="/settings">Performance & Accessibility</Link>
-              <Link onClick={close} to="/support">Report a Problem</Link>
-              <Link onClick={close} to="/leadership">Leadership</Link>
-              <Link onClick={close} to="/testimonials">35 Verified Reviews</Link>
-              <Link onClick={close} to="/faq">FAQ</Link>
+            <div className="dropdown organized-dropdown">
+              <div className="dropdown-section">
+                <span className="dropdown-label">ES NETWORK</span>
+                <Link onClick={close} to="/about">About ES Network</Link>
+                <Link onClick={close} to="/leadership">Leadership</Link>
+                <Link onClick={close} to="/testimonials">35 Verified Reviews</Link>
+                <Link onClick={close} to="/faq">FAQ</Link>
+              </div>
+              <div className="dropdown-section">
+                <span className="dropdown-label">HELP</span>
+                <Link onClick={close} to="/support">Support / Report a Problem</Link>
+                <Link onClick={close} to="/settings">Performance & Accessibility</Link>
+                <Link onClick={close} to="/staff">Staff Dashboard</Link>
+              </div>
             </div>
           </div>
 
@@ -506,49 +519,50 @@ function Footer() {
   return (
     <footer className="site-footer">
       <div className="footer-orb" aria-hidden="true" />
-      <div className="shell footer-top">
+      <div className="shell footer-top organized-footer">
         <div className="footer-brand-block">
           <Brand />
           <h2>Build. Play. Create.<br />Stay inside the network.</h2>
-          <p>The official home of ES Network — creator services, verified reviews, ESN SMP, browser Arcade, free tools, and community support.</p>
+          <p>The official home of ES Network — creator services, website tools, ESN SMP, Arcade, network systems, and community support.</p>
           <a className="footer-discord" href={DISCORD_URL} target="_blank" rel="noreferrer">Join ESN Discord <span>↗</span></a>
         </div>
 
-        <div className="footer-links">
+        <div className="footer-links organized-footer-links">
           <div>
-            <h3>Explore</h3>
+            <h3>Create</h3>
             <Link to="/serviceshowcase">Services</Link>
             <Link to="/portfolio">Portfolio</Link>
-            <Link to="/testimonials">Verified Reviews</Link>
-            <Link to="/arcade">Arcade</Link>
+            <Link to="/site-builder">Website Builder</Link>
+            <Link to="/hosting">Hosting & Domains</Link>
+            <Link to="/store-ai">Store AI</Link>
             <Link to="/estools">ES Tools</Link>
           </div>
           <div>
-            <h3>ESN SMP</h3>
-            <Link to="/smpconnection">Connect</Link>
+            <h3>Play</h3>
+            <Link to="/smpconnection">ESN SMP</Link>
             <Link to="/smpconsole">Console Guide</Link>
-            <Link to="/smpplugin">Download Plugin</Link>
-            <Link to="/smpguide">SMP Encyclopedia</Link>
             <Link to="/storesmp">SMP Store</Link>
+            <Link to="/smpplugin">ESNSMP Plugin</Link>
+            <Link to="/arcade">Arcade Hub</Link>
             <span>{SMP_HOST}</span>
           </div>
           <div>
             <h3>Network</h3>
-            <Link to="/about">About ESN</Link>
-            <Link to="/status">Network Status</Link>
-            <Link to="/nexus">Network Nexus</Link>
-            <Link to="/updates">Release Center</Link>
-            <Link to="/timeline">Timeline</Link>
-            <Link to="/share">Share Deck</Link>
-            <Link to="/explore">Explore ESN</Link>
+            <Link to="/status">Status</Link>
+            <Link to="/nexus">Nexus</Link>
+            <Link to="/explore">Explore</Link>
             <Link to="/whatsnew">What's New</Link>
-            <Link to="/networkstats">Network Stats</Link>
-            <Link to="/gallery">Media Gallery</Link>
-            <Link to="/settings">Accessibility</Link>
-            <Link to="/support">Report a Problem</Link>
+            <Link to="/updates">Releases</Link>
+            <Link to="/timeline">Timeline</Link>
+          </div>
+          <div>
+            <h3>About & Help</h3>
+            <Link to="/about">About ESN</Link>
             <Link to="/leadership">Leadership</Link>
+            <Link to="/testimonials">Verified Reviews</Link>
             <Link to="/faq">FAQ</Link>
-            <a href={DISCORD_URL} target="_blank" rel="noreferrer">Discord Support</a>
+            <Link to="/support">Support</Link>
+            <Link to="/settings">Accessibility</Link>
           </div>
         </div>
       </div>
@@ -603,6 +617,34 @@ function RelatedLinks({ title, links }) {
     </section>
   )
 }
+function NetworkDirectory() {
+  const groups=[
+    {index:'01',title:'Create',copy:'Services, website building, hosting, Store AI, portfolios, and free browser tools.',links:[['Services','/serviceshowcase'],['Site Builder','/site-builder'],['Hosting','/hosting'],['ES Tools','/estools']]},
+    {index:'02',title:'Play',copy:'Everything for the ESN SMP and all six original ESN Arcade games.',links:[['ESN SMP','/smpconnection'],['SMP Store','/storesmp'],['Arcade','/arcade'],['Console Guide','/smpconsole']]},
+    {index:'03',title:'Network',copy:'Live status, updates, Nexus, statistics, releases, and the systems behind ESN.',links:[['Status','/status'],['Nexus','/nexus'],['What\'s New','/whatsnew'],['Explore','/explore']]},
+    {index:'04',title:'About & Help',copy:'Learn who ESN is, meet leadership, read verified reviews, or get support.',links:[['About','/about'],['Leadership','/leadership'],['Reviews','/testimonials'],['Support','/support']]},
+  ]
+  return (
+    <section className="section network-directory-section" aria-labelledby="network-directory-title">
+      <div className="shell">
+        <div className="section-heading flagship-heading network-directory-heading">
+          <div><span className="eyebrow">ESN DIRECTORY</span><h2 id="network-directory-title">Everything has a clear place now.</h2><p>Pick what you came to ESN for and jump straight into the right part of the network.</p></div>
+          <Link className="text-link" to="/explore">Explore everything →</Link>
+        </div>
+        <div className="network-directory-grid">
+          {groups.map(group=>(
+            <article className="network-directory-card" key={group.title}>
+              <div className="network-directory-card-head"><span>{group.index}</span><strong>{group.title}</strong></div>
+              <p>{group.copy}</p>
+              <div className="network-directory-links">{group.links.map(([label,route])=><Link to={route} key={route}>{label}<span>↗</span></Link>)}</div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
 function Home() {
   return (
     <>
@@ -654,6 +696,8 @@ function Home() {
           <Link to="/estools"><span>04</span><b>ES Tools</b><small>Free browser utilities</small><em>↗</em></Link>
         </div>
       </section>
+
+      <NetworkDirectory />
 
       <WhatsHappeningNow />
 
