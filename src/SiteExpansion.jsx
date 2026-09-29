@@ -18,6 +18,7 @@ const ROUTE_META={
   '/':{label:'Home',category:'Network'},
   '/serviceshowcase':{label:'Services',category:'Services'},
   '/store-ai':{label:'ESN Store AI',category:'Services'},
+  '/domains':{label:'ESN Domains',category:'Services'},
   '/portfolio':{label:'Portfolio',category:'Services'},
   '/testimonials':{label:'Verified Reviews',category:'Services'},
   '/smpconnection':{label:'SMP Connection',category:'SMP'},
@@ -88,6 +89,7 @@ const EXPLORE_FEATURES=[
   ['System Blueprint','Explore how Nexus, Terminal, Vault, Arcade, SMP, Staff, and Operations connect.','/blueprint','SYSTEM'],
   ['Session Stats','See account-free local visit time, routes, Arcade XP, hidden signals, and Terminal activity.','/session','LOCAL'],
   ['ESN Store AI','Ask about every verified ESN product and service, compare prices, check delivery rules, find checkout, or unlock staff store tools.','/store-ai','STORE AI'],
+  ['ESN Domains','Choose an ESN subdomain, connect a domain you own, and manage activation through the ESN Domains control layer.','/domains','DOMAINS'],
 ]
 
 const COMMANDS=[
@@ -236,6 +238,7 @@ const KNOWN_ITEMS=[
 ]
 
 const WHAT_IS_NEW=[
+  ['ESN Domains Launch','Subdomain selection, custom-domain connection, protected names, Cloudflare-ready D1 reservations, staff-approved activation, expiration handling, and domain routing are now built into ESN.'],
   ['ESN Store AI','A public catalog-aware store assistant now covers SMP products and ESN services, with verified-price safeguards, checkout help, comparisons, delivery guidance, and staff-only store auditing/draft tools.'],
   ['Operations Expansion','Operations Map, maintenance mode, public incident controls, changelog timeline, diagnostics, SMP connection testing, Terminal campaign, dynamic homepage state, blueprint, recovery console, session stats, broadcast previews, countdowns, emergency themes, and staff macros are now active.'],
   ['No-Account Expansion','Notification Center, Reward Vault, shareable Challenge Lab, stronger Nexus actions, richer SMP telemetry, and the code-gated Staff Dashboard are now wired into ESN.'],
