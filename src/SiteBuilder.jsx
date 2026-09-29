@@ -1557,19 +1557,20 @@ export function HostedSitePage(){
   const params=useParams()
   const clean=cleanSlug(params.slug||'')
   const requestedPage=cleanSlug(params.page||'')||'home'
-  const [state,setState]=useState({loading:true,site:null,error:''})
+  const [state,setState]=useState({loading:true,site:null,error:'',notFound:false})
   useEffect(function(){
-    if(!clean){setState({loading:false,site:null,error:'Invalid site name.'});return}
+    if(!clean){setState({loading:false,site:null,error:'Invalid site name.',notFound:false});return}
     let cancelled=false
     fetch('/generated-sites/'+encodeURIComponent(clean)+'.json',{cache:'no-store'}).then(function(response){if(!response.ok)throw new Error('Site not published yet.');return response.json()}).then(function(site){
       if(cancelled)return
       const safe=safeSite(site)
-      if(requestedPage!=='home'&&(!safe.multiPage||!safe.pages.some(function(page){return page.slug===requestedPage}))){setState({loading:false,site:null,error:'That page does not exist on this site.'});return}
-      setState({loading:false,site:safe,error:''})
-    }).catch(function(error){if(!cancelled)setState({loading:false,site:null,error:error.message||'Site unavailable.'})})
+      const missing=requestedPage!=='home'&&(!safe.multiPage||!safe.pages.some(function(page){return page.slug===requestedPage}))
+      setState({loading:false,site:safe,error:'',notFound:missing})
+    }).catch(function(error){if(!cancelled)setState({loading:false,site:null,error:error.message||'Site unavailable.',notFound:false})})
     return function(){cancelled=true}
   },[clean,requestedPage])
   if(state.loading)return <section className="section"><div className="shell"><div className="builder-public-state">Loading site…</div></div></section>
   if(state.error)return <section className="section"><div className="shell"><div className="builder-public-state"><strong>ESN SITE NOT READY</strong><span>{state.error}</span></div></div></section>
+  if(state.notFound)return <div className="hosted-site-shell"><GeneratedNotFound site={state.site}/></div>
   return <div className="hosted-site-shell"><SitePreview site={state.site} page={requestedPage}/></div>
 }
