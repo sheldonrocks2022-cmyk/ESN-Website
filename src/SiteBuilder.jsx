@@ -551,7 +551,9 @@ function regenerateSection(site,prompt,section,variant){
   return next
 }
 function safeSite(site){
-  const sections={...STARTER.sections,...(site.sections||{})}
+  const legacy=Number(site.version||1)<3
+  const legacySections={announcement:false,status:false,timeline:false,testimonials:false,gallery:false,socials:false}
+  const sections={...(legacy?legacySections:STARTER.sections),...(site.sections||{})}
   return {
     version:3,
     slug:cleanSlug(site.slug),
@@ -569,7 +571,7 @@ function safeSite(site){
     cards:(site.cards||[]).slice(0,3).map(function(card){return {title:clamp(card.title,70),copy:clamp(card.copy,260)}}),
     stats:(site.stats||STARTER.stats).slice(0,3).map(function(item){return {value:clamp(item.value,20),label:clamp(item.label,70)}}),
     faq:(site.faq||STARTER.faq).slice(0,3).map(function(item){return {q:clamp(item.q,120),a:clamp(item.a,360)}}),
-    pack:EXPERIENCE_PACKS.includes(site.pack)?site.pack:'full',
+    pack:EXPERIENCE_PACKS.includes(site.pack)?site.pack:(legacy?'essential':'full'),
     sections:{
       announcement:sections.announcement!==false,
       status:sections.status!==false,
