@@ -333,6 +333,84 @@ export const SEO_ROUTES={
     description:'Get answers about ES Network services, Discord ordering and support, ESN SMP purchases, console access, browser tools, and community access.',
     index:true,
   },
+  '/launchpad':{
+    label:'ESN Launchpad',
+    title:'ESN Launchpad | Start Anywhere in ES Network',
+    description:'Choose the fastest route into ES Network for services, SMP, Arcade, tools, search, or network status without creating an account.',
+    index:true,
+  },
+  '/configure':{
+    label:'Service Configurator',
+    title:'ESN Service Configurator | Build a Project Brief',
+    description:'Build a local ES Network project brief for website, editing, Discord, coaching, branding, or custom work before opening a support ticket.',
+    index:true,
+  },
+  '/smp-hub':{
+    label:'Live SMP World Hub',
+    title:'ESN SMP World Hub | Live Server Status & Minecraft Links',
+    description:'View ESN SMP public telemetry, player data when available, plugin release status, verified connection details, and direct SMP resources.',
+    index:true,
+  },
+  '/trust':{
+    label:'Trust Center',
+    title:'ESN Trust Center | Official Links, Privacy & Payment Safety',
+    description:'Review official ES Network access paths, payment safety, local browser privacy, no-account features, support, and operational transparency.',
+    index:true,
+  },
+  '/search':{
+    label:'Search 2.0',
+    title:'Search ES Network | Services, SMP Items, Tools & Pages',
+    description:'Search ES Network pages, services, SMP items, FAQs, tools, releases, and platform features from one local search experience.',
+    index:true,
+  },
+  '/labs':{
+    label:'ESN Labs',
+    title:'ESN Labs | Local Beta Experience Controls',
+    description:'Try optional ES Network presentation experiments stored only on this browser without an account.',
+    index:false,
+  },
+  '/estimate':{
+    label:'Project Estimate',
+    title:'ESN Project Estimate | Scope Your Website, Editing or Discord Project',
+    description:'Estimate ES Network project complexity and scope before opening a service ticket. Final pricing and delivery are confirmed separately.',
+    index:true,
+  },
+  '/smp-items':{
+    label:'SMP Item Encyclopedia',
+    title:'ESN SMP Item Encyclopedia | Warden, Riftwalker, Relics & More',
+    description:'Search current ESN SMP store bundles and their published item contents, including Warden, Riftwalker, Season Pass relics, keys, and Void gear.',
+    index:true,
+  },
+  '/activity':{
+    label:'Network Activity',
+    title:'ESN Network Activity | Website Releases & Local Recents',
+    description:'Review recent ES Network platform milestones alongside route history stored locally on this device without an account.',
+    index:true,
+  },
+  '/share-generator':{
+    label:'Share Generator 2.0',
+    title:'ESN Share Generator | QR Codes & Network Links',
+    description:'Create share-ready ES Network URLs and QR targets for ESN, the SMP, Arcade, tools, Website Builder, and services.',
+    index:true,
+  },
+  '/showcase':{
+    label:'Builder Showcase',
+    title:'ESN Website Builder Showcase | Published ESN Sites',
+    description:'Browse real websites currently published through the ESN Website Builder and open the builder to create your own.',
+    index:true,
+  },
+  '/network-map':{
+    label:'Interactive Network Map',
+    title:'ESN Network Map | Explore the Entire ES Network',
+    description:'Explore ES Network as one connected platform across services, SMP, Arcade, tools, search, support, sharing, and website creation.',
+    index:true,
+  },
+  '/backup':{
+    label:'Local Backup + Restore',
+    title:'ESN Local Backup & Restore | No Account Required',
+    description:'Export and restore ES Network browser-stored preferences, favorites, local progress, and settings without creating an account.',
+    index:false,
+  },
 }
 
 export const FAQ_SCHEMA=[
