@@ -21,3 +21,25 @@ html[data-lab-compact] .platform-module-grid>a,html[data-lab-compact] .platform-
 @media(max-width:720px){.platform-page-mark{display:none}.platform-module-grid,.platform-launch-grid,.platform-trust-grid,.platform-lab-grid,.platform-item-grid,.platform-link-grid,.platform-backup-grid{grid-template-columns:1fr}.platform-module-grid>a{min-height:150px}.platform-launch-grid>a{min-height:180px}.platform-stat-grid{grid-template-columns:1fr 1fr}.platform-hub-grid{grid-template-columns:1fr}.platform-official-links,.platform-small-cta{align-items:flex-start;flex-direction:column}.platform-search-results>a{grid-template-columns:70px 1fr auto}.platform-network-map{grid-template-columns:1fr;padding-top:140px}.platform-map-group:last-child{grid-column:auto}.platform-map-group>div{grid-template-columns:1fr 1fr}.platform-firstvisit>div{grid-template-columns:1fr}.platform-firstvisit{max-height:88vh;overflow:auto}.platform-mobile-quick{position:fixed;z-index:92;left:12px;bottom:76px;display:grid;justify-items:start;gap:7px}.platform-mobile-quick-trigger{height:36px;padding:0 10px;display:flex;gap:6px;align-items:center;border:1px solid rgba(255,255,255,.10);border-radius:999px;background:rgba(6,10,22,.86);color:#e8f0fc;backdrop-filter:blur(14px);box-shadow:0 12px 38px rgba(0,0,0,.28)}.platform-mobile-quick-trigger span{color:rgb(var(--route-accent-2,143 249 255));font-size:1rem}.platform-mobile-quick-trigger b{font-size:.48rem;letter-spacing:.11em}.platform-mobile-quick-panel{width:min(280px,calc(100vw - 24px));padding:7px;display:grid;gap:5px;border:1px solid rgba(255,255,255,.10);border-radius:18px;background:rgba(6,10,22,.94);backdrop-filter:blur(20px);box-shadow:0 28px 80px rgba(0,0,0,.5)}.platform-mobile-quick-panel>a,.platform-mobile-quick-panel>button{min-height:55px;padding:7px 8px;display:grid;grid-template-columns:32px 1fr;gap:8px;align-items:center;text-align:left;border:0;border-radius:12px;background:rgba(255,255,255,.025);color:#e7eef9}.platform-mobile-quick-panel span{width:32px;height:32px;display:grid;place-items:center;border-radius:9px;background:rgb(var(--route-accent,84 154 255)/.10);color:rgb(var(--route-accent-2,143 249 255))}.platform-mobile-quick-panel div{display:grid;gap:1px}.platform-mobile-quick-panel b{font-size:.65rem}.platform-mobile-quick-panel small{font-size:.49rem;color:#6f7e95}}
 @media(max-width:480px){.platform-stat-grid{grid-template-columns:1fr}.platform-map-group>div{grid-template-columns:1fr}.platform-share-card img{width:160px}.platform-search-results>a{grid-template-columns:1fr auto;grid-template-areas:"cat icon" "body icon"}.platform-search-results>a>span{grid-area:cat}.platform-search-results>a>div{grid-area:body}.platform-search-results>a>em{grid-area:icon}.platform-timeline::before{left:72px}.platform-timeline article{grid-template-columns:56px 17px 1fr}}
 @media(prefers-reduced-motion:reduce){.platform-module-grid>a,.platform-launch-grid>a,.platform-search-results>a{transition:none}}
+
+
+/* VISIBILITY / REFERRAL + SHOWCASE EXPANSION */
+.platform-ref-source{
+  margin-top:12px;
+  padding:14px;
+  display:grid;
+  gap:7px;
+  border:1px solid rgba(255,255,255,.07);
+  border-radius:16px;
+  background:rgba(255,255,255,.02);
+}
+.platform-ref-source>span{color:rgb(var(--route-accent-2,143 249 255));font-size:.52rem;font-weight:950;letter-spacing:.12em}
+.platform-ref-source select{min-height:44px;padding:0 11px;border:1px solid rgba(255,255,255,.09);border-radius:12px;background:#0a0f1d;color:#e8eef8}
+.platform-ref-source small{color:#66758b;font-size:.54rem;line-height:1.5}
+.platform-showcase-manifest-head{display:flex;justify-content:space-between;gap:18px;align-items:center;margin-bottom:14px}
+.platform-showcase-manifest-head>span{font-size:.54rem;font-weight:950;letter-spacing:.12em;color:rgb(var(--route-accent-2,143 249 255))}
+.platform-showcase-manifest-head>a{font-size:.6rem;font-weight:900}
+.platform-showcase-manifest-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.platform-showcase-loading{padding:35px;border:1px dashed rgba(255,255,255,.08);border-radius:20px;color:#7e8ca2;text-align:center}
+.platform-showcase-note.manifest-note{margin-top:12px;min-height:auto}
+@media(max-width:780px){.platform-showcase-manifest-grid{grid-template-columns:1fr}.platform-showcase-manifest-head{align-items:flex-start;flex-direction:column}}
