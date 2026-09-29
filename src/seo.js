@@ -4,6 +4,15 @@ export const SITE_LANGUAGE='en-US'
 export const SEO_LAUNCH_MODE='production'
 export const SOCIAL_IMAGE_URL=SITE_URL+'/esn-social-card.svg'
 export const SOCIAL_IMAGE_ALT='ES Network — Build, Play, Create'
+export function socialImageFor(pathname=''){
+  const path=pathname||'/'
+  if(path.startsWith('/guides')||['/minecraft-server','/minecraft-smp'].includes(path))return SITE_URL+'/social/esn-guides.svg'
+  if(path.startsWith('/smp/')||path.startsWith('/smp-')||['/storesmp','/smpguide','/smpconnection'].includes(path))return SITE_URL+'/social/esn-smp.svg'
+  if(['/fortnite-coaching','/video-editing','/discord-server-setup','/serviceshowcase','/configure','/estimate','/portfolio','/testimonials'].includes(path))return SITE_URL+'/social/esn-services.svg'
+  if(['/website-builder','/site-builder','/showcase','/hosting'].includes(path))return SITE_URL+'/social/esn-builder.svg'
+  if(['/free-browser-tools','/estools'].includes(path))return SITE_URL+'/social/esn-tools.svg'
+  return SITE_URL+'/social/esn-network.svg'
+}
 
 export const SEO_ROUTES={
   '/':{
@@ -411,6 +420,132 @@ export const SEO_ROUTES={
     description:'Export and restore ES Network browser-stored preferences, favorites, local progress, and settings without creating an account.',
     index:false,
   },
+  '/minecraft-server':{
+    label:'Minecraft Server',
+    title:'Minecraft Server | ESN SMP Server, Status & Connection',
+    description:'Explore the ESN Minecraft server with current SMP status, server resources, progression guides, item information, and official ES Network links.',
+    index:true,
+  },
+  '/minecraft-smp':{
+    label:'Minecraft SMP',
+    title:'Minecraft SMP | ESN Survival, Progression, Bosses & Economy',
+    description:'Explore ESN SMP survival, Realm progression, economy, bosses, custom gear, Adventure systems, server resources, and current ES Network information.',
+    index:true,
+  },
+  '/fortnite-coaching':{
+    label:'Fortnite Coaching',
+    title:'Fortnite Coaching | Practical Player Improvement by ES Network',
+    description:'Explore ES Network Fortnite coaching focused on practical improvement, stronger decisions, consistency, and a clear project brief before ordering.',
+    index:true,
+  },
+  '/video-editing':{
+    label:'Video Editing',
+    title:'Video Editing Services for Creators | ES Network',
+    description:'Explore ES Network creator video editing support for gaming and digital content, with clear project scoping and official Discord-based ordering.',
+    index:true,
+  },
+  '/discord-server-setup':{
+    label:'Discord Server Setup',
+    title:'Discord Server Setup for Gaming Communities | ES Network',
+    description:'Explore ES Network Discord setup services for channels, roles, onboarding, moderation, community structure, and custom project requirements.',
+    index:true,
+  },
+  '/website-builder':{
+    label:'Website Builder',
+    title:'Website Builder | Build and Publish with ES Network',
+    description:'Build, preview, edit, share, and publish a website with the ESN Website Builder under the official ES Network /sites path.',
+    index:true,
+  },
+  '/free-browser-tools':{
+    label:'Free Browser Tools',
+    title:'Free Browser Tools for Creators & Gamers | ES Tools',
+    description:'Use free ES Network browser utilities including prompt tools, focus timer, challenge generator, random picker, coin flip, dice, and estimates.',
+    index:true,
+  },
+  '/es-network':{
+    label:'ES Network',
+    title:'ES Network (ESN) | Gaming, Creator Services, SMP & Web Tools',
+    description:'Learn what ES Network is and explore ESN creator services, Minecraft SMP, browser games, free tools, website projects, and official community access.',
+    index:true,
+  },
+  '/guides':{
+    label:'ESN Guides',
+    title:'ESN Guides | Minecraft, Discord, Websites & Creator Help',
+    description:'Read practical ES Network guides for Minecraft custom servers, SMP progression, gaming Discord setup, creator websites, and ESN resources.',
+    index:true,
+  },
+  '/guides/join-minecraft-server-xbox':{
+    label:'Xbox Minecraft Server Guide',
+    title:'How to Join a Custom Minecraft Server on Xbox | ESN Guide',
+    description:'Understand the custom-server limitation on Xbox Bedrock and find current ESN Minecraft server connection resources and troubleshooting paths.',
+    index:true,
+  },
+  '/guides/join-minecraft-server-playstation':{
+    label:'PlayStation Minecraft Server Guide',
+    title:'How to Join a Custom Minecraft Server on PlayStation | ESN',
+    description:'Learn why PlayStation Bedrock custom servers need a different connection flow and where to find current ESN server details and status.',
+    index:true,
+  },
+  '/guides/minecraft-smp-beginner-guide':{
+    label:'Minecraft SMP Beginner Guide',
+    title:'Minecraft SMP Beginner Guide | What to Do First on ESN SMP',
+    description:'Learn the first commands, progression systems, travel, claims, economy, and official resources useful when starting on ESN SMP.',
+    index:true,
+  },
+  '/guides/gaming-discord-server-guide':{
+    label:'Gaming Discord Server Guide',
+    title:'How to Organize a Gaming Discord Server | ESN Guide',
+    description:'Plan roles, channels, onboarding, moderation, support, and community structure for a gaming Discord server.',
+    index:true,
+  },
+  '/guides/creator-website-guide':{
+    label:'Creator Website Guide',
+    title:'How to Plan a Creator Website Before You Build It | ESN',
+    description:'Plan a creator website around one goal, strong information order, mobile-first design, useful pages, and a clear call to action.',
+    index:true,
+  },
+  '/smp/riftwalker':{
+    label:'Riftwalker Bundle',
+    title:'ESN Riftwalker Bundle | Riftblade, Wings, Bow & More',
+    description:'Explore the current published ESN Riftwalker Bundle contents, including Riftblade, Rift Wings, Phase Boots, Rift Bow, Rift Core, and Void Compass.',
+    index:true,
+  },
+  '/smp/immortal-warden':{
+    label:'Immortal Warden Bundle',
+    title:'ESN Immortal Warden Bundle | Armor, Blade, Bow & Core',
+    description:'Explore the current published Immortal Warden Bundle contents for the ESN SMP, including armor, Warden Blade, Longbow, Core, and Totem.',
+    index:true,
+  },
+  '/smp/void-warrior':{
+    label:'Void Warrior Bundle',
+    title:'ESN Void Warrior Bundle | Void Armor & Blade',
+    description:'Explore the published Void Warrior gear list and use the official ESN SMP Store as the source of truth for current checkout availability.',
+    index:true,
+  },
+  '/smp/realm-100':{
+    label:'Realm 100 Keys',
+    title:'ESN Realm 100 Keys | SMP Progression & Store Information',
+    description:'Learn about Realm 100 keys in the current ESN SMP store and progression surface and find the official store and SMP resources.',
+    index:true,
+  },
+  '/smp/season-pass':{
+    label:'Season Pass Relics',
+    title:'ESN Season Pass Relics | Wings, Scepter, Crystal & More',
+    description:'Explore the six current ESN Season Pass relic bundle items: Angel Wings, Inferno Scepter, Storm Crystal, Tideheart, Void Relic, and Celestial Star.',
+    index:true,
+  },
+  '/smp/world-bosses':{
+    label:'SMP Boss Systems',
+    title:'ESN SMP Boss Systems | Bosses, Raids, Dungeons & Endgame',
+    description:'Explore ESNSMP boss and endgame systems including boss drops, summoning, dungeons, raids, codex progression, artifacts, pets, and trials.',
+    index:true,
+  },
+  '/visibility':{
+    label:'Visibility Diagnostics',
+    title:'ESN Visibility Diagnostics',
+    description:'Local privacy-friendly ESN referral and page-view diagnostics for this browser.',
+    index:false,
+  },
 }
 
 export const FAQ_SCHEMA=[
@@ -465,6 +600,14 @@ export const TOOL_SCHEMA=[
   ['Website Estimate','View ES Network website project starting estimates.'],
 ]
 
+export const GUIDE_SCHEMA_DETAILS={
+  '/guides/join-minecraft-server-xbox':{headline:'How to join a custom Minecraft server on Xbox',datePublished:'2026-09-29',dateModified:'2026-09-29'},
+  '/guides/join-minecraft-server-playstation':{headline:'How to join a custom Minecraft server on PlayStation',datePublished:'2026-09-29',dateModified:'2026-09-29'},
+  '/guides/minecraft-smp-beginner-guide':{headline:'Minecraft SMP beginner guide: what to do first',datePublished:'2026-09-29',dateModified:'2026-09-29'},
+  '/guides/gaming-discord-server-guide':{headline:'How to organize a gaming Discord server',datePublished:'2026-09-29',dateModified:'2026-09-29'},
+  '/guides/creator-website-guide':{headline:'How to plan a creator website before you build it',datePublished:'2026-09-29',dateModified:'2026-09-29'},
+}
+
 export const CONSOLE_HOWTO_STEPS=[
   ['Open Bedrock Connect on your phone','Open the Bedrock Connect method used by the ESN console guide and keep the phone on the same network as the console.'],
   ['Open Custom','Choose Custom inside Bedrock Connect.'],
@@ -514,7 +657,10 @@ export function structuredDataFor(pathname){
       alternateName:'EP1C Services',
       url:SITE_URL+'/',
       logo:{'@type':'ImageObject',url:SITE_URL+'/esn-mark.svg'},
-      description:'ES Network provides creator and gaming services and operates the ESN SMP, ESN Arcade, ES Tools, and community experiences.',
+      description:'ES Network provides creator and gaming services and operates the ESN SMP, ESN Arcade, ES Tools, website projects, and community experiences.',
+      sameAs:['https://github.com/sheldonrocks2022-cmyk','https://github.com/sheldonrocks2022-cmyk/ESN-Website'],
+      brand:{'@type':'Brand',name:'ES Network',alternateName:'ESN'},
+      knowsAbout:['Minecraft SMP','Fortnite coaching','Video editing','Discord server setup','Website creation','Browser games','Creator tools'],
     },
     {
       '@type':'WebSite',
@@ -533,7 +679,7 @@ export function structuredDataFor(pathname){
       isPartOf:{'@id':SITE_URL+'/#website'},
       about:{'@id':SITE_URL+'/#organization'},
       inLanguage:SITE_LANGUAGE,
-      primaryImageOfPage:{'@type':'ImageObject',url:SOCIAL_IMAGE_URL,width:1200,height:630},
+      primaryImageOfPage:{'@type':'ImageObject',url:socialImageFor(pathname),width:1200,height:630},
     },
   ]
 
@@ -545,6 +691,22 @@ export function structuredDataFor(pathname){
         {'@type':'ListItem',position:1,name:'ES Network',item:SITE_URL+'/'},
         {'@type':'ListItem',position:2,name:meta.label,item:url},
       ],
+    })
+  }
+
+  if(GUIDE_SCHEMA_DETAILS[pathname]){
+    const article=GUIDE_SCHEMA_DETAILS[pathname]
+    graph.push({
+      '@type':'Article',
+      '@id':url+'#article',
+      headline:article.headline,
+      description:meta.description,
+      datePublished:article.datePublished,
+      dateModified:article.dateModified,
+      author:{'@id':SITE_URL+'/#organization'},
+      publisher:{'@id':SITE_URL+'/#organization'},
+      mainEntityOfPage:{'@id':url+'#webpage'},
+      image:socialImageFor(pathname),
     })
   }
 
