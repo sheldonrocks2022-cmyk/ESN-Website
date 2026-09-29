@@ -334,7 +334,80 @@ const QUICK_PROMPTS=[
   'Create a full ESN-style flagship website with status panels, timeline, testimonial wall, showcase grid, and social links.'
 ]
 
+const PUBLIC_TEMPLATES=[
+  {id:'esn-flagship',name:'ESN Flagship',tag:'Cinematic network',prompt:'Create a cinematic premium network website with live status, timeline, showcase cards, community links, and a huge final CTA.',theme:'midnight',layout:'flagship',style:'cinematic'},
+  {id:'cute-pet',name:'Cute Pet Story',tag:'Pets & memories',prompt:'Make a cute premium pet website with a story, favorite moments, photo gallery, timeline, and soft playful design.',theme:'rose',layout:'studio',style:'playful'},
+  {id:'gaming-hub',name:'Gaming Hub',tag:'Games & communities',prompt:'Build a high-energy gaming community website with updates, modes, status panels, events, social links, and a bold arcade design.',theme:'neon',layout:'dashboard',style:'arcade'},
+  {id:'creator-pro',name:'Creator Pro',tag:'Portfolio & content',prompt:'Create a premium creator portfolio with featured work, about page, projects, social links, testimonials, and a clean studio design.',theme:'clean',layout:'studio',style:'studio'},
+  {id:'business-luxe',name:'Business Luxe',tag:'Services & conversion',prompt:'Build a premium business website with services, proof, FAQs, testimonials, contact CTA, and an elegant luxury design.',theme:'gold',layout:'split',style:'luxury'},
+  {id:'minecraft-smp',name:'Minecraft SMP',tag:'Servers & worlds',prompt:'Build a Minecraft SMP website with server features, progression, events, status panels, world information, and a join page.',theme:'forest',layout:'flagship',style:'organic'},
+]
+
 function cleanSlug(value){return value.toLowerCase().replace(/[^a-z0-9-]/g,'').replace(/^-+|-+$/g,'').slice(0,48)}
+function safeImage(value){
+  const raw=String(value||'').trim()
+  if(/^data:image\/(?:webp|png|jpeg);base64,[a-z0-9+/=]+$/i.test(raw)&&raw.length<=16000)return raw
+  return safeUrl(raw)
+}
+function compressImageFile(file,maxChars=12000){
+  return new Promise(function(resolve,reject){
+    if(!file||!/^image\/(?:png|jpeg|webp)$/i.test(file.type||'')){reject(new Error('Choose a PNG, JPG, or WEBP image.'));return}
+    const reader=new FileReader()
+    reader.onerror=function(){reject(new Error('Could not read that image.'))}
+    reader.onload=function(){
+      const img=new Image()
+      img.onerror=function(){reject(new Error('Could not decode that image.'))}
+      img.onload=function(){
+        let width=img.naturalWidth||img.width
+        let height=img.naturalHeight||img.height
+        const maxSide=720
+        if(Math.max(width,height)>maxSide){const scale=maxSide/Math.max(width,height);width=Math.max(1,Math.round(width*scale));height=Math.max(1,Math.round(height*scale))}
+        const canvas=document.createElement('canvas')
+        canvas.width=width;canvas.height=height
+        const ctx=canvas.getContext('2d')
+        ctx.drawImage(img,0,0,width,height)
+        let quality=.72
+        let data=canvas.toDataURL('image/webp',quality)
+        while(data.length>maxChars&&quality>.32){quality-=.08;data=canvas.toDataURL('image/webp',quality)}
+        if(data.length>maxChars){
+          const scale=Math.sqrt(maxChars/data.length)*.92
+          canvas.width=Math.max(180,Math.round(width*scale))
+          canvas.height=Math.max(120,Math.round(height*scale))
+          ctx.clearRect(0,0,canvas.width,canvas.height)
+          ctx.drawImage(img,0,0,canvas.width,canvas.height)
+          data=canvas.toDataURL('image/webp',.46)
+        }
+        if(data.length>16000){reject(new Error('That image could not be compressed enough for ESN publishing.'));return}
+        resolve(data)
+      }
+      img.src=String(reader.result)
+    }
+    reader.readAsDataURL(file)
+  })
+}
+function analyzeReferenceImage(file){
+  return new Promise(function(resolve,reject){
+    const reader=new FileReader()
+    reader.onerror=function(){reject(new Error('Could not read the screenshot.'))}
+    reader.onload=function(){
+      const img=new Image()
+      img.onerror=function(){reject(new Error('Could not analyze the screenshot.'))}
+      img.onload=function(){
+        const canvas=document.createElement('canvas')
+        const size=80;canvas.width=size;canvas.height=size
+        const ctx=canvas.getContext('2d');ctx.drawImage(img,0,0,size,size)
+        const data=ctx.getImageData(0,0,size,size).data
+        let r=0,g=0,b=0,count=0,bright=0
+        for(let i=0;i<data.length;i+=16){const rr=data[i],gg=data[i+1],bb=data[i+2];r+=rr;g+=gg;b+=bb;bright+=(rr*299+gg*587+bb*114)/1000;count++}
+        r=Math.round(r/count);g=Math.round(g/count);b=Math.round(b/count);bright/=count
+        const hex='#'+[r,g,b].map(function(v){return v.toString(16).padStart(2,'0')}).join('')
+        resolve({accent:hex,dark:bright<135,wide:(img.naturalWidth||1)/(img.naturalHeight||1)>1.25})
+      }
+      img.src=String(reader.result)
+    }
+    reader.readAsDataURL(file)
+  })
+}
 function clamp(value,max){return String(value||'').trim().slice(0,max||280)}
 function safeUrl(value){try{const url=new URL(String(value||'').trim());return ['https:','http:'].includes(url.protocol)?url.toString():''}catch{return ''}}
 function extractUrl(prompt){
