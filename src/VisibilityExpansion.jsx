@@ -151,8 +151,10 @@ function Hero({eyebrow,title,copy,children}){
 }
 
 export function SearchLandingPage(){
+  const location=useLocation()
   const {topic}=useParams()
-  const page=LANDINGS[topic]
+  const resolved=topic||location.pathname.replace(/^\//,'')
+  const page=LANDINGS[resolved]
   if(!page)return <Hero eyebrow="ES NETWORK" title="That ESN guide was not found." copy="Use the Explore page to find the current ESN destination."/>
   return <><Hero eyebrow={page.eyebrow} title={page.title} copy={page.intro}><div className="hero-actions"><Link className="button primary" to={page.primary[1]}>{page.primary[0]}</Link><Link className="button secondary" to={page.secondary[1]}>{page.secondary[0]}</Link></div></Hero>
     <section className="section"><div className="shell visibility-landing-grid"><article><span className="eyebrow">WHY THIS PAGE EXISTS</span><h2>Get to the useful part quickly.</h2><p>{page.intro}</p></article><div className="visibility-benefits">{page.bullets.map((item,index)=><div key={item}><span>{String(index+1).padStart(2,'0')}</span><strong>{item}</strong></div>)}</div></div></section>
