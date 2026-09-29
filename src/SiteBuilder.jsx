@@ -1066,7 +1066,7 @@ function downloadHtml(site){
 }
 function visualClassNames(s){
   const v=s.visual||STARTER.visual
-  return ['shape-'+v.shape,'density-'+v.density,'motion-'+v.motion,'type-'+v.type,'style-'+v.style,'background-'+v.background,'surface-'+v.surface,'hero-'+v.hero,'cards-'+v.cards,'buttons-'+v.buttons,'fx-'+v.fx,'contrast-'+v.contrast].join(' ')
+  return ['shape-'+v.shape,'density-'+v.density,'motion-'+v.motion,'type-'+v.type,'font-'+v.font,'style-'+v.style,'background-'+v.background,'surface-'+v.surface,'hero-'+v.hero,'cards-'+v.cards,'buttons-'+v.buttons,'fx-'+v.fx,'contrast-'+v.contrast].join(' ')
 }
 function FlagshipSitePreview({site,preview=false,onPageChange}){
   const s=safeSite(site)
@@ -1078,10 +1078,10 @@ function FlagshipSitePreview({site,preview=false,onPageChange}){
   ]
   return <div className={'esn-built-site generated-flagship theme-'+s.theme+' '+visualClassNames(s)}>
     <div className="gfs-ambient" aria-hidden="true"><i/><i/><i/></div>
-    <nav className="gfs-nav"><strong>{s.brand}</strong><div>{s.multiPage?<>{preview?<button type="button" onClick={function(){onPageChange?.('home')}}>Home</button>:<a href={'/sites/'+s.slug}>Home</a>}{s.pages.map(function(page){return preview?<button type="button" key={page.slug} onClick={function(){onPageChange?.(page.slug)}}>{page.title}</button>:<a key={page.slug} href={'/sites/'+s.slug+'/'+page.slug}>{page.title}</a>})}</>:<><a href="#story">Story</a><a href="#highlights">Highlights</a><a href="#timeline">Timeline</a><a href="#faq">FAQ</a></>}</div><span>LIVE</span></nav>
-    {s.sections.announcement&&<section className="gfs-announcement"><span>{s.announcement.label}</span><strong>{s.announcement.title}</strong><p>{s.announcement.copy}</p><i>↗</i></section>}
+    <nav className="gfs-nav" style={{order:0}}> <strong>{s.brand}</strong><div>{s.multiPage?<>{preview?<button type="button" onClick={function(){onPageChange?.('home')}}>Home</button>:<a href={'/sites/'+s.slug}>Home</a>}{s.pages.map(function(page){return preview?<button type="button" key={page.slug} onClick={function(){onPageChange?.(page.slug)}}>{page.title}</button>:<a key={page.slug} href={'/sites/'+s.slug+'/'+page.slug}>{page.title}</a>})}</>:<><a href="#story">Story</a><a href="#highlights">Highlights</a><a href="#timeline">Timeline</a><a href="#faq">FAQ</a></>}</div><span>LIVE</span></nav>
+    {s.sections.announcement&&<section className="gfs-announcement" style={{order:1}}> <span>{s.announcement.label}</span><strong>{s.announcement.title}</strong><p>{s.announcement.copy}</p><i>↗</i></section>}
 
-    <section className="gfs-hero">
+    <section className="gfs-hero" style={{order:2}}> 
       <div className="gfs-hero-copy">
         <div className="gfs-status"><i/> GENERATED EXPERIENCE <b>{s.category.toUpperCase()}</b></div>
         <span className="gfs-eyebrow">{s.category} // built for {s.audience}</span>
@@ -1101,17 +1101,17 @@ function FlagshipSitePreview({site,preview=false,onPageChange}){
       </aside>
     </section>
 
-    <div className="gfs-route-strip">{routeItems.map(function(item,index){return <a href={index<3?'#panel-'+index:'#final'} key={item.index}><span>{item.index}</span><b>{item.title}</b><small>{item.meta}</small><em>↗</em></a>})}</div>
-    {s.sections.status&&<section className="gfs-status-center"><div><span className="gfs-eyebrow">LIVE STATUS</span><h2>What’s happening now.</h2></div><div className="gfs-status-grid">{s.status.map(function(item,index){return <article key={index} className={'state-'+item.state}><span><i/>{item.label}</span><strong>{item.value}</strong><small>{item.state.toUpperCase()}</small></article>})}</div></section>}
+    <div className="gfs-route-strip" style={{order:3}}> {routeItems.map(function(item,index){return <a href={index<3?'#panel-'+index:'#final'} key={item.index}><span>{item.index}</span><b>{item.title}</b><small>{item.meta}</small><em>↗</em></a>})}</div>
+    {s.sections.status&&<section className="gfs-status-center" style={orderStyle(s,'status')}><div><span className="gfs-eyebrow">LIVE STATUS</span><h2>What’s happening now.</h2></div><div className="gfs-status-grid">{s.status.map(function(item,index){return <article key={index} className={'state-'+item.state}><span><i/>{item.label}</span><strong>{item.value}</strong><small>{item.state.toUpperCase()}</small></article>})}</div></section>}
 
-    <section id="story" className="gfs-story">
+    <section id="story" className="gfs-story" style={orderStyle(s,'story')}>
       <aside className="gfs-story-sticky"><span className="gfs-eyebrow">THE EXPERIENCE</span><h2>{s.aboutTitle}</h2><p>{s.aboutCopy}</p><a href="#highlights">Explore the highlights →</a></aside>
       <div className="gfs-story-stack">{s.cards.map(function(card,index){return <article id={'panel-'+index} key={index}><span className="gfs-story-index">0{index+1}</span><div><span className="gfs-eyebrow">{s.category}</span><h3>{card.title}</h3><p>{card.copy}</p></div><strong>{card.title.split(' ')[0].toUpperCase()}</strong></article>})}</div>
     </section>
 
-    {s.sections.timeline&&<section id="timeline" className="gfs-timeline"><div className="gfs-section-heading"><div><span className="gfs-eyebrow">TIMELINE</span><h2>From the idea to what comes next.</h2></div><small>{s.brand}</small></div><div className="gfs-timeline-track">{s.timeline.map(function(item,index){return <article key={index}><span>{item.kicker}</span><i/><div><h3>{item.title}</h3><p>{item.copy}</p></div></article>})}</div></section>}
+    {s.sections.timeline&&<section id="timeline" className="gfs-timeline" style={orderStyle(s,'timeline')}><div className="gfs-section-heading"><div><span className="gfs-eyebrow">TIMELINE</span><h2>From the idea to what comes next.</h2></div><small>{s.brand}</small></div><div className="gfs-timeline-track">{s.timeline.map(function(item,index){return <article key={index}><span>{item.kicker}</span><i/><div><h3>{item.title}</h3><p>{item.copy}</p></div></article>})}</div></section>}
 
-    <section id="highlights" className="gfs-section">
+    <section id="highlights" className="gfs-section" style={orderStyle(s,'highlights')}>
       <div className="gfs-section-heading"><div><span className="gfs-eyebrow">WHAT MATTERS</span><h2>Built around the important parts.</h2></div><small>{s.audience}</small></div>
       <div className="gfs-bento">
         {s.cards.map(function(card,index){return <article className={'gfs-bento-card bento-'+(index+1)} key={index}><div><span>0{index+1}</span><i>AVAILABLE</i></div><h3>{card.title}</h3><p>{card.copy}</p><strong>{s.stats[index]?.value||'+'}</strong></article>})}
@@ -1119,26 +1119,30 @@ function FlagshipSitePreview({site,preview=false,onPageChange}){
       </div>
     </section>
 
-    {s.sections.gallery&&<section className="gfs-gallery"><div className="gfs-section-heading"><div><span className="gfs-eyebrow">SHOWCASE</span><h2>More than three cards.</h2></div><small>Visual feature rail</small></div><div className="gfs-gallery-grid">{s.gallery.map(function(item,index){return <article className={item.image?'has-image':''} key={index}>{item.image&&<img src={item.image} alt={item.alt||item.title}/>}<span>0{index+1}</span><div className="gfs-gallery-orb" aria-hidden="true"/><h3>{item.title}</h3><p>{item.copy}</p><strong>{String(index+1).padStart(2,'0')}</strong></article>})}</div></section>}
+    {s.sections.gallery&&<section className={'gfs-gallery gallery-'+s.galleryMode} style={orderStyle(s,'gallery')}><div className="gfs-section-heading"><div><span className="gfs-eyebrow">SHOWCASE</span><h2>More than three cards.</h2></div><small>Visual feature rail</small></div><div className="gfs-gallery-grid">{s.gallery.map(function(item,index){return <article className={item.image?'has-image':''} key={index}>{item.image&&<img src={item.image} alt={item.alt||item.title}/>}<span>0{index+1}</span><div className="gfs-gallery-orb" aria-hidden="true"/><h3>{item.title}</h3><p>{item.copy}</p><strong>{String(index+1).padStart(2,'0')}</strong></article>})}</div></section>}
 
-    <section className="gfs-feature-stage">
+    <section className="gfs-feature-stage" style={orderStyle(s,'feature')}>
       <div><span className="gfs-big-index">{s.brand.toUpperCase()} // {s.category.toUpperCase()}</span><span className="gfs-eyebrow">FOCUSED EXPERIENCE</span><h2>{s.ctaTitle}</h2><p>{s.ctaCopy}</p>{s.ctaUrl&&<a className="gfs-primary" href={s.ctaUrl} target="_blank" rel="noreferrer">{s.ctaLabel}</a>}</div>
       <div className="gfs-feature-grid">{s.stats.map(function(item,index){return <article key={index}><span>0{index+1}</span><strong>{item.value}</strong><small>{item.label}</small><em>↗</em></article>})}<article><span>04</span><strong>{s.category}</strong><small>Built for {s.audience}</small><em>↗</em></article></div>
     </section>
 
-    {s.sections.testimonials&&<section className="gfs-testimonials"><div className="gfs-section-heading"><div><span className="gfs-eyebrow">VOICES</span><h2>Built to feel alive, not empty.</h2></div><small>Editable testimonial wall</small></div><div>{s.testimonials.map(function(item,index){return <article key={index}><span>“</span><blockquote>{item.quote}</blockquote><footer><strong>{item.name}</strong><small>{item.role}</small></footer></article>})}</div></section>}
+    {s.sections.testimonials&&<section className="gfs-testimonials" style={orderStyle(s,'testimonials')}><div className="gfs-section-heading"><div><span className="gfs-eyebrow">VOICES</span><h2>Built to feel alive, not empty.</h2></div><small>Editable testimonial wall</small></div><div>{s.testimonials.map(function(item,index){return <article key={index}><span>“</span><blockquote>{item.quote}</blockquote><footer><strong>{item.name}</strong><small>{item.role}</small></footer></article>})}</div></section>}
 
-    <section className="gfs-process"><div><span>01</span><strong>Discover</strong><p>{s.heroCopy}</p></div><div><span>02</span><strong>Explore</strong><p>{s.aboutCopy}</p></div><div><span>03</span><strong>Act</strong><p>{s.ctaCopy}</p></div></section>
+    <section className="gfs-process" style={orderStyle(s,'process')}><div><span>01</span><strong>Discover</strong><p>{s.heroCopy}</p></div><div><span>02</span><strong>Explore</strong><p>{s.aboutCopy}</p></div><div><span>03</span><strong>Act</strong><p>{s.ctaCopy}</p></div></section>
 
-    <section id="faq" className="gfs-faq">
+    <section id="faq" className="gfs-faq" style={orderStyle(s,'faq')}>
       <div><span className="gfs-eyebrow">QUESTIONS</span><h2>Everything important, without the clutter.</h2><p>Quick answers generated around the site topic and audience.</p></div>
       <div>{s.faq.map(function(item,index){return <details key={index} open={index===0}><summary>{item.q}<span>+</span></summary><p>{item.a}</p></details>})}</div>
     </section>
 
-    {s.sections.socials&&<section className="gfs-social-deck"><div><span className="gfs-eyebrow">CONNECT</span><h2>Keep every important link in one place.</h2></div><div>{s.socials.map(function(item,index){return item.url?<a href={item.url} target="_blank" rel="noreferrer" key={index}><span>0{index+1}</span><strong>{item.label}</strong><em>↗</em></a>:<article key={index}><span>0{index+1}</span><strong>{item.label}</strong><em>ADD LINK</em></article>})}</div></section>}
+    {s.sections.socials&&<section className="gfs-social-deck" style={orderStyle(s,'socials')}><div><span className="gfs-eyebrow">CONNECT</span><h2>Keep every important link in one place.</h2></div><div>{s.socials.map(function(item,index){return item.url?<a href={item.url} target="_blank" rel="noreferrer" key={index}><span>0{index+1}</span><strong>{item.label}</strong><em>↗</em></a>:<article key={index}><span>0{index+1}</span><strong>{item.label}</strong><em>ADD LINK</em></article>})}</div></section>}
 
-    <section id="final" className="gfs-final"><span>{s.category.toUpperCase()} EXPERIENCE</span><h2>{s.ctaTitle}</h2><p>{s.ctaCopy}</p>{s.ctaUrl&&<a className="gfs-primary" href={s.ctaUrl} target="_blank" rel="noreferrer">{s.ctaLabel} <b>↗</b></a>}<strong aria-hidden="true">{s.brand.slice(0,3).toUpperCase()}</strong></section>
-    <footer className="gfs-footer"><span>{s.footer}</span><small>{ROOT_DOMAIN}/sites/{s.slug||'yourname'}</small></footer>
+    {s.sections.countdown&&<div style={orderStyle(s,'countdown')}><CountdownBlock site={s}/></div>}
+    {s.sections.minecraft&&<div style={orderStyle(s,'minecraft')}><MinecraftStatusWidget site={s}/></div>}
+    {s.sections.visitor&&<div style={orderStyle(s,'visitor')}><VisitorPulse site={s}/></div>}
+
+    <section id="final" className="gfs-final" style={{order:100}}> <span>{s.category.toUpperCase()} EXPERIENCE</span><h2>{s.ctaTitle}</h2><p>{s.ctaCopy}</p>{s.ctaUrl&&<a className="gfs-primary" href={s.ctaUrl} target="_blank" rel="noreferrer">{s.ctaLabel} <b>↗</b></a>}<strong aria-hidden="true">{s.brand.slice(0,3).toUpperCase()}</strong></section>
+    <footer className="gfs-footer" style={{order:101}}> <span>{s.footer}</span><small>{ROOT_DOMAIN}/sites/{s.slug||'yourname'}</small></footer>
   </div>
 }
 
@@ -1165,19 +1169,23 @@ function SitePreview({site,page='home',preview=false,onPageChange}){
   const visualStyle={'--custom-accent':s.visual.accent,'--site-accent':s.visual.accent}
   if(s.layout==='flagship')return <div style={visualStyle} className={'generated-visual-shell theme-'+s.theme+' '+visualClassNames(s)}><FlagshipSitePreview site={s} preview={preview} onPageChange={onPageChange}/></div>
   return <div style={visualStyle} className={'esn-built-site theme-'+s.theme+' layout-'+s.layout+' '+visualClassNames(s)}>
-    <nav><strong>{s.brand}</strong><div>{s.multiPage?<>{preview?<button type="button" onClick={function(){onPageChange?.('home')}}>Home</button>:<a href={'/sites/'+s.slug}>Home</a>}{s.pages.map(function(item){return preview?<button type="button" key={item.slug} onClick={function(){onPageChange?.(item.slug)}}>{item.title}</button>:<a key={item.slug} href={'/sites/'+s.slug+'/'+item.slug}>{item.title}</a>})}</>:<><a href="#about">About</a><a href="#highlights">Highlights</a><a href="#faq">FAQ</a></>}</div></nav>
-    <section className="built-hero"><span>{s.category} • for {s.audience}</span><h1>{s.heroTitle}</h1><p>{s.heroCopy}</p>{s.ctaUrl&&<a className="built-hero-button" href={s.ctaUrl} target="_blank" rel="noreferrer">{s.ctaLabel}</a>}</section>
-    <section className="built-stats">{s.stats.map(function(item,index){return <article key={index}><strong>{item.value}</strong><span>{item.label}</span></article>})}</section>
-    <section id="about" className="built-about"><h2>{s.aboutTitle}</h2><p>{s.aboutCopy}</p></section>
-    <section id="highlights" className="built-card-grid">{s.cards.map(function(card,index){return <article key={index}><span>0{index+1}</span><h3>{card.title}</h3><p>{card.copy}</p></article>})}</section>
-    {s.sections.announcement&&<section className="built-announcement"><span>{s.announcement.label}</span><div><h3>{s.announcement.title}</h3><p>{s.announcement.copy}</p></div></section>}
-    {s.sections.status&&<section className="built-extra-grid">{s.status.map(function(item,index){return <article key={index}><span>{item.label}</span><strong>{item.value}</strong><small>{item.state}</small></article>})}</section>}
-    {s.sections.timeline&&<section className="built-timeline">{s.timeline.map(function(item,index){return <article key={index}><span>{item.kicker}</span><div><h3>{item.title}</h3><p>{item.copy}</p></div></article>})}</section>}
-    {s.sections.gallery&&<section className="built-gallery">{s.gallery.map(function(item,index){return <article className={item.image?'has-image':''} key={index}>{item.image&&<img src={item.image} alt={item.alt||item.title}/>}<span>0{index+1}</span><h3>{item.title}</h3><p>{item.copy}</p></article>})}</section>}
-    {s.sections.testimonials&&<section className="built-testimonials">{s.testimonials.map(function(item,index){return <blockquote key={index}><p>“{item.quote}”</p><footer><strong>{item.name}</strong><span>{item.role}</span></footer></blockquote>})}</section>}
-    <section id="faq" className="built-faq"><div><span>FAQ</span><h2>Quick answers.</h2></div><div>{s.faq.map(function(item,index){return <details key={index} open={index===0}><summary>{item.q}</summary><p>{item.a}</p></details>})}</div></section>
-    <section className="built-cta"><h2>{s.ctaTitle}</h2><p>{s.ctaCopy}</p>{s.ctaUrl&&<a href={s.ctaUrl} target="_blank" rel="noreferrer">{s.ctaLabel}</a>}</section>
-    <footer><span>{s.footer}</span><small>{ROOT_DOMAIN}/sites/{s.slug||'yourname'}</small></footer>
+    <nav style={{order:0}}><strong>{s.brand}</strong><div>{s.multiPage?<>{preview?<button type="button" onClick={function(){onPageChange?.('home')}}>Home</button>:<a href={'/sites/'+s.slug}>Home</a>}{s.pages.map(function(item){return preview?<button type="button" key={item.slug} onClick={function(){onPageChange?.(item.slug)}}>{item.title}</button>:<a key={item.slug} href={'/sites/'+s.slug+'/'+item.slug}>{item.title}</a>})}</>:<><a href="#about">About</a><a href="#highlights">Highlights</a><a href="#faq">FAQ</a></>}</div></nav>
+    <section className="built-hero" style={{order:1}}><span>{s.category} • for {s.audience}</span><h1>{s.heroTitle}</h1><p>{s.heroCopy}</p>{s.ctaUrl&&<a className="built-hero-button" href={s.ctaUrl} target="_blank" rel="noreferrer">{s.ctaLabel}</a>}</section>
+    <section className="built-stats" style={{order:2}}>{s.stats.map(function(item,index){return <article key={index}><strong>{item.value}</strong><span>{item.label}</span></article>})}</section>
+    <section id="about" className="built-about" style={orderStyle(s,'story')}><h2>{s.aboutTitle}</h2><p>{s.aboutCopy}</p></section>
+    <section id="highlights" className="built-card-grid" style={orderStyle(s,'highlights')}>{s.cards.map(function(card,index){return <article key={index}><span>0{index+1}</span><h3>{card.title}</h3><p>{card.copy}</p></article>})}</section>
+    {s.sections.announcement&&<section className="built-announcement" style={{order:3}}><span>{s.announcement.label}</span><div><h3>{s.announcement.title}</h3><p>{s.announcement.copy}</p></div></section>}
+    {s.sections.status&&<section className="built-extra-grid" style={orderStyle(s,'status')}>{s.status.map(function(item,index){return <article key={index}><span>{item.label}</span><strong>{item.value}</strong><small>{item.state}</small></article>})}</section>}
+    {s.sections.timeline&&<section className="built-timeline" style={orderStyle(s,'timeline')}>{s.timeline.map(function(item,index){return <article key={index}><span>{item.kicker}</span><div><h3>{item.title}</h3><p>{item.copy}</p></div></article>})}</section>}
+    {s.sections.gallery&&<section className={'built-gallery gallery-'+s.galleryMode} style={orderStyle(s,'gallery')}>{s.gallery.map(function(item,index){return <article className={item.image?'has-image':''} key={index}>{item.image&&<img src={item.image} alt={item.alt||item.title}/>}<span>0{index+1}</span><h3>{item.title}</h3><p>{item.copy}</p></article>})}</section>}
+    {s.sections.testimonials&&<section className="built-testimonials" style={orderStyle(s,'testimonials')}>{s.testimonials.map(function(item,index){return <blockquote key={index}><p>“{item.quote}”</p><footer><strong>{item.name}</strong><span>{item.role}</span></footer></blockquote>})}</section>}
+    <section id="faq" className="built-faq" style={orderStyle(s,'faq')}><div><span>FAQ</span><h2>Quick answers.</h2></div><div>{s.faq.map(function(item,index){return <details key={index} open={index===0}><summary>{item.q}</summary><p>{item.a}</p></details>})}</div></section>
+    {s.sections.socials&&<section className="built-social-links" style={orderStyle(s,'socials')}>{s.socials.map(function(item,index){return item.url?<a href={item.url} target="_blank" rel="noreferrer" key={index}><span>0{index+1}</span><strong>{item.label}</strong><em>↗</em></a>:null})}</section>}
+    {s.sections.countdown&&<div style={orderStyle(s,'countdown')}><CountdownBlock site={s}/></div>}
+    {s.sections.minecraft&&<div style={orderStyle(s,'minecraft')}><MinecraftStatusWidget site={s}/></div>}
+    {s.sections.visitor&&<div style={orderStyle(s,'visitor')}><VisitorPulse site={s}/></div>}
+    <section className="built-cta" style={{order:100}}><h2>{s.ctaTitle}</h2><p>{s.ctaCopy}</p>{s.ctaUrl&&<a href={s.ctaUrl} target="_blank" rel="noreferrer">{s.ctaLabel}</a>}</section>
+    <footer style={{order:101}}><span>{s.footer}</span><small>{ROOT_DOMAIN}/sites/{s.slug||'yourname'}</small></footer>
   </div>
 }
 
