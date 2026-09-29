@@ -704,6 +704,13 @@ export default function SiteBuilderPage(){
   const updateCard=function(index,key,value){setSite(function(current){return {...current,cards:current.cards.map(function(card,i){return i===index?{...card,[key]:value}:card})}})}
   const updateStat=function(index,key,value){setSite(function(current){return {...current,stats:(current.stats||STARTER.stats).map(function(item,i){return i===index?{...item,[key]:value}:item})}})}
   const updateFaq=function(index,key,value){setSite(function(current){return {...current,faq:(current.faq||STARTER.faq).map(function(item,i){return i===index?{...item,[key]:value}:item})}})}
+  const updateAnnouncement=function(key,value){setSite(function(current){return {...current,announcement:{...(current.announcement||STARTER.announcement),[key]:value}}})}
+  const updateTimeline=function(index,key,value){setSite(function(current){return {...current,timeline:(current.timeline||STARTER.timeline).map(function(item,i){return i===index?{...item,[key]:value}:item})}})}
+  const updateTestimonial=function(index,key,value){setSite(function(current){return {...current,testimonials:(current.testimonials||STARTER.testimonials).map(function(item,i){return i===index?{...item,[key]:value}:item})}})}
+  const updateGallery=function(index,key,value){setSite(function(current){return {...current,gallery:(current.gallery||STARTER.gallery).map(function(item,i){return i===index?{...item,[key]:value}:item})}})}
+  const updateSocial=function(index,key,value){setSite(function(current){return {...current,socials:(current.socials||STARTER.socials).map(function(item,i){return i===index?{...item,[key]:value}:item})}})}
+  const toggleSection=function(key){setSite(function(current){return {...current,sections:{...STARTER.sections,...current.sections,[key]:!(current.sections?.[key]!==false)}}})}
+  const setPack=function(pack){setSite(function(current){return applyExperiencePack(current,pack)})}
 
   useEffect(function(){try{localStorage.setItem(DRAFT_KEY,JSON.stringify(safeSite(site)))}catch{}},[site])
 
@@ -739,7 +746,7 @@ export default function SiteBuilderPage(){
   }
 
   return <>
-    <section className="page-hero builder-hero"><div className="shell page-hero-inner"><div className="page-hero-copy"><span className="eyebrow">ESN WEBSITE BUILDER // FLAGSHIP GENERATOR V4</span><h1>Build sites with ESN-level architecture.</h1><p>V4 can generate a full flagship experience inspired by the architecture of the ESN website: cinematic hero stages, reactor-style visuals, route strips, story stacks, bento grids, feature panels, process sections, premium FAQs, and oversized final CTAs — without allowing arbitrary user scripts.</p></div><div className="page-hero-mark"><span>V4</span><small>FLAGSHIP SITE ENGINE</small></div></div></section>
+    <section className="page-hero builder-hero"><div className="shell page-hero-inner"><div className="page-hero-copy"><span className="eyebrow">ESN WEBSITE BUILDER // 100X GENERATOR V5</span><h1>Generate a full digital experience, not a template.</h1><p>V5 adds experience packs, ten visual themes, announcement systems, live-status panels, timelines, galleries, testimonial walls, social link decks, section controls, and stronger ESN-style flagship composition — while published sites remain structured and script-free.</p></div><div className="page-hero-mark"><span>V5</span><small>100X EXPERIENCE ENGINE</small></div></div></section>
     <section className="section"><div className="shell builder-layout">
       <div className="builder-controls">
         <div className="builder-panel"><span className="eyebrow">01 // IDEA + GENERATION</span>
@@ -765,6 +772,7 @@ export default function SiteBuilderPage(){
         <div className="builder-panel"><div className="builder-panel-head"><span className="eyebrow">02 // LAYOUT + STYLE</span><button type="button" onClick={function(){regenerate('hero')}}>REGENERATE HERO</button></div>
           <div className="builder-layout-picks">{LAYOUTS.map(function(layout){return <button type="button" className={site.layout===layout?'active':''} onClick={function(){update('layout',layout)}} key={layout}>{layout.toUpperCase()}</button>})}</div>
           <div className="builder-themes">{THEMES.map(function(theme){return <button type="button" className={site.theme===theme?'active':''} onClick={function(){update('theme',theme)}} key={theme}>{theme.toUpperCase()}</button>})}</div>
+          <div className="builder-pack-picks">{EXPERIENCE_PACKS.map(function(pack){return <button type="button" className={(site.pack||'full')===pack?'active':''} onClick={function(){setPack(pack)}} key={pack}>{pack.toUpperCase()}</button>})}</div>
           <label>AUDIENCE<input value={site.audience||''} onChange={function(e){update('audience',e.target.value)}}/></label>
           <label>HERO HEADLINE<input value={site.heroTitle} onChange={function(e){update('heroTitle',e.target.value)}}/></label>
           <label>HERO TEXT<textarea value={site.heroCopy} onChange={function(e){update('heroCopy',e.target.value)}}/></label>
@@ -779,14 +787,29 @@ export default function SiteBuilderPage(){
 
         <div className="builder-panel"><div className="builder-panel-head"><span className="eyebrow">05 // FAQ</span><button type="button" onClick={function(){regenerate('faq')}}>REGENERATE FAQ</button></div>{(site.faq||STARTER.faq).map(function(item,index){return <div className="builder-card-editor" key={index}><input value={item.q} onChange={function(e){updateFaq(index,'q',e.target.value)}}/><textarea value={item.a} onChange={function(e){updateFaq(index,'a',e.target.value)}}/></div>})}</div>
 
-        <div className="builder-panel"><div className="builder-panel-head"><span className="eyebrow">06 // SEO</span><button type="button" onClick={function(){regenerate('seo')}}>REGENERATE SEO</button></div>
+        <div className="builder-panel builder-experience-panel">
+          <div className="builder-panel-head"><span className="eyebrow">06 // EXPERIENCE SYSTEMS</span><button type="button" onClick={function(){regenerate('experience')}}>REGENERATE ALL</button></div>
+          <div className="builder-section-switches">{Object.keys(STARTER.sections).map(function(key){const on=site.sections?.[key]!==false;return <button type="button" className={on?'active':''} onClick={function(){toggleSection(key)}} key={key}><span>{on?'ON':'OFF'}</span>{key.toUpperCase()}</button>})}</div>
+          <span className="builder-subhead">ANNOUNCEMENT STRIP</span>
+          <div className="builder-triple-editor"><input value={site.announcement?.label||''} onChange={function(e){updateAnnouncement('label',e.target.value)}} placeholder="NEW"/><input value={site.announcement?.title||''} onChange={function(e){updateAnnouncement('title',e.target.value)}} placeholder="Announcement title"/><textarea value={site.announcement?.copy||''} onChange={function(e){updateAnnouncement('copy',e.target.value)}} placeholder="Announcement details"/></div>
+          <span className="builder-subhead">TIMELINE</span>
+          {(site.timeline||STARTER.timeline).map(function(item,index){return <div className="builder-timeline-editor" key={index}><input value={item.kicker} onChange={function(e){updateTimeline(index,'kicker',e.target.value)}}/><input value={item.title} onChange={function(e){updateTimeline(index,'title',e.target.value)}}/><textarea value={item.copy} onChange={function(e){updateTimeline(index,'copy',e.target.value)}}/></div>})}
+          <span className="builder-subhead">TESTIMONIAL WALL</span>
+          {(site.testimonials||STARTER.testimonials).map(function(item,index){return <div className="builder-card-editor" key={index}><textarea value={item.quote} onChange={function(e){updateTestimonial(index,'quote',e.target.value)}}/><div className="builder-inline-editor"><input value={item.name} onChange={function(e){updateTestimonial(index,'name',e.target.value)}}/><input value={item.role} onChange={function(e){updateTestimonial(index,'role',e.target.value)}}/></div></div>})}
+          <span className="builder-subhead">SHOWCASE TILES</span>
+          {(site.gallery||STARTER.gallery).map(function(item,index){return <div className="builder-card-editor" key={index}><input value={item.title} onChange={function(e){updateGallery(index,'title',e.target.value)}}/><textarea value={item.copy} onChange={function(e){updateGallery(index,'copy',e.target.value)}}/></div>})}
+          <span className="builder-subhead">SOCIAL / EXTERNAL LINKS</span>
+          {(site.socials||STARTER.socials).map(function(item,index){return <div className="builder-inline-editor" key={index}><input value={item.label} onChange={function(e){updateSocial(index,'label',e.target.value)}}/><input value={item.url} onChange={function(e){updateSocial(index,'url',e.target.value)}} placeholder="https://..."/></div>})}
+        </div>
+
+        <div className="builder-panel"><div className="builder-panel-head"><span className="eyebrow">07 // SEO</span><button type="button" onClick={function(){regenerate('seo')}}>REGENERATE SEO</button></div>
           <label>SEARCH TITLE<input value={site.seoTitle||''} onChange={function(e){update('seoTitle',e.target.value)}}/></label>
           <small className="builder-char-count">{(site.seoTitle||'').length}/70</small>
           <label>SEARCH DESCRIPTION<textarea value={site.seoDescription||''} onChange={function(e){update('seoDescription',e.target.value)}}/></label>
           <small className="builder-char-count">{(site.seoDescription||'').length}/160</small>
         </div>
 
-        <div className="builder-panel"><div className="builder-panel-head"><span className="eyebrow">07 // FINAL CTA</span><button type="button" onClick={function(){regenerate('cta')}}>REGENERATE CTA</button></div>
+        <div className="builder-panel"><div className="builder-panel-head"><span className="eyebrow">08 // FINAL CTA</span><button type="button" onClick={function(){regenerate('cta')}}>REGENERATE CTA</button></div>
           <label>CTA TITLE<input value={site.ctaTitle} onChange={function(e){update('ctaTitle',e.target.value)}}/></label>
           <label>CTA TEXT<textarea value={site.ctaCopy} onChange={function(e){update('ctaCopy',e.target.value)}}/></label>
           <label>BUTTON TEXT<input value={site.ctaLabel} onChange={function(e){update('ctaLabel',e.target.value)}}/></label>
