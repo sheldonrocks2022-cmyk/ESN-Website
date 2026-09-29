@@ -3,7 +3,7 @@ import { Link, useLocation } from 'react-router-dom'
 import { DISCORD_URL, SITE_RELEASE, SMP_ADDRESS, SMP_PORT, useLiveNetwork } from './liveNetwork'
 import { useArcadeProgress } from './arcade/shared'
 
-const RELEASE_ID='2026-09-28-hosting-payments'
+const RELEASE_ID='2026-09-28-free-subdomains'
 const RECENT_KEY='esn_recent_routes'
 const FAVORITES_KEY='esn_favorites'
 const PREF_KEY='esn_site_preferences'
