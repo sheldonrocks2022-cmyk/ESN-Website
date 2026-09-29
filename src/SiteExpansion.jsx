@@ -3,7 +3,7 @@ import { Link, useLocation } from 'react-router-dom'
 import { DISCORD_URL, SITE_RELEASE, SMP_ADDRESS, SMP_PORT, useLiveNetwork } from './liveNetwork'
 import { useArcadeProgress } from './arcade/shared'
 
-const RELEASE_ID='2026-09-27-no-account-expansion'
+const RELEASE_ID='2026-09-28-store-ai'
 const RECENT_KEY='esn_recent_routes'
 const FAVORITES_KEY='esn_favorites'
 const PREF_KEY='esn_site_preferences'
@@ -17,6 +17,7 @@ const PLUGIN_SHA256='4439a6c8bf7ea6b0bf170098eeb1dff3f9f2f7008c06556140a1c1cfd8a
 const ROUTE_META={
   '/':{label:'Home',category:'Network'},
   '/serviceshowcase':{label:'Services',category:'Services'},
+  '/store-ai':{label:'ESN Store AI',category:'Services'},
   '/portfolio':{label:'Portfolio',category:'Services'},
   '/testimonials':{label:'Verified Reviews',category:'Services'},
   '/smpconnection':{label:'SMP Connection',category:'SMP'},
@@ -86,6 +87,7 @@ const EXPLORE_FEATURES=[
   ['SMP Connection Tester','Test the current SMP address, port, telemetry, plugin release, and website reachability.','/smpcheck','SMP'],
   ['System Blueprint','Explore how Nexus, Terminal, Vault, Arcade, SMP, Staff, and Operations connect.','/blueprint','SYSTEM'],
   ['Session Stats','See account-free local visit time, routes, Arcade XP, hidden signals, and Terminal activity.','/session','LOCAL'],
+  ['ESN Store AI','Ask about every verified ESN product and service, compare prices, check delivery rules, find checkout, or unlock staff store tools.','/store-ai','STORE AI'],
 ]
 
 const COMMANDS=[
@@ -234,6 +236,7 @@ const KNOWN_ITEMS=[
 ]
 
 const WHAT_IS_NEW=[
+  ['ESN Store AI','A public catalog-aware store assistant now covers SMP products and ESN services, with verified-price safeguards, checkout help, comparisons, delivery guidance, and staff-only store auditing/draft tools.'],
   ['Operations Expansion','Operations Map, maintenance mode, public incident controls, changelog timeline, diagnostics, SMP connection testing, Terminal campaign, dynamic homepage state, blueprint, recovery console, session stats, broadcast previews, countdowns, emergency themes, and staff macros are now active.'],
   ['No-Account Expansion','Notification Center, Reward Vault, shareable Challenge Lab, stronger Nexus actions, richer SMP telemetry, and the code-gated Staff Dashboard are now wired into ESN.'],
   ['Expansion 20','20 requested website systems added in one connected feature batch.'],
