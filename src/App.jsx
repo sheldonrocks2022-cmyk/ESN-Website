@@ -19,7 +19,7 @@ import StoreAIPage from './StoreAI'
 import DomainsPage from './Domains'
 import SiteBuilderPage, { HostedSitePage } from './SiteBuilder'
 import { ChangelogTimelinePage, DiagnosticCenterPage, GlobalOpsLayer, OperationsMapPage, PublicIncidentsPage, SessionStatsPage, SMPConnectionTesterPage, SystemBlueprintPage } from './OpsExpansion'
-import { SOCIAL_IMAGE_ALT, SOCIAL_IMAGE_URL, canonicalUrl, getSeo, robotsContent, structuredDataFor } from './seo'
+import { SOCIAL_IMAGE_ALT, SOCIAL_IMAGE_URL, canonicalUrl, getSeo, robotsContent, socialImageFor, structuredDataFor } from './seo'
 import { PortfolioPage, StatusCenter, TimelinePage, UpdatesPage, VaultPage, WhatsHappeningNow } from './LiveExperience'
 import { VERIFIED_REVIEWS } from './reviews'
 import HomeControlCenter from './HomeControlCenter'
@@ -182,6 +182,7 @@ function MetaManager() {
     const description = meta.description
     const url = canonicalUrl(location.pathname)
     const robots = robotsContent(location.pathname, window.location.hostname)
+    const socialImage = socialImageFor(location.pathname)
 
     document.title = title
 
@@ -206,7 +207,7 @@ function MetaManager() {
     setMeta('meta[property="og:site_name"]', 'property', 'og:site_name', 'ES Network')
     setMeta('meta[property="og:locale"]', 'property', 'og:locale', 'en_US')
     setMeta('meta[property="og:url"]', 'property', 'og:url', url)
-    setMeta('meta[property="og:image"]', 'property', 'og:image', SOCIAL_IMAGE_URL)
+    setMeta('meta[property="og:image"]', 'property', 'og:image', socialImage)
     setMeta('meta[property="og:image:alt"]', 'property', 'og:image:alt', SOCIAL_IMAGE_ALT)
     setMeta('meta[property="og:image:type"]', 'property', 'og:image:type', 'image/svg+xml')
     setMeta('meta[property="og:image:width"]', 'property', 'og:image:width', '1200')
@@ -215,7 +216,7 @@ function MetaManager() {
     setMeta('meta[name="twitter:card"]', 'name', 'twitter:card', 'summary_large_image')
     setMeta('meta[name="twitter:title"]', 'name', 'twitter:title', title)
     setMeta('meta[name="twitter:description"]', 'name', 'twitter:description', description)
-    setMeta('meta[name="twitter:image"]', 'name', 'twitter:image', SOCIAL_IMAGE_URL)
+    setMeta('meta[name="twitter:image"]', 'name', 'twitter:image', socialImage)
     setMeta('meta[name="twitter:image:alt"]', 'name', 'twitter:image:alt', SOCIAL_IMAGE_ALT)
 
     let canonical = document.querySelector('link[rel="canonical"]')
