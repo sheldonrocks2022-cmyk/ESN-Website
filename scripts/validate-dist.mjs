@@ -1,6 +1,6 @@
 import fs from 'node:fs'
 import path from 'node:path'
-import { SEO_ROUTES, SOCIAL_IMAGE_ALT, SOCIAL_IMAGE_URL, canonicalUrl, robotsContent } from '../src/seo.js'
+import { SEO_ROUTES, SOCIAL_IMAGE_ALT, canonicalUrl, robotsContent, socialImageFor } from '../src/seo.js'
 
 const failures = []
 
@@ -25,6 +25,7 @@ for (const [route, meta] of Object.entries(SEO_ROUTES)) {
   const html = fs.readFileSync(file, 'utf8')
   const expectedCanonical = canonicalUrl(route)
   const expectedRobots = robotsContent(route)
+  const expectedSocialImage = socialImageFor(route)
 
   if (!html.includes(`<title>${escapeHtml(meta.title)}</title>`)) failures.push(`Wrong or missing title in ${file}`)
   if (!html.includes(`name="description" content="${escapeHtml(meta.description)}`)) failures.push(`Wrong or missing description in ${file}`)
@@ -37,11 +38,11 @@ for (const [route, meta] of Object.entries(SEO_ROUTES)) {
   if (!html.includes('property="og:site_name" content="ES Network"')) failures.push(`Missing Open Graph site name in ${file}`)
   if (!html.includes('name="twitter:title"')) failures.push(`Missing Twitter title in ${file}`)
   if (!html.includes('name="twitter:description"')) failures.push(`Missing Twitter description in ${file}`)
-  if (!html.includes(`property="og:image" content="${SOCIAL_IMAGE_URL}"`)) failures.push(`Missing social preview image in ${file}`)
+  if (!html.includes(`property="og:image" content="${expectedSocialImage}"`)) failures.push(`Missing social preview image in ${file}`)
   if (!html.includes(`property="og:image:alt" content="${escapeHtml(SOCIAL_IMAGE_ALT)}"`)) failures.push(`Missing Open Graph image alt text in ${file}`)
   if (!html.includes('property="og:image:width" content="1200"') || !html.includes('property="og:image:height" content="630"')) failures.push(`Wrong social image dimensions in ${file}`)
   if (!html.includes('name="twitter:card" content="summary_large_image"')) failures.push(`Missing large Twitter/X card in ${file}`)
-  if (!html.includes(`name="twitter:image" content="${SOCIAL_IMAGE_URL}"`)) failures.push(`Missing Twitter/X image in ${file}`)
+  if (!html.includes(`name="twitter:image" content="${expectedSocialImage}"`)) failures.push(`Missing Twitter/X image in ${file}`)
   if (!html.includes(`rel="alternate" hreflang="en-US" href="${expectedCanonical}"`)) failures.push(`Missing en-US hreflang in ${file}`)
   if (!html.includes(`rel="alternate" hreflang="x-default" href="${expectedCanonical}"`)) failures.push(`Missing x-default hreflang in ${file}`)
   if (!html.includes('id="esn-route-schema"')) failures.push(`Missing JSON-LD route schema in ${file}`)
