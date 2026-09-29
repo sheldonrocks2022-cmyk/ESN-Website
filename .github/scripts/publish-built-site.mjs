@@ -4,7 +4,8 @@ const ROOT_DOMAIN='esnoffical.com'
 const ACTIVE_SUBDOMAIN_LABEL='free-subdomain-active'
 const PUBLISHED_LABEL='site-builder-published'
 const REJECTED_LABEL='site-builder-rejected'
-const THEMES=new Set(['midnight','neon','clean','ember','ocean'])
+const THEMES=new Set(['midnight','neon','clean','ember','ocean','void','aurora','forest','rose','gold'])
+const EXPERIENCE_PACKS=new Set(['essential','showcase','network','full'])
 const LAYOUTS=new Set(['spotlight','split','editorial','flagship'])
 const BLOCKED=/password|passcode|seed phrase|wallet recovery|credit card|social security|bank login|verify your account|sign in to continue/i
 const SLUG_RE=/^[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?$/
@@ -82,8 +83,9 @@ function url(value){
   }catch{return ''}
 }
 function sanitize(site){
+  const rawSections=site.sections&&typeof site.sections==='object'?site.sections:{}
   return {
-    version:2,
+    version:3,
     slug:String(site.slug||'').toLowerCase(),
     brand:text(site.brand,60),
     category:text(site.category,24),
@@ -99,6 +101,25 @@ function sanitize(site){
     cards:Array.isArray(site.cards)?site.cards.slice(0,3).map(card=>({title:text(card.title,70),copy:text(card.copy,260)})):[],
     stats:Array.isArray(site.stats)?site.stats.slice(0,3).map(item=>({value:text(item.value,20),label:text(item.label,70)})):[],
     faq:Array.isArray(site.faq)?site.faq.slice(0,3).map(item=>({q:text(item.q,120),a:text(item.a,360)})):[],
+    pack:EXPERIENCE_PACKS.has(site.pack)?site.pack:'full',
+    sections:{
+      announcement:rawSections.announcement!==false,
+      status:rawSections.status!==false,
+      timeline:rawSections.timeline!==false,
+      testimonials:rawSections.testimonials!==false,
+      gallery:rawSections.gallery!==false,
+      socials:rawSections.socials!==false,
+    },
+    announcement:{
+      label:text(site.announcement?.label,24),
+      title:text(site.announcement?.title,100),
+      copy:text(site.announcement?.copy,240),
+    },
+    status:Array.isArray(site.status)?site.status.slice(0,3).map(item=>({label:text(item.label,60),value:text(item.value,30),state:['live','ready','offline'].includes(item.state)?item.state:'ready'})):[],
+    timeline:Array.isArray(site.timeline)?site.timeline.slice(0,4).map(item=>({kicker:text(item.kicker,20),title:text(item.title,80),copy:text(item.copy,260)})):[],
+    testimonials:Array.isArray(site.testimonials)?site.testimonials.slice(0,3).map(item=>({quote:text(item.quote,280),name:text(item.name,60),role:text(item.role,60)})):[],
+    gallery:Array.isArray(site.gallery)?site.gallery.slice(0,4).map(item=>({title:text(item.title,80),copy:text(item.copy,220)})):[],
+    socials:Array.isArray(site.socials)?site.socials.slice(0,3).map(item=>({label:text(item.label,40),url:url(item.url)})):[],
     ctaTitle:text(site.ctaTitle,100),
     ctaCopy:text(site.ctaCopy,260),
     ctaLabel:text(site.ctaLabel,50),
@@ -111,13 +132,13 @@ function sanitize(site){
 
 if(!agreed)await reject('The required safe-publishing confirmation is missing.')
 if(!SLUG_RE.test(slug))await reject('The ESN subdomain name is invalid.')
-if(!encoded||encoded.length>24000)await reject('The site payload is missing or too large.')
+if(!encoded||encoded.length>50000)await reject('The site payload is missing or too large.')
 
 let decoded
 try{decoded=decodePayload(encoded)}catch{await reject('The site payload could not be decoded.')}
 const site=sanitize(decoded)
 if(site.slug!==slug)await reject('The site payload does not match the requested ESN subdomain.')
-if(!site.brand||!site.heroTitle||site.cards.length!==3||site.stats.length!==3||site.faq.length!==3)await reject('The generated site is missing required content.')
+if(!site.brand||!site.heroTitle||site.cards.length!==3||site.stats.length!==3||site.faq.length!==3||site.timeline.length!==4||site.gallery.length!==4)await reject('The generated site is missing required content.')
 if(BLOCKED.test(JSON.stringify(site)))await reject('This build contains wording associated with collecting sensitive credentials or payment information. ESN free sites cannot be used for that.')
 
 const owned=await gh('/repos/'+repo+'/issues?state=all&creator='+encodeURIComponent(actor)+'&labels='+encodeURIComponent(ACTIVE_SUBDOMAIN_LABEL)+'&per_page=100')
