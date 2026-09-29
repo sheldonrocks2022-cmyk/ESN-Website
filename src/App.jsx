@@ -388,7 +388,7 @@ function Header() {
   const arcadeActive = location.pathname === '/arcade' || ARCADE_GAMES.some(([, route]) => route === location.pathname)
   const mobileSection = arcadeActive ? 'Arcade'
     : inGroup(['/smpconnection','/smpconsole','/smpplugin','/smpguide','/storesmp']) ? 'ESN SMP'
-    : inGroup(['/serviceshowcase','/portfolio','/testimonials','/store-ai','/domains']) ? 'Services'
+    : inGroup(['/serviceshowcase','/portfolio','/testimonials','/store-ai','/hosting','/domains']) ? 'Services'
     : inGroup(['/status','/networkstats','/updates','/whatsnew','/timeline','/explore','/gallery','/nexus','/notifications','/rewards','/challenges','/staff','/operations','/incidents','/changelog','/diagnostics','/smpcheck','/blueprint','/session']) ? 'Network'
     : location.pathname==='/estools' ? 'Tools'
     : location.pathname==='/settings' ? 'Settings'
@@ -418,14 +418,14 @@ function Header() {
         <nav className={open ? 'nav open' : 'nav'} aria-label="Main navigation">
           <Link className={location.pathname === '/' || location.pathname === '/home' ? 'nav-direct active' : 'nav-direct'} onClick={close} to="/">Home</Link>
 
-          <div className={inGroup(['/serviceshowcase','/portfolio','/store-ai','/domains']) ? 'nav-group active' : 'nav-group'}>
+          <div className={inGroup(['/serviceshowcase','/portfolio','/store-ai','/hosting','/domains']) ? 'nav-group active' : 'nav-group'}>
             <button className="nav-trigger" type="button" aria-haspopup="true">Services</button>
             <div className="dropdown">
               <span className="dropdown-label">ESN SERVICES</span>
               <Link onClick={close} to="/serviceshowcase">Service Showcase</Link>
               <Link onClick={close} to="/portfolio">Before / After Portfolio</Link>
               <Link onClick={close} to="/store-ai">ESN Store AI</Link>
-              <Link onClick={close} to="/domains">ESN Domains</Link>
+              <Link onClick={close} to="/hosting">ESN Hosting & Domains</Link>
               <Link onClick={close} to="/#fortnite-coaching">Fortnite Coaching</Link>
               <Link onClick={close} to="/#editing-services">Editing Services</Link>
               <Link onClick={close} to="/#discord-server-setups">Discord Server Setups</Link>
@@ -433,7 +433,7 @@ function Header() {
           </div>
 
           <Link className={location.pathname === '/store-ai' ? 'nav-direct active' : 'nav-direct'} onClick={close} to="/store-ai">Store AI</Link>
-          <Link className={location.pathname === '/domains' ? 'nav-direct active' : 'nav-direct'} onClick={close} to="/domains">Domains</Link>
+          <Link className={location.pathname === '/hosting' ? 'nav-direct active' : 'nav-direct'} onClick={close} to="/hosting">Hosting</Link>
 
           <div className={inGroup(['/smpconnection','/smpconsole','/smpplugin','/smpguide','/storesmp']) ? 'nav-group active' : 'nav-group'}>
             <button className="nav-trigger" type="button" aria-haspopup="true">ESN SMP</button>
@@ -1500,7 +1500,8 @@ function App() {
           <Route path="/serviceshowcase" element={<ServicesShowcase />} />
           <Route path="/store-ai" element={<StoreAIPage />} />
           <Route path="/storeai" element={<Navigate to="/store-ai" replace />} />
-          <Route path="/domains" element={<DomainsPage />} />
+          <Route path="/hosting" element={<DomainsPage />} />
+          <Route path="/domains" element={<Navigate to="/hosting" replace />} />
           <Route path="/storesmp" element={<SMPStaffGate label="ESN SMP Store"><SMPStore /></SMPStaffGate>} />
           <Route path="/store" element={<Navigate to="/storesmp" replace />} />
           <Route path="/store/smp" element={<Navigate to="/storesmp" replace />} />
