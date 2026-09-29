@@ -424,67 +424,157 @@ function contextualize(copy,analysis,name){
   const topic=keywords.join(', ')
   return clamp(copy+' Focus: '+topic+'.',320)
 }
-function generatedStats(analysis){
-  const key=analysis.keywords
-  if(analysis.category==='fortnite')return [{value:'FREE',label:'Free to start'},{value:'MULTI',label:'Multiple game modes'},{value:'CROSS',label:'Cross-platform play'}]
-  if(analysis.category==='minecraft')return [{value:'BUILD',label:'Create your world'},{value:'PLAY',label:'Explore & progress'},{value:'JOIN',label:'Grow the community'}]
-  if(analysis.category==='business')return [{value:'01',label:'Clear offer'},{value:'02',label:'Trust-first copy'},{value:'03',label:'Easy contact'}]
-  return [{value:'01',label:key[0]||'Main idea'},{value:'02',label:key[1]||'Key value'},{value:'03',label:key[2]||'Next step'}]
+function displayTopic(value){
+  return String(value||'').replace(/[-_]+/g,' ').replace(/\b\w/g,function(char){return char.toUpperCase()})
 }
-function generatedFaq(analysis,name){
-  const topic=analysis.keywords[0]||analysis.label
+function promptSubject(prompt,analysis,name){
+  const value=String(prompt||'').replace(/https?:\/\/\S+/g,' ').replace(/\s+/g,' ').trim()
+  const quoted=value.match(/["“]([^"”]{2,60})["”]/)
+  if(quoted)return clamp(quoted[1],60)
+  const about=value.match(/(?:about|for|focused on|based on)\s+(?:my\s+|our\s+|the\s+)?([^,.!?]{2,60})/i)
+  if(about){
+    const cleaned=about[1].replace(/\b(?:website|site|page|with|that|which|and make|and add)\b.*$/i,'').trim()
+    if(cleaned.length>=2)return clamp(cleaned,60)
+  }
+  return name&&name!=='My Website'?name:(analysis.keywords.slice(0,2).map(displayTopic).join(' ')||analysis.label)
+}
+function websiteDetails(prompt,analysis){
+  const text=String(prompt||'').replace(/https?:\/\/\S+/g,' ').replace(/\s+/g,' ').trim()
+  const fragments=text.split(/[,;]|\band\b|\bwith\b|\bincluding\b/i).map(function(part){
+    return part.replace(/^\s*(make|build|create|design|generate|give me|i want|a|an|the|website|site|page)\b/gi,'').replace(/\bwebsite\b|\bsite\b|\bpage\b/gi,'').trim()
+  }).filter(function(part){return part.length>=4&&part.length<=90})
+  const details=[]
+  for(const fragment of fragments){
+    if(!details.some(function(existing){return existing.toLowerCase()===fragment.toLowerCase()}))details.push(fragment)
+    if(details.length>=6)break
+  }
+  if(details.length<3){
+    for(const keyword of analysis.keywords){
+      const item=displayTopic(keyword)
+      if(!details.some(function(existing){return existing.toLowerCase().includes(keyword.toLowerCase())}))details.push(item)
+      if(details.length>=6)break
+    }
+  }
+  return details
+}
+function generatedCards(prompt,analysis,name,preset){
+  const subject=promptSubject(prompt,analysis,name)
+  const details=websiteDetails(prompt,analysis)
+  const key=analysis.keywords.map(displayTopic)
+  if(analysis.category==='pet')return [
+    {title:'Meet '+subject,copy:'Introduce '+subject+' with the personality, look, story, and little details that make this pet unique.'},
+    {title:(key[1]||'Personality')+' & favorites',copy:'Focus on the habits, favorite things, funny behavior, and everyday moments that belong specifically to '+subject+'.'},
+    {title:'Favorite moments',copy:'Show the memories, photos, stories, milestones, and adventures that make '+subject+' worth building a whole site around.'},
+  ]
   if(analysis.category==='fortnite')return [
-    {q:'What makes Fortnite worth trying?',a:'Fortnite combines Battle Royale, Zero Build, Creative experiences, live updates, collaborations, and several different ways to play.'},
-    {q:'Do I have to build?',a:'No. Zero Build and other modes give players ways to enjoy Fortnite without traditional building combat.'},
-    {q:'Who is this site for?',a:'This '+name+' page is for players, returning players, and anyone curious about what Fortnite offers now.'},
+    {title:details[0]?displayTopic(details[0]):'Why Fortnite stands out',copy:'Focus this section on '+(details[0]||'the Fortnite experience')+' and connect it directly to why players may want to jump in or return.'},
+    {title:details[1]?displayTopic(details[1]):'Modes worth trying',copy:'Use '+(details[1]||'Battle Royale, Zero Build, Creative, Reload, and other modes')+' to show the variety available to different kinds of players.'},
+    {title:details[2]?displayTopic(details[2]):'Why play now',copy:'Tie '+(details[2]||'updates, events, collaborations, and community content')+' back to the exact reason this '+name+' website exists.'},
   ]
   if(analysis.category==='minecraft')return [
-    {q:'What kind of Minecraft experience is this?',a:'Use the main sections above to explain the world, server, SMP, realm, or project and what makes it different.'},
-    {q:'Who can join?',a:'Explain the intended players, edition, rules, and any requirements before someone joins.'},
-    {q:'Where do I start?',a:'Use the main button on this page for the next connection, community, or information step.'},
+    {title:details[0]?displayTopic(details[0]):name+' world',copy:'Explain the exact Minecraft world, SMP, server, realm, or project this website represents and what players can expect.'},
+    {title:details[1]?displayTopic(details[1]):'Features & progression',copy:'Highlight '+(details[1]||'the server features, progression, events, plugins, mods, or gameplay systems')+' that make this experience different.'},
+    {title:details[2]?displayTopic(details[2]):'How to join',copy:'Use this section for the connection details, rules, community path, or next action players need for '+name+'.'},
+  ]
+  if(analysis.category==='business')return [
+    {title:name+' services',copy:'Show the actual services or offers described for '+name+(details[0]?' — especially '+details[0]+'.':'.')},
+    {title:details[1]?displayTopic(details[1]):'Why '+name,copy:'Explain the specific value, quality, speed, experience, or approach that should make a customer choose '+name+'.'},
+    {title:details[2]?displayTopic(details[2]):'Start with '+name,copy:'Turn the goal of this website into a direct next step such as contacting, booking, requesting a quote, ordering, or learning more.'},
+  ]
+  if(analysis.category==='music')return [
+    {title:details[0]?displayTopic(details[0]):'Latest from '+name,copy:'Feature the music, release, project, artist identity, or sound this website is actually about.'},
+    {title:details[1]?displayTopic(details[1]):name+' sound & story',copy:'Connect the style, influences, personality, or story behind '+name+' to the music visitors came to discover.'},
+    {title:details[2]?displayTopic(details[2]):'Listen & follow',copy:'Point fans toward the exact platforms, releases, community spaces, or links that matter for '+name+'.'},
+  ]
+  if(analysis.category==='portfolio')return [
+    {title:details[0]?displayTopic(details[0]):name+' featured work',copy:'Show the strongest work or project type described in the website prompt instead of a generic portfolio placeholder.'},
+    {title:details[1]?displayTopic(details[1]):'Skills behind the work',copy:'Highlight the actual tools, styles, specialties, or capabilities connected to '+name+' and this portfolio.'},
+    {title:details[2]?displayTopic(details[2]):'Work with '+name,copy:'Give the intended clients, recruiters, collaborators, or audience a next step that matches the purpose of this portfolio.'},
+  ]
+  if(analysis.category==='restaurant')return [
+    {title:details[0]?displayTopic(details[0]):name+' menu highlights',copy:'Feature the food, drinks, specials, or signature items that belong to '+name+' rather than generic restaurant filler.'},
+    {title:details[1]?displayTopic(details[1]):'The '+name+' experience',copy:'Describe the atmosphere, style, service, or story visitors should expect from this specific place.'},
+    {title:details[2]?displayTopic(details[2]):'Visit '+name,copy:'Give customers the practical next step this website needs: hours, ordering, reservations, location, or contact information.'},
+  ]
+  if(analysis.category==='technology'||analysis.category==='product')return [
+    {title:details[0]?displayTopic(details[0]):'What '+name+' does',copy:'Explain the exact product, app, platform, or technology described in the prompt and the outcome it is supposed to create.'},
+    {title:details[1]?displayTopic(details[1]):'Key capabilities',copy:'Highlight the real features, workflows, or advantages mentioned for '+name+' instead of generic technology claims.'},
+    {title:details[2]?displayTopic(details[2]):'Try '+name,copy:'Give visitors the next action that fits this product: demo, waitlist, download, documentation, purchase, or contact.'},
+  ]
+  return preset.cards.map(function(card,index){
+    const detail=details[index]||analysis.keywords[index]||card[0]
+    return {
+      title:details[index]?displayTopic(details[index]):card[0],
+      copy:clamp('This section is specifically about '+detail+' as part of '+name+'. '+card[1],260),
+    }
+  })
+}
+function generatedStats(analysis,name,prompt){
+  const details=websiteDetails(prompt,analysis)
+  const key=analysis.keywords
+  if(analysis.category==='fortnite')return [{value:'FREE',label:details[0]||'Free to start'},{value:'MULTI',label:details[1]||'Multiple game modes'},{value:'CROSS',label:details[2]||'Cross-platform play'}]
+  if(analysis.category==='minecraft')return [{value:'BUILD',label:details[0]||'Create your world'},{value:'PLAY',label:details[1]||'Explore & progress'},{value:'JOIN',label:details[2]||'Grow the community'}]
+  if(analysis.category==='pet')return [{value:'01',label:details[0]||name},{value:'02',label:details[1]||'Favorite moments'},{value:'03',label:details[2]||'Personality'}]
+  return [{value:'01',label:details[0]||key[0]||name},{value:'02',label:details[1]||key[1]||analysis.label},{value:'03',label:details[2]||key[2]||'Next step'}]
+}
+function generatedFaq(analysis,name,prompt){
+  const subject=promptSubject(prompt,analysis,name)
+  const details=websiteDetails(prompt,analysis)
+  if(analysis.category==='pet')return [
+    {q:'Who is '+subject+'?',a:subject+' is the focus of this website. The page is built around the story, personality, favorite moments, and details provided in the site idea.'},
+    {q:'What can I find here?',a:'The site focuses on '+(details.slice(0,3).join(', ')||'stories, personality, and favorite moments')+' instead of unrelated placeholder content.'},
+    {q:'Why was this site made?',a:'It gives '+subject+' a dedicated place where the important memories and details can be collected and shared.'},
+  ]
+  if(analysis.category==='fortnite')return [
+    {q:'What is this Fortnite site focused on?',a:'This '+name+' site is built around '+(details.slice(0,3).join(', ')||'Fortnite modes, updates, and reasons to play')+'.'},
+    {q:'Who is it for?',a:'It is written for '+analysis.audience.toLowerCase()+' and keeps the sections tied to the Fortnite idea described in the prompt.'},
+    {q:'Where should I start?',a:'Start with the highlighted Fortnite sections above, then use the main action button for the next link or destination.'},
   ]
   return [
-    {q:'What is '+name+'?',a:'This page is focused on '+topic+' and gives visitors the important information without making them search for it.'},
-    {q:'Who is this for?',a:'The site is written for '+analysis.audience.toLowerCase()+' and is organized around the actions most useful to them.'},
-    {q:'What should I do next?',a:'Use the main call-to-action on the page to continue, connect, learn more, or take the next step.'},
+    {q:'What is '+name+' about?',a:name+' is focused on '+(details.slice(0,3).join(', ')||promptSubject(prompt,analysis,name))+' — the same subjects used throughout the rest of the generated site.'},
+    {q:'Who is this website for?',a:'It is built for '+analysis.audience.toLowerCase()+' and the content is generated around the website’s actual topic and goals.'},
+    {q:'What should I explore first?',a:'Start with '+(details[0]||analysis.keywords[0]||'the main feature')+', then continue through the other sections generated from this site idea.'},
   ]
 }
-function generatedExperience(analysis,name){
-  const topic=analysis.keywords[0]||analysis.label
-  const secondary=analysis.keywords[1]||'community'
-  const third=analysis.keywords[2]||'updates'
+function generatedExperience(analysis,name,prompt){
+  const subject=promptSubject(prompt,analysis,name)
+  const details=websiteDetails(prompt,analysis)
+  const topic=details[0]||analysis.keywords[0]||analysis.label
+  const secondary=details[1]||analysis.keywords[1]||subject
+  const third=details[2]||analysis.keywords[2]||analysis.audience
+  const fourth=details[3]||analysis.keywords[3]||'what comes next'
   const announcement={
-    label:analysis.category==='event'?'EVENT':analysis.category==='business'?'OPEN':'NOW',
-    title:analysis.category==='fortnite'?'A new way to look at Fortnite.':analysis.category==='minecraft'?'The world is ready for players.':analysis.category==='music'?'The latest sound starts here.':name+' is live.',
-    copy:'A focused update around '+topic+', '+secondary+', and '+third+'.'
+    label:analysis.category==='event'?'EVENT':analysis.category==='business'?'OPEN':analysis.category==='pet'?'FEATURED':'NOW',
+    title:analysis.category==='pet'?subject+' has a site of their own.':analysis.category==='fortnite'?'Explore '+name+' through '+topic+'.':name+' // '+displayTopic(topic),
+    copy:'This update is built around '+topic+(secondary?', '+secondary:'')+(third?', and '+third:'')+' — matching the actual website idea.'
   }
   const status=[
-    {label:analysis.category==='minecraft'?'World':'Main experience',value:'ONLINE',state:'live'},
-    {label:analysis.category==='business'?'Availability':'Community',value:'ACTIVE',state:'live'},
-    {label:'Latest update',value:'READY',state:'ready'},
+    {label:displayTopic(topic),value:'FEATURED',state:'live'},
+    {label:displayTopic(secondary),value:'ACTIVE',state:'live'},
+    {label:displayTopic(third),value:'READY',state:'ready'},
   ]
   const timeline=[
-    {kicker:'01',title:'The idea',copy:'Start with '+topic+' and explain what made '+name+' worth building.'},
-    {kicker:'02',title:'The build',copy:'Show how '+secondary+' became part of the experience and helped shape the project.'},
-    {kicker:'03',title:'Right now',copy:'Focus on '+third+' and what visitors should know or explore today.'},
-    {kicker:'04',title:'Next',copy:'Keep the story moving with the next release, milestone, event, feature, or community goal.'},
+    {kicker:'01',title:displayTopic(topic),copy:'Start the story with '+topic+' and connect it directly to '+subject+'.'},
+    {kicker:'02',title:displayTopic(secondary),copy:'Continue with '+secondary+' because it is one of the important ideas detected from this website.'},
+    {kicker:'03',title:displayTopic(third),copy:'Bring the visitor to '+third+' and explain why it matters specifically to '+name+'.'},
+    {kicker:'04',title:displayTopic(fourth),copy:'End the timeline with '+fourth+' so the story stays connected to the website instead of switching to generic filler.'},
   ]
   const testimonials=[
-    {quote:'The purpose is clear immediately, and the next step is easy to find.',name:'Featured voice',role:analysis.audience},
-    {quote:'The experience feels organized instead of looking like a pile of random sections.',name:'Featured voice',role:'Community'},
-    {quote:'The strongest parts of the project actually get room to stand out.',name:'Featured voice',role:'Visitor'},
+    {quote:name+' makes '+topic+' the center of the experience instead of hiding it behind generic sections.',name:name+' highlight',role:analysis.audience},
+    {quote:'The sections stay focused on '+secondary+' and the rest of the actual site idea.',name:'Site focus',role:displayTopic(secondary)},
+    {quote:'Visitors can move from '+third+' into the next part of '+name+' without losing the topic.',name:'Experience',role:displayTopic(third)},
   ]
   const gallery=[
-    {title:analysis.keywords[0]||'Main experience',copy:'A visual feature tile built around the first major topic in the prompt.'},
-    {title:analysis.keywords[1]||'Latest highlight',copy:'A premium showcase block for another important part of '+name+'.'},
-    {title:analysis.keywords[2]||'Community',copy:'Use this space for the people, content, service, mode, product, or feature behind the site.'},
-    {title:analysis.keywords[3]||'What comes next',copy:'A final showcase tile for the next release, milestone, event, or reason to return.'},
+    {title:displayTopic(topic),copy:'A showcase tile dedicated to '+topic+' as it relates specifically to '+subject+'.'},
+    {title:displayTopic(secondary),copy:'A second visual feature built around '+secondary+', another major part of this website idea.'},
+    {title:displayTopic(third),copy:'A focused showcase for '+third+' instead of an unrelated placeholder card.'},
+    {title:displayTopic(fourth),copy:'A final visual block for '+fourth+', keeping the gallery tied to '+name+'.'},
   ]
   return {
     announcement,status,timeline,testimonials,gallery,
     socials:[
-      {label:'Discord',url:''},
-      {label:analysis.category==='music'?'Spotify':'YouTube',url:''},
+      {label:analysis.category==='community'?'Discord':analysis.category==='music'?'Spotify':'Main community',url:''},
+      {label:analysis.category==='music'?'YouTube':analysis.category==='pet'?'Photos / Social':'YouTube',url:''},
       {label:'Main link',url:analysis.url||''},
     ],
     pack:'full',
@@ -524,13 +614,10 @@ function generateSite(prompt,brand,slug,variant){
     heroCopy,
     aboutTitle:'About '+name,
     aboutCopy:contextualize(preset.about,analysis,name),
-    cards:preset.cards.map(function(card,index){
-      const keyword=analysis.keywords[index]
-      return {title:card[0],copy:keyword?clamp(card[1]+' This section can emphasize '+keyword+'.',260):card[1]}
-    }),
-    stats:generatedStats(analysis),
-    faq:generatedFaq(analysis,name),
-    ...generatedExperience(analysis,name),
+    cards:generatedCards(prompt,analysis,name,preset),
+    stats:generatedStats(analysis,name,prompt),
+    faq:generatedFaq(analysis,name,prompt),
+    ...generatedExperience(analysis,name,prompt),
     ctaTitle:cta[0],
     ctaCopy:cta[1],
     ctaLabel:cta[2],
