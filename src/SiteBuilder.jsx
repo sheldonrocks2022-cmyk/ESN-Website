@@ -7,6 +7,9 @@ const ISSUE_BASE='https://github.com/sheldonrocks2022-cmyk/ESN-Website/issues/ne
 const DRAFT_KEY='esn_site_builder_draft_v1'
 const THEMES=['midnight','neon','clean','ember','ocean','void','aurora','forest','rose','gold']
 const EXPERIENCE_PACKS=['essential','showcase','network','full']
+const SHAPES=['rounded','sharp','soft']
+const DENSITIES=['airy','balanced','dense']
+const MOTIONS=['calm','dynamic','cinematic']
 const LAYOUTS=['spotlight','split','editorial','flagship']
 const BLOCKED_TEXT=/password|passcode|seed phrase|wallet recovery|credit card|social security|bank login|verify your account|sign in to continue/i
 const tick=String.fromCharCode(96)
@@ -62,6 +65,12 @@ const STARTER={
     {label:'Discord',url:''},
     {label:'YouTube',url:''},
     {label:'Main link',url:''},
+  ],
+  visual:{accent:'#65e8ff',shape:'rounded',density:'balanced',motion:'dynamic',nav:'glass',type:'display'},
+  pages:[
+    {slug:'about',title:'About',eyebrow:'ABOUT',headline:'The story behind this website.',copy:'Use this page to go deeper than the homepage.',items:[{title:'The idea',copy:'Explain the main idea.'},{title:'The story',copy:'Explain what led here.'},{title:'Today',copy:'Explain what matters now.'}]},
+    {slug:'highlights',title:'Highlights',eyebrow:'HIGHLIGHTS',headline:'Explore the important parts.',copy:'Give the strongest parts of the website their own page.',items:[{title:'Highlight one',copy:'Main highlight.'},{title:'Highlight two',copy:'Second highlight.'},{title:'Highlight three',copy:'Third highlight.'}]},
+    {slug:'connect',title:'Connect',eyebrow:'CONNECT',headline:'Take the next step.',copy:'Put the most useful links and actions in one place.',items:[{title:'Main link',copy:'Primary action.'},{title:'Community',copy:'Community action.'},{title:'More',copy:'Another useful path.'}]},
   ],
   ctaTitle:'Ready to connect?',
   ctaCopy:'Use the button below to reach out or visit my main page.',
