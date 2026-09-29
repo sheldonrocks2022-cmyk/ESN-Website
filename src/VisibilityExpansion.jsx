@@ -163,8 +163,10 @@ export function SearchLandingPage(){
 
 export function GuidesHubPage(){
   const articles=Object.entries(GUIDES)
-  return <><Hero eyebrow="ESN GUIDES + NEWS" title="Useful answers that lead somewhere." copy="Practical ESN guides for Minecraft, community setup, websites, and the network itself. No filler pages built just to create URLs."/>
-    <section className="section"><div className="shell"><div className="visibility-guide-grid">{articles.map(([slug,item])=><Link to={'/guides/'+slug} key={slug}><span>{item.category}</span><h2>{item.title}</h2><p>{item.description}</p><small>Updated {item.updated}</small><em>Read guide ↗</em></Link>)}</div></div></section></>
+  const news=[['Release Center','Current website, SMP, Arcade, network, store, and security updates.','/updates'],['Network Activity','Recent ESN platform milestones plus local route activity.','/activity'],["What's New",'A quick view of major features added to the current ESN website.','/whatsnew'],['Network Changelog','Interactive change history across ESN systems.','/changelog']]
+  return <><Hero eyebrow="ESN GUIDES + NEWS" title="Useful answers that lead somewhere." copy="Practical ESN guides plus direct access to current network updates. No filler pages built just to create URLs."/>
+    <section className="section"><div className="shell"><div className="section-heading"><div><span className="eyebrow">EVERGREEN GUIDES</span><h2>Answers people can actually use.</h2></div></div><div className="visibility-guide-grid">{articles.map(([slug,item])=><Link to={'/guides/'+slug} key={slug}><span>{item.category}</span><h2>{item.title}</h2><p>{item.description}</p><small>Updated {item.updated}</small><em>Read guide ↗</em></Link>)}</div></div></section>
+    <section className="section dark-section"><div className="shell"><div className="section-heading"><div><span className="eyebrow">ESN NEWS + RELEASES</span><h2>See what changed recently.</h2></div></div><div className="visibility-news-grid">{news.map(([title,copy,to])=><Link to={to} key={to}><strong>{title}</strong><p>{copy}</p><span>Open ↗</span></Link>)}</div></div></section></>
 }
 
 export function GuideArticlePage(){
