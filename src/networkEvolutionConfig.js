@@ -95,61 +95,7 @@ export const DECK_DESTINATIONS=[
 ]
 
 export const SMP_EVENT_BOARD=[
-  {type:'SMP',status:'LIVE',title:'ESN SMP Network',copy:'Server access is active at fr3.plugged.host:43353.',to:'/smpconnection'},
-  {type:'WEBSITE',status:'LIVE',title:'Network Evolution 12X',copy:'The major interactive website systems expansion is live.',to:'/updates'},
-  {type:'EVENTS',status:'DISCORD',title:'Bosses, giveaways & timed events',copy:'No timed public event is hard-coded here; Discord remains the source of truth for new event announcements.',external:true},
-  {type:'MAINTENANCE',status:'CLEAR',title:'Scheduled maintenance',copy:'No scheduled website maintenance is currently configured in the public event board.',to:'/status'},
-]
-
-export const RARE_EVENTS=[
-  {key:'blackout',title:'BLACKOUT PROTOCOL',copy:'A rare visual blackout crossed the ESN Core.'},
-  {key:'rift',title:'RIFT BREACH',copy:'A rare Rift signal opened across the network layer.'},
-  {key:'warden',title:'WARDEN PULSE',copy:'A rare Warden resonance was detected by the ESN Core.'},
-]
-},
-  {id:'operations',label:'Ops',path:'/operations',glyph:'O'},
-  {id:'diagnostics',label:'Diagnose',path:'/diagnostics',glyph:'D'},
-  {id:'session',label:'Session',path:'/session',glyph:'S'},
-]
-
-export const SMP_EVENT_BOARD=[
-  {type:'SMP',status:'LIVE',title:'ESN SMP Network',copy:'Server access is active at fr3.plugged.host:43353.',to:'/smpconnection'},
-  {type:'WEBSITE',status:'LIVE',title:'Network Evolution 12X',copy:'The major interactive website systems expansion is live.',to:'/updates'},
-  {type:'EVENTS',status:'DISCORD',title:'Bosses, giveaways & timed events',copy:'No timed public event is hard-coded here; Discord remains the source of truth for new event announcements.',external:true},
-  {type:'MAINTENANCE',status:'CLEAR',title:'Scheduled maintenance',copy:'No scheduled website maintenance is currently configured in the public event board.',to:'/status'},
-]
-
-export const RARE_EVENTS=[
-  {key:'blackout',title:'BLACKOUT PROTOCOL',copy:'A rare visual blackout crossed the ESN Core.'},
-  {key:'rift',title:'RIFT BREACH',copy:'A rare Rift signal opened across the network layer.'},
-  {key:'warden',title:'WARDEN PULSE',copy:'A rare Warden resonance was detected by the ESN Core.'},
-]
-},
-  {id:'operations',label:'Ops',path:'/operations',glyph:'O'},
-  {id:'diagnostics',label:'Diagnose',path:'/diagnostics',glyph:'D'},
-  {id:'session',label:'Session',path:'/session',glyph:'S'},
-]
-
-export const SMP_EVENT_BOARD=[
-  {type:'SMP',status:'LIVE',title:'ESN SMP Network',copy:'Server access is active at fr3.plugged.host:43353.',to:'/smpconnection'},
-  {type:'WEBSITE',status:'LIVE',title:'Network Evolution 12X',copy:'The major interactive website systems expansion is live.',to:'/updates'},
-  {type:'EVENTS',status:'DISCORD',title:'Bosses, giveaways & timed events',copy:'No timed public event is hard-coded here; Discord remains the source of truth for new event announcements.',external:true},
-  {type:'MAINTENANCE',status:'CLEAR',title:'Scheduled maintenance',copy:'No scheduled website maintenance is currently configured in the public event board.',to:'/status'},
-]
-
-export const RARE_EVENTS=[
-  {key:'blackout',title:'BLACKOUT PROTOCOL',copy:'A rare visual blackout crossed the ESN Core.'},
-  {key:'rift',title:'RIFT BREACH',copy:'A rare Rift signal opened across the network layer.'},
-  {key:'warden',title:'WARDEN PULSE',copy:'A rare Warden resonance was detected by the ESN Core.'},
-]
-},
-  {id:'operations',label:'Ops',path:'/operations',glyph:'O'},
-  {id:'diagnostics',label:'Diagnose',path:'/diagnostics',glyph:'D'},
-  {id:'session',label:'Session',path:'/session',glyph:'S'},
-]
-
-export const SMP_EVENT_BOARD=[
-  {type:'SMP',status:'LIVE',title:'ESN SMP Network',copy:'Server access is active at fr3.plugged.host:43353.',to:'/smpconnection'},
+  {type:'SMP',status:'LIVE',title:'ESN SMP Network',copy:'Server access is active at esn.ggwp.cc:17058.',to:'/smpconnection'},
   {type:'WEBSITE',status:'LIVE',title:'Network Evolution 12X',copy:'The major interactive website systems expansion is live.',to:'/updates'},
   {type:'EVENTS',status:'DISCORD',title:'Bosses, giveaways & timed events',copy:'No timed public event is hard-coded here; Discord remains the source of truth for new event announcements.',external:true},
   {type:'MAINTENANCE',status:'CLEAR',title:'Scheduled maintenance',copy:'No scheduled website maintenance is currently configured in the public event board.',to:'/status'},
