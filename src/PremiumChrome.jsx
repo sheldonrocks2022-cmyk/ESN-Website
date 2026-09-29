@@ -10,7 +10,8 @@ const compactRouteLabels={
   '/smpconnection':'SMP','/smpconsole':'Console Guide','/smpplugin':'Plugin','/smpguide':'SMP Encyclopedia','/storesmp':'SMP Store',
   '/arcade':'Arcade','/esclicker':'Clicker','/esfactory':'Factory','/esmines':'Mines','/esmoto':'MOTO','/estower':'Tower','/estowerdefense':'Tower Defense',
   '/estools':'ES Tools','/status':'Status','/networkstats':'Network Stats','/updates':'Updates','/whatsnew':"What's New",'/timeline':'Timeline',
-  '/nexus':'Network Nexus','/explore':'Explore ESN','/gallery':'Gallery','/settings':'Settings','/support':'Support','/about':'About','/leadership':'Leadership','/faq':'FAQ','/share':'Share','/site-builder':'Site Builder'
+  '/nexus':'Network Nexus','/explore':'Explore ESN','/gallery':'Gallery','/settings':'Settings','/support':'Support','/about':'About','/leadership':'Leadership','/faq':'FAQ','/share':'Share','/site-builder':'Site Builder',
+  '/launchpad':'Launchpad','/configure':'Configurator','/smp-hub':'SMP World Hub','/trust':'Trust Center','/search':'Search 2.0','/labs':'ESN Labs','/estimate':'Project Estimate','/smp-items':'SMP Items','/activity':'Network Activity','/share-generator':'Share Generator','/showcase':'Builder Showcase','/network-map':'Network Map','/backup':'Local Backup'
 }
 function localList(key){try{const value=JSON.parse(localStorage.getItem(key)||'[]');return Array.isArray(value)?value:[]}catch{return []}}
 
@@ -35,6 +36,19 @@ const userThemes={
 }
 
 const baseCommands=[
+  {label:'ESN Launchpad',meta:'Choose the fastest route into the network',keywords:'start launchpad what can i do take me somewhere choose route',kind:'route',value:'/launchpad'},
+  {label:'Service Configurator',meta:'Build a service brief before opening a Discord ticket',keywords:'configure service project brief order quote editing website discord coaching',kind:'route',value:'/configure'},
+  {label:'Live SMP World Hub',meta:'SMP telemetry, players, plugin data, and world links',keywords:'smp hub live world players server minecraft boss events telemetry',kind:'route',value:'/smp-hub'},
+  {label:'Trust Center',meta:'Official links, payment safety, privacy, and transparency',keywords:'trust safe official stripe payment privacy security scam account',kind:'route',value:'/trust'},
+  {label:'Search 2.0',meta:'Search pages, services, SMP items, FAQs, tools, and commands',keywords:'find search anything item command faq service product',kind:'route',value:'/search'},
+  {label:'ESN Labs',meta:'No-account local beta experience controls',keywords:'labs beta experiment compact glow local',kind:'route',value:'/labs'},
+  {label:'Project Estimate',meta:'Generate a complexity and scope estimate',keywords:'estimate project scope price quote complexity website editing discord',kind:'route',value:'/estimate'},
+  {label:'SMP Item Encyclopedia',meta:'Search current SMP bundles and verified contents',keywords:'smp items warden riftwalker void relic keys blade armor wings bundle',kind:'route',value:'/smp-items'},
+  {label:'Network Activity',meta:'Current ESN releases and local recent activity',keywords:'activity updates history recent changed release timeline',kind:'route',value:'/activity'},
+  {label:'Share Generator 2.0',meta:'Create ESN share links and QR targets',keywords:'share qr code link send generator',kind:'route',value:'/share-generator'},
+  {label:'Builder Showcase',meta:'Browse real published ESN Website Builder sites',keywords:'showcase generated sites examples cutecats website builder',kind:'route',value:'/showcase'},
+  {label:'Interactive Network Map',meta:'See ESN as one connected platform',keywords:'network map everything pages routes platform where',kind:'route',value:'/network-map'},
+  {label:'Local Backup + Restore',meta:'Export or restore local ESN browser data',keywords:'backup restore export import local progress favorites settings arcade no account',kind:'route',value:'/backup'},
   {label:'Network Nexus',meta:'XP, missions, Arcade competition, lore, events, map, and ESN Guide',keywords:'nexus command center xp missions achievements leaderboard tournament lore guide map',kind:'route',value:'/nexus'},
   {label:'Join SMP',meta:'Open ESN SMP connection details',keywords:'join smp server ip port minecraft connect',kind:'route',value:'/smpconnection'},
   {label:'Open Riftwalker',meta:'Jump to the Riftwalker store bundle',keywords:'riftwalker bundle store buy',kind:'route',value:'/storesmp#product-esn-riftwalker-bundle'},
@@ -103,14 +117,29 @@ export default function PremiumChrome(){
   }
 
   const normalized=query.trim().toLowerCase()
+  const intentQuery=normalized
+    .replace(/^(please\\s+)?(take me to|go to|open|show me|show|find|search for|launch|visit|i want|i need)\\s+/,'')
+    .replace(/\\b(the|a|an|page|section|website)\\b/g,' ')
+    .replace(/\\s+/g,' ')
+    .trim()
   const commandResults=useMemo(()=>{
     const list=[...baseCommands]
     if(vaultUnlocked||normalized==='esn vault'||normalized==='vault'){
       list.unshift({label:'ESN Vault',meta:vaultUnlocked?'Open the unlocked hidden network layer':'Secret command detected',keywords:'esn vault secret core',kind:vaultUnlocked?'route':'unlock',value:'/vault'})
     }
     if(!normalized)return list.slice(0,8)
-    return list.filter(item=>`${item.label} ${item.meta} ${item.keywords}`.toLowerCase().includes(normalized)).slice(0,10)
-  },[normalized,vaultUnlocked])
+    const terms=(intentQuery||normalized).split(/\\s+/).filter(Boolean)
+    return list
+      .map(item=>{
+        const label=item.label.toLowerCase()
+        const hay=(item.label+' '+item.meta+' '+item.keywords).toLowerCase()
+        const score=terms.reduce((sum,term)=>sum+(label.includes(term)?5:0)+(hay.includes(term)?2:0),0)
+        return {...item,_score:score}
+      })
+      .filter(item=>item._score>0)
+      .sort((a,b)=>b._score-a._score)
+      .slice(0,10)
+  },[normalized,intentQuery,vaultUnlocked])
 
   const runCommand=(command)=>{
     if(command.kind==='route'){setOpen(false);navigate(command.value);return}
@@ -266,7 +295,7 @@ export default function PremiumChrome(){
     <div className={open?'premium-command-backdrop open':'premium-command-backdrop'} onClick={()=>setOpen(false)} aria-hidden={!open}/>
 
     <aside className={open?'premium-command open':'premium-command'} aria-hidden={!open} inert={!open}>
-      <div className="premium-command-head"><div><span>ES NETWORK</span><strong>Command Center</strong></div><button type="button" onClick={()=>setOpen(false)} aria-label="Close command center">×</button></div>
+      <div className="premium-command-head"><div><span>ES NETWORK</span><strong>Command Center 2.0</strong></div><button type="button" onClick={()=>setOpen(false)} aria-label="Close command center">×</button></div>
 
       <div className="premium-command-status">
         <div><i/><span>NETWORK</span><b>ONLINE</b></div>
@@ -275,7 +304,7 @@ export default function PremiumChrome(){
 
       <label className="premium-command-search">
         <span>COMMAND / SEARCH</span>
-        <input value={query} onChange={e=>setQuery(e.target.value)} placeholder='Try "join SMP", "play Tower", "download plugin"…' />
+        <input value={query} onChange={e=>setQuery(e.target.value)} placeholder='Try "take me to the SMP store", "find Warden items"…' />
       </label>
 
       <div className="command-results">
