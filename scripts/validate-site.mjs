@@ -43,6 +43,7 @@ const requiredRoutes = [
   '/store-ai',
   '/hosting',
   '/domains',
+  '/site-builder',
   '/operations',
   '/incidents',
   '/changelog',
@@ -93,6 +94,10 @@ const requiredMigrationFiles = [
   'src/storeAi.css',
   'src/Domains.jsx',
   'src/domains.css',
+  'src/SiteBuilder.jsx',
+  'src/siteBuilder.css',
+  '.github/workflows/publish-built-site.yml',
+  '.github/scripts/publish-built-site.mjs',
   '.github/workflows/free-subdomain.yml',
   '.github/scripts/provision-free-subdomain.mjs',
   'src/reviews.js',
@@ -120,6 +125,9 @@ const indexHtml = fs.readFileSync('index.html','utf8')
 const socialPreview = fs.readFileSync('public/esn-social-card.svg','utf8')
 const storeAi = fs.readFileSync('src/StoreAI.jsx','utf8')
 const domainsPortal = fs.readFileSync('src/Domains.jsx','utf8')
+const siteBuilder = fs.readFileSync('src/SiteBuilder.jsx','utf8')
+const siteBuilderPublisher = fs.readFileSync('.github/scripts/publish-built-site.mjs','utf8')
+const siteBuilderWorkflow = fs.readFileSync('.github/workflows/publish-built-site.yml','utf8')
 
 if (missingRoutes.length) problems.push(`Missing app routes: ${missingRoutes.join(', ')}`)
 if (missingPayments.length) problems.push(`Missing payment links: ${missingPayments.join(', ')}`)
@@ -185,6 +193,17 @@ if (freeSubdomainProvisioner.includes('REPLACE_KEY_VALUE') || freeSubdomainWorkf
 
 if (!seo.includes("'/hosting':{") || !seo.includes("canonical:'/hosting'")) problems.push('ESN Hosting SEO route or Domains alias canonical is missing.')
 if (!sitemap.includes('https://esnoffical.com/hosting')) problems.push('ESN Hosting missing from sitemap.')
+if (!app.includes("import SiteBuilderPage, { HostedSitePage } from './SiteBuilder'") || !app.includes('path="/site-builder" element={<SiteBuilderPage />}') || !app.includes('path="/sites/:slug" element={<HostedSitePage />}')) problems.push('ESN Website Builder routes or module wiring missing.')
+for (const marker of ['ESN WEBSITE BUILDER // BETA','GENERATE WEBSITE','DOWNLOAD HTML','PUBLISH BUILD','LIVE PREVIEW','script-free','ESN_SITE_BUILD_V1']) {
+  if (!siteBuilder.includes(marker)) problems.push(`ESN Website Builder missing: ${marker}.`)
+}
+if (!siteBuilder.includes('BLOCKED_TEXT') || !siteBuilder.includes('safeSite') || !siteBuilder.includes('HostedSitePage')) problems.push('ESN Website Builder safety or hosted-preview renderer is incomplete.')
+if (!siteBuilderWorkflow.includes('contents: write') || !siteBuilderWorkflow.includes('issues: write') || !siteBuilderWorkflow.includes("startsWith(github.event.issue.title, '[SITE-BUILD]')")) problems.push('ESN Website Builder publish workflow permissions or trigger are incomplete.')
+for (const marker of ['free-subdomain-active','site-builder-published','public/generated-sites/','does not request passwords','BLOCKED']) {
+  if (!siteBuilderPublisher.toLowerCase().includes(marker.toLowerCase())) problems.push(`ESN Website Builder publisher missing: ${marker}.`)
+}
+if (!seo.includes("'/site-builder':{")) problems.push('ESN Website Builder SEO route missing.')
+if (!sitemap.includes('https://esnoffical.com/site-builder')) problems.push('ESN Website Builder missing from sitemap.')
 const smpGate = fs.readFileSync('src/SMPStaffGate.jsx','utf8')
 if (!smpGate.includes("SMP_ACCESS_SESSION_KEY") || !smpGate.includes("STAFF_CODE_HASH") || smpGate.includes("052609")) problems.push('SMP staff gate missing, unhashed, or staff code exposed in source.')
 for (const route of ['/storesmp','/smpconnection','/smpconsole','/smpplugin','/smpguide','/smpcheck']) { if (!app.includes(`path="${route}" element={<SMPStaffGate`)) problems.push(`SMP route is not staff-gated: ${route}`) }
