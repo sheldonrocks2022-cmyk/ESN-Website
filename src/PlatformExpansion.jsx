@@ -208,20 +208,34 @@ const SHARE_TARGETS={
 }
 export function ShareGeneratorV2Page(){
   const [target,setTarget]=useState('ES Network')
+  const [source,setSource]=useState('share')
   const [copied,setCopied]=useState(false)
-  const url=typeof window==='undefined'?'https://esnoffical.com/':new URL(SHARE_TARGETS[target],window.location.origin).href
+  const base=typeof window==='undefined'?'https://esnoffical.com/':new URL(SHARE_TARGETS[target],window.location.origin).href
+  const url=base+(base.includes('?')?'&':'?')+'ref='+encodeURIComponent(source)
   const qr='https://api.qrserver.com/v1/create-qr-code/?size=260x260&data='+encodeURIComponent(url)
   const share=async()=>{if(navigator.share){try{await navigator.share({title:target,text:'Check out '+target+' on ES Network.',url});return}catch{}}await copyText(url);setCopied(true);setTimeout(()=>setCopied(false),1600)}
-  return <><PageIntro eyebrow="SHARE GENERATOR 2.0" title="Turn any major ESN area into a share target." copy="Choose a destination, get the correct URL and QR code, then use native device sharing or copy the link."/>
-  <section className="section"><div className="shell platform-share-layout"><div className="platform-share-options">{Object.keys(SHARE_TARGETS).map(name=><button type="button" className={name===target?'active':''} onClick={()=>setTarget(name)} key={name}><span>{name===target?'●':'○'}</span><strong>{name}</strong><small>{SHARE_TARGETS[name]}</small></button>)}</div><aside className="platform-share-card"><span>ES NETWORK // SHARE</span><h2>{target}</h2><img src={qr} alt={'QR code for '+target}/><code>{url}</code><div className="platform-button-row"><button className="button primary" type="button" onClick={share}>{copied?'Copied':'Share'}</button><button className="button secondary" type="button" onClick={()=>copyText(url)}>Copy URL</button></div><small>The QR image is generated from the public ESN URL only; it does not contain account or personal information.</small></aside></div></section></>
+  return <><PageIntro eyebrow="SHARE GENERATOR 2.0" title="Turn any major ESN area into a share target." copy="Choose a destination and referral label, then get a trackable ESN URL, QR code, native share action, or copyable link — no account required."/>
+  <section className="section"><div className="shell platform-share-layout"><div><div className="platform-share-options">{Object.keys(SHARE_TARGETS).map(name=><button type="button" className={name===target?'active':''} onClick={()=>setTarget(name)} key={name}><span>{name===target?'●':'○'}</span><strong>{name}</strong><small>{SHARE_TARGETS[name]}</small></button>)}</div><label className="platform-ref-source"><span>REFERRAL LABEL</span><select value={source} onChange={e=>setSource(e.target.value)}><option value="share">General share</option><option value="discord">Discord</option><option value="tiktok">TikTok</option><option value="youtube">YouTube</option><option value="github">GitHub</option><option value="staff">ESN staff</option><option value="community">Community</option></select><small>ESN records this referral only in the visitor's local browser diagnostics unless a privacy-focused aggregate analytics service is connected later.</small></label></div><aside className="platform-share-card"><span>ES NETWORK // SHARE</span><h2>{target}</h2><img src={qr} alt={'QR code for '+target}/><code>{url}</code><div className="platform-button-row"><button className="button primary" type="button" onClick={share}>{copied?'Copied':'Share'}</button><button className="button secondary" type="button" onClick={()=>copyText(url)}>Copy URL</button></div><small>The QR image contains only the public ESN destination and referral label. It contains no account or personal information.</small></aside></div></section></>
 }
 
 export function BuilderShowcasePage(){
-  const [site,setSite]=useState(null)
-  useEffect(()=>{fetch('/generated-sites/cutecats.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).then(setSite).catch(()=>setSite(null))},[])
-  const title=site?.name||site?.title||'Cute Cats'
-  return <><PageIntro eyebrow="WEBSITE BUILDER SHOWCASE" title="Real sites published through ESN." copy="The showcase only displays generated sites that actually exist in the ESN repository. It does not invent customer examples." actions={<Link className="button primary" to="/site-builder">Build a site</Link>}/>
-  <section className="section"><div className="shell platform-showcase-grid"><article className="platform-site-showcase"><span>LIVE GENERATED SITE</span><div className="platform-site-browser"><i/><i/><i/><b>esnoffical.com/sites/cutecats</b></div><div className="platform-site-preview"><strong>{title}</strong><p>{site?.description||'A published ESN Website Builder site.'}</p></div><div className="platform-button-row"><Link className="button primary" to="/sites/cutecats">Open site</Link><Link className="button secondary" to="/site-builder">Create yours</Link></div></article><article className="platform-showcase-note"><span className="eyebrow">SHOWCASE POLICY</span><h2>Real examples only.</h2><p>As more sites are published and selected for the showcase, they can appear here. Removed or unpublished sites are not presented as live examples.</p></article></div></section></>
+  const [sites,setSites]=useState([])
+  const [loading,setLoading]=useState(true)
+  useEffect(()=>{
+    let active=true
+    fetch('/generated-sites/index.json',{cache:'no-store'})
+      .then(r=>r.ok?r.json():{sites:[]})
+      .then(value=>{if(active)setSites(Array.isArray(value?.sites)?value.sites:[])})
+      .catch(()=>{if(active)setSites([])})
+      .finally(()=>{if(active)setLoading(false)})
+    return()=>{active=false}
+  },[])
+  return <><PageIntro eyebrow="WEBSITE BUILDER SHOWCASE" title="Real sites published through ESN." copy="This gallery reads the live ESN generated-site manifest. New published sites can appear automatically; ESN does not invent customer examples." actions={<Link className="button primary" to="/site-builder">Build a site</Link>}/>
+  <section className="section"><div className="shell">
+    <div className="platform-showcase-manifest-head"><span>{sites.length} PUBLISHED SITE{sites.length===1?'':'S'}</span><Link to="/website-builder">How the Builder works →</Link></div>
+    {loading?<div className="platform-showcase-loading">Loading published sites…</div>:sites.length?<div className="platform-showcase-manifest-grid">{sites.map(site=><article className="platform-site-showcase" key={site.slug}><span>{String(site.category||'website').toUpperCase()} // LIVE</span><div className="platform-site-browser"><i/><i/><i/><b>esnoffical.com/sites/{site.slug}</b></div><div className="platform-site-preview"><strong>{site.brand||site.slug}</strong><p>{site.heroTitle||site.description||'Published with ESN Website Builder.'}</p></div><div className="platform-button-row"><Link className="button primary" to={site.path||('/sites/'+site.slug)}>Open site</Link><Link className="button secondary" to="/site-builder">Create yours</Link></div></article>)}</div>:<div className="platform-showcase-loading">No published showcase entries are available right now.</div>}
+    <article className="platform-showcase-note manifest-note"><span className="eyebrow">SHOWCASE POLICY</span><h2>Real examples only.</h2><p>The publish workflow updates this manifest when a valid ESN Website Builder site goes live. Removed or unpublished sites are not intentionally presented as live examples.</p></article>
+  </div></section></>
 }
 
 export function NetworkMapPage(){
