@@ -39,6 +39,12 @@ export const SEO_ROUTES={
     canonical:'/store-ai',
     index:false,
   },
+  '/domains':{
+    label:'ESN Domains',
+    title:'ESN Domains | Rent a Subdomain or Connect Your Domain',
+    description:'Choose an ESN subdomain, connect a domain you already own, and manage routing through the ESN Domains control layer.',
+    index:true,
+  },
   '/storesmp':{
     label:'SMP Store',
     title:'ESN SMP Store | Minecraft Keys, Relics & Bundles',
