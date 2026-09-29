@@ -430,6 +430,8 @@ function Header() {
             </div>
           </div>
 
+          <Link className={location.pathname === '/store-ai' ? 'nav-direct active' : 'nav-direct'} onClick={close} to="/store-ai">Store AI</Link>
+
           <div className={inGroup(['/smpconnection','/smpconsole','/smpplugin','/smpguide','/storesmp']) ? 'nav-group active' : 'nav-group'}>
             <button className="nav-trigger" type="button" aria-haspopup="true">ESN SMP</button>
             <div className="dropdown">
