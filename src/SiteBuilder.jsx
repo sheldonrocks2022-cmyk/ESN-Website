@@ -19,6 +19,9 @@ const CARD_STYLES=['clean','glass','glow','outline','tiles','floating']
 const BUTTON_STYLES=['pill','rounded','square','outline','glow']
 const FX_STYLES=['none','glow','grain','scanlines','stars']
 const CONTRASTS=['soft','normal','high']
+const FONT_STYLES=['system','geometric','serif','mono','rounded','condensed']
+const HOME_SECTION_KEYS=['status','story','timeline','highlights','gallery','feature','testimonials','process','faq','socials','countdown','minecraft','visitor']
+const VERSION_HISTORY_KEY='esn_site_builder_versions_v1'
 const STYLE_RECIPES={
   studio:{background:'gradient',surface:'elevated',hero:'left',cards:'clean',buttons:'rounded',fx:'glow',contrast:'normal',nav:'glass',type:'display',shape:'rounded',density:'balanced',motion:'dynamic'},
   cyber:{background:'grid',surface:'glass',hero:'split',cards:'glow',buttons:'glow',fx:'scanlines',contrast:'high',nav:'glass',type:'technical',shape:'sharp',density:'dense',motion:'dynamic'},
@@ -59,7 +62,7 @@ const STARTER={
     {q:'What should I do next?',a:'Tell visitors the single most useful next action.'},
   ],
   pack:'full',
-  sections:{announcement:true,status:true,timeline:true,testimonials:true,gallery:true,socials:true},
+  sections:{announcement:true,status:true,timeline:true,testimonials:true,gallery:true,socials:true,countdown:false,minecraft:false,visitor:false},
   announcement:{label:'NEW',title:'Something is happening.',copy:'Use this strip for a launch, update, event, announcement, or important message.'},
   status:[
     {label:'Main experience',value:'ONLINE',state:'live'},
@@ -88,12 +91,19 @@ const STARTER={
     {label:'YouTube',url:''},
     {label:'Main link',url:''},
   ],
-  visual:{accent:'#65e8ff',shape:'rounded',density:'balanced',motion:'dynamic',nav:'glass',type:'display',style:'studio',background:'gradient',surface:'elevated',hero:'left',cards:'clean',buttons:'rounded',fx:'glow',contrast:'normal'},
+  visual:{accent:'#65e8ff',shape:'rounded',density:'balanced',motion:'dynamic',nav:'glass',type:'display',font:'system',style:'studio',background:'gradient',surface:'elevated',hero:'left',cards:'clean',buttons:'rounded',fx:'glow',contrast:'normal'},
   pages:[
     {slug:'about',title:'About',eyebrow:'ABOUT',headline:'The story behind this website.',copy:'Use this page to go deeper than the homepage.',items:[{title:'The idea',copy:'Explain the main idea.'},{title:'The story',copy:'Explain what led here.'},{title:'Today',copy:'Explain what matters now.'}]},
     {slug:'highlights',title:'Highlights',eyebrow:'HIGHLIGHTS',headline:'Explore the important parts.',copy:'Give the strongest parts of the website their own page.',items:[{title:'Highlight one',copy:'Main highlight.'},{title:'Highlight two',copy:'Second highlight.'},{title:'Highlight three',copy:'Third highlight.'}]},
     {slug:'connect',title:'Connect',eyebrow:'CONNECT',headline:'Take the next step.',copy:'Put the most useful links and actions in one place.',items:[{title:'Main link',copy:'Primary action.'},{title:'Community',copy:'Community action.'},{title:'More',copy:'Another useful path.'}]},
   ],
+  galleryMode:'grid',
+  sectionOrder:[...HOME_SECTION_KEYS],
+  countdown:{title:'Next big moment',target:'',label:'COMING SOON'},
+  minecraft:{address:'',bedrock:false,title:'Minecraft Server'},
+  visitor:{label:'Visitor pulse'},
+  notFound:{title:'This page wandered off.',copy:'The page you tried to open does not exist on this site.',buttonLabel:'Back home'},
+
   ctaTitle:'Ready to connect?',
   ctaCopy:'Use the button below to reach out or visit my main page.',
   ctaLabel:'Contact me',
