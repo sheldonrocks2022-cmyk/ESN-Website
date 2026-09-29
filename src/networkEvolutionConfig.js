@@ -88,7 +88,9 @@ export const DECK_DESTINATIONS=[
   {id:'notifications',label:'Alerts',path:'/notifications',glyph:'!'},
   {id:'rewards',label:'Rewards',path:'/rewards',glyph:'R'},
   {id:'challenges',label:'Challenge',path:'/challenges',glyph:'C'},
-  {id:'store-ai',label:'Store AI',path:'/store-ai',glyph:'  {id:'diagnostics',label:'Diagnose',path:'/diagnostics',glyph:'D'},
+  {id:'store-ai',label:'Store AI',path:'/store-ai',glyph:'AI'},
+  {id:'operations',label:'Ops',path:'/operations',glyph:'O'},
+  {id:'diagnostics',label:'Diagnose',path:'/diagnostics',glyph:'D'},
   {id:'session',label:'Session',path:'/session',glyph:'S'},
 ]
 
