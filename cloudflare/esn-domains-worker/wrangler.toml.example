@@ -1,0 +1,35 @@
+name = "esn-domains"
+main = "src/index.js"
+compatibility_date = "2026-09-28"
+workers_dev = true
+
+[vars]
+ROOT_DOMAIN = "esnoffical.com"
+WORKER_SERVICE_NAME = "esn-domains"
+ALLOWED_ORIGINS = "https://esnoffical.com"
+ALLOW_DNS_MUTATIONS = "false"
+SUBDOMAIN_MONTHLY_CENTS = "0"
+CUSTOM_DOMAIN_MONTHLY_CENTS = "0"
+EXPOSE_ERRORS = "false"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "esn-domains"
+database_id = "REPLACE_WITH_D1_DATABASE_ID"
+
+[triggers]
+crons = ["17 * * * *"]
+
+# Secrets: set these with `wrangler secret put <NAME>`
+# CLOUDFLARE_API_TOKEN
+# CLOUDFLARE_ACCOUNT_ID
+# CLOUDFLARE_ZONE_ID
+# STAFF_CODE_HASH
+# SUBDOMAIN_PAYMENT_URL (optional)
+# CUSTOM_DOMAIN_PAYMENT_URL (optional)
+#
+# After the Worker is deployed, attach a Custom Domain such as:
+# domains-api.esnoffical.com
+#
+# Cloudflare for SaaS must also be enabled and configured with a fallback
+# origin before customer-owned custom domains can activate.
