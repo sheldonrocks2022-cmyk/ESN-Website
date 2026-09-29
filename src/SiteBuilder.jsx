@@ -6,7 +6,7 @@ const ROOT_DOMAIN='esnoffical.com'
 const ISSUE_BASE='https://github.com/sheldonrocks2022-cmyk/ESN-Website/issues/new'
 const DRAFT_KEY='esn_site_builder_draft_v1'
 const THEMES=['midnight','neon','clean','ember','ocean']
-const LAYOUTS=['spotlight','split','editorial']
+const LAYOUTS=['spotlight','split','editorial','flagship']
 const BLOCKED_TEXT=/password|passcode|seed phrase|wallet recovery|credit card|social security|bank login|verify your account|sign in to continue/i
 const tick=String.fromCharCode(96)
 
@@ -309,7 +309,10 @@ function promptScore(prompt){
   if(/for\s+[a-z]|audience|people|players|customers|fans|community/i.test(value))score+=10
   return Math.min(100,score)
 }
-function inferLayout(category,variant){
+function inferLayout(category,variant,prompt){
+  const value=String(prompt||'').toLowerCase()
+  if(/esn style|like esn|flagship|cinematic|ultra premium|futuristic|network style/.test(value))return 'flagship'
+  if(Number(variant)===3)return 'flagship'
   const layouts=category==='portfolio'||category==='business'?['split','editorial','spotlight']:category==='event'||category==='music'?['spotlight','split','editorial']:['spotlight','editorial','split']
   return layouts[Math.abs(Number(variant)||0)%layouts.length]
 }
@@ -374,7 +377,7 @@ function generateSite(prompt,brand,slug,variant){
     brand:name,
     category:analysis.category,
     theme:analysis.theme,
-    layout:inferLayout(analysis.category,variant),
+    layout:inferLayout(analysis.category,variant,prompt),
     audience:analysis.audience,
     seoTitle:clamp(name+' | '+preset.label,70),
     seoDescription:clamp(heroCopy,160),
@@ -480,8 +483,73 @@ function downloadHtml(site){
   anchor.remove()
   setTimeout(function(){URL.revokeObjectURL(url)},1000)
 }
+function FlagshipSitePreview({site}){
+  const s=safeSite(site)
+  const routeItems=[
+    {index:'01',title:s.cards[0]?.title||'Explore',meta:s.cards[0]?.copy||''},
+    {index:'02',title:s.cards[1]?.title||'Discover',meta:s.cards[1]?.copy||''},
+    {index:'03',title:s.cards[2]?.title||'Connect',meta:s.cards[2]?.copy||''},
+    {index:'04',title:s.ctaLabel||'Continue',meta:s.ctaTitle||''},
+  ]
+  return <div className={'esn-built-site generated-flagship theme-'+s.theme}>
+    <div className="gfs-ambient" aria-hidden="true"><i/><i/><i/></div>
+    <nav className="gfs-nav"><strong>{s.brand}</strong><div><a href="#story">Story</a><a href="#highlights">Highlights</a><a href="#faq">FAQ</a></div><span>LIVE</span></nav>
+
+    <section className="gfs-hero">
+      <div className="gfs-hero-copy">
+        <div className="gfs-status"><i/> GENERATED EXPERIENCE <b>{s.category.toUpperCase()}</b></div>
+        <span className="gfs-eyebrow">{s.category} // built for {s.audience}</span>
+        <h1>{s.heroTitle}</h1>
+        <p>{s.heroCopy}</p>
+        <div className="gfs-actions">{s.ctaUrl&&<a className="gfs-primary" href={s.ctaUrl} target="_blank" rel="noreferrer">{s.ctaLabel} <b>↗</b></a>}<a className="gfs-secondary" href="#story">Explore site</a></div>
+        <div className="gfs-metrics">{s.stats.map(function(item,index){return <div key={index}><span>0{index+1}</span><strong>{item.value}</strong><small>{item.label}</small></div>})}</div>
+      </div>
+      <aside className="gfs-core-stage" aria-label="Interactive-style visual">
+        <div className="gfs-core-top"><span>{s.brand.toUpperCase()} CORE</span><i/><b>ACTIVE</b></div>
+        <div className="gfs-reactor">
+          <div className="gfs-ring ring-a"/><div className="gfs-ring ring-b"/><div className="gfs-ring ring-c"/>
+          <div className="gfs-reactor-core"><span>{s.brand.slice(0,2).toUpperCase()}</span><small>{s.category}</small></div>
+          <div className="gfs-orbit orbit-a"/><div className="gfs-orbit orbit-b"/>
+        </div>
+        <div className="gfs-core-footer"><span>PREMIUM SITE ENGINE</span><strong>STRUCTURED • RESPONSIVE • CINEMATIC</strong></div>
+      </aside>
+    </section>
+
+    <div className="gfs-route-strip">{routeItems.map(function(item,index){return <a href={index<3?'#panel-'+index:'#final'} key={item.index}><span>{item.index}</span><b>{item.title}</b><small>{item.meta}</small><em>↗</em></a>})}</div>
+
+    <section id="story" className="gfs-story">
+      <aside className="gfs-story-sticky"><span className="gfs-eyebrow">THE EXPERIENCE</span><h2>{s.aboutTitle}</h2><p>{s.aboutCopy}</p><a href="#highlights">Explore the highlights →</a></aside>
+      <div className="gfs-story-stack">{s.cards.map(function(card,index){return <article id={'panel-'+index} key={index}><span className="gfs-story-index">0{index+1}</span><div><span className="gfs-eyebrow">{s.category}</span><h3>{card.title}</h3><p>{card.copy}</p></div><strong>{card.title.split(' ')[0].toUpperCase()}</strong></article>})}</div>
+    </section>
+
+    <section id="highlights" className="gfs-section">
+      <div className="gfs-section-heading"><div><span className="gfs-eyebrow">WHAT MATTERS</span><h2>Built around the important parts.</h2></div><small>{s.audience}</small></div>
+      <div className="gfs-bento">
+        {s.cards.map(function(card,index){return <article className={'gfs-bento-card bento-'+(index+1)} key={index}><div><span>0{index+1}</span><i>AVAILABLE</i></div><h3>{card.title}</h3><p>{card.copy}</p><strong>{s.stats[index]?.value||'+'}</strong></article>})}
+        <article className="gfs-bento-card bento-more"><span className="gfs-eyebrow">ABOUT {s.brand.toUpperCase()}</span><h3>{s.aboutTitle}</h3><p>{s.aboutCopy}</p></article>
+      </div>
+    </section>
+
+    <section className="gfs-feature-stage">
+      <div><span className="gfs-big-index">{s.brand.toUpperCase()} // {s.category.toUpperCase()}</span><span className="gfs-eyebrow">FOCUSED EXPERIENCE</span><h2>{s.ctaTitle}</h2><p>{s.ctaCopy}</p>{s.ctaUrl&&<a className="gfs-primary" href={s.ctaUrl} target="_blank" rel="noreferrer">{s.ctaLabel}</a>}</div>
+      <div className="gfs-feature-grid">{s.stats.map(function(item,index){return <article key={index}><span>0{index+1}</span><strong>{item.value}</strong><small>{item.label}</small><em>↗</em></article>})}<article><span>04</span><strong>{s.category}</strong><small>Built for {s.audience}</small><em>↗</em></article></div>
+    </section>
+
+    <section className="gfs-process"><div><span>01</span><strong>Discover</strong><p>{s.heroCopy}</p></div><div><span>02</span><strong>Explore</strong><p>{s.aboutCopy}</p></div><div><span>03</span><strong>Act</strong><p>{s.ctaCopy}</p></div></section>
+
+    <section id="faq" className="gfs-faq">
+      <div><span className="gfs-eyebrow">QUESTIONS</span><h2>Everything important, without the clutter.</h2><p>Quick answers generated around the site topic and audience.</p></div>
+      <div>{s.faq.map(function(item,index){return <details key={index} open={index===0}><summary>{item.q}<span>+</span></summary><p>{item.a}</p></details>})}</div>
+    </section>
+
+    <section id="final" className="gfs-final"><span>{s.category.toUpperCase()} EXPERIENCE</span><h2>{s.ctaTitle}</h2><p>{s.ctaCopy}</p>{s.ctaUrl&&<a className="gfs-primary" href={s.ctaUrl} target="_blank" rel="noreferrer">{s.ctaLabel} <b>↗</b></a>}<strong aria-hidden="true">{s.brand.slice(0,3).toUpperCase()}</strong></section>
+    <footer className="gfs-footer"><span>{s.footer}</span><small>{ROOT_DOMAIN}/sites/{s.slug||'yourname'}</small></footer>
+  </div>
+}
+
 function SitePreview({site}){
   const s=safeSite(site)
+  if(s.layout==='flagship')return <FlagshipSitePreview site={s}/>
   return <div className={'esn-built-site theme-'+s.theme+' layout-'+s.layout}>
     <nav><strong>{s.brand}</strong><div><a href="#about">About</a><a href="#highlights">Highlights</a><a href="#faq">FAQ</a></div></nav>
     <section className="built-hero"><span>{s.category} • for {s.audience}</span><h1>{s.heroTitle}</h1><p>{s.heroCopy}</p>{s.ctaUrl&&<a className="built-hero-button" href={s.ctaUrl} target="_blank" rel="noreferrer">{s.ctaLabel}</a>}</section>
@@ -544,7 +612,7 @@ export default function SiteBuilderPage(){
   }
 
   return <>
-    <section className="page-hero builder-hero"><div className="shell page-hero-inner"><div className="page-hero-copy"><span className="eyebrow">ESN WEBSITE BUILDER // GENERATOR V3</span><h1>Generate versions. Shape sections. Publish a fuller site.</h1><p>V3 adds audience detection, three layout systems, multiple generated versions, SEO controls, stats, FAQs, quality scoring, and AI-change history while keeping published pages structured and script-free.</p></div><div className="page-hero-mark"><span>V3</span><small>MULTI-VERSION ENGINE</small></div></div></section>
+    <section className="page-hero builder-hero"><div className="shell page-hero-inner"><div className="page-hero-copy"><span className="eyebrow">ESN WEBSITE BUILDER // FLAGSHIP GENERATOR V4</span><h1>Build sites with ESN-level architecture.</h1><p>V4 can generate a full flagship experience inspired by the architecture of the ESN website: cinematic hero stages, reactor-style visuals, route strips, story stacks, bento grids, feature panels, process sections, premium FAQs, and oversized final CTAs — without allowing arbitrary user scripts.</p></div><div className="page-hero-mark"><span>V4</span><small>FLAGSHIP SITE ENGINE</small></div></div></section>
     <section className="section"><div className="shell builder-layout">
       <div className="builder-controls">
         <div className="builder-panel"><span className="eyebrow">01 // IDEA + GENERATION</span>
@@ -562,7 +630,7 @@ export default function SiteBuilderPage(){
             <div><span>PROMPT SCORE</span><strong>{analysis.score}/100</strong></div>
             <p>{analysis.keywords.length?'Detected: '+analysis.keywords.join(' • '):'Add a topic, audience, goal, and desired style for stronger generation.'}</p>
           </div>
-          <div className="builder-variants"><button type="button" onClick={function(){generateVariant(1)}}>VERSION A</button><button type="button" onClick={function(){generateVariant(2)}}>VERSION B</button><button type="button" onClick={function(){generateVariant(3)}}>VERSION C</button></div>
+          <div className="builder-variants"><button type="button" onClick={function(){generateVariant(1)}}>VERSION A</button><button type="button" onClick={function(){generateVariant(2)}}>VERSION B</button><button className="flagship-variant" type="button" onClick={function(){generateVariant(3)}}>VERSION C • FLAGSHIP</button></div>
           <div className="builder-generation-actions"><button className="builder-generate" type="button" onClick={generate}>GENERATE NEXT VERSION</button><button type="button" disabled={!history.length} onClick={undoAi}>UNDO AI CHANGE</button></div>
           {message&&<div className="builder-message">{message}</div>}
         </div>
