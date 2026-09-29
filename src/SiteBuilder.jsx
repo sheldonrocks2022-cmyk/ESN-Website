@@ -900,7 +900,7 @@ function safeSite(site){
     status:(site.status||STARTER.status).slice(0,3).map(function(item){return {label:clamp(item.label,60),value:clamp(item.value,30),state:['live','ready','offline'].includes(item.state)?item.state:'ready'}}),
     timeline:(site.timeline||STARTER.timeline).slice(0,4).map(function(item){return {kicker:clamp(item.kicker,20),title:clamp(item.title,80),copy:clamp(item.copy,260)}}),
     testimonials:(site.testimonials||STARTER.testimonials).slice(0,3).map(function(item){return {quote:clamp(item.quote,280),name:clamp(item.name,60),role:clamp(item.role,60)}}),
-    gallery:(site.gallery||STARTER.gallery).slice(0,4).map(function(item){return {title:clamp(item.title,80),copy:clamp(item.copy,220)}}),
+    gallery:(site.gallery||STARTER.gallery).slice(0,4).map(function(item){return {title:clamp(item.title,80),copy:clamp(item.copy,220),image:safeImage(item.image),alt:clamp(item.alt||item.title,100)}}),
     socials:(site.socials||STARTER.socials).slice(0,3).map(function(item){return {label:clamp(item.label,40),url:safeUrl(item.url)}}),
     ctaTitle:clamp(site.ctaTitle,100),
     ctaCopy:clamp(site.ctaCopy,260),
@@ -1021,7 +1021,7 @@ function FlagshipSitePreview({site,preview=false,onPageChange}){
       </div>
     </section>
 
-    {s.sections.gallery&&<section className="gfs-gallery"><div className="gfs-section-heading"><div><span className="gfs-eyebrow">SHOWCASE</span><h2>More than three cards.</h2></div><small>Visual feature rail</small></div><div className="gfs-gallery-grid">{s.gallery.map(function(item,index){return <article key={index}><span>0{index+1}</span><div className="gfs-gallery-orb" aria-hidden="true"/><h3>{item.title}</h3><p>{item.copy}</p><strong>{String(index+1).padStart(2,'0')}</strong></article>})}</div></section>}
+    {s.sections.gallery&&<section className="gfs-gallery"><div className="gfs-section-heading"><div><span className="gfs-eyebrow">SHOWCASE</span><h2>More than three cards.</h2></div><small>Visual feature rail</small></div><div className="gfs-gallery-grid">{s.gallery.map(function(item,index){return <article className={item.image?'has-image':''} key={index}>{item.image&&<img src={item.image} alt={item.alt||item.title}/>}<span>0{index+1}</span><div className="gfs-gallery-orb" aria-hidden="true"/><h3>{item.title}</h3><p>{item.copy}</p><strong>{String(index+1).padStart(2,'0')}</strong></article>})}</div></section>}
 
     <section className="gfs-feature-stage">
       <div><span className="gfs-big-index">{s.brand.toUpperCase()} // {s.category.toUpperCase()}</span><span className="gfs-eyebrow">FOCUSED EXPERIENCE</span><h2>{s.ctaTitle}</h2><p>{s.ctaCopy}</p>{s.ctaUrl&&<a className="gfs-primary" href={s.ctaUrl} target="_blank" rel="noreferrer">{s.ctaLabel}</a>}</div>
@@ -1075,7 +1075,7 @@ function SitePreview({site,page='home',preview=false,onPageChange}){
     {s.sections.announcement&&<section className="built-announcement"><span>{s.announcement.label}</span><div><h3>{s.announcement.title}</h3><p>{s.announcement.copy}</p></div></section>}
     {s.sections.status&&<section className="built-extra-grid">{s.status.map(function(item,index){return <article key={index}><span>{item.label}</span><strong>{item.value}</strong><small>{item.state}</small></article>})}</section>}
     {s.sections.timeline&&<section className="built-timeline">{s.timeline.map(function(item,index){return <article key={index}><span>{item.kicker}</span><div><h3>{item.title}</h3><p>{item.copy}</p></div></article>})}</section>}
-    {s.sections.gallery&&<section className="built-gallery">{s.gallery.map(function(item,index){return <article key={index}><span>0{index+1}</span><h3>{item.title}</h3><p>{item.copy}</p></article>})}</section>}
+    {s.sections.gallery&&<section className="built-gallery">{s.gallery.map(function(item,index){return <article className={item.image?'has-image':''} key={index}>{item.image&&<img src={item.image} alt={item.alt||item.title}/>}<span>0{index+1}</span><h3>{item.title}</h3><p>{item.copy}</p></article>})}</section>}
     {s.sections.testimonials&&<section className="built-testimonials">{s.testimonials.map(function(item,index){return <blockquote key={index}><p>“{item.quote}”</p><footer><strong>{item.name}</strong><span>{item.role}</span></footer></blockquote>})}</section>}
     <section id="faq" className="built-faq"><div><span>FAQ</span><h2>Quick answers.</h2></div><div>{s.faq.map(function(item,index){return <details key={index} open={index===0}><summary>{item.q}</summary><p>{item.a}</p></details>})}</div></section>
     <section className="built-cta"><h2>{s.ctaTitle}</h2><p>{s.ctaCopy}</p>{s.ctaUrl&&<a href={s.ctaUrl} target="_blank" rel="noreferrer">{s.ctaLabel}</a>}</section>
@@ -1105,6 +1105,14 @@ export default function SiteBuilderPage(){
   const updateTimeline=function(index,key,value){setSite(function(current){return {...current,timeline:(current.timeline||STARTER.timeline).map(function(item,i){return i===index?{...item,[key]:value}:item})}})}
   const updateTestimonial=function(index,key,value){setSite(function(current){return {...current,testimonials:(current.testimonials||STARTER.testimonials).map(function(item,i){return i===index?{...item,[key]:value}:item})}})}
   const updateGallery=function(index,key,value){setSite(function(current){return {...current,gallery:(current.gallery||STARTER.gallery).map(function(item,i){return i===index?{...item,[key]:value}:item})}})}
+  const uploadGalleryImage=async function(index,file){
+    try{
+      setMessage('Compressing image for ESN publishing…')
+      const image=await compressImageFile(file)
+      updateGallery(index,'image',image)
+      setMessage('Image added. It is compressed so it can publish with the site.')
+    }catch(error){setMessage(error.message||'Could not add that image.')}
+  }
   const updateSocial=function(index,key,value){setSite(function(current){return {...current,socials:(current.socials||STARTER.socials).map(function(item,i){return i===index?{...item,[key]:value}:item})}})}
   const updateVisual=function(key,value){setSite(function(current){return {...current,visual:{...STARTER.visual,...current.visual,[key]:value}}})}
   const updatePage=function(index,key,value){setSite(function(current){return {...current,pages:(current.pages||STARTER.pages).map(function(item,i){return i===index?{...item,[key]:key==='slug'?cleanSlug(value):value}:item})}})}
