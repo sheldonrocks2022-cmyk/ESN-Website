@@ -926,7 +926,7 @@ function GeneratedSubPage({site,page,preview=false,onPageChange}){
   const s=safeSite(site)
   const current=s.pages.find(function(item){return item.slug===page})||s.pages[0]
   if(!current)return <div className="builder-public-state"><strong>PAGE NOT FOUND</strong></div>
-  const visualStyle={{'--custom-accent':s.visual.accent,'--site-accent':s.visual.accent}}
+  const visualStyle={'--custom-accent':s.visual.accent,'--site-accent':s.visual.accent}
   return <div style={visualStyle} className={'esn-built-site generated-subpage theme-'+s.theme+' shape-'+s.visual.shape+' density-'+s.visual.density+' motion-'+s.visual.motion+' type-'+s.visual.type}>
     <nav className={'generated-page-nav nav-'+s.visual.nav}><strong>{s.brand}</strong><div>{preview?<button type="button" onClick={function(){onPageChange?.('home')}}>Home</button>:<a href={'/sites/'+s.slug}>Home</a>}{s.pages.map(function(item){return preview?<button type="button" className={item.slug===current.slug?'active':''} key={item.slug} onClick={function(){onPageChange?.(item.slug)}}>{item.title}</button>:<a className={item.slug===current.slug?'active':''} key={item.slug} href={'/sites/'+s.slug+'/'+item.slug}>{item.title}</a>})}</div></nav>
     <main className="generated-page-main">
@@ -942,7 +942,7 @@ function GeneratedSubPage({site,page,preview=false,onPageChange}){
 function SitePreview({site,page='home',preview=false,onPageChange}){
   const s=safeSite(site)
   if(page!=='home'&&s.multiPage)return <GeneratedSubPage site={s} page={page} preview={preview} onPageChange={onPageChange}/>
-  const visualStyle={{'--custom-accent':s.visual.accent,'--site-accent':s.visual.accent}}
+  const visualStyle={'--custom-accent':s.visual.accent,'--site-accent':s.visual.accent}
   if(s.layout==='flagship')return <div style={visualStyle} className={'generated-visual-shell shape-'+s.visual.shape+' density-'+s.visual.density+' motion-'+s.visual.motion+' type-'+s.visual.type}><FlagshipSitePreview site={s} preview={preview} onPageChange={onPageChange}/></div>
   return <div style={visualStyle} className={'esn-built-site theme-'+s.theme+' layout-'+s.layout+' shape-'+s.visual.shape+' density-'+s.visual.density+' motion-'+s.visual.motion+' type-'+s.visual.type}>
     <nav><strong>{s.brand}</strong><div>{s.multiPage?<>{preview?<button type="button" onClick={function(){onPageChange?.('home')}}>Home</button>:<a href={'/sites/'+s.slug}>Home</a>}{s.pages.map(function(item){return preview?<button type="button" key={item.slug} onClick={function(){onPageChange?.(item.slug)}}>{item.title}</button>:<a key={item.slug} href={'/sites/'+s.slug+'/'+item.slug}>{item.title}</a>})}</>:<><a href="#about">About</a><a href="#highlights">Highlights</a><a href="#faq">FAQ</a></>}</div></nav>
