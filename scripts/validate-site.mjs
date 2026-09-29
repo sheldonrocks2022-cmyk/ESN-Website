@@ -40,6 +40,7 @@ const requiredRoutes = [
   '/leadership',
   '/testimonials',
   '/faq',
+  '/store-ai',
   '/operations',
   '/incidents',
   '/changelog',
@@ -86,6 +87,8 @@ const requiredMigrationFiles = [
   'src/opsExpansion.css',
   'src/SMPStaffGate.jsx',
   'src/smpStaffGate.css',
+  'src/StoreAI.jsx',
+  'src/storeAi.css',
   'src/reviews.js',
   'src/arcade/shared.js',
   'src/arcade/OriginalFrame.jsx',
@@ -109,6 +112,7 @@ const seo = fs.readFileSync('src/seo.js','utf8')
 const prerender = fs.readFileSync('scripts/prerender.mjs','utf8')
 const indexHtml = fs.readFileSync('index.html','utf8')
 const socialPreview = fs.readFileSync('public/esn-social-card.svg','utf8')
+const storeAi = fs.readFileSync('src/StoreAI.jsx','utf8')
 
 if (missingRoutes.length) problems.push(`Missing app routes: ${missingRoutes.join(', ')}`)
 if (missingPayments.length) problems.push(`Missing payment links: ${missingPayments.join(', ')}`)
@@ -145,6 +149,13 @@ for (const marker of ['OperationsMapPage','PublicIncidentsPage','ChangelogTimeli
 for (const marker of ['OPS_MAINTENANCE_KEY','OPS_COUNTDOWN_KEY','OPS_EMERGENCY_KEY','BROADCAST SIMULATOR','RECOVERY CONSOLE','COMMAND MACROS']) { if (!opsExpansion.includes(marker)) problems.push(`Operations control missing: ${marker}.`) }
 if (!networkEvolution.includes('TERMINAL_CAMPAIGN_KEY') || !networkEvolution.includes("protocol alpha") || !networkEvolution.includes("protocol midnight") || !networkEvolution.includes("protocol overdrive") || !networkEvolution.includes("protocol origin")) problems.push('Secret Terminal protocol campaign missing or incomplete.')
 if (!app.includes('<GlobalOpsLayer />') || !app.includes('path="/operations"') || !app.includes('path="/diagnostics"') || !app.includes('path="/smpcheck"') || !app.includes('path="/blueprint"') || !app.includes('path="/session"')) problems.push('Operations expansion routes or global layer missing from App.')
+if (!app.includes("import StoreAIPage from './StoreAI'") || !app.includes('path="/store-ai" element={<StoreAIPage />}')) problems.push('Store AI route or module is not wired.')
+if (!storeAi.includes('ESN STORE AI') || !storeAi.includes('Visitor Mode') || !storeAi.includes('STAFF MODE') || !storeAi.includes('STORE HEALTH')) problems.push('Store AI visitor/staff interface is incomplete.')
+if (!storeAi.includes("STAFF_CODE_HASH") || storeAi.includes("052609")) problems.push('Store AI staff gate is missing its hashed check or exposes the raw staff code.')
+for (const url of requiredPaymentLinks) { if (!storeAi.includes(url)) problems.push(`Store AI missing verified checkout link: ${url}`) }
+if (!storeAi.includes('I will not invent a payment link') || !storeAi.includes('PRICE NOT VERIFIED')) problems.push('Store AI catalog truth safeguards are missing.')
+if (!seo.includes("'/store-ai':{")) problems.push('Store AI SEO route missing.')
+if (!sitemap.includes('https://esnoffical.com/store-ai')) problems.push('Store AI missing from sitemap.')
 const smpGate = fs.readFileSync('src/SMPStaffGate.jsx','utf8')
 if (!smpGate.includes("SMP_ACCESS_SESSION_KEY") || !smpGate.includes("STAFF_CODE_HASH") || smpGate.includes("052609")) problems.push('SMP staff gate missing, unhashed, or staff code exposed in source.')
 for (const route of ['/storesmp','/smpconnection','/smpconsole','/smpplugin','/smpguide','/smpcheck']) { if (!app.includes(`path="${route}" element={<SMPStaffGate`)) problems.push(`SMP route is not staff-gated: ${route}`) }
