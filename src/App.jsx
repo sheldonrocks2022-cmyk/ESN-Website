@@ -1509,6 +1509,7 @@ function App() {
           <Route path="/domains" element={<Navigate to="/hosting" replace />} />
           <Route path="/site-builder" element={<SiteBuilderPage />} />
           <Route path="/sites/:slug" element={<HostedSitePage />} />
+        <Route path="/sites/:slug/:page" element={<HostedSitePage />} />
           <Route path="/storesmp" element={<SMPStaffGate label="ESN SMP Store"><SMPStore /></SMPStaffGate>} />
           <Route path="/store" element={<Navigate to="/storesmp" replace />} />
           <Route path="/store/smp" element={<Navigate to="/storesmp" replace />} />
