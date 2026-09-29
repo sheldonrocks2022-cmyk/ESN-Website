@@ -142,6 +142,6 @@ await gh('/repos/'+repo+'/contents/'+path,{method:'PUT',body:JSON.stringify(payl
 await finish(
   PUBLISHED_LABEL,
   '[SITE-BUILD-PUBLISHED] '+slug,
-  '✅ **Your ESN Website Builder site was published.**\n\n**ESN preview:** https://'+ROOT_DOMAIN+'/sites/'+slug+'\n**Assigned subdomain:** `'+slug+'.'+ROOT_DOMAIN+'`\n\nThe preview is live after the main ESN Pages deployment finishes. Your actual subdomain still needs a hosting destination that accepts that hostname and provisions HTTPS.\n\nThe published ESN preview is structured and script-free.',
+  '✅ **Your ESN Website Builder site was published.**\n\n**Public site:** https://'+ROOT_DOMAIN+'/sites/'+slug+'\n\nThe site is live after the main ESN Pages deployment finishes. For now, ESN Website Builder publishes use the `/sites/'+slug+'` address as the public URL.\n\nThe published site is structured and script-free.',
   'completed'
 )
