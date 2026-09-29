@@ -5,7 +5,8 @@ import './siteBuilder.css'
 const ROOT_DOMAIN='esnoffical.com'
 const ISSUE_BASE='https://github.com/sheldonrocks2022-cmyk/ESN-Website/issues/new'
 const DRAFT_KEY='esn_site_builder_draft_v1'
-const THEMES=['midnight','neon','clean','ember','ocean']
+const THEMES=['midnight','neon','clean','ember','ocean','void','aurora','forest','rose','gold']
+const EXPERIENCE_PACKS=['essential','showcase','network','full']
 const LAYOUTS=['spotlight','split','editorial','flagship']
 const BLOCKED_TEXT=/password|passcode|seed phrase|wallet recovery|credit card|social security|bank login|verify your account|sign in to continue/i
 const tick=String.fromCharCode(96)
@@ -31,6 +32,36 @@ const STARTER={
     {q:'What is this site about?',a:'Use this answer to explain the main idea in one or two sentences.'},
     {q:'Who is it for?',a:'Describe the people who will get the most value from this site.'},
     {q:'What should I do next?',a:'Tell visitors the single most useful next action.'},
+  ],
+  pack:'full',
+  sections:{announcement:true,status:true,timeline:true,testimonials:true,gallery:true,socials:true},
+  announcement:{label:'NEW',title:'Something is happening.',copy:'Use this strip for a launch, update, event, announcement, or important message.'},
+  status:[
+    {label:'Main experience',value:'ONLINE',state:'live'},
+    {label:'Community',value:'ACTIVE',state:'live'},
+    {label:'Latest update',value:'READY',state:'ready'},
+  ],
+  timeline:[
+    {kicker:'01',title:'The beginning',copy:'Introduce where the project, brand, community, or idea started.'},
+    {kicker:'02',title:'The build',copy:'Show how the idea grew, changed, or became something more complete.'},
+    {kicker:'03',title:'Right now',copy:'Tell visitors what is happening now and what they should pay attention to.'},
+    {kicker:'04',title:'What is next',copy:'Give people a reason to come back for the next update, release, or milestone.'},
+  ],
+  testimonials:[
+    {quote:'A strong website should make the idea clear fast.',name:'Featured voice',role:'Community'},
+    {quote:'Good design should guide people instead of making them search.',name:'Featured voice',role:'Visitor'},
+    {quote:'The best next step should always be obvious.',name:'Featured voice',role:'Supporter'},
+  ],
+  gallery:[
+    {title:'Feature one',copy:'Use this visual tile to showcase a project, mode, service, release, product, or highlight.'},
+    {title:'Feature two',copy:'Give another important part of the site its own premium visual moment.'},
+    {title:'Feature three',copy:'Show something visitors should remember after leaving the page.'},
+    {title:'Feature four',copy:'Use the final tile for what comes next or the strongest supporting feature.'},
+  ],
+  socials:[
+    {label:'Discord',url:''},
+    {label:'YouTube',url:''},
+    {label:'Main link',url:''},
   ],
   ctaTitle:'Ready to connect?',
   ctaCopy:'Use the button below to reach out or visit my main page.',
