@@ -10,7 +10,7 @@ const compactRouteLabels={
   '/smpconnection':'SMP','/smpconsole':'Console Guide','/smpplugin':'Plugin','/smpguide':'SMP Encyclopedia','/storesmp':'SMP Store',
   '/arcade':'Arcade','/esclicker':'Clicker','/esfactory':'Factory','/esmines':'Mines','/esmoto':'MOTO','/estower':'Tower','/estowerdefense':'Tower Defense',
   '/estools':'ES Tools','/status':'Status','/networkstats':'Network Stats','/updates':'Updates','/whatsnew':"What's New",'/timeline':'Timeline',
-  '/nexus':'Network Nexus','/explore':'Explore ESN','/gallery':'Gallery','/settings':'Settings','/support':'Support','/about':'About','/leadership':'Leadership','/faq':'FAQ','/share':'Share'
+  '/nexus':'Network Nexus','/explore':'Explore ESN','/gallery':'Gallery','/settings':'Settings','/support':'Support','/about':'About','/leadership':'Leadership','/faq':'FAQ','/share':'Share','/site-builder':'Site Builder'
 }
 function localList(key){try{const value=JSON.parse(localStorage.getItem(key)||'[]');return Array.isArray(value)?value:[]}catch{return []}}
 
@@ -48,6 +48,7 @@ const baseCommands=[
   {label:'Share Deck',meta:'Generate branded ESN share cards',keywords:'share card png social smp arcade services store',kind:'route',value:'/share'},
   {label:'SMP Store',meta:'Official ESN SMP products',keywords:'store products keys relic warden void',kind:'route',value:'/storesmp'},
   {label:'ES Tools',meta:'Free browser utilities',keywords:'tools timer prompt randomizer',kind:'route',value:'/estools'},
+  {label:'Website Builder',meta:'Build a site for an ESN subdomain',keywords:'website builder ai subdomain hosting generate site',kind:'route',value:'/site-builder'},
   {label:'Verified Reviews',meta:'35 ESN customer reviews',keywords:'reviews testimonials verified',kind:'route',value:'/testimonials'},
   {label:'Join Discord',meta:'Open the official ESN Discord',keywords:'discord community support ticket',kind:'external',value:DISCORD_URL},
 ]
@@ -69,7 +70,7 @@ export default function PremiumChrome(){
   const gameRoutes=arcadeRoutes.filter(route=>route!=='/arcade')
   const routeKey=location.pathname.startsWith('/smp')||location.pathname.startsWith('/store')?'smp'
     :arcadeRoutes.includes(location.pathname)?'arcade'
-    :location.pathname==='/serviceshowcase'||location.pathname==='/portfolio'?'services'
+    :location.pathname==='/serviceshowcase'||location.pathname==='/portfolio'||location.pathname==='/site-builder'?'services'
     :location.pathname==='/estools'||location.pathname==='/tools'?'tools'
     :location.pathname==='/testimonials'?'reviews'
     :['/about','/leadership','/faq','/timeline','/updates','/status','/share','/vault','/nexus'].includes(location.pathname)?'about':'home'
