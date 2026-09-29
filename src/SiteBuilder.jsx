@@ -600,6 +600,76 @@ function applyExperiencePack(site,pack){
   }[next]
   return {...site,pack:next,sections:flags}
 }
+function themeAccent(theme){
+  return {midnight:'#65e8ff',neon:'#8cffec',clean:'#3157ff',ember:'#ff8066',ocean:'#63dbff',void:'#a879ff',aurora:'#64ffd8',forest:'#72e39b',rose:'#ff7daa',gold:'#ffd56a'}[theme]||'#65e8ff'
+}
+function sanitizeHex(value,fallback){
+  const v=String(value||'').trim()
+  return /^#[0-9a-f]{6}$/i.test(v)?v:(fallback||'#65e8ff')
+}
+function inferVisual(prompt,analysis){
+  const value=String(prompt||'').toLowerCase()
+  const shape=/sharp|square|angular|industrial/.test(value)?'sharp':/soft|cute|friendly|round|rounded/.test(value)?'soft':'rounded'
+  const density=/dense|dashboard|data-heavy|compact/.test(value)?'dense':/airy|minimal|spacious|luxury/.test(value)?'airy':'balanced'
+  const motion=/no animation|calm|subtle|simple/.test(value)?'calm':/cinematic|immersive|dramatic|esn style|like esn/.test(value)?'cinematic':'dynamic'
+  const nav=/minimal nav|simple nav/.test(value)?'minimal':/sidebar/.test(value)?'rail':'glass'
+  const type=/editorial|magazine|serif/.test(value)?'editorial':/technical|terminal|mono/.test(value)?'technical':'display'
+  return {accent:themeAccent(analysis.theme),shape,density,motion,nav,type}
+}
+function pageBlueprint(category){
+  const map={
+    fortnite:[['modes','Modes'],['updates','Updates'],['community','Community']],
+    minecraft:[['world','World'],['features','Features'],['join','Join']],
+    business:[['services','Services'],['about','About'],['contact','Contact']],
+    portfolio:[['work','Work'],['skills','Skills'],['contact','Contact']],
+    pet:[['story','Story'],['moments','Moments'],['favorites','Favorites']],
+    music:[['music','Music'],['story','Story'],['links','Listen']],
+    restaurant:[['menu','Menu'],['experience','Experience'],['visit','Visit']],
+    technology:[['product','Product'],['features','Features'],['start','Get Started']],
+    product:[['product','Product'],['features','Features'],['start','Get Started']],
+    blog:[['stories','Stories'],['topics','Topics'],['about','About']],
+    education:[['learn','Learn'],['resources','Resources'],['about','About']],
+    nonprofit:[['mission','Mission'],['work','Work'],['join','Get Involved']],
+    community:[['about','About'],['events','Events'],['join','Join']],
+    event:[['details','Details'],['schedule','Schedule'],['join','Attend']],
+    creator:[['about','About'],['projects','Projects'],['connect','Connect']],
+  }
+  return map[category]||[['about','About'],['highlights','Highlights'],['connect','Connect']]
+}
+function generatedPages(prompt,analysis,name,cards,faq,experience){
+  const details=websiteDetails(prompt,analysis)
+  return pageBlueprint(analysis.category).map(function(def,index){
+    const source=cards[index]||cards[0]
+    const detail=details[index]||source?.title||analysis.keywords[index]||analysis.label
+    const extra=experience.gallery[index]||experience.gallery[0]
+    return {
+      slug:cleanSlug(def[0]),
+      title:clamp(def[1],40),
+      eyebrow:clamp((analysis.label+' // '+def[1]).toUpperCase(),50),
+      headline:clamp(source?.title||def[1]+' // '+name,100),
+      copy:clamp((source?.copy||'')+' '+(extra?.copy||''),480),
+      items:[
+        {title:clamp(source?.title||displayTopic(detail),80),copy:clamp(source?.copy||'Explore '+detail+' as part of '+name+'.',260)},
+        {title:clamp(extra?.title||displayTopic(details[(index+1)%Math.max(details.length,1)]||analysis.label),80),copy:clamp(extra?.copy||'Go deeper into the website topic and why it matters.',260)},
+        {title:clamp(faq[index]?.q||'What to know',80),copy:clamp(faq[index]?.a||'Everything on this page stays connected to '+name+'.',260)},
+      ],
+    }
+  })
+}
+function accessibilityReadiness(site){
+  const s=safeSite(site)
+  let score=45
+  if(s.seoTitle.length>=20)score+=8
+  if(s.seoDescription.length>=80)score+=8
+  if(s.heroTitle&&s.heroCopy)score+=8
+  if(s.pages.length===3&&s.pages.every(function(page){return page.title&&page.headline&&page.copy}))score+=8
+  if(s.ctaLabel&&s.ctaLabel.length>=3)score+=6
+  if(s.visual.motion==='calm'||s.visual.motion==='dynamic'||s.visual.motion==='cinematic')score+=5
+  if(s.socials.every(function(link){return !link.url||link.label}))score+=5
+  if(s.faq.every(function(item){return item.q&&item.a}))score+=7
+  return Math.min(100,score)
+}
+
 function generateSite(prompt,brand,slug,variant){
   const analysis=analyzePrompt(prompt)
   const preset=PRESETS[analysis.category]||PRESETS.creator
@@ -609,24 +679,30 @@ function generateSite(prompt,brand,slug,variant){
   const cta=preset.ctas[ctaPick]
   const promptUrl=analysis.url
   const heroCopy=contextualize(preset.copies[pick%preset.copies.length],analysis,name)
+  const cards=generatedCards(prompt,analysis,name,preset)
+  const faq=generatedFaq(analysis,name,prompt)
+  const experience=generatedExperience(analysis,name,prompt)
   return {
     ...STARTER,
+    multiPage:true,
     slug:cleanSlug(slug),
     brand:name,
     category:analysis.category,
     theme:analysis.theme,
     layout:inferLayout(analysis.category,variant,prompt),
     audience:analysis.audience,
+    visual:inferVisual(prompt,analysis),
     seoTitle:clamp(name+' | '+preset.label,70),
     seoDescription:clamp(heroCopy,160),
     heroTitle:preset.heroes[pick],
     heroCopy,
     aboutTitle:'About '+name,
     aboutCopy:contextualize(preset.about,analysis,name),
-    cards:generatedCards(prompt,analysis,name,preset),
+    cards,
     stats:generatedStats(analysis,name,prompt),
-    faq:generatedFaq(analysis,name,prompt),
-    ...generatedExperience(analysis,name,prompt),
+    faq,
+    ...experience,
+    pages:generatedPages(prompt,analysis,name,cards,faq,experience),
     ctaTitle:cta[0],
     ctaCopy:cta[1],
     ctaLabel:cta[2],
@@ -643,21 +719,44 @@ function regenerateSection(site,prompt,section,variant){
   if(section==='faq')return {...site,faq:next.faq}
   if(section==='seo')return {...site,seoTitle:next.seoTitle,seoDescription:next.seoDescription}
   if(section==='experience')return {...site,announcement:next.announcement,status:next.status,timeline:next.timeline,testimonials:next.testimonials,gallery:next.gallery,socials:next.socials}
+  if(section==='pages')return {...site,multiPage:true,pages:next.pages,visual:next.visual}
   if(section==='cta')return {...site,category:next.category,ctaTitle:next.ctaTitle,ctaCopy:next.ctaCopy,ctaLabel:next.ctaLabel,ctaUrl:next.ctaUrl}
   return next
 }
 function safeSite(site){
-  const legacy=Number(site.version||1)<3
+  const sourceVersion=Number(site.version||1)
+  const legacy=sourceVersion<3
   const legacySections={announcement:false,status:false,timeline:false,testimonials:false,gallery:false,socials:false}
   const sections={...(legacy?legacySections:STARTER.sections),...(site.sections||{})}
+  const rawVisual={...STARTER.visual,...(site.visual||{})}
+  const pages=(site.pages||STARTER.pages).slice(0,3).map(function(page,index){
+    return {
+      slug:cleanSlug(page.slug)||STARTER.pages[index]?.slug||('page-'+(index+1)),
+      title:clamp(page.title,40),
+      eyebrow:clamp(page.eyebrow,50),
+      headline:clamp(page.headline,100),
+      copy:clamp(page.copy,480),
+      items:(page.items||[]).slice(0,3).map(function(item){return {title:clamp(item.title,80),copy:clamp(item.copy,260)}}),
+    }
+  })
   return {
-    version:3,
+    version:4,
+    multiPage:site.multiPage===true||sourceVersion>=4,
     slug:cleanSlug(site.slug),
     brand:clamp(site.brand,60),
     category:clamp(site.category,24),
     theme:THEMES.includes(site.theme)?site.theme:'midnight',
     layout:LAYOUTS.includes(site.layout)?site.layout:'spotlight',
     audience:clamp(site.audience,60),
+    visual:{
+      accent:sanitizeHex(rawVisual.accent,themeAccent(THEMES.includes(site.theme)?site.theme:'midnight')),
+      shape:SHAPES.includes(rawVisual.shape)?rawVisual.shape:'rounded',
+      density:DENSITIES.includes(rawVisual.density)?rawVisual.density:'balanced',
+      motion:MOTIONS.includes(rawVisual.motion)?rawVisual.motion:'dynamic',
+      nav:['glass','minimal','rail'].includes(rawVisual.nav)?rawVisual.nav:'glass',
+      type:['display','editorial','technical'].includes(rawVisual.type)?rawVisual.type:'display',
+    },
+    pages,
     seoTitle:clamp(site.seoTitle||site.brand,70),
     seoDescription:clamp(site.seoDescription||site.heroCopy,160),
     heroTitle:clamp(site.heroTitle,100),
