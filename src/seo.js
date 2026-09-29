@@ -26,6 +26,19 @@ export const SEO_ROUTES={
     description:'Explore ES Network services for Fortnite coaching, creator editing, Discord server setup, website creation, branding, and selected custom digital projects.',
     index:true,
   },
+  '/store-ai':{
+    label:'ESN Store AI',
+    title:'ESN Store AI | Products, Services, Prices & Checkout Help',
+    description:'Ask ESN Store AI about official ES Network SMP products and services, compare verified prices, check delivery requirements, find checkout links, and unlock staff store tools with the ESN staff code.',
+    index:true,
+  },
+  '/storeai':{
+    label:'ESN Store AI',
+    title:'ESN Store AI | Products, Services, Prices & Checkout Help',
+    description:'Ask ESN Store AI about official ES Network products and services.',
+    canonical:'/store-ai',
+    index:false,
+  },
   '/storesmp':{
     label:'SMP Store',
     title:'ESN SMP Store | Minecraft Keys, Relics & Bundles',
