@@ -1,0 +1,122 @@
+name: Deploy ESN Domains Worker
+
+on:
+  workflow_dispatch:
+    inputs:
+      enable_dns_mutations:
+        description: "Allow staff approvals to create/remove Cloudflare hostnames"
+        required: true
+        default: false
+        type: boolean
+      configure_saas:
+        description: "Configure Cloudflare for SaaS fallback origin"
+        required: true
+        default: false
+        type: boolean
+      subdomain_monthly_cents:
+        description: "Monthly ESN subdomain price in cents (0 = not activated)"
+        required: true
+        default: "0"
+        type: string
+      custom_domain_monthly_cents:
+        description: "Monthly custom-domain connection price in cents (0 = not activated)"
+        required: true
+        default: "0"
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      CLOUDFLARE_ZONE_ID: ${{ secrets.CLOUDFLARE_ZONE_ID }}
+      D1_DATABASE_ID: ${{ secrets.CLOUDFLARE_D1_DATABASE_ID }}
+      STAFF_CODE_HASH: ${{ secrets.ESN_DOMAINS_STAFF_CODE_HASH }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Validate required secrets
+        shell: bash
+        run: |
+          set -euo pipefail
+          for name in CLOUDFLARE_API_TOKEN CLOUDFLARE_ACCOUNT_ID CLOUDFLARE_ZONE_ID D1_DATABASE_ID STAFF_CODE_HASH; do
+            if [ -z "${!name:-}" ]; then
+              echo "::error::Missing required GitHub secret: $name"
+              exit 1
+            fi
+          done
+
+      - name: Prepare Worker configuration
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd cloudflare/esn-domains-worker
+          cp wrangler.toml.example wrangler.toml
+          sed -i "s/REPLACE_WITH_D1_DATABASE_ID/${D1_DATABASE_ID}/g" wrangler.toml
+          sed -i 's/SUBDOMAIN_MONTHLY_CENTS = "0"/SUBDOMAIN_MONTHLY_CENTS = "${{ inputs.subdomain_monthly_cents }}"/' wrangler.toml
+          sed -i 's/CUSTOM_DOMAIN_MONTHLY_CENTS = "0"/CUSTOM_DOMAIN_MONTHLY_CENTS = "${{ inputs.custom_domain_monthly_cents }}"/' wrangler.toml
+          if [ "${{ inputs.enable_dns_mutations }}" = "true" ]; then
+            sed -i 's/ALLOW_DNS_MUTATIONS = "false"/ALLOW_DNS_MUTATIONS = "true"/' wrangler.toml
+          fi
+
+      - name: Apply D1 schema
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd cloudflare/esn-domains-worker
+          npx --yes wrangler@latest d1 execute esn-domains --remote --file=schema.sql --config=wrangler.toml
+
+      - name: Deploy Worker safely
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd cloudflare/esn-domains-worker
+          npx --yes wrangler@latest deploy --config=wrangler.toml
+
+      - name: Set runtime secrets
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd cloudflare/esn-domains-worker
+          printf '%s' "$CLOUDFLARE_API_TOKEN" | npx --yes wrangler@latest secret put CLOUDFLARE_API_TOKEN --config=wrangler.toml
+          printf '%s' "$CLOUDFLARE_ACCOUNT_ID" | npx --yes wrangler@latest secret put CLOUDFLARE_ACCOUNT_ID --config=wrangler.toml
+          printf '%s' "$CLOUDFLARE_ZONE_ID" | npx --yes wrangler@latest secret put CLOUDFLARE_ZONE_ID --config=wrangler.toml
+          printf '%s' "$STAFF_CODE_HASH" | npx --yes wrangler@latest secret put STAFF_CODE_HASH --config=wrangler.toml
+
+      - name: Attach ESN API and origin domains
+        shell: bash
+        run: |
+          set -euo pipefail
+          for host in domains-api.esnoffical.com domains-origin.esnoffical.com; do
+            curl --fail-with-body --silent --show-error               "https://api.cloudflare.com/client/v4/accounts/${CLOUDFLARE_ACCOUNT_ID}/workers/domains"               -X PUT               -H "Authorization: Bearer ${CLOUDFLARE_API_TOKEN}"               -H "Content-Type: application/json"               --data "{"hostname":"${host}","service":"esn-domains","zone_id":"${CLOUDFLARE_ZONE_ID}","zone_name":"esnoffical.com"}"
+          done
+
+      - name: Configure Cloudflare for SaaS fallback origin
+        if: ${{ inputs.configure_saas }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl --fail-with-body --silent --show-error             "https://api.cloudflare.com/client/v4/zones/${CLOUDFLARE_ZONE_ID}/custom_hostnames/fallback_origin"             -X PUT             -H "Authorization: Bearer ${CLOUDFLARE_API_TOKEN}"             -H "Content-Type: application/json"             --data '{"origin":"domains-origin.esnoffical.com"}'
+
+      - name: Deployment summary
+        shell: bash
+        run: |
+          {
+            echo "## ESN Domains Worker"
+            echo ""
+            echo "- API: https://domains-api.esnoffical.com"
+            echo "- Origin: https://domains-origin.esnoffical.com"
+            echo "- DNS mutations: ${{ inputs.enable_dns_mutations }}"
+            echo "- SaaS fallback requested: ${{ inputs.configure_saas }}"
+            echo "- Subdomain monthly cents: ${{ inputs.subdomain_monthly_cents }}"
+            echo "- Custom-domain monthly cents: ${{ inputs.custom_domain_monthly_cents }}"
+          } >> "$GITHUB_STEP_SUMMARY"
