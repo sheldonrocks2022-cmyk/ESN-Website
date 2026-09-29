@@ -795,16 +795,17 @@ function safeSite(site){
 function siteQuality(site,prompt){
   const s=safeSite(site)
   let score=0
-  if(s.brand&&s.brand!=='My Website')score+=10
-  if(s.slug)score+=10
-  if(s.heroTitle.length>=18)score+=10
-  if(s.heroCopy.length>=80)score+=10
-  if(s.aboutCopy.length>=100)score+=10
+  if(s.brand&&s.brand!=='My Website')score+=8
+  if(s.slug)score+=8
+  if(s.heroTitle.length>=18&&s.heroCopy.length>=80)score+=12
+  if(s.aboutCopy.length>=100)score+=8
   if(s.cards.every(function(card){return card.title&&card.copy.length>=50}))score+=10
-  if(s.stats.length===3&&s.stats.every(function(item){return item.value&&item.label}))score+=10
-  if(s.faq.length===3&&s.faq.every(function(item){return item.q&&item.a.length>=40}))score+=10
+  if(s.stats.length===3&&s.stats.every(function(item){return item.value&&item.label}))score+=8
+  if(s.faq.length===3&&s.faq.every(function(item){return item.q&&item.a.length>=40}))score+=8
   if(s.seoTitle.length>=20&&s.seoDescription.length>=80)score+=10
-  if(promptScore(prompt)>=70)score+=10
+  if(s.multiPage&&s.pages.length===3&&s.pages.every(function(page){return page.slug&&page.title&&page.headline&&page.copy&&page.items.length===3}))score+=18
+  if(/^#[0-9a-f]{6}$/i.test(s.visual.accent)&&s.visual.shape&&s.visual.motion)score+=5
+  if(promptScore(prompt)>=70)score+=5
   return Math.min(100,score)
 }
 
@@ -1057,6 +1058,8 @@ export default function SiteBuilderPage(){
             <div><span>SHAPE</span><select value={site.visual?.shape||'rounded'} onChange={function(e){updateVisual('shape',e.target.value)}}>{SHAPES.map(function(item){return <option value={item} key={item}>{item.toUpperCase()}</option>})}</select></div>
             <div><span>DENSITY</span><select value={site.visual?.density||'balanced'} onChange={function(e){updateVisual('density',e.target.value)}}>{DENSITIES.map(function(item){return <option value={item} key={item}>{item.toUpperCase()}</option>})}</select></div>
             <div><span>MOTION</span><select value={site.visual?.motion||'dynamic'} onChange={function(e){updateVisual('motion',e.target.value)}}>{MOTIONS.map(function(item){return <option value={item} key={item}>{item.toUpperCase()}</option>})}</select></div>
+            <div><span>NAVIGATION</span><select value={site.visual?.nav||'glass'} onChange={function(e){updateVisual('nav',e.target.value)}}><option value="glass">GLASS</option><option value="minimal">MINIMAL</option><option value="rail">RAIL</option></select></div>
+            <div><span>TYPE SYSTEM</span><select value={site.visual?.type||'display'} onChange={function(e){updateVisual('type',e.target.value)}}><option value="display">DISPLAY</option><option value="editorial">EDITORIAL</option><option value="technical">TECHNICAL</option></select></div>
           </div>
           <label>AUDIENCE<input value={site.audience||''} onChange={function(e){update('audience',e.target.value)}}/></label>
           <label>HERO HEADLINE<input value={site.heroTitle} onChange={function(e){update('heroTitle',e.target.value)}}/></label>
