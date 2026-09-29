@@ -1,0 +1,35 @@
+name: Auto Create Free ESN Subdomain
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: esn-free-subdomain-dns
+  cancel-in-progress: false
+
+jobs:
+  provision:
+    if: startsWith(github.event.issue.title, '[FREE-SUBDOMAIN]')
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      GITHUB_TOKEN: ${{ github.token }}
+      SPACESHIP_API_KEY: ${{ secrets.SPACESHIP_API_KEY }}
+      SPACESHIP_API_SECRET: ${{ secrets.SPACESHIP_API_SECRET }}
+
+    steps:
+      - name: Checkout trusted ESN automation
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Provision requested free subdomain
+        run: node .github/scripts/provision-free-subdomain.mjs
