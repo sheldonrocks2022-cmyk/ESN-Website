@@ -1,6 +1,6 @@
 import fs from 'node:fs'
 import path from 'node:path'
-import { SEO_ROUTES, SOCIAL_IMAGE_ALT, SOCIAL_IMAGE_URL, canonicalUrl, robotsContent, structuredDataFor } from '../src/seo.js'
+import { SEO_ROUTES, SOCIAL_IMAGE_ALT, canonicalUrl, robotsContent, socialImageFor, structuredDataFor } from '../src/seo.js'
 
 const sourcePath = path.join('dist', 'index.html')
 if (!fs.existsSync(sourcePath)) {
@@ -27,6 +27,7 @@ function injectSeo(html, route) {
   const meta = SEO_ROUTES[route]
   const url = canonicalUrl(route)
   const robots = robotsContent(route)
+  const socialImage = socialImageFor(route)
   const schema = JSON.stringify(structuredDataFor(route)).replaceAll('<', '\\u003c')
 
   html = html.replace(/<title>.*?<\/title>/s, `<title>${escapeHtml(meta.title)}</title>`)
@@ -78,7 +79,7 @@ function injectSeo(html, route) {
   html = replaceMeta(
     html,
     /<meta property="og:image" content="[^"]*"\s*\/?>/,
-    `<meta property="og:image" content="${SOCIAL_IMAGE_URL}" />`,
+    `<meta property="og:image" content="${socialImage}" />`,
   )
   html = replaceMeta(
     html,
@@ -118,7 +119,7 @@ function injectSeo(html, route) {
   html = replaceMeta(
     html,
     /<meta name="twitter:image" content="[^"]*"\s*\/?>/,
-    `<meta name="twitter:image" content="${SOCIAL_IMAGE_URL}" />`,
+    `<meta name="twitter:image" content="${socialImage}" />`,
   )
   html = replaceMeta(
     html,
