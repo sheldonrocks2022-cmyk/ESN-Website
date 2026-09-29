@@ -257,7 +257,7 @@ export default function PremiumChrome(){
 
     {!isGame&&<nav className="mobile-bottom-nav" aria-label="Mobile primary navigation">
       <Link className={location.pathname==='/'?'active':''} to="/"><span>⌂</span><small>Home</small></Link>
-      <Link className={location.pathname==='/serviceshowcase'?'active':''} to="/serviceshowcase"><span>◇</span><small>Services</small></Link>
+      <Link className={['/serviceshowcase','/portfolio','/store-ai','/hosting','/site-builder','/estools'].includes(location.pathname)?'active':''} to="/serviceshowcase"><span>◇</span><small>Create</small></Link>
       <Link className={routeKey==='smp'?'active':''} to="/smpconnection"><span>⬡</span><small>SMP</small></Link>
       <Link className={routeKey==='arcade'?'active':''} to="/arcade"><span>▣</span><small>Arcade</small></Link>
       <button type="button" className={open?'active':''} onClick={()=>setOpen(true)}><span>•••</span><small>More</small></button>
