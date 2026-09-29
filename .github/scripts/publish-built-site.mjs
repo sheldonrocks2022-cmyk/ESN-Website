@@ -18,6 +18,8 @@ const CARD_STYLES=new Set(['clean','glass','glow','outline','tiles','floating'])
 const BUTTON_STYLES=new Set(['pill','rounded','square','outline','glow'])
 const FX_STYLES=new Set(['none','glow','grain','scanlines','stars'])
 const CONTRASTS=new Set(['soft','normal','high'])
+const FONT_STYLES=new Set(['system','geometric','serif','mono','rounded','condensed'])
+const HOME_SECTION_KEYS=['status','story','timeline','highlights','gallery','feature','testimonials','process','faq','socials','countdown','minecraft','visitor']
 const BLOCKED=/password|passcode|seed phrase|wallet recovery|credit card|social security|bank login|verify your account|sign in to continue/i
 const SLUG_RE=/^[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?$/
 
@@ -103,7 +105,7 @@ function sanitize(site){
   const rawVisual=site.visual&&typeof site.visual==='object'?site.visual:{}
   const hex=value=>/^#[0-9a-f]{6}$/i.test(String(value||'').trim())?String(value).trim():'#65e8ff'
   return {
-    version:6,
+    version:7,
     multiPage:site.multiPage===true,
     slug:String(site.slug||'').toLowerCase(),
     brand:text(site.brand,60),
@@ -118,6 +120,7 @@ function sanitize(site){
       motion:MOTIONS.has(rawVisual.motion)?rawVisual.motion:'dynamic',
       nav:['glass','minimal','rail'].includes(rawVisual.nav)?rawVisual.nav:'glass',
       type:['display','editorial','technical'].includes(rawVisual.type)?rawVisual.type:'display',
+      font:FONT_STYLES.has(rawVisual.font)?rawVisual.font:'system',
       style:STYLE_PRESETS.has(rawVisual.style)?rawVisual.style:'studio',
       background:BACKGROUNDS.has(rawVisual.background)?rawVisual.background:'gradient',
       surface:SURFACES.has(rawVisual.surface)?rawVisual.surface:'elevated',
@@ -152,6 +155,9 @@ function sanitize(site){
       testimonials:rawSections.testimonials!==false,
       gallery:rawSections.gallery!==false,
       socials:rawSections.socials!==false,
+      countdown:rawSections.countdown===true,
+      minecraft:rawSections.minecraft===true,
+      visitor:rawSections.visitor===true,
     },
     announcement:{
       label:text(site.announcement?.label,24),
@@ -163,6 +169,12 @@ function sanitize(site){
     testimonials:Array.isArray(site.testimonials)?site.testimonials.slice(0,3).map(item=>({quote:text(item.quote,280),name:text(item.name,60),role:text(item.role,60)})):[],
     gallery:Array.isArray(site.gallery)?site.gallery.slice(0,4).map(item=>({title:text(item.title,80),copy:text(item.copy,220),image:image(item.image),alt:text(item.alt||item.title,100)})):[],
     socials:Array.isArray(site.socials)?site.socials.slice(0,3).map(item=>({label:text(item.label,40),url:url(item.url)})):[],
+    galleryMode:['grid','carousel'].includes(site.galleryMode)?site.galleryMode:'grid',
+    sectionOrder:(Array.isArray(site.sectionOrder)?site.sectionOrder:HOME_SECTION_KEYS).filter((key,index,array)=>HOME_SECTION_KEYS.includes(key)&&array.indexOf(key)===index).concat(HOME_SECTION_KEYS.filter(key=>!(Array.isArray(site.sectionOrder)?site.sectionOrder:[]).includes(key))).slice(0,HOME_SECTION_KEYS.length),
+    countdown:{title:text(site.countdown?.title,80),target:text(site.countdown?.target,40),label:text(site.countdown?.label,30)},
+    minecraft:{address:text(site.minecraft?.address,120).replace(/[^a-z0-9.\-_:]/gi,''),bedrock:site.minecraft?.bedrock===true,title:text(site.minecraft?.title,80)},
+    visitor:{label:text(site.visitor?.label,60)},
+    notFound:{title:text(site.notFound?.title,100),copy:text(site.notFound?.copy,300),buttonLabel:text(site.notFound?.buttonLabel,40)},
     ctaTitle:text(site.ctaTitle,100),
     ctaCopy:text(site.ctaCopy,260),
     ctaLabel:text(site.ctaLabel,50),
@@ -175,7 +187,7 @@ function sanitize(site){
 
 if(!agreed)await reject('The required safe-publishing confirmation is missing.')
 if(!SLUG_RE.test(slug))await reject('The ESN subdomain name is invalid.')
-if(!encoded||encoded.length>130000)await reject('The site payload is missing or too large.')
+if(!encoded||encoded.length>150000)await reject('The site payload is missing or too large.')
 
 let decoded
 try{decoded=decodePayload(encoded)}catch{await reject('The site payload could not be decoded.')}
