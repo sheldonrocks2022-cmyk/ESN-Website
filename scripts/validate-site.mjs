@@ -41,6 +41,7 @@ const requiredRoutes = [
   '/testimonials',
   '/faq',
   '/store-ai',
+  '/hosting',
   '/domains',
   '/operations',
   '/incidents',
@@ -65,7 +66,7 @@ const missingRoutes = requiredRoutes.filter((route) => {
 
 const missingPayments = requiredPaymentLinks.filter((url) => !app.includes(url))
 
-const sitemapExcludedAliases = new Set(['/home', '/store', '/store/smp', '/tools', '/vault', '/storesmp', '/smpconnection', '/smpconsole', '/smpplugin', '/smpguide', '/smpcheck'])
+const sitemapExcludedAliases = new Set(['/home', '/store', '/store/smp', '/tools', '/vault', '/storesmp', '/smpconnection', '/smpconsole', '/smpplugin', '/smpguide', '/smpcheck', '/domains'])
 const sitemapRoutes = requiredRoutes
   .filter((route) => !sitemapExcludedAliases.has(route))
   .filter((route) => !sitemap.includes(`https://esnoffical.com${route === '/' ? '/' : route}`))
@@ -92,10 +93,6 @@ const requiredMigrationFiles = [
   'src/storeAi.css',
   'src/Domains.jsx',
   'src/domains.css',
-  'cloudflare/esn-domains-worker/src/index.js',
-  'cloudflare/esn-domains-worker/schema.sql',
-  'cloudflare/esn-domains-worker/wrangler.toml.example',
-  'cloudflare/esn-domains-worker/README.md',
   'src/reviews.js',
   'src/arcade/shared.js',
   'src/arcade/OriginalFrame.jsx',
@@ -121,8 +118,6 @@ const indexHtml = fs.readFileSync('index.html','utf8')
 const socialPreview = fs.readFileSync('public/esn-social-card.svg','utf8')
 const storeAi = fs.readFileSync('src/StoreAI.jsx','utf8')
 const domainsPortal = fs.readFileSync('src/Domains.jsx','utf8')
-const domainsWorker = fs.readFileSync('cloudflare/esn-domains-worker/src/index.js','utf8')
-const domainsWrangler = fs.readFileSync('cloudflare/esn-domains-worker/wrangler.toml.example','utf8')
 
 if (missingRoutes.length) problems.push(`Missing app routes: ${missingRoutes.join(', ')}`)
 if (missingPayments.length) problems.push(`Missing payment links: ${missingPayments.join(', ')}`)
@@ -166,14 +161,13 @@ for (const url of requiredPaymentLinks) { if (!storeAi.includes(url)) problems.p
 if (!storeAi.includes('I will not invent a payment link') || !storeAi.includes('PRICE NOT VERIFIED')) problems.push('Store AI catalog truth safeguards are missing.')
 if (!seo.includes("'/store-ai':{")) problems.push('Store AI SEO route missing.')
 if (!sitemap.includes('https://esnoffical.com/store-ai')) problems.push('Store AI missing from sitemap.')
-if (!app.includes("import DomainsPage from './Domains'") || !app.includes('path="/domains" element={<DomainsPage />}')) problems.push('ESN Domains route or module is not wired.')
-if (!domainsPortal.includes('ESN DOMAINS') || !domainsPortal.includes('CHECK AVAILABILITY') || !domainsPortal.includes('CUSTOM DOMAIN') || !domainsPortal.includes('CLOUDFLARE SETUP REQUIRED')) problems.push('ESN Domains portal is incomplete.')
-if (!domainsPortal.includes('STAFF_HASH') || domainsPortal.includes("'052609'")) problems.push('ESN Domains staff UI gate is missing its hash check or exposes the raw staff code.')
-if (!domainsWorker.includes('/api/check') || !domainsWorker.includes('/api/reservations') || !domainsWorker.includes('/api/admin/login') || !domainsWorker.includes('attachWorkerDomain') || !domainsWorker.includes('createCustomHostname')) problems.push('ESN Domains Worker control plane is incomplete.')
-if (!domainsWorker.includes("ALLOW_DNS_MUTATIONS") || !domainsWrangler.includes('ALLOW_DNS_MUTATIONS = "false"')) problems.push('ESN Domains DNS mutation safety lock is missing or enabled by default.')
-if (domainsWorker.includes('CLOUDFLARE_API_TOKEN=') || domainsWrangler.includes('Bearer ') || domainsWrangler.match(/[A-Fa-f0-9]{32,}/)) problems.push('Potential Cloudflare secret was committed in ESN Domains config.')
-if (!seo.includes("'/domains':{")) problems.push('ESN Domains SEO route missing.')
-if (!sitemap.includes('https://esnoffical.com/domains')) problems.push('ESN Domains missing from sitemap.')
+if (!app.includes("import DomainsPage from './Domains'") || !app.includes('path="/hosting" element={<DomainsPage />}') || !app.includes('path="/domains" element={<Navigate to="/hosting" replace />}')) problems.push('ESN Hosting route, legacy redirect, or module is not wired.')
+if (!domainsPortal.includes('ESN HOSTING') || !domainsPortal.includes('BUILD ACTIVATION REQUEST') || !domainsPortal.includes('CONNECT YOUR DOMAIN') || !domainsPortal.includes('NO NAMESERVER CHANGE')) problems.push('ESN Hosting manual activation portal is incomplete.')
+if (!domainsPortal.includes('SPACESHIP') && !domainsPortal.includes('Spaceship')) problems.push('ESN Hosting must preserve the Spaceship DNS manual workflow.')
+if (!domainsPortal.includes('STAFF_HASH') || domainsPortal.includes("'052609'")) problems.push('ESN Hosting staff UI gate is missing its hash check or exposes the raw staff code.')
+if (!domainsPortal.includes('esn_hosting_requests_v1') || !domainsPortal.includes('OPEN ESN DISCORD')) problems.push('ESN Hosting local request handoff is incomplete.')
+if (!seo.includes("'/hosting':{") || !seo.includes("canonical:'/hosting'")) problems.push('ESN Hosting SEO route or Domains alias canonical is missing.')
+if (!sitemap.includes('https://esnoffical.com/hosting')) problems.push('ESN Hosting missing from sitemap.')
 const smpGate = fs.readFileSync('src/SMPStaffGate.jsx','utf8')
 if (!smpGate.includes("SMP_ACCESS_SESSION_KEY") || !smpGate.includes("STAFF_CODE_HASH") || smpGate.includes("052609")) problems.push('SMP staff gate missing, unhashed, or staff code exposed in source.')
 for (const route of ['/storesmp','/smpconnection','/smpconsole','/smpplugin','/smpguide','/smpcheck']) { if (!app.includes(`path="${route}" element={<SMPStaffGate`)) problems.push(`SMP route is not staff-gated: ${route}`) }
