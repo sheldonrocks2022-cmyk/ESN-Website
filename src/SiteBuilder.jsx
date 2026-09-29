@@ -1217,7 +1217,7 @@ export default function SiteBuilderPage(){
   }
 
   return <>
-    <section className="page-hero builder-hero"><div className="shell page-hero-inner"><div className="page-hero-copy"><span className="eyebrow">ESN WEBSITE BUILDER // 1000000X GENERATOR V7</span><h1>Generate a different design language every time.</h1><p>V7 adds the Style Lab: expanded themes and layouts plus independent controls for design style, backgrounds, surfaces, hero composition, cards, buttons, effects, contrast, navigation, typography, shape, density, and motion—while keeping the multi-page V6 architecture and publishing system.</p></div><div className="page-hero-mark"><span>V7</span><small>1000000X STYLE LAB</small></div></div></section>
+    <section className="page-hero builder-hero"><div className="shell page-hero-inner"><div className="page-hero-copy"><span className="eyebrow">ESN WEBSITE BUILDER // ATTRACTION ENGINE V8</span><h1>Start from an idea, a reference, a photo, or another design.</h1><p>V8 adds a public template gallery, safe public-site remixing, screenshot-based visual reference analysis, and real publishable image galleries on top of the V7 Style Lab and multi-page site system.</p></div><div className="page-hero-mark"><span>V8</span><small>REFERENCE • REMIX • MEDIA</small></div></div></section>
     <section className="section"><div className="shell builder-layout">
       <div className="builder-controls">
         <div className="builder-panel"><span className="eyebrow">01 // IDEA + GENERATION</span>
@@ -1238,6 +1238,19 @@ export default function SiteBuilderPage(){
           <div className="builder-variants"><button type="button" onClick={function(){generateVariant(1)}}>VERSION A</button><button type="button" onClick={function(){generateVariant(2)}}>VERSION B</button><button className="flagship-variant" type="button" onClick={function(){generateVariant(3)}}>VERSION C • FLAGSHIP</button></div>
           <div className="builder-generation-actions"><button className="builder-generate" type="button" onClick={generate}>GENERATE NEXT VERSION</button><button type="button" disabled={!history.length} onClick={undoAi}>UNDO AI CHANGE</button></div>
           {message&&<div className="builder-message">{message}</div>}
+        </div>
+
+        <div className="builder-panel builder-growth-lab">
+          <div className="builder-panel-head"><span className="eyebrow">01B // REFERENCE + REMIX LAB</span><span className="builder-lab-badge">NEW</span></div>
+          <span className="builder-subhead">PUBLIC TEMPLATE GALLERY</span>
+          <div className="builder-template-gallery">{PUBLIC_TEMPLATES.map(function(template){return <button type="button" onClick={function(){applyTemplate(template)}} key={template.id}><span>{template.tag}</span><strong>{template.name}</strong><small>{template.style.toUpperCase()} • {template.layout.toUpperCase()}</small><em>USE TEMPLATE →</em></button>})}</div>
+          <span className="builder-subhead">REFERENCE → SITE</span>
+          <div className="builder-reference-row"><input value={referenceUrl} onChange={function(e){setReferenceUrl(e.target.value)}} placeholder="https://public-site.com"/><button type="button" onClick={useReferenceUrl}>USE REFERENCE</button></div>
+          <label className="builder-file-drop">SCREENSHOT REFERENCE<input type="file" accept="image/png,image/jpeg,image/webp" onChange={function(e){const file=e.target.files?.[0];if(file)useReferenceScreenshot(file);e.target.value=''}}/><span>Upload a screenshot → ESN analyzes its color mood, contrast, and composition.</span></label>
+          <small>External reference sites are used only as general visual inspiration. ESN does not copy their text, branding, or protected assets.</small>
+          <span className="builder-subhead">REMIX A PUBLIC ESN DESIGN</span>
+          <div className="builder-reference-row"><input value={remixSource} onChange={function(e){setRemixSource(e.target.value)}} placeholder="cutecats or https://esnoffical.com/sites/cutecats"/><button type="button" onClick={function(){remixPublishedSite(remixSource)}}>REMIX DESIGN</button></div>
+          <small>Remix imports the public site’s design system and architecture, then generates original content for your current site.</small>
         </div>
 
         <div className="builder-panel"><div className="builder-panel-head"><span className="eyebrow">02 // LAYOUT + STYLE</span><button type="button" onClick={function(){regenerate('hero')}}>REGENERATE HERO</button></div>
@@ -1287,7 +1300,7 @@ export default function SiteBuilderPage(){
           <span className="builder-subhead">TESTIMONIAL WALL</span>
           {(site.testimonials||STARTER.testimonials).map(function(item,index){return <div className="builder-card-editor" key={index}><textarea value={item.quote} onChange={function(e){updateTestimonial(index,'quote',e.target.value)}}/><div className="builder-inline-editor"><input value={item.name} onChange={function(e){updateTestimonial(index,'name',e.target.value)}}/><input value={item.role} onChange={function(e){updateTestimonial(index,'role',e.target.value)}}/></div></div>})}
           <span className="builder-subhead">SHOWCASE TILES</span>
-          {(site.gallery||STARTER.gallery).map(function(item,index){return <div className="builder-card-editor" key={index}><input value={item.title} onChange={function(e){updateGallery(index,'title',e.target.value)}}/><textarea value={item.copy} onChange={function(e){updateGallery(index,'copy',e.target.value)}}/></div>})}
+          {(site.gallery||STARTER.gallery).map(function(item,index){return <div className="builder-card-editor builder-media-editor" key={index}>{item.image&&<img src={item.image} alt={item.alt||item.title}/>}<input value={item.title} onChange={function(e){updateGallery(index,'title',e.target.value)}}/><textarea value={item.copy} onChange={function(e){updateGallery(index,'copy',e.target.value)}}/><input value={item.alt||''} onChange={function(e){updateGallery(index,'alt',e.target.value)}} placeholder="Image description / alt text"/><div className="builder-media-actions"><label>UPLOAD IMAGE<input type="file" accept="image/png,image/jpeg,image/webp" onChange={function(e){const file=e.target.files?.[0];if(file)uploadGalleryImage(index,file);e.target.value=''}}/></label><input value={item.image&&item.image.startsWith('data:')?'':(item.image||'')} onChange={function(e){updateGallery(index,'image',safeImage(e.target.value))}} placeholder="or paste image URL"/>{item.image&&<button type="button" onClick={function(){updateGallery(index,'image','')}}>REMOVE</button>}</div></div>})}
           <span className="builder-subhead">SOCIAL / EXTERNAL LINKS</span>
           {(site.socials||STARTER.socials).map(function(item,index){return <div className="builder-inline-editor" key={index}><input value={item.label} onChange={function(e){updateSocial(index,'label',e.target.value)}}/><input value={item.url} onChange={function(e){updateSocial(index,'url',e.target.value)}} placeholder="https://..."/></div>})}
         </div>
