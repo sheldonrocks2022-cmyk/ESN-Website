@@ -848,7 +848,7 @@ function downloadHtml(site){
   anchor.remove()
   setTimeout(function(){URL.revokeObjectURL(url)},1000)
 }
-function FlagshipSitePreview({site}){
+function FlagshipSitePreview({site,preview=false,onPageChange}){
   const s=safeSite(site)
   const routeItems=[
     {index:'01',title:s.cards[0]?.title||'Explore',meta:s.cards[0]?.copy||''},
@@ -858,7 +858,7 @@ function FlagshipSitePreview({site}){
   ]
   return <div className={'esn-built-site generated-flagship theme-'+s.theme}>
     <div className="gfs-ambient" aria-hidden="true"><i/><i/><i/></div>
-    <nav className="gfs-nav"><strong>{s.brand}</strong><div><a href="#story">Story</a><a href="#highlights">Highlights</a><a href="#timeline">Timeline</a><a href="#faq">FAQ</a></div><span>LIVE</span></nav>
+    <nav className="gfs-nav"><strong>{s.brand}</strong><div>{s.multiPage?<>{preview?<button type="button" onClick={function(){onPageChange?.('home')}}>Home</button>:<a href={'/sites/'+s.slug}>Home</a>}{s.pages.map(function(page){return preview?<button type="button" key={page.slug} onClick={function(){onPageChange?.(page.slug)}}>{page.title}</button>:<a key={page.slug} href={'/sites/'+s.slug+'/'+page.slug}>{page.title}</a>})}</>:<><a href="#story">Story</a><a href="#highlights">Highlights</a><a href="#timeline">Timeline</a><a href="#faq">FAQ</a></>}</div><span>LIVE</span></nav>
     {s.sections.announcement&&<section className="gfs-announcement"><span>{s.announcement.label}</span><strong>{s.announcement.title}</strong><p>{s.announcement.copy}</p><i>↗</i></section>}
 
     <section className="gfs-hero">
@@ -922,11 +922,30 @@ function FlagshipSitePreview({site}){
   </div>
 }
 
-function SitePreview({site}){
+function GeneratedSubPage({site,page,preview=false,onPageChange}){
   const s=safeSite(site)
-  if(s.layout==='flagship')return <FlagshipSitePreview site={s}/>
-  return <div className={'esn-built-site theme-'+s.theme+' layout-'+s.layout}>
-    <nav><strong>{s.brand}</strong><div><a href="#about">About</a><a href="#highlights">Highlights</a><a href="#faq">FAQ</a></div></nav>
+  const current=s.pages.find(function(item){return item.slug===page})||s.pages[0]
+  if(!current)return <div className="builder-public-state"><strong>PAGE NOT FOUND</strong></div>
+  const visualStyle={{'--custom-accent':s.visual.accent}}
+  return <div style={visualStyle} className={'esn-built-site generated-subpage theme-'+s.theme+' shape-'+s.visual.shape+' density-'+s.visual.density+' motion-'+s.visual.motion+' type-'+s.visual.type}>
+    <nav className={'generated-page-nav nav-'+s.visual.nav}><strong>{s.brand}</strong><div>{preview?<button type="button" onClick={function(){onPageChange?.('home')}}>Home</button>:<a href={'/sites/'+s.slug}>Home</a>}{s.pages.map(function(item){return preview?<button type="button" className={item.slug===current.slug?'active':''} key={item.slug} onClick={function(){onPageChange?.(item.slug)}}>{item.title}</button>:<a className={item.slug===current.slug?'active':''} key={item.slug} href={'/sites/'+s.slug+'/'+item.slug}>{item.title}</a>})}</div></nav>
+    <main className="generated-page-main">
+      <section className="generated-page-hero"><span>{current.eyebrow}</span><h1>{current.headline}</h1><p>{current.copy}</p><div><small>{s.category.toUpperCase()}</small><small>FOR {s.audience.toUpperCase()}</small></div></section>
+      <section className="generated-page-grid">{current.items.map(function(item,index){return <article key={index}><span>0{index+1}</span><h2>{item.title}</h2><p>{item.copy}</p><i aria-hidden="true">↗</i></article>})}</section>
+      <section className="generated-page-context"><div><span>BRAND DNA</span><strong>{s.visual.type} • {s.visual.shape} • {s.visual.motion}</strong></div><div><span>EXPLORE NEXT</span><div>{s.pages.filter(function(item){return item.slug!==current.slug}).map(function(item){return preview?<button type="button" key={item.slug} onClick={function(){onPageChange?.(item.slug)}}>{item.title} →</button>:<a key={item.slug} href={'/sites/'+s.slug+'/'+item.slug}>{item.title} →</a>})}</div></div></section>
+      <section className="generated-page-cta"><span>{s.brand.toUpperCase()}</span><h2>{s.ctaTitle}</h2><p>{s.ctaCopy}</p>{s.ctaUrl&&<a href={s.ctaUrl} target="_blank" rel="noreferrer">{s.ctaLabel}</a>}</section>
+    </main>
+    <footer className="generated-page-footer"><span>{s.footer}</span><small>{ROOT_DOMAIN}/sites/{s.slug}/{current.slug}</small></footer>
+  </div>
+}
+
+function SitePreview({site,page='home',preview=false,onPageChange}){
+  const s=safeSite(site)
+  if(page!=='home'&&s.multiPage)return <GeneratedSubPage site={s} page={page} preview={preview} onPageChange={onPageChange}/>
+  const visualStyle={{'--custom-accent':s.visual.accent}}
+  if(s.layout==='flagship')return <div style={visualStyle} className={'generated-visual-shell shape-'+s.visual.shape+' density-'+s.visual.density+' motion-'+s.visual.motion+' type-'+s.visual.type}><FlagshipSitePreview site={s} preview={preview} onPageChange={onPageChange}/></div>
+  return <div style={visualStyle} className={'esn-built-site theme-'+s.theme+' layout-'+s.layout+' shape-'+s.visual.shape+' density-'+s.visual.density+' motion-'+s.visual.motion+' type-'+s.visual.type}>
+    <nav><strong>{s.brand}</strong><div>{s.multiPage?<>{preview?<button type="button" onClick={function(){onPageChange?.('home')}}>Home</button>:<a href={'/sites/'+s.slug}>Home</a>}{s.pages.map(function(item){return preview?<button type="button" key={item.slug} onClick={function(){onPageChange?.(item.slug)}}>{item.title}</button>:<a key={item.slug} href={'/sites/'+s.slug+'/'+item.slug}>{item.title}</a>})}</>:<><a href="#about">About</a><a href="#highlights">Highlights</a><a href="#faq">FAQ</a></>}</div></nav>
     <section className="built-hero"><span>{s.category} • for {s.audience}</span><h1>{s.heroTitle}</h1><p>{s.heroCopy}</p>{s.ctaUrl&&<a className="built-hero-button" href={s.ctaUrl} target="_blank" rel="noreferrer">{s.ctaLabel}</a>}</section>
     <section className="built-stats">{s.stats.map(function(item,index){return <article key={index}><strong>{item.value}</strong><span>{item.label}</span></article>})}</section>
     <section id="about" className="built-about"><h2>{s.aboutTitle}</h2><p>{s.aboutCopy}</p></section>
