@@ -10,7 +10,7 @@ const compactRouteLabels={
   '/smpconnection':'SMP','/smpconsole':'Console Guide','/smpplugin':'Plugin','/smpguide':'SMP Encyclopedia','/storesmp':'SMP Store',
   '/arcade':'Arcade','/esclicker':'Clicker','/esfactory':'Factory','/esmines':'Mines','/esmoto':'MOTO','/estower':'Tower','/estowerdefense':'Tower Defense',
   '/estools':'ES Tools','/status':'Status','/networkstats':'Network Stats','/updates':'Updates','/whatsnew':"What's New",'/timeline':'Timeline',
-  '/nexus':'Network Nexus','/explore':'Explore ESN','/gallery':'Gallery','/settings':'Settings','/support':'Support','/about':'About','/leadership':'Leadership','/faq':'FAQ','/share':'Share','/site-builder':'Site Builder',
+  '/nexus':'Network Nexus','/explore':'Explore ESN','/gallery':'Gallery','/settings':'Settings','/support':'Support','/about':'About','/leadership':'Leadership','/faq':'FAQ','/share':'Share','/site-builder':'Site Builder','/guides':'Guides + News','/es-network':'ES Network','/minecraft-server':'Minecraft Server','/minecraft-smp':'Minecraft SMP','/fortnite-coaching':'Fortnite Coaching','/video-editing':'Video Editing','/discord-server-setup':'Discord Setup','/website-builder':'Website Builder','/free-browser-tools':'Free Browser Tools',
   '/launchpad':'Launchpad','/configure':'Configurator','/smp-hub':'SMP World Hub','/trust':'Trust Center','/search':'Search 2.0','/labs':'ESN Labs','/estimate':'Project Estimate','/smp-items':'SMP Items','/activity':'Network Activity','/share-generator':'Share Generator','/showcase':'Builder Showcase','/network-map':'Network Map','/backup':'Local Backup'
 }
 function localList(key){try{const value=JSON.parse(localStorage.getItem(key)||'[]');return Array.isArray(value)?value:[]}catch{return []}}
@@ -36,6 +36,15 @@ const userThemes={
 }
 
 const baseCommands=[
+  {label:'ESN Guides + News',meta:'Minecraft, Discord, website guides, releases, and current ESN updates',keywords:'guides news articles minecraft discord website updates help',kind:'route',value:'/guides'},
+  {label:'What is ES Network?',meta:'Official ESN brand, projects, services, SMP, tools, and community',keywords:'es network esn official ep1c services brand about',kind:'route',value:'/es-network'},
+  {label:'Minecraft Server',meta:'ESN server hub, status, guides, items, and official resources',keywords:'minecraft server smp ip join java bedrock',kind:'route',value:'/minecraft-server'},
+  {label:'Minecraft SMP',meta:'ESN survival, progression, bosses, economy, gear, and Adventure systems',keywords:'minecraft smp survival realm bosses economy gear',kind:'route',value:'/minecraft-smp'},
+  {label:'Fortnite Coaching',meta:'ESN Fortnite coaching and project scoping',keywords:'fortnite coaching coach improve gaming service',kind:'route',value:'/fortnite-coaching'},
+  {label:'Video Editing',meta:'ESN editing support for gaming and creator content',keywords:'video editing editor creator gaming service',kind:'route',value:'/video-editing'},
+  {label:'Discord Server Setup',meta:'Roles, channels, moderation, onboarding, and community setup',keywords:'discord server setup roles channels moderation community',kind:'route',value:'/discord-server-setup'},
+  {label:'Website Builder Guide',meta:'Discover the ESN Website Builder and published site showcase',keywords:'website builder create publish generated sites showcase',kind:'route',value:'/website-builder'},
+  {label:'Free Browser Tools',meta:'Open ESN free creator and gaming utilities',keywords:'free browser tools timer prompt randomizer dice coin',kind:'route',value:'/free-browser-tools'},
   {label:'ESN Launchpad',meta:'Choose the fastest route into the network',keywords:'start launchpad what can i do take me somewhere choose route',kind:'route',value:'/launchpad'},
   {label:'Service Configurator',meta:'Build a service brief before opening a Discord ticket',keywords:'configure service project brief order quote editing website discord coaching',kind:'route',value:'/configure'},
   {label:'Live SMP World Hub',meta:'SMP telemetry, players, plugin data, and world links',keywords:'smp hub live world players server minecraft boss events telemetry',kind:'route',value:'/smp-hub'},
@@ -82,10 +91,10 @@ export default function PremiumChrome(){
 
   const arcadeRoutes=['/arcade','/esclicker','/esfactory','/esmines','/esmoto','/estower','/estowerdefense']
   const gameRoutes=arcadeRoutes.filter(route=>route!=='/arcade')
-  const routeKey=location.pathname.startsWith('/smp')||location.pathname.startsWith('/store')?'smp'
+  const routeKey=location.pathname.startsWith('/smp')||location.pathname.startsWith('/store')||location.pathname==='/minecraft-server'||location.pathname==='/minecraft-smp'?'smp'
     :arcadeRoutes.includes(location.pathname)?'arcade'
-    :location.pathname==='/serviceshowcase'||location.pathname==='/portfolio'||location.pathname==='/site-builder'?'services'
-    :location.pathname==='/estools'||location.pathname==='/tools'?'tools'
+    :['/serviceshowcase','/portfolio','/site-builder','/fortnite-coaching','/video-editing','/discord-server-setup','/website-builder'].includes(location.pathname)?'services'
+    :location.pathname==='/estools'||location.pathname==='/tools'||location.pathname==='/free-browser-tools'?'tools'
     :location.pathname==='/testimonials'?'reviews'
     :['/about','/leadership','/faq','/timeline','/updates','/status','/share','/vault','/nexus'].includes(location.pathname)?'about':'home'
 
