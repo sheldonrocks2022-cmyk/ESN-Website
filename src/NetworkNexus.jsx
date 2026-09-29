@@ -10,7 +10,7 @@ const ROUTE_LABELS={
   '/status':'Status','/updates':'Updates','/timeline':'Timeline','/vault':'Vault','/explore':'Explore',
   '/gallery':'Gallery','/serviceshowcase':'Services','/portfolio':'Portfolio','/about':'About','/nexus':'Nexus',
   '/notifications':'Notifications','/rewards':'Reward Vault','/challenges':'Challenge Lab',
-  '/operations':'Operations','/diagnostics':'Diagnostics','/smpcheck':'SMP Tester','/blueprint':'Blueprint','/incidents':'Incidents','/session':'Session','/changelog':'Changelog','/store-ai':'Store AI'
+  '/operations':'Operations','/diagnostics':'Diagnostics','/smpcheck':'SMP Tester','/blueprint':'Blueprint','/incidents':'Incidents','/session':'Session','/changelog':'Changelog','/store-ai':'Store AI','/domains':'Domains'
 }
 
 const PROJECTS=[
@@ -309,6 +309,7 @@ function Guide(){
     const routeRules=[
       [['notification','alerts','inbox'],'/notifications','Opening your ESN Notification Center.'],
       [['store ai','shop ai','store assistant'],'/store-ai','Opening ESN Store AI.'],
+      [['domains','subdomain','custom domain'],'/domains','Opening ESN Domains.'],
       [['operations','ops map','network map'],'/operations','Opening the ESN Operations Map.'],
       [['diagnostic','diagnostics','self test'],'/diagnostics','Opening the ESN Diagnostic Center.'],
       [['smp test','connection test'],'/smpcheck','Opening the SMP Connection Tester.'],
