@@ -45,6 +45,12 @@ export const SEO_ROUTES={
     description:'Get a free ESN subdomain with automatic Spaceship DNS creation, connect a domain you own, or explore ESN paid hosting options.',
     index:true,
   },
+  '/site-builder':{
+    label:'ESN Website Builder',
+    title:'ESN Website Builder | Build a Site for Your Free Subdomain',
+    description:'Create a website for your ESN subdomain with a prompt-driven builder, editable sections, live phone and desktop previews, HTML export, and safe publishing.',
+    index:true,
+  },
   '/domains':{
     label:'ESN Hosting',
     title:'ESN Hosting | Free Subdomains, Custom Domains & Web Hosting',
