@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "slug": "kavero",
+  "brand": "Kavero",
+  "category": "gaming",
+  "theme": "neon",
+  "heroTitle": "Level up your community.",
+  "heroCopy": "A high-energy home for players, updates, events, and everything happening around your gaming brand. Built around: Make a dark gaming fortnite website that talks about fortnite and how it's good and should have more players",
+  "aboutTitle": "About Kavero",
+  "aboutCopy": "Welcome to Kavero. This page gives visitors a fast overview of the brand, the main content, and where to go next.",
+  "cards": [
+    {
+      "title": "Community",
+      "copy": "Give players one place for announcements, links, and updates."
+    },
+    {
+      "title": "Events",
+      "copy": "Showcase tournaments, drops, challenges, and upcoming sessions."
+    },
+    {
+      "title": "Join in",
+      "copy": "Point visitors directly to your server, Discord, or social hub."
+    }
+  ],
+  "ctaTitle": "Ready to connect?",
+  "ctaCopy": "Use the main link below to keep going.",
+  "ctaLabel": "Contact / Main link",
+  "ctaUrl": "https://esnoffical.com/",
+  "footer": "Built with ESN Website Builder",
+  "publishedBy": "sheldonrocks2022-cmyk",
+  "publishedAt": "2026-09-29T03:05:11.599Z"
+}
