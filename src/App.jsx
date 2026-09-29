@@ -4,6 +4,7 @@ import ESToolsSuite from './Tools'
 import ES3DViewer from './ES3DViewer'
 import PremiumChrome from './PremiumChrome'
 import UltraExperience from './UltraExperience'
+import ExperienceCoreV2 from './ExperienceCoreV2'
 import Global3DLighting from './Global3DLighting'
 import StartupIntro from './StartupIntro'
 import ExperienceLayer, { FooterCommandDeck, HeroReactor } from './ExperienceLayer'
@@ -1531,6 +1532,7 @@ function App() {
       {!standaloneSite&&<ExperienceEffects />}
       {!standaloneSite&&<Global3DLighting />}
       {!standaloneSite&&<UltraExperience />}
+      {!standaloneSite&&<ExperienceCoreV2 />}
       {!standaloneSite&&<Header />}
       {!standaloneSite&&<PremiumChrome />}
       {!standaloneSite&&<ExperienceLayer />}
