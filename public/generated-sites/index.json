@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "sites": [
+    {
+      "slug": "cutecats",
+      "brand": "toothless angies cat",
+      "category": "music",
+      "description": "A music-focused site for an artist, producer, band, DJ, release, playlist, or fan community. Focus: toothy, black, cat.",
+      "heroTitle": "Turn up the volume on your brand.",
+      "publishedAt": "2026-09-29T04:01:48.142Z",
+      "path": "/sites/cutecats"
+    }
+  ]
+}
