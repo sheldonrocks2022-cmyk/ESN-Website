@@ -2,7 +2,7 @@ name: Auto Create Free ESN Subdomain
 
 on:
   issues:
-    types: [opened]
+    types: [opened, edited, reopened]
 
 permissions:
   contents: read
