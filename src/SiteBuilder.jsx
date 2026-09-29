@@ -6,11 +6,13 @@ const ROOT_DOMAIN='esnoffical.com'
 const ISSUE_BASE='https://github.com/sheldonrocks2022-cmyk/ESN-Website/issues/new'
 const DRAFT_KEY='esn_site_builder_draft_v1'
 const THEMES=['midnight','neon','clean','ember','ocean']
+const LAYOUTS=['spotlight','split','editorial']
 const BLOCKED_TEXT=/password|passcode|seed phrase|wallet recovery|credit card|social security|bank login|verify your account|sign in to continue/i
 const tick=String.fromCharCode(96)
 
 const STARTER={
-  slug:'',brand:'My Website',category:'creator',theme:'midnight',
+  slug:'',brand:'My Website',category:'creator',theme:'midnight',layout:'spotlight',audience:'Visitors',
+  seoTitle:'My Website',seoDescription:'A website built with the ESN Website Builder.',
   heroTitle:'Build something worth visiting.',
   heroCopy:'A clean, fast website built with the ESN Website Builder.',
   aboutTitle:'About',
@@ -19,6 +21,16 @@ const STARTER={
     {title:'What I do',copy:'Describe your main service, project, community, or offer.'},
     {title:'Why choose me',copy:'Explain what makes your work, brand, or community different.'},
     {title:'Get started',copy:'Give visitors one clear next step.'},
+  ],
+  stats:[
+    {value:'01',label:'Clear purpose'},
+    {value:'02',label:'Useful sections'},
+    {value:'03',label:'One next step'},
+  ],
+  faq:[
+    {q:'What is this site about?',a:'Use this answer to explain the main idea in one or two sentences.'},
+    {q:'Who is it for?',a:'Describe the people who will get the most value from this site.'},
+    {q:'What should I do next?',a:'Tell visitors the single most useful next action.'},
   ],
   ctaTitle:'Ready to connect?',
   ctaCopy:'Use the button below to reach out or visit my main page.',
@@ -275,6 +287,32 @@ function promptGoals(prompt){
   if(/play|players|gaming|fortnite|minecraft/.test(value))goals.push('engage players')
   return goals.slice(0,3)
 }
+function inferAudience(prompt,category){
+  const value=String(prompt||'').toLowerCase()
+  if(/customer|client|buyer|business owner/.test(value))return 'Potential customers'
+  if(/player|players|gamer|gaming|fortnite|minecraft/.test(value))return 'Players'
+  if(/fan|fans|listener|music/.test(value))return 'Fans'
+  if(/member|community|discord|club/.test(value))return 'Community members'
+  if(/employer|recruiter|portfolio|resume/.test(value))return 'Clients & recruiters'
+  if(category==='restaurant')return 'Local customers'
+  if(category==='technology')return 'Product users'
+  return 'Visitors'
+}
+function promptScore(prompt){
+  const value=String(prompt||'').trim()
+  if(!value)return 0
+  let score=Math.min(35,Math.floor(value.length/8))
+  if(promptKeywords(value).length>=3)score+=20
+  if(promptGoals(value).length)score+=15
+  if(inferTone(value,classify(value)))score+=10
+  if(extractUrl(value))score+=10
+  if(/for\s+[a-z]|audience|people|players|customers|fans|community/i.test(value))score+=10
+  return Math.min(100,score)
+}
+function inferLayout(category,variant){
+  const layouts=category==='portfolio'||category==='business'?['split','editorial','spotlight']:category==='event'||category==='music'?['spotlight','split','editorial']:['spotlight','editorial','split']
+  return layouts[Math.abs(Number(variant)||0)%layouts.length]
+}
 function analyzePrompt(prompt){
   const category=classify(prompt)
   const profile=PRESETS[category]||PRESETS.creator
@@ -283,8 +321,10 @@ function analyzePrompt(prompt){
     label:profile.label,
     theme:inferTheme(prompt,category),
     tone:inferTone(prompt,category),
+    audience:inferAudience(prompt,category),
     keywords:promptKeywords(prompt),
     goals:promptGoals(prompt),
+    score:promptScore(prompt),
     url:extractUrl(prompt),
   }
 }
@@ -294,6 +334,31 @@ function contextualize(copy,analysis,name){
   const topic=keywords.join(', ')
   return clamp(copy+' Focus: '+topic+'.',320)
 }
+function generatedStats(analysis){
+  const key=analysis.keywords
+  if(analysis.category==='fortnite')return [{value:'FREE',label:'Free to start'},{value:'MULTI',label:'Multiple game modes'},{value:'CROSS',label:'Cross-platform play'}]
+  if(analysis.category==='minecraft')return [{value:'BUILD',label:'Create your world'},{value:'PLAY',label:'Explore & progress'},{value:'JOIN',label:'Grow the community'}]
+  if(analysis.category==='business')return [{value:'01',label:'Clear offer'},{value:'02',label:'Trust-first copy'},{value:'03',label:'Easy contact'}]
+  return [{value:'01',label:key[0]||'Main idea'},{value:'02',label:key[1]||'Key value'},{value:'03',label:key[2]||'Next step'}]
+}
+function generatedFaq(analysis,name){
+  const topic=analysis.keywords[0]||analysis.label
+  if(analysis.category==='fortnite')return [
+    {q:'What makes Fortnite worth trying?',a:'Fortnite combines Battle Royale, Zero Build, Creative experiences, live updates, collaborations, and several different ways to play.'},
+    {q:'Do I have to build?',a:'No. Zero Build and other modes give players ways to enjoy Fortnite without traditional building combat.'},
+    {q:'Who is this site for?',a:'This '+name+' page is for players, returning players, and anyone curious about what Fortnite offers now.'},
+  ]
+  if(analysis.category==='minecraft')return [
+    {q:'What kind of Minecraft experience is this?',a:'Use the main sections above to explain the world, server, SMP, realm, or project and what makes it different.'},
+    {q:'Who can join?',a:'Explain the intended players, edition, rules, and any requirements before someone joins.'},
+    {q:'Where do I start?',a:'Use the main button on this page for the next connection, community, or information step.'},
+  ]
+  return [
+    {q:'What is '+name+'?',a:'This page is focused on '+topic+' and gives visitors the important information without making them search for it.'},
+    {q:'Who is this for?',a:'The site is written for '+analysis.audience.toLowerCase()+' and is organized around the actions most useful to them.'},
+    {q:'What should I do next?',a:'Use the main call-to-action on the page to continue, connect, learn more, or take the next step.'},
+  ]
+}
 function generateSite(prompt,brand,slug,variant){
   const analysis=analyzePrompt(prompt)
   const preset=PRESETS[analysis.category]||PRESETS.creator
@@ -302,20 +367,27 @@ function generateSite(prompt,brand,slug,variant){
   const ctaPick=Math.abs(Number(variant)||0)%preset.ctas.length
   const cta=preset.ctas[ctaPick]
   const promptUrl=analysis.url
+  const heroCopy=contextualize(preset.copies[pick%preset.copies.length],analysis,name)
   return {
     ...STARTER,
     slug:cleanSlug(slug),
     brand:name,
     category:analysis.category,
     theme:analysis.theme,
+    layout:inferLayout(analysis.category,variant),
+    audience:analysis.audience,
+    seoTitle:clamp(name+' | '+preset.label,70),
+    seoDescription:clamp(heroCopy,160),
     heroTitle:preset.heroes[pick],
-    heroCopy:contextualize(preset.copies[pick%preset.copies.length],analysis,name),
+    heroCopy,
     aboutTitle:'About '+name,
     aboutCopy:contextualize(preset.about,analysis,name),
     cards:preset.cards.map(function(card,index){
       const keyword=analysis.keywords[index]
       return {title:card[0],copy:keyword?clamp(card[1]+' This section can emphasize '+keyword+'.',260):card[1]}
     }),
+    stats:generatedStats(analysis),
+    faq:generatedFaq(analysis,name),
     ctaTitle:cta[0],
     ctaCopy:cta[1],
     ctaLabel:cta[2],
@@ -325,14 +397,39 @@ function generateSite(prompt,brand,slug,variant){
 }
 function regenerateSection(site,prompt,section,variant){
   const next=generateSite(prompt,site.brand,site.slug,variant)
-  if(section==='hero')return {...site,category:next.category,theme:next.theme,heroTitle:next.heroTitle,heroCopy:next.heroCopy}
-  if(section==='about')return {...site,category:next.category,aboutTitle:next.aboutTitle,aboutCopy:next.aboutCopy}
+  if(section==='hero')return {...site,category:next.category,theme:next.theme,layout:next.layout,heroTitle:next.heroTitle,heroCopy:next.heroCopy}
+  if(section==='about')return {...site,category:next.category,audience:next.audience,aboutTitle:next.aboutTitle,aboutCopy:next.aboutCopy}
   if(section==='cards')return {...site,category:next.category,cards:next.cards}
+  if(section==='stats')return {...site,stats:next.stats}
+  if(section==='faq')return {...site,faq:next.faq}
+  if(section==='seo')return {...site,seoTitle:next.seoTitle,seoDescription:next.seoDescription}
   if(section==='cta')return {...site,category:next.category,ctaTitle:next.ctaTitle,ctaCopy:next.ctaCopy,ctaLabel:next.ctaLabel,ctaUrl:next.ctaUrl}
   return next
 }
 function safeSite(site){
-  return {version:1,slug:cleanSlug(site.slug),brand:clamp(site.brand,60),category:clamp(site.category,24),theme:THEMES.includes(site.theme)?site.theme:'midnight',heroTitle:clamp(site.heroTitle,100),heroCopy:clamp(site.heroCopy,320),aboutTitle:clamp(site.aboutTitle,100),aboutCopy:clamp(site.aboutCopy,500),cards:(site.cards||[]).slice(0,3).map(function(card){return {title:clamp(card.title,70),copy:clamp(card.copy,260)}}),ctaTitle:clamp(site.ctaTitle,100),ctaCopy:clamp(site.ctaCopy,260),ctaLabel:clamp(site.ctaLabel,50),ctaUrl:safeUrl(site.ctaUrl),footer:clamp(site.footer,100)}
+  return {
+    version:2,
+    slug:cleanSlug(site.slug),
+    brand:clamp(site.brand,60),
+    category:clamp(site.category,24),
+    theme:THEMES.includes(site.theme)?site.theme:'midnight',
+    layout:LAYOUTS.includes(site.layout)?site.layout:'spotlight',
+    audience:clamp(site.audience,60),
+    seoTitle:clamp(site.seoTitle||site.brand,70),
+    seoDescription:clamp(site.seoDescription||site.heroCopy,160),
+    heroTitle:clamp(site.heroTitle,100),
+    heroCopy:clamp(site.heroCopy,320),
+    aboutTitle:clamp(site.aboutTitle,100),
+    aboutCopy:clamp(site.aboutCopy,500),
+    cards:(site.cards||[]).slice(0,3).map(function(card){return {title:clamp(card.title,70),copy:clamp(card.copy,260)}}),
+    stats:(site.stats||[]).slice(0,3).map(function(item){return {value:clamp(item.value,20),label:clamp(item.label,70)}}),
+    faq:(site.faq||[]).slice(0,3).map(function(item){return {q:clamp(item.q,120),a:clamp(item.a,360)}}),
+    ctaTitle:clamp(site.ctaTitle,100),
+    ctaCopy:clamp(site.ctaCopy,260),
+    ctaLabel:clamp(site.ctaLabel,50),
+    ctaUrl:safeUrl(site.ctaUrl),
+    footer:clamp(site.footer,100),
+  }
 }
 function encodePayload(value){
   const bytes=new TextEncoder().encode(JSON.stringify(value))
@@ -367,13 +464,15 @@ function downloadHtml(site){
 }
 function SitePreview({site}){
   const s=safeSite(site)
-  return <div className={'esn-built-site theme-'+s.theme}>
-    <nav><strong>{s.brand}</strong><span>{ROOT_DOMAIN}/sites/{s.slug||'yourname'}</span></nav>
-    <section className="built-hero"><span>{s.category}</span><h1>{s.heroTitle}</h1><p>{s.heroCopy}</p></section>
-    <section className="built-about"><h2>{s.aboutTitle}</h2><p>{s.aboutCopy}</p></section>
-    <section className="built-card-grid">{s.cards.map(function(card,index){return <article key={index}><h3>{card.title}</h3><p>{card.copy}</p></article>})}</section>
+  return <div className={'esn-built-site theme-'+s.theme+' layout-'+s.layout}>
+    <nav><strong>{s.brand}</strong><div><a href="#about">About</a><a href="#highlights">Highlights</a><a href="#faq">FAQ</a></div></nav>
+    <section className="built-hero"><span>{s.category} • for {s.audience}</span><h1>{s.heroTitle}</h1><p>{s.heroCopy}</p>{s.ctaUrl&&<a className="built-hero-button" href={s.ctaUrl} target="_blank" rel="noreferrer">{s.ctaLabel}</a>}</section>
+    <section className="built-stats">{s.stats.map(function(item,index){return <article key={index}><strong>{item.value}</strong><span>{item.label}</span></article>})}</section>
+    <section id="about" className="built-about"><h2>{s.aboutTitle}</h2><p>{s.aboutCopy}</p></section>
+    <section id="highlights" className="built-card-grid">{s.cards.map(function(card,index){return <article key={index}><span>0{index+1}</span><h3>{card.title}</h3><p>{card.copy}</p></article>})}</section>
+    <section id="faq" className="built-faq"><div><span>FAQ</span><h2>Quick answers.</h2></div><div>{s.faq.map(function(item,index){return <details key={index} open={index===0}><summary>{item.q}</summary><p>{item.a}</p></details>})}</div></section>
     <section className="built-cta"><h2>{s.ctaTitle}</h2><p>{s.ctaCopy}</p>{s.ctaUrl&&<a href={s.ctaUrl} target="_blank" rel="noreferrer">{s.ctaLabel}</a>}</section>
-    <footer>{s.footer}</footer>
+    <footer><span>{s.footer}</span><small>{ROOT_DOMAIN}/sites/{s.slug||'yourname'}</small></footer>
   </div>
 }
 
