@@ -625,7 +625,7 @@ function publishUrl(site){
 function esc(value){return String(value||'').replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;').replaceAll("'","&#39;")}
 function exportHtml(site){
   const s=safeSite(site)
-  const palettes={midnight:['#07111f','#0d1e35','#ffffff','#8ea7c4','#65e8ff'],neon:['#070710','#15122b','#ffffff','#b6afff','#8cffec'],clean:['#f7f8fb','#ffffff','#10131a','#5b6473','#3157ff'],ember:['#140b09','#28100d','#ffffff','#d9aaa0','#ff8066'],ocean:['#06131a','#0b2430','#ffffff','#9bc3d1','#63dbff']}
+  const palettes={midnight:['#07111f','#0d1e35','#ffffff','#8ea7c4','#65e8ff'],neon:['#070710','#15122b','#ffffff','#b6afff','#8cffec'],clean:['#f7f8fb','#ffffff','#10131a','#5b6473','#3157ff'],ember:['#140b09','#28100d','#ffffff','#d9aaa0','#ff8066'],ocean:['#06131a','#0b2430','#ffffff','#9bc3d1','#63dbff'],void:['#080512','#15102a','#ffffff','#b8a7d8','#a879ff'],aurora:['#041111','#0b2020','#ffffff','#a6ceca','#64ffd8'],forest:['#07120b','#102518','#ffffff','#a8c6b0','#72e39b'],rose:['#16090f','#2b111d','#ffffff','#d9adbd','#ff7daa'],gold:['#120f07','#27200f','#ffffff','#d8cba5','#ffd56a']}
   const p=palettes[s.theme]||palettes.midnight
   const cards=s.cards.map(function(card,index){return '<article><span>0'+(index+1)+'</span><h3>'+esc(card.title)+'</h3><p>'+esc(card.copy)+'</p></article>'}).join('')
   const stats=s.stats.map(function(item){return '<article><strong>'+esc(item.value)+'</strong><span>'+esc(item.label)+'</span></article>'}).join('')
