@@ -7,6 +7,7 @@ const REJECTED_LABEL='free-subdomain-rejected'
 const RESERVED=new Set(['www','api','admin','staff','store','store-ai','smp','status','support','mail','billing','domains','hosting','dns','ftp','cpanel','webmail','discord','nexus','arcade','tools','assets','cdn','static','auth','login','dashboard','root','esn','official','offical'])
 const DOMAIN_RE=/^(?=.{3,253}$)(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z]{2,63}$/i
 const LABEL_RE=/^[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?$/
+const MULTI_SUBDOMAIN_ACCOUNTS=new Set(['sheldonrocks2022-cmyk'])
 
 const event=JSON.parse(fs.readFileSync(process.env.GITHUB_EVENT_PATH,'utf8'))
 const issue=event.issue
@@ -96,7 +97,7 @@ if(!DOMAIN_RE.test(target))await reject('The target must be a normal hostname su
 if(target===ROOT_DOMAIN||target.endsWith('.'+ROOT_DOMAIN))await reject('A free subdomain cannot point back into the ESN domain because that can create routing loops.')
 
 const existingForUser=await gh(`/repos/${repo}/issues?state=all&creator=${encodeURIComponent(actor)}&labels=${encodeURIComponent(ACTIVE_LABEL)}&per_page=100`)
-if(existingForUser.some(item=>item.number!==issueNumber)){
+if(!MULTI_SUBDOMAIN_ACCOUNTS.has(actor.toLowerCase())&&existingForUser.some(item=>item.number!==issueNumber)){
   await reject('Free ESN subdomains are limited to **one active subdomain per GitHub account**.')
 }
 
