@@ -6,6 +6,9 @@ const PUBLISHED_LABEL='site-builder-published'
 const REJECTED_LABEL='site-builder-rejected'
 const THEMES=new Set(['midnight','neon','clean','ember','ocean','void','aurora','forest','rose','gold'])
 const EXPERIENCE_PACKS=new Set(['essential','showcase','network','full'])
+const SHAPES=new Set(['rounded','sharp','soft'])
+const DENSITIES=new Set(['airy','balanced','dense'])
+const MOTIONS=new Set(['calm','dynamic','cinematic'])
 const LAYOUTS=new Set(['spotlight','split','editorial','flagship'])
 const BLOCKED=/password|passcode|seed phrase|wallet recovery|credit card|social security|bank login|verify your account|sign in to continue/i
 const SLUG_RE=/^[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?$/
@@ -84,14 +87,33 @@ function url(value){
 }
 function sanitize(site){
   const rawSections=site.sections&&typeof site.sections==='object'?site.sections:{}
+  const rawVisual=site.visual&&typeof site.visual==='object'?site.visual:{}
+  const hex=value=>/^#[0-9a-f]{6}$/i.test(String(value||'').trim())?String(value).trim():'#65e8ff'
   return {
-    version:3,
+    version:4,
+    multiPage:site.multiPage===true,
     slug:String(site.slug||'').toLowerCase(),
     brand:text(site.brand,60),
     category:text(site.category,24),
     theme:THEMES.has(site.theme)?site.theme:'midnight',
     layout:LAYOUTS.has(site.layout)?site.layout:'spotlight',
     audience:text(site.audience,60),
+    visual:{
+      accent:hex(rawVisual.accent),
+      shape:SHAPES.has(rawVisual.shape)?rawVisual.shape:'rounded',
+      density:DENSITIES.has(rawVisual.density)?rawVisual.density:'balanced',
+      motion:MOTIONS.has(rawVisual.motion)?rawVisual.motion:'dynamic',
+      nav:['glass','minimal','rail'].includes(rawVisual.nav)?rawVisual.nav:'glass',
+      type:['display','editorial','technical'].includes(rawVisual.type)?rawVisual.type:'display',
+    },
+    pages:Array.isArray(site.pages)?site.pages.slice(0,3).map((page,index)=>({
+      slug:String(page.slug||('page-'+(index+1))).toLowerCase().replace(/[^a-z0-9-]/g,'').slice(0,48),
+      title:text(page.title,40),
+      eyebrow:text(page.eyebrow,50),
+      headline:text(page.headline,100),
+      copy:text(page.copy,480),
+      items:Array.isArray(page.items)?page.items.slice(0,3).map(item=>({title:text(item.title,80),copy:text(item.copy,260)})):[],
+    })):[],
     seoTitle:text(site.seoTitle||site.brand,70),
     seoDescription:text(site.seoDescription||site.heroCopy,160),
     heroTitle:text(site.heroTitle,100),
@@ -132,13 +154,13 @@ function sanitize(site){
 
 if(!agreed)await reject('The required safe-publishing confirmation is missing.')
 if(!SLUG_RE.test(slug))await reject('The ESN subdomain name is invalid.')
-if(!encoded||encoded.length>50000)await reject('The site payload is missing or too large.')
+if(!encoded||encoded.length>90000)await reject('The site payload is missing or too large.')
 
 let decoded
 try{decoded=decodePayload(encoded)}catch{await reject('The site payload could not be decoded.')}
 const site=sanitize(decoded)
 if(site.slug!==slug)await reject('The site payload does not match the requested ESN subdomain.')
-if(!site.brand||!site.heroTitle||site.cards.length!==3||site.stats.length!==3||site.faq.length!==3||site.timeline.length!==4||site.gallery.length!==4)await reject('The generated site is missing required content.')
+if(!site.brand||!site.heroTitle||site.cards.length!==3||site.stats.length!==3||site.faq.length!==3||site.timeline.length!==4||site.gallery.length!==4||site.pages.length!==3||site.pages.some(page=>page.items.length!==3))await reject('The generated site is missing required content.')
 if(BLOCKED.test(JSON.stringify(site)))await reject('This build contains wording associated with collecting sensitive credentials or payment information. ESN free sites cannot be used for that.')
 
 const owned=await gh('/repos/'+repo+'/issues?state=all&creator='+encodeURIComponent(actor)+'&labels='+encodeURIComponent(ACTIVE_SUBDOMAIN_LABEL)+'&per_page=100')
@@ -170,6 +192,6 @@ await gh('/repos/'+repo+'/contents/'+path,{method:'PUT',body:JSON.stringify(payl
 await finish(
   PUBLISHED_LABEL,
   '[SITE-BUILD-PUBLISHED] '+slug,
-  '✅ **Your ESN Website Builder site was published.**\n\n**Public site:** https://'+ROOT_DOMAIN+'/sites/'+slug+'\n\nThe site is live after the main ESN Pages deployment finishes. For now, ESN Website Builder publishes use the `/sites/'+slug+'` address as the public URL.\n\nThe published site is structured and script-free.',
+  '✅ **Your ESN Website Builder site was published.**\n\n**Public site:** https://'+ROOT_DOMAIN+'/sites/'+slug+'\n\nThe site is live after the main ESN Pages deployment finishes. For now, ESN Website Builder publishes use the `/sites/'+slug+'` address as the homepage. V6 multi-page builds can also publish pages such as `/sites/'+slug+'/about`.\n\nThe published site is structured and script-free.',
   'completed'
 )
