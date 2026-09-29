@@ -44,7 +44,9 @@ function freeIssueUrl(label,target){
     'Subdomain: `'+label+'`',
     'Target: `'+host+'`',
     'Terms: I agree to the ESN free subdomain rules.',
+    'Host readiness: I confirmed my destination host supports this custom domain and HTTPS.',
     '',
+    'I understand that DNS creation alone does not make the website or SSL certificate work.',
     'I understand that ESN may remove this free subdomain if it is used for phishing, malware, impersonation, spam, or other abuse.',
   ].join('\n')
   const params=new URLSearchParams({
@@ -130,9 +132,16 @@ export default function DomainsPage(){
   const [staffCode,setStaffCode]=useState('')
   const [staffError,setStaffError]=useState('')
   const [paymentInputs,setPaymentInputs]=useState({})
+  const [targetReady,setTargetReady]=useState(false)
 
   const subdomain=useMemo(()=>label?cleanLabel(label)+'.'+ROOT_DOMAIN:'yourname.'+ROOT_DOMAIN,[label])
   const selectedPlan=PLAN_PRICES[mode]
+  const targetHost=useMemo(()=>{
+    const normalized=normalizeTarget(target)
+    if(!normalized)return ''
+    try{return new URL(normalized).hostname.toLowerCase()}catch{return ''}
+  },[target])
+  const isGitHubPagesTarget=targetHost.endsWith('.github.io')
 
   const persistRequests=next=>{
     setRequests(next)
@@ -178,6 +187,9 @@ export default function DomainsPage(){
     }
 
     if(mode==='free'){
+      if(!targetReady){
+        setResult({ok:false,message:'Confirm that your destination host supports this custom domain and HTTPS before creating DNS.'});return
+      }
       const issueUrl=freeIssueUrl(clean,destination)
       setResult({
         ok:true,
@@ -292,7 +304,13 @@ export default function DomainsPage(){
           </>}
 
           {mode==='custom'&&<label>YOUR CUSTOM DOMAIN<input value={customDomain} onChange={e=>setCustomDomain(e.target.value)} placeholder="yourbusiness.com"/></label>}
-          {(mode==='free'||mode==='subdomain'||mode==='custom')&&<label>{mode==='free'?'TARGET HOST / WEBSITE':'CURRENT WEBSITE / DESTINATION'}<input value={target} onChange={e=>setTarget(e.target.value)} placeholder={mode==='free'?'https://username.github.io':'https://your-current-site.com'}/></label>}
+          {(mode==='free'||mode==='subdomain'||mode==='custom')&&<label>{mode==='free'?'TARGET HOST / WEBSITE':'CURRENT WEBSITE / DESTINATION'}<input value={target} onChange={e=>{setTarget(e.target.value);if(mode==='free')setTargetReady(false)}} placeholder={mode==='free'?'https://username.github.io':'https://your-current-site.com'}/></label>}
+          {mode==='free'&&<div className="domains-host-readiness">
+            <strong>IMPORTANT — DNS IS ONLY HALF OF THE SETUP</strong>
+            <span>Your destination host must accept <b>{subdomain}</b> as a custom domain and provide an HTTPS/SSL certificate. Creating the CNAME alone does not guarantee the site will open securely.</span>
+            {isGitHubPagesTarget&&<span className="domains-github-warning"><b>GitHub Pages:</b> add <b>{subdomain}</b> as the repository's Custom domain in Settings → Pages. GitHub must provision HTTPS for that exact hostname.</span>}
+            <label className="domains-confirm-check"><input type="checkbox" checked={targetReady} onChange={e=>setTargetReady(e.target.checked)}/><span>I confirmed my destination host supports this custom domain and HTTPS.</span></label>
+          </div>}
           {mode==='hosting'&&<label>WHAT DO YOU WANT ESN TO HOST?<textarea value={details} onChange={e=>setDetails(e.target.value)} placeholder="Describe the site, files, framework, storage needs, or project."/></label>}
           {mode!=='hosting'&&mode!=='free'&&<label>NOTES <textarea value={details} onChange={e=>setDetails(e.target.value)} placeholder="Optional details for ESN staff."/></label>}
           {mode!=='free'&&<label>CONTACT<input value={contact} onChange={e=>setContact(e.target.value)} placeholder="Discord username or email"/></label>}
@@ -313,7 +331,7 @@ export default function DomainsPage(){
               <div className="domains-result-actions">
                 <a href={result.issueUrl} target="_blank" rel="noreferrer">CONTINUE TO GITHUB →</a>
               </div>
-              <small>Submit the pre-filled GitHub issue. The workflow will re-check the name and create the Spaceship CNAME automatically if it is available.</small>
+              <small>Submit the pre-filled GitHub issue. The workflow will re-check the name and create the Spaceship CNAME automatically if it is available. Your host still has to accept the custom domain and finish HTTPS/SSL provisioning.</small>
             </>}
             {result.ok&&!result.free&&<>
               <small>Request ID: {result.request.id} • {result.request.priceLabel}</small>
@@ -331,9 +349,9 @@ export default function DomainsPage(){
       <div className="section-heading"><div><span className="eyebrow">FREE SUBDOMAIN FLOW</span><h2>Pick it. Confirm it. ESN creates it.</h2></div></div>
       <div className="domains-steps">
         <article><span>01</span><h3>Choose</h3><p>Enter an available-looking name and the hostname your subdomain should point to.</p></article>
-        <article><span>02</span><h3>Confirm</h3><p>The site opens one pre-filled GitHub request. Your GitHub identity prevents completely anonymous DNS creation.</p></article>
-        <article><span>03</span><h3>Create</h3><p>GitHub Actions checks the ESN reserved list and live Spaceship DNS, then creates the CNAME automatically.</p></article>
-        <article><span>04</span><h3>Connect</h3><p>Add the new ESN hostname as a custom domain at your destination host so HTTPS and the website can load correctly.</p></article>
+        <article><span>02</span><h3>Prepare host</h3><p>Confirm your destination provider supports the ESN hostname as a custom domain and can issue HTTPS for it.</p></article>
+        <article><span>03</span><h3>Create DNS</h3><p>GitHub Actions checks the ESN reserved list and live Spaceship DNS, then creates only the CNAME automatically.</p></article>
+        <article><span>04</span><h3>Finish HTTPS</h3><p>Your destination host must accept the ESN hostname and finish its SSL certificate before the browser will show a secure website.</p></article>
       </div>
     </div></section>
 
