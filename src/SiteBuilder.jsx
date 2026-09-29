@@ -1571,6 +1571,6 @@ export function HostedSitePage(){
   },[clean,requestedPage])
   if(state.loading)return <section className="section"><div className="shell"><div className="builder-public-state">Loading site…</div></div></section>
   if(state.error)return <section className="section"><div className="shell"><div className="builder-public-state"><strong>ESN SITE NOT READY</strong><span>{state.error}</span></div></div></section>
-  if(state.notFound)return <div className="hosted-site-shell"><GeneratedNotFound site={state.site}/></div>
-  return <div className="hosted-site-shell"><SitePreview site={state.site} page={requestedPage}/></div>
+  if(state.notFound)return <div className="hosted-site-shell"><GeneratedNotFound site={state.site}/><a className="esn-builder-attribution" href="/site-builder"><span>Built with</span><strong>ESN Website Builder</strong><em>↗</em></a></div>
+  return <div className="hosted-site-shell"><SitePreview site={state.site} page={requestedPage}/><a className="esn-builder-attribution" href="/site-builder"><span>Built with</span><strong>ESN Website Builder</strong><em>↗</em></a></div>
 }
