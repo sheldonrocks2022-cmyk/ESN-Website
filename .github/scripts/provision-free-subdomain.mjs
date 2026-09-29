@@ -26,6 +26,7 @@ const issueNumber=issue.number
 const subdomain=(body.match(/^Subdomain:\s*`?([a-z0-9-]+)`?\s*$/mi)?.[1]||'').toLowerCase()
 const rawTarget=(body.match(/^Target:\s*`?([^\s`]+)`?\s*$/mi)?.[1]||'').trim().toLowerCase()
 const agreed=/^Terms:\s*I agree to the ESN free subdomain rules\.\s*$/mi.test(body)
+const hostReady=/^Host readiness:\s*I confirmed my destination host supports this custom domain and HTTPS\.\s*$/mi.test(body)
 
 function targetHostname(value){
   if(!value)return ''
@@ -89,6 +90,7 @@ if(!spaceshipKey||!spaceshipSecret){
   process.exit(1)
 }
 if(!agreed)await reject('The ESN free-subdomain terms marker is missing.')
+if(!hostReady)await reject('Confirm that your destination host supports the requested custom domain and HTTPS before ESN creates DNS.')
 if(!LABEL_RE.test(subdomain)||RESERVED.has(subdomain))await reject('That subdomain name is invalid or reserved by ESN.')
 if(!DOMAIN_RE.test(target))await reject('The target must be a normal hostname such as `username.github.io` or `project.example.com`.')
 if(target===ROOT_DOMAIN||target.endsWith('.'+ROOT_DOMAIN))await reject('A free subdomain cannot point back into the ESN domain because that can create routing loops.')
@@ -129,5 +131,5 @@ if(!saveResponse.ok){
 await closeWith(
   ACTIVE_LABEL,
   '[FREE-SUBDOMAIN-ACTIVE]',
-  `✅ **Your free ESN subdomain was created automatically.**\n\n**Address:** \`${subdomain}.${ROOT_DOMAIN}\`\n**CNAME target:** \`${target}\`\n\nDNS may take time to propagate. Your destination host must also be configured to accept \`${subdomain}.${ROOT_DOMAIN}\` as a custom domain for the website to load correctly.\n\nESN may remove free subdomains used for phishing, malware, impersonation, spam, or other abuse.`
+  `✅ **Your free ESN DNS record was created automatically.**\n\n**Address:** \`${subdomain}.${ROOT_DOMAIN}\`\n**CNAME target:** \`${target}\`\n\n**Important:** DNS creation does not guarantee the website or HTTPS certificate is ready yet. Your destination host must accept \`${subdomain}.${ROOT_DOMAIN}\` as a custom domain and finish SSL/HTTPS provisioning before browsers will show it securely.\n\nESN may remove free subdomains used for phishing, malware, impersonation, spam, or other abuse.`
 )
