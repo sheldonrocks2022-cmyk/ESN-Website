@@ -731,9 +731,10 @@ function inferVisual(prompt,analysis){
   const motion=/no animation|calm|subtle/.test(value)?'calm':/cinematic|immersive|dramatic|esn style|like esn/.test(value)?'cinematic':recipe.motion
   const nav=/minimal nav|simple nav/.test(value)?'minimal':/sidebar|rail nav/.test(value)?'rail':recipe.nav
   const type=/editorial|magazine|serif/.test(value)?'editorial':/technical|terminal|mono/.test(value)?'technical':recipe.type
+  const font=/rounded font|friendly font/.test(value)?'rounded':/condensed|narrow/.test(value)?'condensed':/mono|terminal|code/.test(value)?'mono':/serif|editorial|magazine/.test(value)?'serif':/geometric|modern sans/.test(value)?'geometric':'system'
   const background=/aurora/.test(value)?'aurora':/mesh/.test(value)?'mesh':/grid/.test(value)?'grid':/paper/.test(value)?'paper':/noise|grainy background/.test(value)?'noise':recipe.background
   const fx=/no effects|no fx/.test(value)?'none':/stars|space particles/.test(value)?'stars':/scanline/.test(value)?'scanlines':/grain|film/.test(value)?'grain':recipe.fx
-  return {...recipe,accent:themeAccent(analysis.theme),style,shape,density,motion,nav,type,background,fx}
+  return {...recipe,accent:themeAccent(analysis.theme),style,shape,density,motion,nav,type,font,background,fx}
 }
 function pageBlueprint(category){
   const map={
@@ -859,7 +860,7 @@ function safeSite(site){
     }
   })
   return {
-    version:5,
+    version:7,
     multiPage:site.multiPage===true||sourceVersion>=4,
     slug:cleanSlug(site.slug),
     brand:clamp(site.brand,60),
@@ -874,6 +875,7 @@ function safeSite(site){
       motion:MOTIONS.includes(rawVisual.motion)?rawVisual.motion:'dynamic',
       nav:['glass','minimal','rail'].includes(rawVisual.nav)?rawVisual.nav:'glass',
       type:['display','editorial','technical'].includes(rawVisual.type)?rawVisual.type:'display',
+      font:FONT_STYLES.includes(rawVisual.font)?rawVisual.font:'system',
       style:STYLE_PRESETS.includes(rawVisual.style)?rawVisual.style:'studio',
       background:BACKGROUNDS.includes(rawVisual.background)?rawVisual.background:'gradient',
       surface:SURFACES.includes(rawVisual.surface)?rawVisual.surface:'elevated',
@@ -901,6 +903,9 @@ function safeSite(site){
       testimonials:sections.testimonials!==false,
       gallery:sections.gallery!==false,
       socials:sections.socials!==false,
+      countdown:sections.countdown===true,
+      minecraft:sections.minecraft===true,
+      visitor:sections.visitor===true,
     },
     announcement:{
       label:clamp(site.announcement?.label||STARTER.announcement.label,24),
@@ -912,6 +917,12 @@ function safeSite(site){
     testimonials:(site.testimonials||STARTER.testimonials).slice(0,3).map(function(item){return {quote:clamp(item.quote,280),name:clamp(item.name,60),role:clamp(item.role,60)}}),
     gallery:(site.gallery||STARTER.gallery).slice(0,4).map(function(item){return {title:clamp(item.title,80),copy:clamp(item.copy,220),image:safeImage(item.image),alt:clamp(item.alt||item.title,100)}}),
     socials:(site.socials||STARTER.socials).slice(0,3).map(function(item){return {label:clamp(item.label,40),url:safeUrl(item.url)}}),
+    galleryMode:['grid','carousel'].includes(site.galleryMode)?site.galleryMode:'grid',
+    sectionOrder:(Array.isArray(site.sectionOrder)?site.sectionOrder:STARTER.sectionOrder).filter(function(key,index,array){return HOME_SECTION_KEYS.includes(key)&&array.indexOf(key)===index}).concat(HOME_SECTION_KEYS.filter(function(key){return !(site.sectionOrder||[]).includes(key)})).slice(0,HOME_SECTION_KEYS.length),
+    countdown:{title:clamp(site.countdown?.title||STARTER.countdown.title,80),target:clamp(site.countdown?.target,40),label:clamp(site.countdown?.label||STARTER.countdown.label,30)},
+    minecraft:{address:clamp(site.minecraft?.address,120).replace(/[^a-z0-9.\-_:]/gi,''),bedrock:site.minecraft?.bedrock===true,title:clamp(site.minecraft?.title||STARTER.minecraft.title,80)},
+    visitor:{label:clamp(site.visitor?.label||STARTER.visitor.label,60)},
+    notFound:{title:clamp(site.notFound?.title||STARTER.notFound.title,100),copy:clamp(site.notFound?.copy||STARTER.notFound.copy,300),buttonLabel:clamp(site.notFound?.buttonLabel||STARTER.notFound.buttonLabel,40)},
     ctaTitle:clamp(site.ctaTitle,100),
     ctaCopy:clamp(site.ctaCopy,260),
     ctaLabel:clamp(site.ctaLabel,50),
