@@ -222,6 +222,45 @@ const payload={
 if(currentSha)payload.sha=currentSha
 await gh('/repos/'+repo+'/contents/'+path,{method:'PUT',body:JSON.stringify(payload)})
 
+const manifestPath='public/generated-sites/index.json'
+let manifestSha=''
+let manifest={version:1,sites:[]}
+const manifestResponse=await fetch('https://api.github.com/repos/'+repo+'/contents/'+manifestPath+'?ref=main',{
+  headers:{Accept:'application/vnd.github+json',Authorization:'Bearer '+token,'X-GitHub-Api-Version':'2022-11-28'},
+})
+if(manifestResponse.ok){
+  const file=await manifestResponse.json()
+  manifestSha=file.sha||''
+  try{
+    const decodedManifest=JSON.parse(Buffer.from(String(file.content||'').replace(/\n/g,''),'base64').toString('utf8'))
+    if(decodedManifest&&Array.isArray(decodedManifest.sites))manifest=decodedManifest
+  }catch{}
+}else if(manifestResponse.status!==404){
+  const details=await manifestResponse.text()
+  throw new Error('Could not inspect generated-site manifest: '+manifestResponse.status+' '+details.slice(0,500))
+}
+const showcaseEntry={
+  slug:site.slug,
+  brand:site.brand,
+  category:site.category,
+  description:site.seoDescription||site.heroCopy,
+  heroTitle:site.heroTitle,
+  publishedAt:site.publishedAt,
+  path:'/sites/'+site.slug,
+}
+manifest={
+  version:1,
+  sites:[showcaseEntry,...manifest.sites.filter(item=>item&&item.slug!==site.slug)].slice(0,100),
+}
+const manifestJson=JSON.stringify(manifest,null,2)+'\n'
+const manifestPayload={
+  message:'Update ESN Builder showcase manifest',
+  content:Buffer.from(manifestJson,'utf8').toString('base64'),
+  branch:'main',
+}
+if(manifestSha)manifestPayload.sha=manifestSha
+await gh('/repos/'+repo+'/contents/'+manifestPath,{method:'PUT',body:JSON.stringify(manifestPayload)})
+
 await finish(
   PUBLISHED_LABEL,
   '[SITE-BUILD-PUBLISHED] '+slug,
