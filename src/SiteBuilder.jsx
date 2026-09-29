@@ -41,6 +41,7 @@ function clamp(value,max){return String(value||'').trim().slice(0,max||280)}
 function safeUrl(value){try{const url=new URL(String(value||'').trim());return ['https:','http:'].includes(url.protocol)?url.toString():''}catch{return ''}}
 function classify(prompt){
   const value=prompt.toLowerCase()
+  if(/fortnite|battle royale|zero build|uefn/.test(value))return 'fortnite'
   if(/restaurant|food|cafe|pizza|burger|menu|bakery/.test(value))return 'restaurant'
   if(/business|company|agency|service|shop|store|client/.test(value))return 'business'
   if(/portfolio|designer|developer|photograph|editor|artist|resume/.test(value))return 'portfolio'
