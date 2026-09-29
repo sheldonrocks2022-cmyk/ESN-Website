@@ -126,6 +126,7 @@ const socialPreview = fs.readFileSync('public/esn-social-card.svg','utf8')
 const storeAi = fs.readFileSync('src/StoreAI.jsx','utf8')
 const domainsPortal = fs.readFileSync('src/Domains.jsx','utf8')
 const siteBuilder = fs.readFileSync('src/SiteBuilder.jsx','utf8')
+const siteBuilderCss = fs.readFileSync('src/siteBuilder.css','utf8')
 const siteBuilderPublisher = fs.readFileSync('.github/scripts/publish-built-site.mjs','utf8')
 const siteBuilderWorkflow = fs.readFileSync('.github/workflows/publish-built-site.yml','utf8')
 
@@ -194,12 +195,13 @@ if (freeSubdomainProvisioner.includes('REPLACE_KEY_VALUE') || freeSubdomainWorkf
 if (!seo.includes("'/hosting':{") || !seo.includes("canonical:'/hosting'")) problems.push('ESN Hosting SEO route or Domains alias canonical is missing.')
 if (!sitemap.includes('https://esnoffical.com/hosting')) problems.push('ESN Hosting missing from sitemap.')
 if (!app.includes("import SiteBuilderPage, { HostedSitePage } from './SiteBuilder'") || !app.includes('path="/site-builder" element={<SiteBuilderPage />}') || !app.includes('path="/sites/:slug" element={<HostedSitePage />}')) problems.push('ESN Website Builder routes or module wiring missing.')
-for (const marker of ['ESN WEBSITE BUILDER // FLAGSHIP GENERATOR V4','FLAGSHIP SITE ENGINE','VERSION A','VERSION B','VERSION C • FLAGSHIP','UNDO AI CHANGE','SITE QUALITY','REGENERATE HERO','REGENERATE ABOUT','REGENERATE CARDS','REGENERATE STATS','REGENERATE FAQ','REGENERATE SEO','REGENERATE CTA','QUICK_PROMPTS','analyzePrompt','promptKeywords','promptScore','inferAudience','inferLayout','generatedStats','generatedFaq','seoTitle','seoDescription','layout-split','layout-editorial','flagship','FlagshipSitePreview','gfs-core-stage','gfs-story-stack','gfs-bento','gfs-feature-stage','gfs-process','gfs-final','DOWNLOAD HTML','PUBLISH BUILD','LIVE PREVIEW','script-free','ESN_SITE_BUILD_V1','fortnite','minecraft','music','technology','/sites/']) {
+for (const marker of ['ESN WEBSITE BUILDER // 100X GENERATOR V5','100X EXPERIENCE ENGINE','VERSION A','VERSION B','VERSION C • FLAGSHIP','UNDO AI CHANGE','SITE QUALITY','REGENERATE HERO','REGENERATE ABOUT','REGENERATE CARDS','REGENERATE STATS','REGENERATE FAQ','REGENERATE SEO','REGENERATE CTA','REGENERATE ALL','EXPERIENCE_PACKS','applyExperiencePack','generatedExperience','announcement','status','timeline','testimonials','gallery','socials','QUICK_PROMPTS','analyzePrompt','promptKeywords','promptScore','inferAudience','inferLayout','generatedStats','generatedFaq','seoTitle','seoDescription','layout-split','layout-editorial','flagship','FlagshipSitePreview','gfs-core-stage','gfs-story-stack','gfs-bento','gfs-feature-stage','gfs-process','gfs-final','gfs-status-center','gfs-timeline','gfs-gallery','gfs-testimonials','gfs-social-deck','DOWNLOAD HTML','PUBLISH BUILD','LIVE PREVIEW','script-free','ESN_SITE_BUILD_V1','fortnite','minecraft','music','technology','pet','education','product','blog','nonprofit','/sites/']) {
   if (!siteBuilder.includes(marker)) problems.push(`ESN Website Builder missing: ${marker}.`)
 }
 if (!siteBuilder.includes('BLOCKED_TEXT') || !siteBuilder.includes('safeSite') || !siteBuilder.includes('HostedSitePage')) problems.push('ESN Website Builder safety or hosted-preview renderer is incomplete.')
+if (!siteBuilderCss.includes('ESN WEBSITE BUILDER V5 100X') || !siteBuilderCss.includes('.gfs-status-center') || !siteBuilderCss.includes('.gfs-timeline') || !siteBuilderCss.includes('.gfs-gallery') || !siteBuilderCss.includes('.gfs-testimonials') || !siteBuilderCss.includes('.gfs-social-deck')) problems.push('ESN Website Builder V5 100X visual systems are incomplete.')
 if (!siteBuilderWorkflow.includes('contents: write') || !siteBuilderWorkflow.includes('issues: write') || !siteBuilderWorkflow.includes("startsWith(github.event.issue.title, '[SITE-BUILD]')")) problems.push('ESN Website Builder publish workflow permissions or trigger are incomplete.')
-for (const marker of ['free-subdomain-active','site-builder-published','public/generated-sites/','does not request passwords','BLOCKED','version:2','seoTitle','seoDescription','stats','faq','layout']) {
+for (const marker of ['free-subdomain-active','site-builder-published','public/generated-sites/','does not request passwords','BLOCKED','version:3','seoTitle','seoDescription','stats','faq','layout','EXPERIENCE_PACKS','announcement','status','timeline','testimonials','gallery','socials']) {
   if (!siteBuilderPublisher.toLowerCase().includes(marker.toLowerCase())) problems.push(`ESN Website Builder publisher missing: ${marker}.`)
 }
 if (!seo.includes("'/site-builder':{")) problems.push('ESN Website Builder SEO route missing.')
