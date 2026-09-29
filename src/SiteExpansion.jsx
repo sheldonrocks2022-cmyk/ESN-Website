@@ -3,7 +3,7 @@ import { Link, useLocation } from 'react-router-dom'
 import { DISCORD_URL, SITE_RELEASE, SMP_ADDRESS, SMP_PORT, useLiveNetwork } from './liveNetwork'
 import { useArcadeProgress } from './arcade/shared'
 
-const RELEASE_ID='2026-09-28-free-subdomains'
+const RELEASE_ID='2026-09-28-site-builder'
 const RECENT_KEY='esn_recent_routes'
 const FAVORITES_KEY='esn_favorites'
 const PREF_KEY='esn_site_preferences'
@@ -19,6 +19,7 @@ const ROUTE_META={
   '/serviceshowcase':{label:'Services',category:'Services'},
   '/store-ai':{label:'ESN Store AI',category:'Services'},
   '/hosting':{label:'ESN Hosting',category:'Services'},
+  '/site-builder':{label:'ESN Website Builder',category:'Services'},
   '/portfolio':{label:'Portfolio',category:'Services'},
   '/testimonials':{label:'Verified Reviews',category:'Services'},
   '/smpconnection':{label:'SMP Connection',category:'SMP'},
@@ -90,6 +91,7 @@ const EXPLORE_FEATURES=[
   ['Session Stats','See account-free local visit time, routes, Arcade XP, hidden signals, and Terminal activity.','/session','LOCAL'],
   ['ESN Store AI','Ask about every verified ESN product and service, compare prices, check delivery rules, find checkout, or unlock staff store tools.','/store-ai','STORE AI'],
   ['ESN Domains','Choose an ESN subdomain, connect a domain you own, and manage activation through the ESN Domains control layer.','/domains','DOMAINS'],
+  ['ESN Website Builder','Generate, edit, preview, export, and safely publish a website tied to your ESN subdomain.','/site-builder','BUILDER'],
 ]
 
 const COMMANDS=[
