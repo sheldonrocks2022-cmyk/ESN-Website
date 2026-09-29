@@ -5,12 +5,34 @@ import './siteBuilder.css'
 const ROOT_DOMAIN='esnoffical.com'
 const ISSUE_BASE='https://github.com/sheldonrocks2022-cmyk/ESN-Website/issues/new'
 const DRAFT_KEY='esn_site_builder_draft_v1'
-const THEMES=['midnight','neon','clean','ember','ocean','void','aurora','forest','rose','gold']
+const THEMES=['midnight','neon','clean','ember','ocean','void','aurora','forest','rose','gold','ice','sunset','mono','lime','royal','candy']
 const EXPERIENCE_PACKS=['essential','showcase','network','full']
 const SHAPES=['rounded','sharp','soft']
 const DENSITIES=['airy','balanced','dense']
 const MOTIONS=['calm','dynamic','cinematic']
-const LAYOUTS=['spotlight','split','editorial','flagship']
+const LAYOUTS=['spotlight','split','editorial','flagship','stacked','poster','studio','dashboard']
+const STYLE_PRESETS=['studio','cyber','luxury','editorial','minimal','playful','brutalist','glass','retro','organic','arcade','cinematic']
+const BACKGROUNDS=['solid','gradient','mesh','grid','aurora','spotlight','paper','noise']
+const SURFACES=['solid','glass','frosted','outline','elevated','flat']
+const HERO_STYLES=['left','center','split','poster','stacked']
+const CARD_STYLES=['clean','glass','glow','outline','tiles','floating']
+const BUTTON_STYLES=['pill','rounded','square','outline','glow']
+const FX_STYLES=['none','glow','grain','scanlines','stars']
+const CONTRASTS=['soft','normal','high']
+const STYLE_RECIPES={
+  studio:{background:'gradient',surface:'elevated',hero:'left',cards:'clean',buttons:'rounded',fx:'glow',contrast:'normal',nav:'glass',type:'display',shape:'rounded',density:'balanced',motion:'dynamic'},
+  cyber:{background:'grid',surface:'glass',hero:'split',cards:'glow',buttons:'glow',fx:'scanlines',contrast:'high',nav:'glass',type:'technical',shape:'sharp',density:'dense',motion:'dynamic'},
+  luxury:{background:'spotlight',surface:'frosted',hero:'poster',cards:'floating',buttons:'pill',fx:'grain',contrast:'soft',nav:'minimal',type:'editorial',shape:'rounded',density:'airy',motion:'cinematic'},
+  editorial:{background:'paper',surface:'flat',hero:'stacked',cards:'outline',buttons:'square',fx:'none',contrast:'high',nav:'minimal',type:'editorial',shape:'sharp',density:'airy',motion:'calm'},
+  minimal:{background:'solid',surface:'flat',hero:'left',cards:'clean',buttons:'outline',fx:'none',contrast:'normal',nav:'minimal',type:'display',shape:'rounded',density:'airy',motion:'calm'},
+  playful:{background:'mesh',surface:'elevated',hero:'center',cards:'tiles',buttons:'pill',fx:'stars',contrast:'normal',nav:'glass',type:'display',shape:'soft',density:'balanced',motion:'dynamic'},
+  brutalist:{background:'solid',surface:'outline',hero:'poster',cards:'outline',buttons:'square',fx:'none',contrast:'high',nav:'rail',type:'technical',shape:'sharp',density:'dense',motion:'calm'},
+  glass:{background:'aurora',surface:'glass',hero:'center',cards:'glass',buttons:'pill',fx:'glow',contrast:'soft',nav:'glass',type:'display',shape:'soft',density:'airy',motion:'dynamic'},
+  retro:{background:'noise',surface:'elevated',hero:'poster',cards:'tiles',buttons:'square',fx:'scanlines',contrast:'high',nav:'rail',type:'technical',shape:'sharp',density:'balanced',motion:'dynamic'},
+  organic:{background:'mesh',surface:'flat',hero:'stacked',cards:'floating',buttons:'pill',fx:'grain',contrast:'soft',nav:'minimal',type:'editorial',shape:'soft',density:'airy',motion:'calm'},
+  arcade:{background:'grid',surface:'glass',hero:'center',cards:'glow',buttons:'glow',fx:'stars',contrast:'high',nav:'glass',type:'technical',shape:'rounded',density:'dense',motion:'cinematic'},
+  cinematic:{background:'spotlight',surface:'glass',hero:'split',cards:'floating',buttons:'glow',fx:'grain',contrast:'high',nav:'glass',type:'display',shape:'rounded',density:'airy',motion:'cinematic'},
+}
 const BLOCKED_TEXT=/password|passcode|seed phrase|wallet recovery|credit card|social security|bank login|verify your account|sign in to continue/i
 const tick=String.fromCharCode(96)
 
@@ -66,7 +88,7 @@ const STARTER={
     {label:'YouTube',url:''},
     {label:'Main link',url:''},
   ],
-  visual:{accent:'#65e8ff',shape:'rounded',density:'balanced',motion:'dynamic',nav:'glass',type:'display'},
+  visual:{accent:'#65e8ff',shape:'rounded',density:'balanced',motion:'dynamic',nav:'glass',type:'display',style:'studio',background:'gradient',surface:'elevated',hero:'left',cards:'clean',buttons:'rounded',fx:'glow',contrast:'normal'},
   pages:[
     {slug:'about',title:'About',eyebrow:'ABOUT',headline:'The story behind this website.',copy:'Use this page to go deeper than the homepage.',items:[{title:'The idea',copy:'Explain the main idea.'},{title:'The story',copy:'Explain what led here.'},{title:'Today',copy:'Explain what matters now.'}]},
     {slug:'highlights',title:'Highlights',eyebrow:'HIGHLIGHTS',headline:'Explore the important parts.',copy:'Give the strongest parts of the website their own page.',items:[{title:'Highlight one',copy:'Main highlight.'},{title:'Highlight two',copy:'Second highlight.'},{title:'Highlight three',copy:'Third highlight.'}]},
@@ -601,7 +623,7 @@ function applyExperiencePack(site,pack){
   return {...site,pack:next,sections:flags}
 }
 function themeAccent(theme){
-  return {midnight:'#65e8ff',neon:'#8cffec',clean:'#3157ff',ember:'#ff8066',ocean:'#63dbff',void:'#a879ff',aurora:'#64ffd8',forest:'#72e39b',rose:'#ff7daa',gold:'#ffd56a'}[theme]||'#65e8ff'
+  return {midnight:'#65e8ff',neon:'#8cffec',clean:'#3157ff',ember:'#ff8066',ocean:'#63dbff',void:'#a879ff',aurora:'#64ffd8',forest:'#72e39b',rose:'#ff7daa',gold:'#ffd56a',ice:'#8fe7ff',sunset:'#ff9a6b',mono:'#ffffff',lime:'#b7ff5c',royal:'#7f8cff',candy:'#ff83e1'}[theme]||'#65e8ff'
 }
 function sanitizeHex(value,fallback){
   const v=String(value||'').trim()
@@ -609,12 +631,16 @@ function sanitizeHex(value,fallback){
 }
 function inferVisual(prompt,analysis){
   const value=String(prompt||'').toLowerCase()
-  const shape=/sharp|square|angular|industrial/.test(value)?'sharp':/soft|cute|friendly|round|rounded/.test(value)?'soft':'rounded'
-  const density=/dense|dashboard|data-heavy|compact/.test(value)?'dense':/airy|minimal|spacious|luxury/.test(value)?'airy':'balanced'
-  const motion=/no animation|calm|subtle|simple/.test(value)?'calm':/cinematic|immersive|dramatic|esn style|like esn/.test(value)?'cinematic':'dynamic'
-  const nav=/minimal nav|simple nav/.test(value)?'minimal':/sidebar/.test(value)?'rail':'glass'
-  const type=/editorial|magazine|serif/.test(value)?'editorial':/technical|terminal|mono/.test(value)?'technical':'display'
-  return {accent:themeAccent(analysis.theme),shape,density,motion,nav,type}
+  const style=/brutalist|raw|hard edge/.test(value)?'brutalist':/luxury|premium|elegant|high end/.test(value)?'luxury':/editorial|magazine|fashion/.test(value)?'editorial':/minimal|simple|clean/.test(value)?'minimal':/cute|playful|fun/.test(value)?'playful':/retro|y2k|vaporwave|80s|90s/.test(value)?'retro':/glass|glassmorphism/.test(value)?'glass':/organic|natural|earthy/.test(value)?'organic':/arcade|game ui/.test(value)?'arcade':/cinematic|immersive|dramatic|esn style|like esn/.test(value)?'cinematic':/cyber|terminal|hacker|techno/.test(value)?'cyber':'studio'
+  const recipe=STYLE_RECIPES[style]||STYLE_RECIPES.studio
+  const shape=/sharp|square|angular|industrial/.test(value)?'sharp':/soft|cute|friendly|round|rounded/.test(value)?'soft':recipe.shape
+  const density=/dense|dashboard|data-heavy|compact/.test(value)?'dense':/airy|spacious/.test(value)?'airy':recipe.density
+  const motion=/no animation|calm|subtle/.test(value)?'calm':/cinematic|immersive|dramatic|esn style|like esn/.test(value)?'cinematic':recipe.motion
+  const nav=/minimal nav|simple nav/.test(value)?'minimal':/sidebar|rail nav/.test(value)?'rail':recipe.nav
+  const type=/editorial|magazine|serif/.test(value)?'editorial':/technical|terminal|mono/.test(value)?'technical':recipe.type
+  const background=/aurora/.test(value)?'aurora':/mesh/.test(value)?'mesh':/grid/.test(value)?'grid':/paper/.test(value)?'paper':/noise|grainy background/.test(value)?'noise':recipe.background
+  const fx=/no effects|no fx/.test(value)?'none':/stars|space particles/.test(value)?'stars':/scanline/.test(value)?'scanlines':/grain|film/.test(value)?'grain':recipe.fx
+  return {...recipe,accent:themeAccent(analysis.theme),style,shape,density,motion,nav,type,background,fx}
 }
 function pageBlueprint(category){
   const map={
@@ -740,7 +766,7 @@ function safeSite(site){
     }
   })
   return {
-    version:4,
+    version:5,
     multiPage:site.multiPage===true||sourceVersion>=4,
     slug:cleanSlug(site.slug),
     brand:clamp(site.brand,60),
@@ -755,6 +781,14 @@ function safeSite(site){
       motion:MOTIONS.includes(rawVisual.motion)?rawVisual.motion:'dynamic',
       nav:['glass','minimal','rail'].includes(rawVisual.nav)?rawVisual.nav:'glass',
       type:['display','editorial','technical'].includes(rawVisual.type)?rawVisual.type:'display',
+      style:STYLE_PRESETS.includes(rawVisual.style)?rawVisual.style:'studio',
+      background:BACKGROUNDS.includes(rawVisual.background)?rawVisual.background:'gradient',
+      surface:SURFACES.includes(rawVisual.surface)?rawVisual.surface:'elevated',
+      hero:HERO_STYLES.includes(rawVisual.hero)?rawVisual.hero:'left',
+      cards:CARD_STYLES.includes(rawVisual.cards)?rawVisual.cards:'clean',
+      buttons:BUTTON_STYLES.includes(rawVisual.buttons)?rawVisual.buttons:'rounded',
+      fx:FX_STYLES.includes(rawVisual.fx)?rawVisual.fx:'glow',
+      contrast:CONTRASTS.includes(rawVisual.contrast)?rawVisual.contrast:'normal',
     },
     pages,
     seoTitle:clamp(site.seoTitle||site.brand,70),
@@ -849,6 +883,10 @@ function downloadHtml(site){
   anchor.remove()
   setTimeout(function(){URL.revokeObjectURL(url)},1000)
 }
+function visualClassNames(s){
+  const v=s.visual||STARTER.visual
+  return ['shape-'+v.shape,'density-'+v.density,'motion-'+v.motion,'type-'+v.type,'style-'+v.style,'background-'+v.background,'surface-'+v.surface,'hero-'+v.hero,'cards-'+v.cards,'buttons-'+v.buttons,'fx-'+v.fx,'contrast-'+v.contrast].join(' ')
+}
 function FlagshipSitePreview({site,preview=false,onPageChange}){
   const s=safeSite(site)
   const routeItems=[
@@ -857,7 +895,7 @@ function FlagshipSitePreview({site,preview=false,onPageChange}){
     {index:'03',title:s.cards[2]?.title||'Connect',meta:s.cards[2]?.copy||''},
     {index:'04',title:s.ctaLabel||'Continue',meta:s.ctaTitle||''},
   ]
-  return <div className={'esn-built-site generated-flagship theme-'+s.theme}>
+  return <div className={'esn-built-site generated-flagship theme-'+s.theme+' '+visualClassNames(s)}>
     <div className="gfs-ambient" aria-hidden="true"><i/><i/><i/></div>
     <nav className="gfs-nav"><strong>{s.brand}</strong><div>{s.multiPage?<>{preview?<button type="button" onClick={function(){onPageChange?.('home')}}>Home</button>:<a href={'/sites/'+s.slug}>Home</a>}{s.pages.map(function(page){return preview?<button type="button" key={page.slug} onClick={function(){onPageChange?.(page.slug)}}>{page.title}</button>:<a key={page.slug} href={'/sites/'+s.slug+'/'+page.slug}>{page.title}</a>})}</>:<><a href="#story">Story</a><a href="#highlights">Highlights</a><a href="#timeline">Timeline</a><a href="#faq">FAQ</a></>}</div><span>LIVE</span></nav>
     {s.sections.announcement&&<section className="gfs-announcement"><span>{s.announcement.label}</span><strong>{s.announcement.title}</strong><p>{s.announcement.copy}</p><i>↗</i></section>}
@@ -928,7 +966,7 @@ function GeneratedSubPage({site,page,preview=false,onPageChange}){
   const current=s.pages.find(function(item){return item.slug===page})||s.pages[0]
   if(!current)return <div className="builder-public-state"><strong>PAGE NOT FOUND</strong></div>
   const visualStyle={'--custom-accent':s.visual.accent,'--site-accent':s.visual.accent}
-  return <div style={visualStyle} className={'esn-built-site generated-subpage theme-'+s.theme+' shape-'+s.visual.shape+' density-'+s.visual.density+' motion-'+s.visual.motion+' type-'+s.visual.type}>
+  return <div style={visualStyle} className={'esn-built-site generated-subpage theme-'+s.theme+' '+visualClassNames(s)}>
     <nav className={'generated-page-nav nav-'+s.visual.nav}><strong>{s.brand}</strong><div>{preview?<button type="button" onClick={function(){onPageChange?.('home')}}>Home</button>:<a href={'/sites/'+s.slug}>Home</a>}{s.pages.map(function(item){return preview?<button type="button" className={item.slug===current.slug?'active':''} key={item.slug} onClick={function(){onPageChange?.(item.slug)}}>{item.title}</button>:<a className={item.slug===current.slug?'active':''} key={item.slug} href={'/sites/'+s.slug+'/'+item.slug}>{item.title}</a>})}</div></nav>
     <main className="generated-page-main">
       <section className="generated-page-hero"><span>{current.eyebrow}</span><h1>{current.headline}</h1><p>{current.copy}</p><div><small>{s.category.toUpperCase()}</small><small>FOR {s.audience.toUpperCase()}</small></div></section>
@@ -944,8 +982,8 @@ function SitePreview({site,page='home',preview=false,onPageChange}){
   const s=safeSite(site)
   if(page!=='home'&&s.multiPage)return <GeneratedSubPage site={s} page={page} preview={preview} onPageChange={onPageChange}/>
   const visualStyle={'--custom-accent':s.visual.accent,'--site-accent':s.visual.accent}
-  if(s.layout==='flagship')return <div style={visualStyle} className={'generated-visual-shell shape-'+s.visual.shape+' density-'+s.visual.density+' motion-'+s.visual.motion+' type-'+s.visual.type}><FlagshipSitePreview site={s} preview={preview} onPageChange={onPageChange}/></div>
-  return <div style={visualStyle} className={'esn-built-site theme-'+s.theme+' layout-'+s.layout+' shape-'+s.visual.shape+' density-'+s.visual.density+' motion-'+s.visual.motion+' type-'+s.visual.type}>
+  if(s.layout==='flagship')return <div style={visualStyle} className={'generated-visual-shell theme-'+s.theme+' '+visualClassNames(s)}><FlagshipSitePreview site={s} preview={preview} onPageChange={onPageChange}/></div>
+  return <div style={visualStyle} className={'esn-built-site theme-'+s.theme+' layout-'+s.layout+' '+visualClassNames(s)}>
     <nav><strong>{s.brand}</strong><div>{s.multiPage?<>{preview?<button type="button" onClick={function(){onPageChange?.('home')}}>Home</button>:<a href={'/sites/'+s.slug}>Home</a>}{s.pages.map(function(item){return preview?<button type="button" key={item.slug} onClick={function(){onPageChange?.(item.slug)}}>{item.title}</button>:<a key={item.slug} href={'/sites/'+s.slug+'/'+item.slug}>{item.title}</a>})}</>:<><a href="#about">About</a><a href="#highlights">Highlights</a><a href="#faq">FAQ</a></>}</div></nav>
     <section className="built-hero"><span>{s.category} • for {s.audience}</span><h1>{s.heroTitle}</h1><p>{s.heroCopy}</p>{s.ctaUrl&&<a className="built-hero-button" href={s.ctaUrl} target="_blank" rel="noreferrer">{s.ctaLabel}</a>}</section>
     <section className="built-stats">{s.stats.map(function(item,index){return <article key={index}><strong>{item.value}</strong><span>{item.label}</span></article>})}</section>
@@ -990,6 +1028,9 @@ export default function SiteBuilderPage(){
   const updatePageItem=function(pageIndex,itemIndex,key,value){setSite(function(current){return {...current,pages:(current.pages||STARTER.pages).map(function(page,i){return i===pageIndex?{...page,items:(page.items||[]).map(function(item,j){return j===itemIndex?{...item,[key]:value}:item})}:page})}})}
   const toggleSection=function(key){setSite(function(current){return {...current,sections:{...STARTER.sections,...current.sections,[key]:!(current.sections?.[key]!==false)}}})}
   const setPack=function(pack){setSite(function(current){return applyExperiencePack(current,pack)})}
+  const applyDesignStyle=function(style){setSite(function(current){const recipe=STYLE_RECIPES[style]||STYLE_RECIPES.studio;return {...current,visual:{...STARTER.visual,...current.visual,...recipe,style}}})}
+  const autoStyle=function(){setSite(function(current){return {...current,visual:inferVisual(prompt,analysis)}});setMessage('Style Lab rebuilt the visual system from your prompt.')}
+  const remixStyle=function(){const current=site.visual?.style||'studio';const index=STYLE_PRESETS.indexOf(current);const next=STYLE_PRESETS[(index+1+STYLE_PRESETS.length)%STYLE_PRESETS.length];applyDesignStyle(next);setMessage('Remixed the site into the '+next+' design system.')}
 
   useEffect(function(){try{localStorage.setItem(DRAFT_KEY,JSON.stringify(safeSite(site)))}catch{}},[site])
 
@@ -1026,7 +1067,7 @@ export default function SiteBuilderPage(){
   }
 
   return <>
-    <section className="page-hero builder-hero"><div className="shell page-hero-inner"><div className="page-hero-copy"><span className="eyebrow">ESN WEBSITE BUILDER // 1000X GENERATOR V6</span><h1>Generate an actual site system.</h1><p>V6 turns one prompt into a branded multi-page website with category-specific page architecture, adaptive navigation, generated brand DNA, responsive desktop/tablet/phone previews, accessibility readiness checks, and the full V5 experience engine underneath it.</p></div><div className="page-hero-mark"><span>V6</span><small>1000X SITE SYSTEM</small></div></div></section>
+    <section className="page-hero builder-hero"><div className="shell page-hero-inner"><div className="page-hero-copy"><span className="eyebrow">ESN WEBSITE BUILDER // 1000000X GENERATOR V7</span><h1>Generate a different design language every time.</h1><p>V7 adds the Style Lab: expanded themes and layouts plus independent controls for design style, backgrounds, surfaces, hero composition, cards, buttons, effects, contrast, navigation, typography, shape, density, and motion—while keeping the multi-page V6 architecture and publishing system.</p></div><div className="page-hero-mark"><span>V7</span><small>1000000X STYLE LAB</small></div></div></section>
     <section className="section"><div className="shell builder-layout">
       <div className="builder-controls">
         <div className="builder-panel"><span className="eyebrow">01 // IDEA + GENERATION</span>
@@ -1053,7 +1094,16 @@ export default function SiteBuilderPage(){
           <div className="builder-layout-picks">{LAYOUTS.map(function(layout){return <button type="button" className={site.layout===layout?'active':''} onClick={function(){update('layout',layout)}} key={layout}>{layout.toUpperCase()}</button>})}</div>
           <div className="builder-themes">{THEMES.map(function(theme){return <button type="button" className={site.theme===theme?'active':''} onClick={function(){update('theme',theme)}} key={theme}>{theme.toUpperCase()}</button>})}</div>
           <div className="builder-pack-picks">{EXPERIENCE_PACKS.map(function(pack){return <button type="button" className={(site.pack||'full')===pack?'active':''} onClick={function(){setPack(pack)}} key={pack}>{pack.toUpperCase()}</button>})}</div>
-          <div className="builder-brand-dna">
+          <div className="builder-style-actions"><button type="button" onClick={autoStyle}>AUTO STYLE FROM PROMPT</button><button type="button" onClick={remixStyle}>REMIX STYLE</button></div>
+          <div className="builder-brand-dna builder-style-lab">
+            <div><span>DESIGN STYLE</span><select value={site.visual?.style||'studio'} onChange={function(e){applyDesignStyle(e.target.value)}}>{STYLE_PRESETS.map(function(item){return <option value={item} key={item}>{item.toUpperCase()}</option>})}</select></div>
+            <div><span>BACKGROUND</span><select value={site.visual?.background||'gradient'} onChange={function(e){updateVisual('background',e.target.value)}}>{BACKGROUNDS.map(function(item){return <option value={item} key={item}>{item.toUpperCase()}</option>})}</select></div>
+            <div><span>SURFACE</span><select value={site.visual?.surface||'elevated'} onChange={function(e){updateVisual('surface',e.target.value)}}>{SURFACES.map(function(item){return <option value={item} key={item}>{item.toUpperCase()}</option>})}</select></div>
+            <div><span>HERO COMPOSITION</span><select value={site.visual?.hero||'left'} onChange={function(e){updateVisual('hero',e.target.value)}}>{HERO_STYLES.map(function(item){return <option value={item} key={item}>{item.toUpperCase()}</option>})}</select></div>
+            <div><span>CARD STYLE</span><select value={site.visual?.cards||'clean'} onChange={function(e){updateVisual('cards',e.target.value)}}>{CARD_STYLES.map(function(item){return <option value={item} key={item}>{item.toUpperCase()}</option>})}</select></div>
+            <div><span>BUTTON STYLE</span><select value={site.visual?.buttons||'rounded'} onChange={function(e){updateVisual('buttons',e.target.value)}}>{BUTTON_STYLES.map(function(item){return <option value={item} key={item}>{item.toUpperCase()}</option>})}</select></div>
+            <div><span>VISUAL FX</span><select value={site.visual?.fx||'glow'} onChange={function(e){updateVisual('fx',e.target.value)}}>{FX_STYLES.map(function(item){return <option value={item} key={item}>{item.toUpperCase()}</option>})}</select></div>
+            <div><span>CONTRAST</span><select value={site.visual?.contrast||'normal'} onChange={function(e){updateVisual('contrast',e.target.value)}}>{CONTRASTS.map(function(item){return <option value={item} key={item}>{item.toUpperCase()}</option>})}</select></div>
             <div><span>ACCENT</span><input type="text" value={site.visual?.accent||themeAccent(site.theme)} onChange={function(e){updateVisual('accent',e.target.value)}} maxLength="7"/></div>
             <div><span>SHAPE</span><select value={site.visual?.shape||'rounded'} onChange={function(e){updateVisual('shape',e.target.value)}}>{SHAPES.map(function(item){return <option value={item} key={item}>{item.toUpperCase()}</option>})}</select></div>
             <div><span>DENSITY</span><select value={site.visual?.density||'balanced'} onChange={function(e){updateVisual('density',e.target.value)}}>{DENSITIES.map(function(item){return <option value={item} key={item}>{item.toUpperCase()}</option>})}</select></div>
