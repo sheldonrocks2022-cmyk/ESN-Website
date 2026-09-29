@@ -3,7 +3,7 @@ import { Link, useLocation } from 'react-router-dom'
 import { DISCORD_URL, SITE_RELEASE, SMP_ADDRESS, SMP_PORT, useLiveNetwork } from './liveNetwork'
 import { useArcadeProgress } from './arcade/shared'
 
-const RELEASE_ID='2026-09-28-store-ai'
+const RELEASE_ID='2026-09-28-hosting-beta'
 const RECENT_KEY='esn_recent_routes'
 const FAVORITES_KEY='esn_favorites'
 const PREF_KEY='esn_site_preferences'
@@ -18,7 +18,7 @@ const ROUTE_META={
   '/':{label:'Home',category:'Network'},
   '/serviceshowcase':{label:'Services',category:'Services'},
   '/store-ai':{label:'ESN Store AI',category:'Services'},
-  '/domains':{label:'ESN Domains',category:'Services'},
+  '/hosting':{label:'ESN Hosting',category:'Services'},
   '/portfolio':{label:'Portfolio',category:'Services'},
   '/testimonials':{label:'Verified Reviews',category:'Services'},
   '/smpconnection':{label:'SMP Connection',category:'SMP'},
