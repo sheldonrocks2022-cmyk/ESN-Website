@@ -431,6 +431,22 @@ function safeSite(site){
     footer:clamp(site.footer,100),
   }
 }
+function siteQuality(site,prompt){
+  const s=safeSite(site)
+  let score=0
+  if(s.brand&&s.brand!=='My Website')score+=10
+  if(s.slug)score+=10
+  if(s.heroTitle.length>=18)score+=10
+  if(s.heroCopy.length>=80)score+=10
+  if(s.aboutCopy.length>=100)score+=10
+  if(s.cards.every(function(card){return card.title&&card.copy.length>=50}))score+=10
+  if(s.stats.length===3&&s.stats.every(function(item){return item.value&&item.label}))score+=10
+  if(s.faq.length===3&&s.faq.every(function(item){return item.q&&item.a.length>=40}))score+=10
+  if(s.seoTitle.length>=20&&s.seoDescription.length>=80)score+=10
+  if(promptScore(prompt)>=70)score+=10
+  return Math.min(100,score)
+}
+
 function encodePayload(value){
   const bytes=new TextEncoder().encode(JSON.stringify(value))
   let binary=''
@@ -447,9 +463,11 @@ function exportHtml(site){
   const s=safeSite(site)
   const palettes={midnight:['#07111f','#0d1e35','#ffffff','#8ea7c4','#65e8ff'],neon:['#070710','#15122b','#ffffff','#b6afff','#8cffec'],clean:['#f7f8fb','#ffffff','#10131a','#5b6473','#3157ff'],ember:['#140b09','#28100d','#ffffff','#d9aaa0','#ff8066'],ocean:['#06131a','#0b2430','#ffffff','#9bc3d1','#63dbff']}
   const p=palettes[s.theme]||palettes.midnight
-  const cards=s.cards.map(function(card){return '<article><h3>'+esc(card.title)+'</h3><p>'+esc(card.copy)+'</p></article>'}).join('')
-  const cta=s.ctaUrl?'<a class="button" href="'+esc(s.ctaUrl)+'" rel="noreferrer">'+esc(s.ctaLabel)+'</a>':''
-  return '<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>'+esc(s.brand)+'</title><meta name="description" content="'+esc(s.heroCopy)+'"><style>*{box-sizing:border-box}body{margin:0;background:'+p[0]+';color:'+p[2]+';font-family:Inter,system-ui,-apple-system,sans-serif}.wrap{width:min(1100px,calc(100% - 36px));margin:auto}.nav{display:flex;justify-content:space-between;align-items:center;padding:24px 0}.brand{font-weight:900}.nav span{color:'+p[3]+'}.hero{padding:110px 0 80px}.eyebrow{color:'+p[4]+';font-size:.72rem;letter-spacing:.15em;font-weight:900;text-transform:uppercase}.hero h1{font-size:clamp(3rem,9vw,7rem);line-height:.92;max-width:900px;margin:16px 0 24px}.hero p,.about p,.cta p,.grid p{color:'+p[3]+';line-height:1.7}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;padding:24px 0 90px}.grid article,.about,.cta{background:'+p[1]+';border-radius:24px;padding:28px}.about,.cta{margin-bottom:22px}.button{display:inline-block;margin-top:14px;background:'+p[4]+';color:'+p[0]+';padding:13px 18px;border-radius:12px;text-decoration:none;font-weight:900}.footer{padding:38px 0 60px;color:'+p[3]+'}@media(max-width:760px){.hero{padding:70px 0 45px}.grid{grid-template-columns:1fr;padding-bottom:55px}}</style></head><body><div class="wrap"><nav class="nav"><div class="brand">'+esc(s.brand)+'</div><span>'+ROOT_DOMAIN+'/sites/'+esc(s.slug)+'</span></nav><main><section class="hero"><span class="eyebrow">'+esc(s.category)+'</span><h1>'+esc(s.heroTitle)+'</h1><p>'+esc(s.heroCopy)+'</p></section><section class="about"><h2>'+esc(s.aboutTitle)+'</h2><p>'+esc(s.aboutCopy)+'</p></section><section class="grid">'+cards+'</section><section class="cta"><h2>'+esc(s.ctaTitle)+'</h2><p>'+esc(s.ctaCopy)+'</p>'+cta+'</section></main><footer class="footer">'+esc(s.footer)+'</footer></div></body></html>'
+  const cards=s.cards.map(function(card,index){return '<article><span>0'+(index+1)+'</span><h3>'+esc(card.title)+'</h3><p>'+esc(card.copy)+'</p></article>'}).join('')
+  const stats=s.stats.map(function(item){return '<article><strong>'+esc(item.value)+'</strong><span>'+esc(item.label)+'</span></article>'}).join('')
+  const faq=s.faq.map(function(item,index){return '<details'+(index===0?' open':'')+'><summary>'+esc(item.q)+'</summary><p>'+esc(item.a)+'</p></details>'}).join('')
+  const cta=s.ctaUrl?'<a class="button" href="'+esc(s.ctaUrl)+'" target="_blank" rel="noreferrer">'+esc(s.ctaLabel)+'</a>':''
+  return '<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>'+esc(s.seoTitle)+'</title><meta name="description" content="'+esc(s.seoDescription)+'"><style>*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:'+p[0]+';color:'+p[2]+';font-family:Inter,system-ui,-apple-system,sans-serif}.wrap{width:min(1120px,calc(100% - 36px));margin:auto}.nav{display:flex;justify-content:space-between;align-items:center;padding:24px 0;border-bottom:1px solid color-mix(in srgb,'+p[4]+' 16%,transparent)}.brand{font-weight:950}.nav-links{display:flex;gap:16px}.nav a{color:'+p[3]+';text-decoration:none;font-size:.82rem}.hero{padding:110px 0 70px}.hero .eyebrow{color:'+p[4]+';font-size:.7rem;letter-spacing:.15em;font-weight:900;text-transform:uppercase}.hero h1{font-size:clamp(3rem,9vw,7rem);line-height:.92;max-width:900px;margin:16px 0 24px}.hero p,.about p,.cta p,.grid p,.faq p{color:'+p[3]+';line-height:1.7}.hero p{max-width:760px}.button{display:inline-block;margin-top:14px;background:'+p[4]+';color:'+p[0]+';padding:13px 18px;border-radius:12px;text-decoration:none;font-weight:900}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:18px}.stats article,.grid article,.about,.faq,.cta{background:'+p[1]+';border:1px solid color-mix(in srgb,'+p[4]+' 15%,transparent);border-radius:24px;padding:26px}.stats strong{display:block;font-size:1.45rem;color:'+p[4]+'}.stats span{color:'+p[3]+';font-size:.82rem}.about,.faq,.cta{margin-bottom:18px}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:18px}.grid article>span{font-size:.65rem;color:'+p[4]+';font-weight:900}.faq{display:grid;grid-template-columns:.7fr 1.3fr;gap:24px}.faq details{border-top:1px solid color-mix(in srgb,'+p[4]+' 14%,transparent);padding:14px 0}.faq summary{font-weight:800;cursor:pointer}.faq p{margin-bottom:0}.footer{display:flex;justify-content:space-between;gap:18px;padding:38px 0 60px;color:'+p[3]+';font-size:.82rem}.layout-split .hero{display:grid;grid-template-columns:1.15fr .85fr;gap:38px;align-items:end}.layout-split .hero p{align-self:end}.layout-editorial .hero h1{max-width:760px}.layout-editorial .about{display:grid;grid-template-columns:.6fr 1.4fr;gap:24px}.layout-editorial .about h2{margin-top:0}@media(max-width:760px){.nav-links{display:none}.hero,.layout-split .hero{display:block;padding:70px 0 45px}.stats,.grid,.faq,.layout-editorial .about{grid-template-columns:1fr}.footer{flex-direction:column}.grid{margin-bottom:16px}}</style></head><body><div class="wrap layout-'+esc(s.layout)+'"><nav class="nav"><div class="brand">'+esc(s.brand)+'</div><div class="nav-links"><a href="#about">About</a><a href="#highlights">Highlights</a><a href="#faq">FAQ</a></div></nav><main><section class="hero"><div><span class="eyebrow">'+esc(s.category)+' • for '+esc(s.audience)+'</span><h1>'+esc(s.heroTitle)+'</h1></div><div><p>'+esc(s.heroCopy)+'</p>'+cta+'</div></section><section class="stats">'+stats+'</section><section id="about" class="about"><h2>'+esc(s.aboutTitle)+'</h2><p>'+esc(s.aboutCopy)+'</p></section><section id="highlights" class="grid">'+cards+'</section><section id="faq" class="faq"><div><span class="eyebrow">FAQ</span><h2>Quick answers.</h2></div><div>'+faq+'</div></section><section class="cta"><h2>'+esc(s.ctaTitle)+'</h2><p>'+esc(s.ctaCopy)+'</p>'+cta+'</section></main><footer class="footer"><span>'+esc(s.footer)+'</span><span>'+ROOT_DOMAIN+'/sites/'+esc(s.slug)+'</span></footer></div></body></html>'
 }
 function downloadHtml(site){
   const blob=new Blob([exportHtml(site)],{type:'text/html;charset=utf-8'})
@@ -482,56 +500,113 @@ export default function SiteBuilderPage(){
   const [device,setDevice]=useState('desktop')
   const [message,setMessage]=useState('')
   const [generation,setGeneration]=useState(0)
+  const [history,setHistory]=useState([])
   const analysis=useMemo(function(){return analyzePrompt(prompt)},[prompt])
+  const quality=useMemo(function(){return siteQuality(site,prompt)},[site,prompt])
+
+  const remember=function(snapshot){setHistory(function(current){return [safeSite(snapshot),...current].slice(0,8)})}
   const update=function(key,value){setSite(function(current){return {...current,[key]:value}})}
   const updateCard=function(index,key,value){setSite(function(current){return {...current,cards:current.cards.map(function(card,i){return i===index?{...card,[key]:value}:card})}})}
+  const updateStat=function(index,key,value){setSite(function(current){return {...current,stats:(current.stats||STARTER.stats).map(function(item,i){return i===index?{...item,[key]:value}:item})}})}
+  const updateFaq=function(index,key,value){setSite(function(current){return {...current,faq:(current.faq||STARTER.faq).map(function(item,i){return i===index?{...item,[key]:value}:item})}})}
+
   useEffect(function(){try{localStorage.setItem(DRAFT_KEY,JSON.stringify(safeSite(site)))}catch{}},[site])
-  const generate=function(){
+
+  const generateVariant=function(variant){
     if(!prompt.trim()){setMessage('Tell the builder what kind of website you want first.');return}
-    const next=generation+1
-    setGeneration(next)
-    setSite(generateSite(prompt,site.brand,site.slug,next))
-    setMessage('Smart Prompt Engine generated a '+analysis.label+' site. Everything below is editable.')
+    remember(site)
+    setGeneration(variant)
+    setSite(generateSite(prompt,site.brand,site.slug,variant))
+    setMessage('Generated version '+String.fromCharCode(64+variant)+' for '+analysis.label+'. You can edit or try another version.')
   }
+  const generate=function(){generateVariant((generation%3)+1)}
   const regenerate=function(section){
     if(!prompt.trim()){setMessage('Keep a prompt in the box so the generator knows what to rebuild.');return}
-    const next=generation+1
+    const next=(generation%3)+1
+    remember(site)
     setGeneration(next)
     setSite(function(current){return regenerateSection(current,prompt,section,next)})
     setMessage('Regenerated '+section+' from your current prompt.')
   }
+  const undoAi=function(){
+    if(!history.length){setMessage('No AI generation change to undo yet.');return}
+    const previous=history[0]
+    setHistory(function(current){return current.slice(1)})
+    setSite(previous)
+    setMessage('Restored the previous generated version.')
+  }
   const publish=function(){
     const s=safeSite(site)
-    if(!s.slug){setMessage('Enter the ESN subdomain you claimed first.');return}
+    if(!s.slug){setMessage('Enter your ESN site name first.');return}
     if(!s.brand||!s.heroTitle){setMessage('Add a site name and headline first.');return}
     if(BLOCKED_TEXT.test(JSON.stringify(s))){setMessage('Remove credential/payment-login wording before publishing. ESN free sites cannot collect sensitive information.');return}
     window.open(publishUrl(s),'_blank','noopener,noreferrer')
   }
+
   return <>
-    <section className="page-hero builder-hero"><div className="shell page-hero-inner"><div className="page-hero-copy"><span className="eyebrow">ESN WEBSITE BUILDER // SMART GENERATOR V2</span><h1>Describe the idea. Build the actual topic.</h1><p>The upgraded generator now detects specific topics, tone, goals, links, and keywords before it writes the page. Generate the full site, regenerate individual sections, edit everything, preview phone or desktop, then publish to your ESN /sites address.</p></div><div className="page-hero-mark"><span>V2</span><small>SMART PROMPT ENGINE</small></div></div></section>
+    <section className="page-hero builder-hero"><div className="shell page-hero-inner"><div className="page-hero-copy"><span className="eyebrow">ESN WEBSITE BUILDER // GENERATOR V3</span><h1>Generate versions. Shape sections. Publish a fuller site.</h1><p>V3 adds audience detection, three layout systems, multiple generated versions, SEO controls, stats, FAQs, quality scoring, and AI-change history while keeping published pages structured and script-free.</p></div><div className="page-hero-mark"><span>V3</span><small>MULTI-VERSION ENGINE</small></div></div></section>
     <section className="section"><div className="shell builder-layout">
       <div className="builder-controls">
-        <div className="builder-panel"><span className="eyebrow">01 // YOUR SITE</span>
+        <div className="builder-panel"><span className="eyebrow">01 // IDEA + GENERATION</span>
           <label>ESN SITE NAME<div className="builder-domain"><span>/sites/</span><input value={site.slug} onChange={function(e){update('slug',cleanSlug(e.target.value))}} placeholder="yourname"/></div></label>
           <small className="builder-public-url">Public link: https://{ROOT_DOMAIN}/sites/{site.slug||'yourname'}</small>
           <label>SITE / BRAND NAME<input value={site.brand} onChange={function(e){update('brand',e.target.value.slice(0,60))}} placeholder="My Brand"/></label>
-          <label>DESCRIBE THE WEBSITE<textarea value={prompt} onChange={function(e){setPrompt(e.target.value.slice(0,900))}} placeholder="Make a dark Fortnite fan site explaining why more people should play Fortnite, with reasons to try it and a button to the official Fortnite website."/></label>
+          <label>DESCRIBE THE WEBSITE<textarea value={prompt} onChange={function(e){setPrompt(e.target.value.slice(0,1200))}} placeholder="Make a dark Fortnite fan site for returning players. Explain why Fortnite is worth playing, compare the different modes, add a FAQ, and link to https://www.fortnite.com/"/></label>
           <div className="builder-quick-prompts">{QUICK_PROMPTS.map(function(example,index){return <button type="button" key={index} onClick={function(){setPrompt(example)}}>{index+1}</button>})}<span>EXAMPLE PROMPTS</span></div>
           <div className="builder-ai-readout">
             <div><span>TOPIC</span><strong>{analysis.label}</strong></div>
+            <div><span>AUDIENCE</span><strong>{analysis.audience}</strong></div>
             <div><span>TONE</span><strong>{analysis.tone}</strong></div>
             <div><span>THEME</span><strong>{analysis.theme}</strong></div>
             <div><span>GOALS</span><strong>{analysis.goals.length?analysis.goals.join(' + '):'general'}</strong></div>
-            <p>{analysis.keywords.length?'Detected: '+analysis.keywords.join(' • '):'Add more detail to your prompt for stronger topic matching.'}</p>
+            <div><span>PROMPT SCORE</span><strong>{analysis.score}/100</strong></div>
+            <p>{analysis.keywords.length?'Detected: '+analysis.keywords.join(' • '):'Add a topic, audience, goal, and desired style for stronger generation.'}</p>
           </div>
-          <button className="builder-generate" type="button" onClick={generate}>GENERATE SMARTER WEBSITE</button>
+          <div className="builder-variants"><button type="button" onClick={function(){generateVariant(1)}}>VERSION A</button><button type="button" onClick={function(){generateVariant(2)}}>VERSION B</button><button type="button" onClick={function(){generateVariant(3)}}>VERSION C</button></div>
+          <div className="builder-generation-actions"><button className="builder-generate" type="button" onClick={generate}>GENERATE NEXT VERSION</button><button type="button" disabled={!history.length} onClick={undoAi}>UNDO AI CHANGE</button></div>
           {message&&<div className="builder-message">{message}</div>}
         </div>
-        <div className="builder-panel"><div className="builder-panel-head"><span className="eyebrow">02 // STYLE + HERO</span><button type="button" onClick={function(){regenerate('hero')}}>REGENERATE HERO</button></div><div className="builder-themes">{THEMES.map(function(theme){return <button type="button" className={site.theme===theme?'active':''} onClick={function(){update('theme',theme)}} key={theme}>{theme.toUpperCase()}</button>})}</div><label>HERO HEADLINE<input value={site.heroTitle} onChange={function(e){update('heroTitle',e.target.value)}}/></label><label>HERO TEXT<textarea value={site.heroCopy} onChange={function(e){update('heroCopy',e.target.value)}}/></label><div className="builder-panel-head"><span className="eyebrow">ABOUT SECTION</span><button type="button" onClick={function(){regenerate('about')}}>REGENERATE ABOUT</button></div><label>ABOUT TITLE<input value={site.aboutTitle} onChange={function(e){update('aboutTitle',e.target.value)}}/></label><label>ABOUT TEXT<textarea value={site.aboutCopy} onChange={function(e){update('aboutCopy',e.target.value)}}/></label></div>
-        <div className="builder-panel"><div className="builder-panel-head"><span className="eyebrow">03 // CONTENT CARDS</span><button type="button" onClick={function(){regenerate('cards')}}>REGENERATE CARDS</button></div>{site.cards.map(function(card,index){return <div className="builder-card-editor" key={index}><input value={card.title} onChange={function(e){updateCard(index,'title',e.target.value)}}/><textarea value={card.copy} onChange={function(e){updateCard(index,'copy',e.target.value)}}/></div>})}</div>
-        <div className="builder-panel"><div className="builder-panel-head"><span className="eyebrow">04 // FINAL CTA</span><button type="button" onClick={function(){regenerate('cta')}}>REGENERATE CTA</button></div><label>CTA TITLE<input value={site.ctaTitle} onChange={function(e){update('ctaTitle',e.target.value)}}/></label><label>CTA TEXT<textarea value={site.ctaCopy} onChange={function(e){update('ctaCopy',e.target.value)}}/></label><label>BUTTON TEXT<input value={site.ctaLabel} onChange={function(e){update('ctaLabel',e.target.value)}}/></label><label>BUTTON LINK<input value={site.ctaUrl} onChange={function(e){update('ctaUrl',e.target.value)}} placeholder="https://..."/></label><div className="builder-action-grid"><button type="button" onClick={function(){downloadHtml(site)}}>DOWNLOAD HTML</button><button className="primary" type="button" onClick={publish}>PUBLISH BUILD</button></div><small>The generator creates structured, script-free pages. Publishing verifies the GitHub account owns the claimed ESN site name before updating the public /sites page.</small></div>
+
+        <div className="builder-panel"><div className="builder-panel-head"><span className="eyebrow">02 // LAYOUT + STYLE</span><button type="button" onClick={function(){regenerate('hero')}}>REGENERATE HERO</button></div>
+          <div className="builder-layout-picks">{LAYOUTS.map(function(layout){return <button type="button" className={site.layout===layout?'active':''} onClick={function(){update('layout',layout)}} key={layout}>{layout.toUpperCase()}</button>})}</div>
+          <div className="builder-themes">{THEMES.map(function(theme){return <button type="button" className={site.theme===theme?'active':''} onClick={function(){update('theme',theme)}} key={theme}>{theme.toUpperCase()}</button>})}</div>
+          <label>AUDIENCE<input value={site.audience||''} onChange={function(e){update('audience',e.target.value)}}/></label>
+          <label>HERO HEADLINE<input value={site.heroTitle} onChange={function(e){update('heroTitle',e.target.value)}}/></label>
+          <label>HERO TEXT<textarea value={site.heroCopy} onChange={function(e){update('heroCopy',e.target.value)}}/></label>
+          <div className="builder-panel-head"><span className="eyebrow">ABOUT SECTION</span><button type="button" onClick={function(){regenerate('about')}}>REGENERATE ABOUT</button></div>
+          <label>ABOUT TITLE<input value={site.aboutTitle} onChange={function(e){update('aboutTitle',e.target.value)}}/></label>
+          <label>ABOUT TEXT<textarea value={site.aboutCopy} onChange={function(e){update('aboutCopy',e.target.value)}}/></label>
+        </div>
+
+        <div className="builder-panel"><div className="builder-panel-head"><span className="eyebrow">03 // CONTENT CARDS</span><button type="button" onClick={function(){regenerate('cards')}}>REGENERATE CARDS</button></div>{(site.cards||STARTER.cards).map(function(card,index){return <div className="builder-card-editor" key={index}><input value={card.title} onChange={function(e){updateCard(index,'title',e.target.value)}}/><textarea value={card.copy} onChange={function(e){updateCard(index,'copy',e.target.value)}}/></div>})}</div>
+
+        <div className="builder-panel"><div className="builder-panel-head"><span className="eyebrow">04 // STATS / HIGHLIGHTS</span><button type="button" onClick={function(){regenerate('stats')}}>REGENERATE STATS</button></div>{(site.stats||STARTER.stats).map(function(item,index){return <div className="builder-inline-editor" key={index}><input value={item.value} onChange={function(e){updateStat(index,'value',e.target.value)}}/><input value={item.label} onChange={function(e){updateStat(index,'label',e.target.value)}}/></div>})}</div>
+
+        <div className="builder-panel"><div className="builder-panel-head"><span className="eyebrow">05 // FAQ</span><button type="button" onClick={function(){regenerate('faq')}}>REGENERATE FAQ</button></div>{(site.faq||STARTER.faq).map(function(item,index){return <div className="builder-card-editor" key={index}><input value={item.q} onChange={function(e){updateFaq(index,'q',e.target.value)}}/><textarea value={item.a} onChange={function(e){updateFaq(index,'a',e.target.value)}}/></div>})}</div>
+
+        <div className="builder-panel"><div className="builder-panel-head"><span className="eyebrow">06 // SEO</span><button type="button" onClick={function(){regenerate('seo')}}>REGENERATE SEO</button></div>
+          <label>SEARCH TITLE<input value={site.seoTitle||''} onChange={function(e){update('seoTitle',e.target.value)}}/></label>
+          <small className="builder-char-count">{(site.seoTitle||'').length}/70</small>
+          <label>SEARCH DESCRIPTION<textarea value={site.seoDescription||''} onChange={function(e){update('seoDescription',e.target.value)}}/></label>
+          <small className="builder-char-count">{(site.seoDescription||'').length}/160</small>
+        </div>
+
+        <div className="builder-panel"><div className="builder-panel-head"><span className="eyebrow">07 // FINAL CTA</span><button type="button" onClick={function(){regenerate('cta')}}>REGENERATE CTA</button></div>
+          <label>CTA TITLE<input value={site.ctaTitle} onChange={function(e){update('ctaTitle',e.target.value)}}/></label>
+          <label>CTA TEXT<textarea value={site.ctaCopy} onChange={function(e){update('ctaCopy',e.target.value)}}/></label>
+          <label>BUTTON TEXT<input value={site.ctaLabel} onChange={function(e){update('ctaLabel',e.target.value)}}/></label>
+          <label>BUTTON LINK<input value={site.ctaUrl} onChange={function(e){update('ctaUrl',e.target.value)}} placeholder="https://..."/></label>
+          <div className="builder-quality"><div><span>SITE QUALITY</span><strong>{quality}/100</strong></div><meter min="0" max="100" value={quality}>{quality}</meter><small>{quality>=90?'Publish-ready structure.':quality>=70?'Strong structure — review the copy before publishing.':'Add more detail to the prompt and fill the weaker sections.'}</small></div>
+          <div className="builder-action-grid"><button type="button" onClick={function(){downloadHtml(site)}}>DOWNLOAD HTML</button><button className="primary" type="button" onClick={publish}>PUBLISH BUILD</button></div>
+          <small>The generator creates structured, script-free pages. Publishing verifies the GitHub account owns the claimed ESN site name before updating the public /sites page.</small>
+        </div>
       </div>
-      <div className="builder-preview-column"><div className="builder-preview-toolbar"><div><span>LIVE PREVIEW</span><strong>{ROOT_DOMAIN}/sites/{site.slug||'yourname'}</strong></div><div><button className={device==='desktop'?'active':''} onClick={function(){setDevice('desktop')}}>DESKTOP</button><button className={device==='mobile'?'active':''} onClick={function(){setDevice('mobile')}}>PHONE</button></div></div><div className={'builder-preview-frame '+device}><SitePreview site={site}/></div><div className="builder-publish-note"><strong>PUBLIC SITE</strong><span>For now, published ESN Builder websites use https://{ROOT_DOMAIN}/sites/yourname as their public address. Direct yourname.{ROOT_DOMAIN} hosting is not being advertised as the public builder URL yet.</span></div></div>
+
+      <div className="builder-preview-column">
+        <div className="builder-preview-toolbar"><div><span>LIVE PREVIEW</span><strong>{ROOT_DOMAIN}/sites/{site.slug||'yourname'}</strong></div><div><button className={device==='desktop'?'active':''} onClick={function(){setDevice('desktop')}}>DESKTOP</button><button className={device==='mobile'?'active':''} onClick={function(){setDevice('mobile')}}>PHONE</button></div></div>
+        <div className={'builder-preview-frame '+device}><SitePreview site={site}/></div>
+        <div className="builder-publish-note"><strong>PUBLIC SITE</strong><span>Published ESN Builder websites currently use https://{ROOT_DOMAIN}/sites/yourname. Direct subdomain hosting is not the advertised public builder URL yet.</span></div>
+      </div>
     </div></section>
   </>
 }
