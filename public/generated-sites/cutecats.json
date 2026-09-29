@@ -1,0 +1,64 @@
+{
+  "version": 2,
+  "slug": "cutecats",
+  "brand": "toothless angies cat",
+  "category": "music",
+  "theme": "neon",
+  "layout": "flagship",
+  "audience": "Visitors",
+  "seoTitle": "toothless angies cat | Music",
+  "seoDescription": "A music-focused site for an artist, producer, band, DJ, release, playlist, or fan community. Focus: toothy, black, cat.",
+  "heroTitle": "Turn up the volume on your brand.",
+  "heroCopy": "A music-focused site for an artist, producer, band, DJ, release, playlist, or fan community. Focus: toothy, black, cat.",
+  "aboutTitle": "About toothless angies cat",
+  "aboutCopy": "Tell listeners who you are, what kind of music or project you make, what you are working on, and where they should listen next. Focus: toothy, black, cat.",
+  "cards": [
+    {
+      "title": "",
+      "copy": ""
+    },
+    {
+      "title": "",
+      "copy": ""
+    },
+    {
+      "title": "",
+      "copy": ""
+    }
+  ],
+  "stats": [
+    {
+      "value": "01",
+      "label": "toothy"
+    },
+    {
+      "value": "02",
+      "label": "black"
+    },
+    {
+      "value": "03",
+      "label": "cat"
+    }
+  ],
+  "faq": [
+    {
+      "q": "What is toothless angies cat?",
+      "a": "This page is focused on toothy and gives visitors the important information without making them search for it."
+    },
+    {
+      "q": "Who is this for?",
+      "a": "The site is written for visitors and is organized around the actions most useful to them."
+    },
+    {
+      "q": "What should I do next?",
+      "a": "Use the main call-to-action on the page to continue, connect, learn more, or take the next step."
+    }
+  ],
+  "ctaTitle": "Stay connected",
+  "ctaCopy": "Keep fans close to the next release and update.",
+  "ctaLabel": "Follow / Listen",
+  "ctaUrl": "https://esnoffical.com/",
+  "footer": "toothless angies cat • Built with ESN Website Builder",
+  "publishedBy": "sheldonrocks2022-cmyk",
+  "publishedAt": "2026-09-29T04:01:48.142Z"
+}
