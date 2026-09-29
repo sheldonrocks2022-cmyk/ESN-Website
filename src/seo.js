@@ -41,14 +41,14 @@ export const SEO_ROUTES={
   },
   '/hosting':{
     label:'ESN Hosting',
-    title:'ESN Hosting | Subdomains, Custom Domains & Web Hosting',
-    description:'Request an ESN subdomain, connect a domain you own, or join the ESN web-hosting waitlist with safe manual activation.',
+    title:'ESN Hosting | Free Subdomains, Custom Domains & Web Hosting',
+    description:'Get a free ESN subdomain with automatic Spaceship DNS creation, connect a domain you own, or explore ESN paid hosting options.',
     index:true,
   },
   '/domains':{
     label:'ESN Hosting',
-    title:'ESN Hosting | Subdomains, Custom Domains & Web Hosting',
-    description:'ESN hosting and domain requests now use the manual activation portal.',
+    title:'ESN Hosting | Free Subdomains, Custom Domains & Web Hosting',
+    description:'ESN hosting and domain requests now use the free-subdomain and hosting portal.',
     canonical:'/hosting',
     index:false,
   },
