@@ -1199,9 +1199,12 @@ export default function SiteBuilderPage(){
   const [previewPage,setPreviewPage]=useState('home')
   const [referenceUrl,setReferenceUrl]=useState('')
   const [remixSource,setRemixSource]=useState('')
+  const [dragSection,setDragSection]=useState('')
+  const [versions,setVersions]=useState(function(){try{return JSON.parse(localStorage.getItem(VERSION_HISTORY_KEY)||'[]')}catch{return []}})
   const analysis=useMemo(function(){return analyzePrompt(prompt)},[prompt])
   const quality=useMemo(function(){return siteQuality(site,prompt)},[site,prompt])
   const accessibility=useMemo(function(){return accessibilityReadiness(site)},[site])
+  const health=useMemo(function(){return healthReport(site,prompt)},[site,prompt])
 
   const remember=function(snapshot){setHistory(function(current){return [safeSite(snapshot),...current].slice(0,8)})}
   const update=function(key,value){setSite(function(current){return {...current,[key]:value}})}
@@ -1222,11 +1225,34 @@ export default function SiteBuilderPage(){
     }catch(error){setMessage(error.message||'Could not add that image.')}
   }
   const updateSocial=function(index,key,value){setSite(function(current){return {...current,socials:(current.socials||STARTER.socials).map(function(item,i){return i===index?{...item,[key]:value}:item})}})}
+  const updateCountdown=function(key,value){setSite(function(current){return {...current,countdown:{...STARTER.countdown,...current.countdown,[key]:value}}})}
+  const updateMinecraft=function(key,value){setSite(function(current){return {...current,minecraft:{...STARTER.minecraft,...current.minecraft,[key]:value}}})}
+  const updateVisitor=function(key,value){setSite(function(current){return {...current,visitor:{...STARTER.visitor,...current.visitor,[key]:value}}})}
+  const updateNotFound=function(key,value){setSite(function(current){return {...current,notFound:{...STARTER.notFound,...current.notFound,[key]:value}}})}
   const updateVisual=function(key,value){setSite(function(current){return {...current,visual:{...STARTER.visual,...current.visual,[key]:value}}})}
   const updatePage=function(index,key,value){setSite(function(current){return {...current,pages:(current.pages||STARTER.pages).map(function(item,i){return i===index?{...item,[key]:key==='slug'?cleanSlug(value):value}:item})}})}
   const updatePageItem=function(pageIndex,itemIndex,key,value){setSite(function(current){return {...current,pages:(current.pages||STARTER.pages).map(function(page,i){return i===pageIndex?{...page,items:(page.items||[]).map(function(item,j){return j===itemIndex?{...item,[key]:value}:item})}:page})}})}
   const toggleSection=function(key){setSite(function(current){return {...current,sections:{...STARTER.sections,...current.sections,[key]:!(current.sections?.[key]!==false)}}})}
   const setPack=function(pack){setSite(function(current){return applyExperiencePack(current,pack)})}
+  const moveSection=function(fromKey,toKey){
+    if(!fromKey||!toKey||fromKey===toKey)return
+    setSite(function(current){
+      const order=[...(current.sectionOrder||STARTER.sectionOrder)]
+      const from=order.indexOf(fromKey),to=order.indexOf(toKey)
+      if(from<0||to<0)return current
+      order.splice(from,1);order.splice(to,0,fromKey)
+      return {...current,sectionOrder:order}
+    })
+  }
+  const moveSectionBy=function(key,delta){
+    setSite(function(current){
+      const order=[...(current.sectionOrder||STARTER.sectionOrder)]
+      const index=order.indexOf(key),next=Math.max(0,Math.min(order.length-1,index+delta))
+      if(index<0||index===next)return current
+      order.splice(index,1);order.splice(next,0,key)
+      return {...current,sectionOrder:order}
+    })
+  }
   const applyDesignStyle=function(style){setSite(function(current){const recipe=STYLE_RECIPES[style]||STYLE_RECIPES.studio;return {...current,visual:{...STARTER.visual,...current.visual,...recipe,style}}})}
   const autoStyle=function(){setSite(function(current){return {...current,visual:inferVisual(prompt,analysis)}});setMessage('Style Lab rebuilt the visual system from your prompt.')}
   const remixStyle=function(){const current=site.visual?.style||'studio';const index=STYLE_PRESETS.indexOf(current);const next=STYLE_PRESETS[(index+1+STYLE_PRESETS.length)%STYLE_PRESETS.length];applyDesignStyle(next);setMessage('Remixed the site into the '+next+' design system.')}
@@ -1287,8 +1313,73 @@ export default function SiteBuilderPage(){
       setMessage('Reference URL saved. For external sites, upload a screenshot so the browser can analyze the visual design without copying site content.')
     }catch{setMessage('Enter a full URL beginning with https://')}
   }
+  const rewriteSite=function(mode){
+    remember(site)
+    setSite(function(current){
+      return {...current,
+        heroCopy:rewriteCopy(current.heroCopy,mode),
+        aboutCopy:rewriteCopy(current.aboutCopy,mode),
+        cards:(current.cards||[]).map(function(card){return {...card,copy:rewriteCopy(card.copy,mode)}}),
+        faq:(current.faq||[]).map(function(item){return {...item,a:rewriteCopy(item.a,mode)}}),
+        ctaCopy:rewriteCopy(current.ctaCopy,mode),
+        pages:(current.pages||[]).map(function(page){return {...page,copy:rewriteCopy(page.copy,mode),items:(page.items||[]).map(function(item){return {...item,copy:rewriteCopy(item.copy,mode)}})}})
+      }
+    })
+    setMessage('Rewrite mode applied: '+mode+'.')
+  }
+  const surpriseMe=function(){
+    remember(site)
+    const template=PUBLIC_TEMPLATES[Math.floor(Math.random()*PUBLIC_TEMPLATES.length)]
+    const style=STYLE_PRESETS[Math.floor(Math.random()*STYLE_PRESETS.length)]
+    const theme=THEMES[Math.floor(Math.random()*THEMES.length)]
+    const layout=LAYOUTS[Math.floor(Math.random()*LAYOUTS.length)]
+    const next=generateSite(template.prompt,site.brand,site.slug,layout==='flagship'?3:1)
+    const recipe=STYLE_RECIPES[style]||STYLE_RECIPES.studio
+    next.theme=theme;next.layout=layout;next.visual={...next.visual,...recipe,style,accent:themeAccent(theme)}
+    setPrompt(template.prompt);setSite(next);setPreviewPage('home')
+    setMessage('Surprise build created from a random template + style + theme + layout.')
+  }
+  const saveVersion=function(){
+    const snapshot={id:Date.now(),label:(site.brand||'Website')+' • '+new Date().toLocaleString(),site:safeSite(site),prompt}
+    setVersions(function(current){return [snapshot,...current].slice(0,10)})
+    setMessage('Saved a local version checkpoint.')
+  }
+  const restoreVersion=function(version){
+    if(!version?.site)return
+    remember(site);setSite(version.site);setPrompt(version.prompt||'');setPreviewPage('home')
+    setMessage('Restored '+(version.label||'saved version')+'.')
+  }
+  const downloadShareCard=function(){
+    const s=safeSite(site)
+    const canvas=document.createElement('canvas');canvas.width=1200;canvas.height=630
+    const ctx=canvas.getContext('2d')
+    const grad=ctx.createLinearGradient(0,0,1200,630);grad.addColorStop(0,'#07111f');grad.addColorStop(1,s.visual.accent)
+    ctx.fillStyle=grad;ctx.fillRect(0,0,1200,630)
+    ctx.fillStyle='rgba(0,0,0,.35)';ctx.fillRect(36,36,1128,558)
+    ctx.fillStyle='#ffffff';ctx.font='900 36px system-ui';ctx.fillText(s.brand||'ESN Site',76,108)
+    ctx.fillStyle=s.visual.accent;ctx.font='800 22px system-ui';ctx.fillText((s.category||'website').toUpperCase()+' // ESN WEBSITE BUILDER',76,154)
+    ctx.fillStyle='#ffffff';ctx.font='900 64px system-ui'
+    const words=(s.heroTitle||'Website').split(' ');let line='',y=255
+    for(const word of words){const test=line?line+' '+word:word;if(ctx.measureText(test).width>1010){ctx.fillText(line,76,y);line=word;y+=74}else line=test}
+    if(line)ctx.fillText(line,76,y)
+    ctx.fillStyle='rgba(255,255,255,.78)';ctx.font='600 24px system-ui';ctx.fillText(ROOT_DOMAIN+'/sites/'+(s.slug||'yourname'),76,548)
+    const a=document.createElement('a');a.download=(s.slug||'esn-site')+'-share-card.png';a.href=canvas.toDataURL('image/png');a.click()
+    setMessage('Share preview card downloaded.')
+  }
+  const openQr=function(){
+    const s=safeSite(site);const url='https://'+ROOT_DOMAIN+'/sites/'+(s.slug||'yourname')
+    window.open('https://api.qrserver.com/v1/create-qr-code/?size=512x512&data='+encodeURIComponent(url),'_blank','noopener,noreferrer')
+  }
+  const shareSite=async function(){
+    const s=safeSite(site);const url='https://'+ROOT_DOMAIN+'/sites/'+(s.slug||'yourname')
+    try{
+      if(navigator.share){await navigator.share({title:s.brand,text:s.heroTitle,url});setMessage('Share sheet opened.');return}
+      await navigator.clipboard.writeText(url);setMessage('Public site link copied.')
+    }catch{}
+  }
 
   useEffect(function(){try{localStorage.setItem(DRAFT_KEY,JSON.stringify(safeSite(site)))}catch{}},[site])
+  useEffect(function(){try{localStorage.setItem(VERSION_HISTORY_KEY,JSON.stringify(versions))}catch{}},[versions])
 
   const generateVariant=function(variant){
     if(!prompt.trim()){setMessage('Tell the builder what kind of website you want first.');return}
