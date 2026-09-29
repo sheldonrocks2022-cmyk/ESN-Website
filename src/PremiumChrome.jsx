@@ -118,9 +118,9 @@ export default function PremiumChrome(){
 
   const normalized=query.trim().toLowerCase()
   const intentQuery=normalized
-    .replace(/^(please\\s+)?(take me to|go to|open|show me|show|find|search for|launch|visit|i want|i need)\\s+/,'')
-    .replace(/\\b(the|a|an|page|section|website)\\b/g,' ')
-    .replace(/\\s+/g,' ')
+    .replace(/^(please\s+)?(take me to|go to|open|show me|show|find|search for|launch|visit|i want|i need)\s+/,'')
+    .replace(/\b(the|a|an|page|section|website)\b/g,' ')
+    .replace(/\s+/g,' ')
     .trim()
   const commandResults=useMemo(()=>{
     const list=[...baseCommands]
@@ -128,7 +128,7 @@ export default function PremiumChrome(){
       list.unshift({label:'ESN Vault',meta:vaultUnlocked?'Open the unlocked hidden network layer':'Secret command detected',keywords:'esn vault secret core',kind:vaultUnlocked?'route':'unlock',value:'/vault'})
     }
     if(!normalized)return list.slice(0,8)
-    const terms=(intentQuery||normalized).split(/\\s+/).filter(Boolean)
+    const terms=(intentQuery||normalized).split(/\s+/).filter(Boolean)
     return list
       .map(item=>{
         const label=item.label.toLowerCase()
