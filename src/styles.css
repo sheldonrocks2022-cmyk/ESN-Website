@@ -8407,6 +8407,10 @@ html[data-motion="reduced"] .energy-trail-particle{
   gap:8px;
 }
 .organized-dropdown.network-dropdown{min-width:620px;grid-template-columns:repeat(3,minmax(0,1fr))}
+.organized-nav>.nav-group:last-of-type .organized-dropdown{left:auto;right:0}
+.organized-dropdown.network-dropdown{left:50%;transform:translate(-50%,8px)}
+.organized-nav .nav-group:hover .organized-dropdown.network-dropdown,
+.organized-nav .nav-group:focus-within .organized-dropdown.network-dropdown{transform:translate(-50%,0)}
 .organized-dropdown.play-dropdown{min-width:520px}
 .dropdown-section{
   display:grid;
@@ -8503,6 +8507,8 @@ html[data-motion="reduced"] .energy-trail-particle{
 }
 @media(max-width:860px){
   .organized-nav{gap:2px}
+  .organized-nav>.nav-group:last-of-type .organized-dropdown{right:auto}
+  .organized-dropdown.network-dropdown{left:auto;transform:none!important}
   .organized-dropdown,.organized-dropdown.play-dropdown,.organized-dropdown.network-dropdown{
     min-width:0;
     width:auto;
