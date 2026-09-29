@@ -29,7 +29,7 @@ export const SEO_ROUTES={
   '/store-ai':{
     label:'ESN Store AI',
     title:'ESN Store AI | Products, Services, Prices & Checkout Help',
-    description:'Ask ESN Store AI about official ES Network SMP products and services, compare verified prices, check delivery requirements, find checkout links, and unlock staff store tools with the ESN staff code.',
+    description:'Ask ESN Store AI about verified products, services, prices, delivery, comparisons, checkout links, and staff-only store tools.',
     index:true,
   },
   '/storeai':{
