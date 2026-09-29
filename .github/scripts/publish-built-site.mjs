@@ -93,12 +93,17 @@ function url(value){
     return ['https:','http:'].includes(parsed.protocol)?parsed.toString():''
   }catch{return ''}
 }
+function image(value){
+  const raw=String(value||'').trim()
+  if(/^data:image\/(?:webp|png|jpeg);base64,[a-z0-9+/=]+$/i.test(raw)&&raw.length<=16000)return raw
+  return url(raw)
+}
 function sanitize(site){
   const rawSections=site.sections&&typeof site.sections==='object'?site.sections:{}
   const rawVisual=site.visual&&typeof site.visual==='object'?site.visual:{}
   const hex=value=>/^#[0-9a-f]{6}$/i.test(String(value||'').trim())?String(value).trim():'#65e8ff'
   return {
-    version:5,
+    version:6,
     multiPage:site.multiPage===true,
     slug:String(site.slug||'').toLowerCase(),
     brand:text(site.brand,60),
@@ -156,7 +161,7 @@ function sanitize(site){
     status:Array.isArray(site.status)?site.status.slice(0,3).map(item=>({label:text(item.label,60),value:text(item.value,30),state:['live','ready','offline'].includes(item.state)?item.state:'ready'})):[],
     timeline:Array.isArray(site.timeline)?site.timeline.slice(0,4).map(item=>({kicker:text(item.kicker,20),title:text(item.title,80),copy:text(item.copy,260)})):[],
     testimonials:Array.isArray(site.testimonials)?site.testimonials.slice(0,3).map(item=>({quote:text(item.quote,280),name:text(item.name,60),role:text(item.role,60)})):[],
-    gallery:Array.isArray(site.gallery)?site.gallery.slice(0,4).map(item=>({title:text(item.title,80),copy:text(item.copy,220)})):[],
+    gallery:Array.isArray(site.gallery)?site.gallery.slice(0,4).map(item=>({title:text(item.title,80),copy:text(item.copy,220),image:image(item.image),alt:text(item.alt||item.title,100)})):[],
     socials:Array.isArray(site.socials)?site.socials.slice(0,3).map(item=>({label:text(item.label,40),url:url(item.url)})):[],
     ctaTitle:text(site.ctaTitle,100),
     ctaCopy:text(site.ctaCopy,260),
@@ -170,7 +175,7 @@ function sanitize(site){
 
 if(!agreed)await reject('The required safe-publishing confirmation is missing.')
 if(!SLUG_RE.test(slug))await reject('The ESN subdomain name is invalid.')
-if(!encoded||encoded.length>90000)await reject('The site payload is missing or too large.')
+if(!encoded||encoded.length>130000)await reject('The site payload is missing or too large.')
 
 let decoded
 try{decoded=decodePayload(encoded)}catch{await reject('The site payload could not be decoded.')}
