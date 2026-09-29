@@ -1,0 +1,341 @@
+/* ESN Experience Core V2
+   Smart page map + adaptive rendering. Arcade and hosted /sites/* routes are excluded. */
+
+.esn-smartnav {
+  --smart-w: min(360px, calc(100vw - 30px));
+  position: fixed;
+  z-index: 86;
+  right: 18px;
+  bottom: 20px;
+  width: var(--smart-w);
+  pointer-events: none;
+  font-family: inherit;
+}
+
+.esn-smartnav > * { pointer-events: auto; }
+
+.esn-smartnav-rail {
+  position: absolute;
+  right: -8px;
+  bottom: 7px;
+  width: 3px;
+  height: 52px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(255,255,255,.08);
+}
+
+.esn-smartnav-rail span {
+  display: block;
+  width: 100%;
+  height: calc((.12 + var(--smart-progress,0) * .88) * 100%);
+  border-radius: inherit;
+  background: linear-gradient(180deg, rgb(var(--route-accent,84 154 255)), rgb(var(--route-accent-2,143 249 255)));
+  box-shadow: 0 0 14px rgb(var(--route-accent-2,143 249 255) / .45);
+  transition: height .38s cubic-bezier(.2,.8,.2,1);
+}
+
+.esn-smartnav-trigger {
+  margin-left: auto;
+  width: min(292px, calc(100vw - 48px));
+  min-height: 58px;
+  padding: 9px 12px 9px 15px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-areas:
+    "kicker count"
+    "label count";
+  gap: 1px 12px;
+  align-items: center;
+  text-align: left;
+  color: #f8fbff;
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 18px;
+  background:
+    radial-gradient(120% 150% at 0% 0%, rgb(var(--route-accent,84 154 255) / .10), transparent 46%),
+    rgba(5,8,18,.82);
+  box-shadow: 0 18px 60px rgba(0,0,0,.36), inset 0 1px rgba(255,255,255,.06);
+  backdrop-filter: blur(22px) saturate(145%);
+  cursor: pointer;
+  transition: transform .24s ease, border-color .24s ease, background .24s ease;
+}
+
+.esn-smartnav-trigger:hover {
+  transform: translateY(-2px);
+  border-color: rgb(var(--route-accent-2,143 249 255) / .26);
+  background:
+    radial-gradient(120% 150% at 0% 0%, rgb(var(--route-accent,84 154 255) / .15), transparent 48%),
+    rgba(6,10,22,.92);
+}
+
+.esn-smartnav-kicker {
+  grid-area: kicker;
+  color: rgb(var(--route-accent-2,143 249 255));
+  font-size: .55rem;
+  line-height: 1;
+  letter-spacing: .16em;
+  font-weight: 950;
+}
+
+.esn-smartnav-trigger strong {
+  grid-area: label;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: .79rem;
+  letter-spacing: -.01em;
+}
+
+.esn-smartnav-count {
+  grid-area: count;
+  min-width: 42px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 11px;
+  background: rgba(255,255,255,.045);
+  color: rgba(235,242,255,.7);
+  font-size: .64rem;
+  font-weight: 900;
+  letter-spacing: .04em;
+}
+
+.esn-smartnav-panel {
+  position: absolute;
+  right: 0;
+  bottom: 70px;
+  width: var(--smart-w);
+  max-height: min(620px, calc(100vh - 120px));
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,.13);
+  border-radius: 24px;
+  background:
+    radial-gradient(100% 80% at 0% 0%, rgb(var(--route-accent,84 154 255) / .11), transparent 58%),
+    linear-gradient(160deg, rgba(10,14,31,.97), rgba(4,7,16,.97));
+  box-shadow: 0 32px 110px rgba(0,0,0,.55), inset 0 1px rgba(255,255,255,.06);
+  backdrop-filter: blur(28px) saturate(150%);
+  animation: smartnav-in .24s cubic-bezier(.2,.8,.2,1);
+}
+
+.esn-smartnav-head {
+  min-height: 76px;
+  padding: 17px 17px 14px 19px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  border-bottom: 1px solid rgba(255,255,255,.08);
+}
+
+.esn-smartnav-head > div {
+  min-width: 0;
+  display: grid;
+  gap: 4px;
+}
+
+.esn-smartnav-head span {
+  color: rgb(var(--route-accent-2,143 249 255));
+  font-size: .56rem;
+  font-weight: 950;
+  letter-spacing: .17em;
+}
+
+.esn-smartnav-head strong {
+  font-size: 1.05rem;
+  letter-spacing: -.03em;
+}
+
+.esn-smartnav-head > button {
+  width: 36px;
+  height: 36px;
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(255,255,255,.09);
+  border-radius: 12px;
+  background: rgba(255,255,255,.04);
+  color: rgba(255,255,255,.75);
+  font-size: 1.35rem;
+  cursor: pointer;
+}
+
+.esn-smartnav-list {
+  max-height: min(430px, calc(100vh - 270px));
+  padding: 8px;
+  overflow: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255,255,255,.18) transparent;
+}
+
+.esn-smartnav-list button {
+  width: 100%;
+  min-height: 52px;
+  padding: 9px 11px;
+  display: grid;
+  grid-template-columns: 34px 1fr;
+  gap: 8px;
+  align-items: center;
+  text-align: left;
+  border: 1px solid transparent;
+  border-radius: 14px;
+  background: transparent;
+  color: #dce4f4;
+  cursor: pointer;
+  transition: background .18s ease, border-color .18s ease, transform .18s ease;
+}
+
+.esn-smartnav-list button:hover {
+  background: rgba(255,255,255,.045);
+  transform: translateX(2px);
+}
+
+.esn-smartnav-list button.is-active {
+  border-color: rgb(var(--route-accent-2,143 249 255) / .16);
+  background: linear-gradient(90deg, rgb(var(--route-accent,84 154 255) / .12), rgba(255,255,255,.025));
+}
+
+.esn-smartnav-list button > span {
+  color: rgba(255,255,255,.34);
+  font-size: .61rem;
+  font-weight: 900;
+  letter-spacing: .08em;
+}
+
+.esn-smartnav-list button.is-active > span {
+  color: rgb(var(--route-accent-2,143 249 255));
+}
+
+.esn-smartnav-list button strong {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: .78rem;
+  font-weight: 820;
+}
+
+.esn-smartnav-meta {
+  min-height: 48px;
+  padding: 10px 13px;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  border-top: 1px solid rgba(255,255,255,.07);
+  color: rgba(218,227,242,.52);
+  font-size: .56rem;
+  font-weight: 800;
+  letter-spacing: .03em;
+}
+
+.esn-smartnav-meta > span:first-child {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.esn-smartnav-meta i {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #44e7a3;
+  box-shadow: 0 0 10px rgba(68,231,163,.5);
+}
+
+.esn-smartnav-meta .is-offline i {
+  background: #ff9a6a;
+  box-shadow: 0 0 10px rgba(255,154,106,.4);
+}
+
+.esn-smartnav-shortcut {
+  margin-left: auto;
+  padding: 4px 6px;
+  border: 1px solid rgba(255,255,255,.07);
+  border-radius: 7px;
+  background: rgba(255,255,255,.035);
+}
+
+/* Adaptive render profiles. These only reduce non-essential ambient work. */
+html[data-esn-power="lite"] .esn-ultra-noise,
+html[data-esn-power="lite"] .esn-ultra-pointer,
+html[data-esn-power="lite"] .global-3d-lighting,
+html[data-esn-power="lite"] .lux-cursor {
+  display: none !important;
+}
+
+html[data-esn-power="lite"] .esn-ultra-aurora {
+  animation: none !important;
+  opacity: .025 !important;
+  filter: blur(65px) !important;
+}
+
+html[data-esn-power="lite"] .site-header,
+html[data-esn-power="lite"] .esn-smartnav-trigger,
+html[data-esn-power="lite"] .esn-smartnav-panel {
+  backdrop-filter: blur(13px) saturate(115%);
+}
+
+html[data-esn-power="balanced"] .esn-ultra-aurora {
+  animation-duration: 28s !important;
+  opacity: .04 !important;
+}
+
+html.esn-background-paused .esn-ultra-aurora,
+html.esn-background-paused .brand-mark::after,
+html.esn-background-paused [class*="ambient"],
+html.esn-background-paused [class*="particle"] {
+  animation-play-state: paused !important;
+}
+
+html[data-esn-network="offline"] .esn-smartnav-trigger {
+  border-color: rgba(255,154,106,.16);
+}
+
+@keyframes smartnav-in {
+  from { opacity: 0; transform: translateY(9px) scale(.975); }
+  to { opacity: 1; transform: none; }
+}
+
+@media (max-width: 720px) {
+  .esn-smartnav {
+    right: 12px;
+    bottom: 12px;
+    --smart-w: min(340px, calc(100vw - 24px));
+  }
+
+  .esn-smartnav-trigger {
+    width: min(246px, calc(100vw - 42px));
+    min-height: 52px;
+    border-radius: 16px;
+    backdrop-filter: blur(15px) saturate(120%);
+  }
+
+  .esn-smartnav-rail {
+    right: -5px;
+    height: 46px;
+  }
+
+  .esn-smartnav-panel {
+    bottom: 62px;
+    border-radius: 21px;
+    backdrop-filter: blur(18px) saturate(125%);
+  }
+
+  .esn-smartnav-shortcut {
+    display: none;
+  }
+}
+
+@media (max-height: 650px) {
+  .esn-smartnav-panel { max-height: calc(100vh - 86px); }
+  .esn-smartnav-list { max-height: calc(100vh - 236px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .esn-smartnav-panel { animation: none; }
+  .esn-smartnav *,
+  .esn-smartnav *::before,
+  .esn-smartnav *::after {
+    transition-duration: .001ms !important;
+  }
+}
