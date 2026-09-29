@@ -2,31 +2,31 @@
   "version": 1,
   "slug": "kavero",
   "brand": "Kavero",
-  "category": "gaming",
+  "category": "fortnite",
   "theme": "neon",
-  "heroTitle": "Level up your community.",
-  "heroCopy": "A high-energy home for players, updates, events, and everything happening around your gaming brand. Built around: Make a dark gaming fortnite website that talks about fortnite and how it's good and should have more players",
-  "aboutTitle": "About Kavero",
-  "aboutCopy": "Welcome to Kavero. This page gives visitors a fast overview of the brand, the main content, and where to go next.",
+  "heroTitle": "Fortnite deserves more players.",
+  "heroCopy": "Fortnite keeps changing, adding new ways to play, new seasons, live events, creative experiences, and competitive modes. Kavero is a fan-built page about why Fortnite is still worth playing and why more players should give it a shot.",
+  "aboutTitle": "Why Fortnite?",
+  "aboutCopy": "Fortnite is more than one battle royale mode. It mixes fast building or Zero Build combat, constant updates, Creative and UEFN experiences, collaborations, events, progression, and cross-platform play into one constantly evolving game.",
   "cards": [
     {
-      "title": "Community",
-      "copy": "Give players one place for announcements, links, and updates."
+      "title": "Always changing",
+      "copy": "New seasons, map changes, weapons, items, events, and collaborations keep Fortnite from staying the same for long."
     },
     {
-      "title": "Events",
-      "copy": "Showcase tournaments, drops, challenges, and upcoming sessions."
+      "title": "More ways to play",
+      "copy": "Battle Royale, Zero Build, Creative experiences, LEGO Fortnite, Festival, Rocket Racing, Reload, and community-made islands give players different ways to jump in."
     },
     {
-      "title": "Join in",
-      "copy": "Point visitors directly to your server, Discord, or social hub."
+      "title": "Why more people should try it",
+      "copy": "It is free to start, supports cross-platform play, works for casual and competitive players, and has enough different modes that someone who did not like one part of Fortnite may still enjoy another."
     }
   ],
-  "ctaTitle": "Ready to connect?",
-  "ctaCopy": "Use the main link below to keep going.",
-  "ctaLabel": "Contact / Main link",
-  "ctaUrl": "https://esnoffical.com/",
-  "footer": "Built with ESN Website Builder",
+  "ctaTitle": "Jump back into Fortnite.",
+  "ctaCopy": "Whether you are returning after a break or trying it for the first time, there is a lot more to Fortnite than a single match of Battle Royale.",
+  "ctaLabel": "Visit Fortnite",
+  "ctaUrl": "https://www.fortnite.com/",
+  "footer": "Kavero • Fortnite fan site • Built with ESN Website Builder",
   "publishedBy": "sheldonrocks2022-cmyk",
   "publishedAt": "2026-09-29T03:05:11.599Z"
 }
