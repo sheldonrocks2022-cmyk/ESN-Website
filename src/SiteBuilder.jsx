@@ -231,6 +231,50 @@ const PRESETS={
     ],
     ctas:[['Be there','Move visitors directly toward attending or joining.','Event details'],['Don’t miss it','Give people one clear action before the event starts.','Join / Register']]
   },
+  pet:{
+    label:'Pets',themes:['rose','forest','clean'],tones:['cute','friendly','playful'],
+    heroes:['Give your favorite pet a website of their own.','Small paws. Big personality.','A home for the moments worth remembering.'],
+    copies:[
+      'A playful pet-focused website for photos, stories, personality, favorite moments, updates, and everything that makes the animal special.',
+      'A warm personal site built around a cat, dog, or other pet without forcing the idea into an unrelated website category.',
+      'A fun pet page for memories, traits, milestones, photos, favorite things, and the people who love them.'
+    ],
+    about:'Tell visitors who the pet is, what makes them unique, their personality, favorite things, funny habits, and the story behind the page.',
+    cards:[['Personality','Show the habits, quirks, favorite activities, and little details that make this pet recognizable.'],['Favorite moments','Highlight stories, milestones, adventures, photos, or memories worth keeping.'],['Why they are special','Give the page a personal section about why this pet matters to the people around them.']],
+    ctas:[['See more moments','Send visitors to the main gallery, profile, social page, or next pet update.','See more'],['Follow the adventures','Keep the next update or favorite link one tap away.','Follow along']]
+  },
+  education:{
+    label:'Education',themes:['clean','ocean','aurora'],tones:['clear','helpful','organized'],
+    heroes:['Make learning easier to follow.','Turn information into a path people can use.','Teach the idea without burying the visitor.'],
+    copies:['An education-focused site for a class, guide, subject, learning project, resource hub, or student community.','A structured learning page that explains the topic, breaks it into useful pieces, and gives visitors a clear next step.','A clean educational experience for lessons, resources, milestones, FAQs, and useful links.'],
+    about:'Explain the subject, what visitors can learn, who the material is for, and how the content is organized.',
+    cards:[['Start here','Give learners the first concept, lesson, resource, or orientation they need.'],['Key topics','Break the subject into the most important ideas, skills, or modules.'],['Keep learning','Point visitors to the next lesson, resource, community, or practice step.']],
+    ctas:[['Ready to learn more?','Move visitors from the overview into the next useful learning step.','Continue learning'],['Keep going','Give learners a direct path to the next resource.','Next step']]
+  },
+  product:{
+    label:'Product',themes:['clean','midnight','gold'],tones:['premium','product-focused','direct'],
+    heroes:['Make the product impossible to misunderstand.','Show the value before the visitor has to ask.','One product. One clear reason to care.'],
+    copies:['A product-focused website that explains what it is, who it is for, the strongest features, and the next action.','A launch-ready product page built around benefits, feature highlights, proof, FAQs, and conversion.','A premium showcase for a digital or physical product without cluttering the message.'],
+    about:'Explain the product in plain language, who benefits from it, what problem it addresses, and what makes it worth considering.',
+    cards:[['What it does','Put the core purpose and outcome first.'],['Why it stands out','Highlight the strongest benefits, features, design choices, or advantages.'],['Get it / Try it','Give visitors one obvious way to buy, try, join, request, or learn more.']],
+    ctas:[['Ready to see it?','Move interested visitors directly to the product’s main action.','Explore product'],['Take the next step','Keep the purchase, trial, demo, or information path simple.','Get started']]
+  },
+  blog:{
+    label:'Blog',themes:['clean','rose','gold'],tones:['editorial','personal','story-focused'],
+    heroes:['Give every story a better first page.','Write it. Organize it. Make it worth returning to.','A home for ideas, updates, and stories.'],
+    copies:['An editorial-style website for stories, posts, opinions, updates, guides, or a personal publication.','A content-first page that makes the latest topics easy to scan and gives the publication a clear identity.','A flexible blog homepage built around themes, featured stories, archives, and reader connection.'],
+    about:'Explain what the publication covers, who writes it, what readers can expect, and why they should return.',
+    cards:[['Featured story','Put the most important current post or subject first.'],['Topics','Show the themes, categories, or ideas the blog returns to.'],['Latest update','Give readers a clear reason to keep checking back.']],
+    ctas:[['Keep reading','Point readers to the next story, archive, social page, or newsletter.','Read more'],['Follow the next post','Make returning to the publication easy.','Stay connected']]
+  },
+  nonprofit:{
+    label:'Organization',themes:['forest','ocean','clean'],tones:['mission-focused','welcoming','clear'],
+    heroes:['Put the mission where people can see it.','Turn support into visible action.','Show what the organization is working toward.'],
+    copies:['A mission-focused website for a nonprofit, volunteer group, cause, club, or community organization.','A clear public home for the mission, current work, milestones, ways to participate, and important updates.','An organization site built to explain the purpose and help supporters understand what they can do next.'],
+    about:'Explain the mission, the people or cause the organization serves, the work being done, and how supporters can participate.',
+    cards:[['Mission','State the purpose and the change the organization wants to make.'],['Current work','Show active projects, events, programs, milestones, or needs.'],['Get involved','Give supporters a clear way to volunteer, attend, contact, share, or learn more.']],
+    ctas:[['Get involved','Give supporters one direct next action.','See how to help'],['Support the mission','Move visitors toward the most useful way to participate.','Learn more']]
+  },
   creator:{
     label:'Creator',themes:['midnight','clean'],tones:['personal','modern','content-first'],
     heroes:['Make your next idea look official.','Give your content a real home.','Turn your links into a brand.'],
@@ -254,7 +298,9 @@ const QUICK_PROMPTS=[
   'Build a Minecraft SMP website with server features, events, and a community join button.',
   'Create a clean small-business website that explains services and gets customers to contact us.',
   'Make a modern portfolio for a video editor with featured work, skills, and a contact button.',
-  'Build a neon music artist page for releases, an about section, and a listen-now button.'
+  'Build a neon music artist page for releases, an about section, and a listen-now button.',
+  'Make a cute premium website about my black cat with a story, timeline, gallery, and favorite moments.',
+  'Create a full ESN-style flagship website with status panels, timeline, testimonial wall, showcase grid, and social links.'
 ]
 
 function cleanSlug(value){return value.toLowerCase().replace(/[^a-z0-9-]/g,'').replace(/^-+|-+$/g,'').slice(0,48)}
@@ -266,11 +312,16 @@ function extractUrl(prompt){
 }
 function classify(prompt){
   const value=String(prompt||'').toLowerCase()
+  if(/cat\b|cats\b|kitten|dog\b|dogs\b|puppy|pet\b|pets\b|animal|toothless/.test(value))return 'pet'
   if(/fortnite|battle royale|zero build|uefn|epic games/.test(value))return 'fortnite'
   if(/minecraft|smp|survival server|bedrock|java server|realm|modpack/.test(value))return 'minecraft'
   if(/restaurant|food|cafe|coffee shop|pizza|burger|menu|bakery|diner/.test(value))return 'restaurant'
   if(/music|artist|rapper|singer|producer|band|dj|album|song|ep\b|single\b/.test(value))return 'music'
   if(/software|technology|tech\b|app\b|saas|developer tool|startup|platform|api\b/.test(value))return 'technology'
+  if(/course|class\b|school|education|learning|lesson|study|tutorial|guide/.test(value))return 'education'
+  if(/product|launch page|features|waitlist|preorder|pre-order/.test(value))return 'product'
+  if(/blog|article|articles|journal|publication|newsletter/.test(value))return 'blog'
+  if(/nonprofit|non-profit|charity|volunteer|mission|cause/.test(value))return 'nonprofit'
   if(/event|tournament|meetup|party|launch event|conference|showcase|giveaway/.test(value))return 'event'
   if(/business|company|agency|service|shop|store|client|contractor|local business/.test(value))return 'business'
   if(/portfolio|designer|developer|photograph|editor|artist|resume|showreel/.test(value))return 'portfolio'
@@ -280,6 +331,11 @@ function classify(prompt){
 }
 function inferTheme(prompt,category){
   const value=String(prompt||'').toLowerCase()
+  if(/void|space|cosmic|black purple/.test(value))return 'void'
+  if(/aurora|mint|teal glow/.test(value))return 'aurora'
+  if(/forest|nature|green|earth/.test(value))return 'forest'
+  if(/rose|pink|cute|soft/.test(value))return 'rose'
+  if(/gold|luxury|black gold|premium gold/.test(value))return 'gold'
   if(/light|white|minimal|clean|simple|professional/.test(value))return 'clean'
   if(/red|orange|fire|warm|ember|sunset/.test(value))return 'ember'
   if(/blue|ocean|water|calm|aqua|cyan/.test(value))return 'ocean'
