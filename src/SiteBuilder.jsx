@@ -605,7 +605,8 @@ function FlagshipSitePreview({site}){
   ]
   return <div className={'esn-built-site generated-flagship theme-'+s.theme}>
     <div className="gfs-ambient" aria-hidden="true"><i/><i/><i/></div>
-    <nav className="gfs-nav"><strong>{s.brand}</strong><div><a href="#story">Story</a><a href="#highlights">Highlights</a><a href="#faq">FAQ</a></div><span>LIVE</span></nav>
+    <nav className="gfs-nav"><strong>{s.brand}</strong><div><a href="#story">Story</a><a href="#highlights">Highlights</a><a href="#timeline">Timeline</a><a href="#faq">FAQ</a></div><span>LIVE</span></nav>
+    {s.sections.announcement&&<section className="gfs-announcement"><span>{s.announcement.label}</span><strong>{s.announcement.title}</strong><p>{s.announcement.copy}</p><i>↗</i></section>}
 
     <section className="gfs-hero">
       <div className="gfs-hero-copy">
@@ -628,11 +629,14 @@ function FlagshipSitePreview({site}){
     </section>
 
     <div className="gfs-route-strip">{routeItems.map(function(item,index){return <a href={index<3?'#panel-'+index:'#final'} key={item.index}><span>{item.index}</span><b>{item.title}</b><small>{item.meta}</small><em>↗</em></a>})}</div>
+    {s.sections.status&&<section className="gfs-status-center"><div><span className="gfs-eyebrow">LIVE STATUS</span><h2>What’s happening now.</h2></div><div className="gfs-status-grid">{s.status.map(function(item,index){return <article key={index} className={'state-'+item.state}><span><i/>{item.label}</span><strong>{item.value}</strong><small>{item.state.toUpperCase()}</small></article>})}</div></section>}
 
     <section id="story" className="gfs-story">
       <aside className="gfs-story-sticky"><span className="gfs-eyebrow">THE EXPERIENCE</span><h2>{s.aboutTitle}</h2><p>{s.aboutCopy}</p><a href="#highlights">Explore the highlights →</a></aside>
       <div className="gfs-story-stack">{s.cards.map(function(card,index){return <article id={'panel-'+index} key={index}><span className="gfs-story-index">0{index+1}</span><div><span className="gfs-eyebrow">{s.category}</span><h3>{card.title}</h3><p>{card.copy}</p></div><strong>{card.title.split(' ')[0].toUpperCase()}</strong></article>})}</div>
     </section>
+
+    {s.sections.timeline&&<section id="timeline" className="gfs-timeline"><div className="gfs-section-heading"><div><span className="gfs-eyebrow">TIMELINE</span><h2>From the idea to what comes next.</h2></div><small>{s.brand}</small></div><div className="gfs-timeline-track">{s.timeline.map(function(item,index){return <article key={index}><span>{item.kicker}</span><i/><div><h3>{item.title}</h3><p>{item.copy}</p></div></article>})}</div></section>}
 
     <section id="highlights" className="gfs-section">
       <div className="gfs-section-heading"><div><span className="gfs-eyebrow">WHAT MATTERS</span><h2>Built around the important parts.</h2></div><small>{s.audience}</small></div>
@@ -642,10 +646,14 @@ function FlagshipSitePreview({site}){
       </div>
     </section>
 
+    {s.sections.gallery&&<section className="gfs-gallery"><div className="gfs-section-heading"><div><span className="gfs-eyebrow">SHOWCASE</span><h2>More than three cards.</h2></div><small>Visual feature rail</small></div><div className="gfs-gallery-grid">{s.gallery.map(function(item,index){return <article key={index}><span>0{index+1}</span><div className="gfs-gallery-orb" aria-hidden="true"/><h3>{item.title}</h3><p>{item.copy}</p><strong>{String(index+1).padStart(2,'0')}</strong></article>})}</div></section>}
+
     <section className="gfs-feature-stage">
       <div><span className="gfs-big-index">{s.brand.toUpperCase()} // {s.category.toUpperCase()}</span><span className="gfs-eyebrow">FOCUSED EXPERIENCE</span><h2>{s.ctaTitle}</h2><p>{s.ctaCopy}</p>{s.ctaUrl&&<a className="gfs-primary" href={s.ctaUrl} target="_blank" rel="noreferrer">{s.ctaLabel}</a>}</div>
       <div className="gfs-feature-grid">{s.stats.map(function(item,index){return <article key={index}><span>0{index+1}</span><strong>{item.value}</strong><small>{item.label}</small><em>↗</em></article>})}<article><span>04</span><strong>{s.category}</strong><small>Built for {s.audience}</small><em>↗</em></article></div>
     </section>
+
+    {s.sections.testimonials&&<section className="gfs-testimonials"><div className="gfs-section-heading"><div><span className="gfs-eyebrow">VOICES</span><h2>Built to feel alive, not empty.</h2></div><small>Editable testimonial wall</small></div><div>{s.testimonials.map(function(item,index){return <article key={index}><span>“</span><blockquote>{item.quote}</blockquote><footer><strong>{item.name}</strong><small>{item.role}</small></footer></article>})}</div></section>}
 
     <section className="gfs-process"><div><span>01</span><strong>Discover</strong><p>{s.heroCopy}</p></div><div><span>02</span><strong>Explore</strong><p>{s.aboutCopy}</p></div><div><span>03</span><strong>Act</strong><p>{s.ctaCopy}</p></div></section>
 
@@ -653,6 +661,8 @@ function FlagshipSitePreview({site}){
       <div><span className="gfs-eyebrow">QUESTIONS</span><h2>Everything important, without the clutter.</h2><p>Quick answers generated around the site topic and audience.</p></div>
       <div>{s.faq.map(function(item,index){return <details key={index} open={index===0}><summary>{item.q}<span>+</span></summary><p>{item.a}</p></details>})}</div>
     </section>
+
+    {s.sections.socials&&<section className="gfs-social-deck"><div><span className="gfs-eyebrow">CONNECT</span><h2>Keep every important link in one place.</h2></div><div>{s.socials.map(function(item,index){return item.url?<a href={item.url} target="_blank" rel="noreferrer" key={index}><span>0{index+1}</span><strong>{item.label}</strong><em>↗</em></a>:<article key={index}><span>0{index+1}</span><strong>{item.label}</strong><em>ADD LINK</em></article>})}</div></section>}
 
     <section id="final" className="gfs-final"><span>{s.category.toUpperCase()} EXPERIENCE</span><h2>{s.ctaTitle}</h2><p>{s.ctaCopy}</p>{s.ctaUrl&&<a className="gfs-primary" href={s.ctaUrl} target="_blank" rel="noreferrer">{s.ctaLabel} <b>↗</b></a>}<strong aria-hidden="true">{s.brand.slice(0,3).toUpperCase()}</strong></section>
     <footer className="gfs-footer"><span>{s.footer}</span><small>{ROOT_DOMAIN}/sites/{s.slug||'yourname'}</small></footer>
@@ -668,6 +678,11 @@ function SitePreview({site}){
     <section className="built-stats">{s.stats.map(function(item,index){return <article key={index}><strong>{item.value}</strong><span>{item.label}</span></article>})}</section>
     <section id="about" className="built-about"><h2>{s.aboutTitle}</h2><p>{s.aboutCopy}</p></section>
     <section id="highlights" className="built-card-grid">{s.cards.map(function(card,index){return <article key={index}><span>0{index+1}</span><h3>{card.title}</h3><p>{card.copy}</p></article>})}</section>
+    {s.sections.announcement&&<section className="built-announcement"><span>{s.announcement.label}</span><div><h3>{s.announcement.title}</h3><p>{s.announcement.copy}</p></div></section>}
+    {s.sections.status&&<section className="built-extra-grid">{s.status.map(function(item,index){return <article key={index}><span>{item.label}</span><strong>{item.value}</strong><small>{item.state}</small></article>})}</section>}
+    {s.sections.timeline&&<section className="built-timeline">{s.timeline.map(function(item,index){return <article key={index}><span>{item.kicker}</span><div><h3>{item.title}</h3><p>{item.copy}</p></div></article>})}</section>}
+    {s.sections.gallery&&<section className="built-gallery">{s.gallery.map(function(item,index){return <article key={index}><span>0{index+1}</span><h3>{item.title}</h3><p>{item.copy}</p></article>})}</section>}
+    {s.sections.testimonials&&<section className="built-testimonials">{s.testimonials.map(function(item,index){return <blockquote key={index}><p>“{item.quote}”</p><footer><strong>{item.name}</strong><span>{item.role}</span></footer></blockquote>})}</section>}
     <section id="faq" className="built-faq"><div><span>FAQ</span><h2>Quick answers.</h2></div><div>{s.faq.map(function(item,index){return <details key={index} open={index===0}><summary>{item.q}</summary><p>{item.a}</p></details>})}</div></section>
     <section className="built-cta"><h2>{s.ctaTitle}</h2><p>{s.ctaCopy}</p>{s.ctaUrl&&<a href={s.ctaUrl} target="_blank" rel="noreferrer">{s.ctaLabel}</a>}</section>
     <footer><span>{s.footer}</span><small>{ROOT_DOMAIN}/sites/{s.slug||'yourname'}</small></footer>
