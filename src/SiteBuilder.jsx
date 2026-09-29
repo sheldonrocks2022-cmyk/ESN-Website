@@ -702,16 +702,16 @@ function generatedExperience(analysis,name,prompt){
       {label:'Main link',url:analysis.url||''},
     ],
     pack:'full',
-    sections:{announcement:true,status:true,timeline:true,testimonials:true,gallery:true,socials:true},
+    sections:{announcement:true,status:true,timeline:true,testimonials:true,gallery:true,socials:true,countdown:false,minecraft:false,visitor:false},
   }
 }
 function applyExperiencePack(site,pack){
   const next=EXPERIENCE_PACKS.includes(pack)?pack:'full'
   const flags={
-    essential:{announcement:false,status:false,timeline:false,testimonials:false,gallery:false,socials:true},
-    showcase:{announcement:true,status:false,timeline:false,testimonials:true,gallery:true,socials:true},
-    network:{announcement:true,status:true,timeline:true,testimonials:false,gallery:false,socials:true},
-    full:{announcement:true,status:true,timeline:true,testimonials:true,gallery:true,socials:true},
+    essential:{announcement:false,status:false,timeline:false,testimonials:false,gallery:false,socials:true,countdown:false,minecraft:false,visitor:false},
+    showcase:{announcement:true,status:false,timeline:false,testimonials:true,gallery:true,socials:true,countdown:false,minecraft:false,visitor:false},
+    network:{announcement:true,status:true,timeline:true,testimonials:false,gallery:false,socials:true,countdown:false,minecraft:false,visitor:false},
+    full:{announcement:true,status:true,timeline:true,testimonials:true,gallery:true,socials:true,countdown:false,minecraft:false,visitor:false},
   }[next]
   return {...site,pack:next,sections:flags}
 }
@@ -1454,7 +1454,7 @@ export default function SiteBuilderPage(){
           <div className="builder-layout-picks">{LAYOUTS.map(function(layout){return <button type="button" className={site.layout===layout?'active':''} onClick={function(){update('layout',layout)}} key={layout}>{layout.toUpperCase()}</button>})}</div>
           <div className="builder-themes">{THEMES.map(function(theme){return <button type="button" className={site.theme===theme?'active':''} onClick={function(){update('theme',theme)}} key={theme}>{theme.toUpperCase()}</button>})}</div>
           <div className="builder-pack-picks">{EXPERIENCE_PACKS.map(function(pack){return <button type="button" className={(site.pack||'full')===pack?'active':''} onClick={function(){setPack(pack)}} key={pack}>{pack.toUpperCase()}</button>})}</div>
-          <div className="builder-style-actions"><button type="button" onClick={autoStyle}>AUTO STYLE FROM PROMPT</button><button type="button" onClick={remixStyle}>REMIX STYLE</button></div>
+          <div className="builder-style-actions"><button type="button" onClick={autoStyle}>AUTO STYLE FROM PROMPT</button><button type="button" onClick={remixStyle}>REMIX STYLE</button><span>{THEMES.length*STYLE_PRESETS.length}+ STYLE COMBINATIONS</span></div>
           <div className="builder-brand-dna builder-style-lab">
             <div><span>DESIGN STYLE</span><select value={site.visual?.style||'studio'} onChange={function(e){applyDesignStyle(e.target.value)}}>{STYLE_PRESETS.map(function(item){return <option value={item} key={item}>{item.toUpperCase()}</option>})}</select></div>
             <div><span>BACKGROUND</span><select value={site.visual?.background||'gradient'} onChange={function(e){updateVisual('background',e.target.value)}}>{BACKGROUNDS.map(function(item){return <option value={item} key={item}>{item.toUpperCase()}</option>})}</select></div>
@@ -1487,7 +1487,7 @@ export default function SiteBuilderPage(){
 
         <div className="builder-panel builder-experience-panel">
           <div className="builder-panel-head"><span className="eyebrow">06 // EXPERIENCE SYSTEMS</span><button type="button" onClick={function(){regenerate('experience')}}>REGENERATE ALL</button></div>
-          <div className="builder-section-switches">{Object.keys(STARTER.sections).map(function(key){const on=site.sections?.[key]!==false;return <button type="button" className={on?'active':''} onClick={function(){toggleSection(key)}} key={key}><span>{on?'ON':'OFF'}</span>{key.toUpperCase()}</button>})}</div><span className="builder-subhead">DRAG / REORDER HOMEPAGE</span><div className="builder-section-order">{(site.sectionOrder||STARTER.sectionOrder).map(function(key,index){return <div draggable="true" onDragStart={function(){setDragSection(key)}} onDragOver={function(e){e.preventDefault()}} onDrop={function(){moveSection(dragSection,key);setDragSection('')}} key={key}><span>{String(index+1).padStart(2,'0')}</span><strong>{key.toUpperCase()}</strong><button type="button" onClick={function(){moveSectionBy(key,-1)}} disabled={index===0}>↑</button><button type="button" onClick={function(){moveSectionBy(key,1)}} disabled={index===(site.sectionOrder||STARTER.sectionOrder).length-1}>↓</button></div>})}</div>
+          <div className="builder-section-switches">{Object.keys(STARTER.sections).map(function(key){const on=(site.sections?.[key]??STARTER.sections[key])===true;return <button type="button" className={on?'active':''} onClick={function(){toggleSection(key)}} key={key}><span>{on?'ON':'OFF'}</span>{key.toUpperCase()}</button>})}</div><span className="builder-subhead">DRAG / REORDER HOMEPAGE</span><div className="builder-section-order">{(site.sectionOrder||STARTER.sectionOrder).map(function(key,index){return <div draggable="true" onDragStart={function(){setDragSection(key)}} onDragOver={function(e){e.preventDefault()}} onDrop={function(){moveSection(dragSection,key);setDragSection('')}} key={key}><span>{String(index+1).padStart(2,'0')}</span><strong>{key.toUpperCase()}</strong><button type="button" onClick={function(){moveSectionBy(key,-1)}} disabled={index===0}>↑</button><button type="button" onClick={function(){moveSectionBy(key,1)}} disabled={index===(site.sectionOrder||STARTER.sectionOrder).length-1}>↓</button></div>})}</div>
           <span className="builder-subhead">ANNOUNCEMENT STRIP</span>
           <div className="builder-triple-editor"><input value={site.announcement?.label||''} onChange={function(e){updateAnnouncement('label',e.target.value)}} placeholder="NEW"/><input value={site.announcement?.title||''} onChange={function(e){updateAnnouncement('title',e.target.value)}} placeholder="Announcement title"/><textarea value={site.announcement?.copy||''} onChange={function(e){updateAnnouncement('copy',e.target.value)}} placeholder="Announcement details"/></div>
           <span className="builder-subhead">LIVE STATUS PANEL</span>
