@@ -493,7 +493,7 @@ export function StaffDashboardPage(){
   }
 
   const runRouteScan=async()=>{
-    const routes=['/','/nexus','/arcade','/storesmp','/status','/notifications','/rewards','/challenges','/operations','/incidents','/changelog','/diagnostics','/smpcheck','/blueprint','/session','/staff']
+    const routes=['/','/store-ai','/nexus','/arcade','/storesmp','/status','/notifications','/rewards','/challenges','/operations','/incidents','/changelog','/diagnostics','/smpcheck','/blueprint','/session','/staff']
     setScan({running:true,results:[],lastRun:null})
     const results=await Promise.all(routes.map(async route=>{
       const started=performance.now()
@@ -639,7 +639,7 @@ export function StaffDashboardPage(){
     <section className="section dark-section"><div className="shell">
       <div className="section-heading"><div><span className="eyebrow">STAFF ACTIVITY</span><h2>Local operator log.</h2><p>Tracks actions performed from this browser’s Staff Dashboard.</p></div><button className="staff-secondary-action" type="button" onClick={()=>{writeJson(STAFF_ACTIVITY_KEY,[]);setActivity([])}}>CLEAR ACTIVITY</button></div>
       <div className="staff-activity-log">{activity.length?activity.slice(0,25).map(item=><article key={item.id}><span>{new Date(item.at).toLocaleString()}</span><strong>{item.action}</strong><small>{item.copy}</small></article>):<p>No staff activity recorded yet.</p>}</div>
-      <div className="staff-quicklinks"><Link to="/updates">Release Center</Link><Link to="/nexus">Nexus</Link><Link to="/notifications">Notifications</Link><Link to="/rewards">Reward Vault</Link><Link to="/challenges">Challenge Lab</Link><Link to="/storesmp">SMP Store</Link><a href={DISCORD_URL} target="_blank" rel="noreferrer">Discord</a></div>
+      <div className="staff-quicklinks"><Link to="/store-ai">Store AI</Link><Link to="/updates">Release Center</Link><Link to="/nexus">Nexus</Link><Link to="/notifications">Notifications</Link><Link to="/rewards">Reward Vault</Link><Link to="/challenges">Challenge Lab</Link><Link to="/storesmp">SMP Store</Link><a href={DISCORD_URL} target="_blank" rel="noreferrer">Discord</a></div>
       <button className="staff-lock-button" type="button" onClick={()=>{addStaffActivity('STAFF CONSOLE LOCKED','Operator session ended.');sessionStorage.removeItem(STAFF_SESSION_KEY);setAuthorized(false)}}>LOCK STAFF CONSOLE</button>
     </div></section>
   </>
