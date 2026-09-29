@@ -13,6 +13,7 @@ import { ArcadeProgressCenter, ExplorePage, GalleryPage, NetworkStatsPage, Reten
 import ShareCenter from './ShareCenter'
 import { ChallengeLabPage, NoAccountExperienceLayer, NotificationCenterPage, RewardMarketPage, StaffDashboardPage } from './NoAccountExpansion'
 import SMPStaffGate from './SMPStaffGate'
+import StoreAIPage from './StoreAI'
 import { ChangelogTimelinePage, DiagnosticCenterPage, GlobalOpsLayer, OperationsMapPage, PublicIncidentsPage, SessionStatsPage, SMPConnectionTesterPage, SystemBlueprintPage } from './OpsExpansion'
 import { SOCIAL_IMAGE_ALT, SOCIAL_IMAGE_URL, canonicalUrl, getSeo, robotsContent, structuredDataFor } from './seo'
 import { PortfolioPage, StatusCenter, TimelinePage, UpdatesPage, VaultPage, WhatsHappeningNow } from './LiveExperience'
@@ -386,7 +387,7 @@ function Header() {
   const arcadeActive = location.pathname === '/arcade' || ARCADE_GAMES.some(([, route]) => route === location.pathname)
   const mobileSection = arcadeActive ? 'Arcade'
     : inGroup(['/smpconnection','/smpconsole','/smpplugin','/smpguide','/storesmp']) ? 'ESN SMP'
-    : inGroup(['/serviceshowcase','/portfolio','/testimonials']) ? 'Services'
+    : inGroup(['/serviceshowcase','/portfolio','/testimonials','/store-ai']) ? 'Services'
     : inGroup(['/status','/networkstats','/updates','/whatsnew','/timeline','/explore','/gallery','/nexus','/notifications','/rewards','/challenges','/staff','/operations','/incidents','/changelog','/diagnostics','/smpcheck','/blueprint','/session']) ? 'Network'
     : location.pathname==='/estools' ? 'Tools'
     : location.pathname==='/settings' ? 'Settings'
@@ -416,12 +417,13 @@ function Header() {
         <nav className={open ? 'nav open' : 'nav'} aria-label="Main navigation">
           <Link className={location.pathname === '/' || location.pathname === '/home' ? 'nav-direct active' : 'nav-direct'} onClick={close} to="/">Home</Link>
 
-          <div className={inGroup(['/serviceshowcase','/portfolio']) ? 'nav-group active' : 'nav-group'}>
+          <div className={inGroup(['/serviceshowcase','/portfolio','/store-ai']) ? 'nav-group active' : 'nav-group'}>
             <button className="nav-trigger" type="button" aria-haspopup="true">Services</button>
             <div className="dropdown">
               <span className="dropdown-label">ESN SERVICES</span>
               <Link onClick={close} to="/serviceshowcase">Service Showcase</Link>
               <Link onClick={close} to="/portfolio">Before / After Portfolio</Link>
+              <Link onClick={close} to="/store-ai">ESN Store AI</Link>
               <Link onClick={close} to="/#fortnite-coaching">Fortnite Coaching</Link>
               <Link onClick={close} to="/#editing-services">Editing Services</Link>
               <Link onClick={close} to="/#discord-server-setups">Discord Server Setups</Link>
@@ -1491,6 +1493,8 @@ function App() {
           <Route path="/faq" element={<FAQ />} />
           <Route path="/testimonials" element={<Testimonials />} />
           <Route path="/serviceshowcase" element={<ServicesShowcase />} />
+          <Route path="/store-ai" element={<StoreAIPage />} />
+          <Route path="/storeai" element={<Navigate to="/store-ai" replace />} />
           <Route path="/storesmp" element={<SMPStaffGate label="ESN SMP Store"><SMPStore /></SMPStaffGate>} />
           <Route path="/store" element={<Navigate to="/storesmp" replace />} />
           <Route path="/store/smp" element={<Navigate to="/storesmp" replace />} />
