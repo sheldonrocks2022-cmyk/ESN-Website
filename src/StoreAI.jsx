@@ -114,6 +114,14 @@ const CATALOG=[
     delivery:'Open an ESN Discord ticket and describe the project. Staff confirms whether ESN can take it and provides a quote.',
     tags:['custom','project','service'],
   },
+  {
+    id:'esn-domains',kind:'SERVICE',name:'ESN Domains',price:null,priceLabel:'PRICING NOT ACTIVATED',
+    checkout:null,status:'SETUP MODE',
+    summary:'Choose an esnoffical.com subdomain or connect a domain you already own through the ESN Domains control layer.',
+    items:['ESN subdomain rental','Custom-domain connection','Managed routing and HTTPS after activation'],
+    delivery:'Open the ESN Domains page to check names and connection status. Paid activation stays disabled until Cloudflare and billing are configured.',
+    tags:['domain','domains','subdomain','dns','custom domain','hosting'],
+  },
 ]
 
 function readJson(key,fallback){try{const value=JSON.parse(localStorage.getItem(key)||'null');return value==null?fallback:value}catch{return fallback}}
