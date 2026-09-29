@@ -23,6 +23,7 @@ import { SOCIAL_IMAGE_ALT, SOCIAL_IMAGE_URL, canonicalUrl, getSeo, robotsContent
 import { PortfolioPage, StatusCenter, TimelinePage, UpdatesPage, VaultPage, WhatsHappeningNow } from './LiveExperience'
 import { VERIFIED_REVIEWS } from './reviews'
 import HomeControlCenter from './HomeControlCenter'
+import { ActivityTimelinePage, BuilderShowcasePage, DataBackupPage, GlobalSearchPage, LabsPage, LaunchpadPage, NetworkMapPage, PlatformHomeSection, PlatformLayer, ProjectEstimatePage, ServiceConfiguratorPage, ShareGeneratorV2Page, SMPItemsPage, SMPWorldHubPage, TrustCenterPage } from './PlatformExpansion'
 import ClickerGame from './arcade/Clicker'
 import FactoryGame from './arcade/Factory'
 import MinesGame from './arcade/Mines'
@@ -391,10 +392,10 @@ function Header() {
   const close = () => setOpen(false)
   const inGroup = (paths) => paths.some((path) => location.pathname === path || location.pathname.startsWith(path + '/'))
   const arcadeActive = location.pathname === '/arcade' || ARCADE_GAMES.some(([, route]) => route === location.pathname)
-  const createActive = inGroup(['/serviceshowcase','/portfolio','/store-ai','/hosting','/domains','/site-builder','/estools'])
-  const playActive = arcadeActive || inGroup(['/smpconnection','/smpconsole','/smpplugin','/smpguide','/storesmp','/smpcheck'])
-  const networkActive = inGroup(['/status','/networkstats','/updates','/whatsnew','/timeline','/explore','/gallery','/nexus','/notifications','/rewards','/challenges','/operations','/incidents','/changelog','/diagnostics','/blueprint','/session','/share'])
-  const aboutActive = inGroup(['/about','/leadership','/testimonials','/faq','/settings','/support','/staff'])
+  const createActive = inGroup(['/serviceshowcase','/portfolio','/store-ai','/hosting','/domains','/site-builder','/estools','/configure','/estimate','/showcase'])
+  const playActive = arcadeActive || inGroup(['/smpconnection','/smpconsole','/smpplugin','/smpguide','/storesmp','/smpcheck','/smp-hub','/smp-items'])
+  const networkActive = inGroup(['/status','/networkstats','/updates','/whatsnew','/timeline','/explore','/gallery','/nexus','/notifications','/rewards','/challenges','/operations','/incidents','/changelog','/diagnostics','/blueprint','/session','/share','/launchpad','/search','/labs','/activity','/share-generator','/network-map','/backup'])
+  const aboutActive = inGroup(['/about','/leadership','/testimonials','/faq','/settings','/support','/staff','/trust'])
   const mobileSection = playActive ? (arcadeActive ? 'Arcade' : 'ESN SMP')
     : createActive ? 'Create'
     : networkActive ? 'Network'
@@ -701,6 +702,8 @@ function Home() {
       </section>
 
       <HomeControlCenter />
+
+      <PlatformHomeSection />
 
       <NetworkDirectory />
 
@@ -1536,6 +1539,7 @@ function App() {
       {!standaloneSite&&<Global3DLighting />}
       {!standaloneSite&&<UltraExperience />}
       {!standaloneSite&&<ExperienceCoreV2 />}
+      {!standaloneSite&&<PlatformLayer />}
       {!standaloneSite&&<Header />}
       {!standaloneSite&&<PremiumChrome />}
       {!standaloneSite&&<ExperienceLayer />}
@@ -1568,6 +1572,19 @@ function App() {
           <Route path="/smpconsole" element={<SMPStaffGate label="ESN SMP Console"><ConsoleConnection /></SMPStaffGate>} />
           <Route path="/smpplugin" element={<SMPStaffGate label="ESN SMP Plugin"><SMPPluginDownload /></SMPStaffGate>} />
           <Route path="/smpguide" element={<SMPStaffGate label="ESN SMP Guide"><SMPEncyclopediaPage /></SMPStaffGate>} />
+          <Route path="/launchpad" element={<LaunchpadPage />} />
+          <Route path="/configure" element={<ServiceConfiguratorPage />} />
+          <Route path="/smp-hub" element={<SMPWorldHubPage />} />
+          <Route path="/trust" element={<TrustCenterPage />} />
+          <Route path="/search" element={<GlobalSearchPage />} />
+          <Route path="/labs" element={<LabsPage />} />
+          <Route path="/estimate" element={<ProjectEstimatePage />} />
+          <Route path="/smp-items" element={<SMPItemsPage />} />
+          <Route path="/activity" element={<ActivityTimelinePage />} />
+          <Route path="/share-generator" element={<ShareGeneratorV2Page />} />
+          <Route path="/showcase" element={<BuilderShowcasePage />} />
+          <Route path="/network-map" element={<NetworkMapPage />} />
+          <Route path="/backup" element={<DataBackupPage />} />
           <Route path="/status" element={<StatusCenter />} />
           <Route path="/networkstats" element={<NetworkStatsPage />} />
           <Route path="/nexus" element={<NetworkNexusPage />} />
