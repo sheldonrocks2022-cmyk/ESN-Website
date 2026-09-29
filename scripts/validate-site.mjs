@@ -167,7 +167,7 @@ if (!storeAi.includes('I will not invent a payment link') || !storeAi.includes('
 if (!seo.includes("'/store-ai':{")) problems.push('Store AI SEO route missing.')
 if (!sitemap.includes('https://esnoffical.com/store-ai')) problems.push('Store AI missing from sitemap.')
 if (!app.includes("import DomainsPage from './Domains'") || !app.includes('path="/domains" element={<DomainsPage />}')) problems.push('ESN Domains route or module is not wired.')
-if (!domainsPortal.includes('ESN DOMAINS') || !domainsPortal.includes('CHECK AVAILABILITY') || !domainsPortal.includes('CUSTOM DOMAIN') || !domainsPortal.includes('ALLOW_DNS_MUTATIONS')) problems.push('ESN Domains portal is incomplete.')
+if (!domainsPortal.includes('ESN DOMAINS') || !domainsPortal.includes('CHECK AVAILABILITY') || !domainsPortal.includes('CUSTOM DOMAIN') || !domainsPortal.includes('CLOUDFLARE SETUP REQUIRED')) problems.push('ESN Domains portal is incomplete.')
 if (!domainsPortal.includes('STAFF_HASH') || domainsPortal.includes("'052609'")) problems.push('ESN Domains staff UI gate is missing its hash check or exposes the raw staff code.')
 if (!domainsWorker.includes('/api/check') || !domainsWorker.includes('/api/reservations') || !domainsWorker.includes('/api/admin/login') || !domainsWorker.includes('attachWorkerDomain') || !domainsWorker.includes('createCustomHostname')) problems.push('ESN Domains Worker control plane is incomplete.')
 if (!domainsWorker.includes("ALLOW_DNS_MUTATIONS") || !domainsWrangler.includes('ALLOW_DNS_MUTATIONS = "false"')) problems.push('ESN Domains DNS mutation safety lock is missing or enabled by default.')
