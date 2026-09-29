@@ -174,11 +174,11 @@ for (const marker of ['READY FOR STAFF REVIEW','AWAITING PAYMENT','PAID','ACTIVE
 if (!domainsPortal.includes('Never mark a request Paid unless the payment is visible in the official ESN Stripe account.')) problems.push('ESN Hosting manual payment verification warning is missing.')
 const freeSubdomainWorkflow = fs.readFileSync('.github/workflows/free-subdomain.yml','utf8')
 const freeSubdomainProvisioner = fs.readFileSync('.github/scripts/provision-free-subdomain.mjs','utf8')
-for (const marker of ['FREE ESN SUBDOMAIN','CREATE FREE SUBDOMAIN','CONTINUE TO GITHUB','ESN_FREE_SUBDOMAIN_REQUEST_V1','One active free subdomain per GitHub account']) {
+for (const marker of ['FREE ESN SUBDOMAIN','CREATE FREE SUBDOMAIN','CONTINUE TO GITHUB','ESN_FREE_SUBDOMAIN_REQUEST_V1','One active free subdomain per GitHub account','DNS IS ONLY HALF OF THE SETUP','I confirmed my destination host supports this custom domain and HTTPS','GitHub Pages:']) {
   if (!domainsPortal.includes(marker)) problems.push(`ESN free-subdomain UI missing: ${marker}.`)
 }
 if (!freeSubdomainWorkflow.includes('issues:') || !freeSubdomainWorkflow.includes('SPACESHIP_API_KEY') || !freeSubdomainWorkflow.includes('SPACESHIP_API_SECRET')) problems.push('Automatic free-subdomain workflow is missing the GitHub issue trigger or Spaceship secret bindings.')
-for (const marker of ['https://spaceship.dev/api/v1/dns/records/','dnsrecords','CNAME','free-subdomain-active','one active subdomain per GitHub account']) {
+for (const marker of ['https://spaceship.dev/api/v1/dns/records/','dnsrecords','CNAME','free-subdomain-active','one active subdomain per GitHub account','Host readiness:','DNS creation does not guarantee the website or HTTPS certificate is ready yet']) {
   if (!freeSubdomainProvisioner.toLowerCase().includes(marker.toLowerCase())) problems.push(`Automatic free-subdomain provisioner missing: ${marker}.`)
 }
 if (freeSubdomainProvisioner.includes('REPLACE_KEY_VALUE') || freeSubdomainWorkflow.includes('X-API-Secret:')) problems.push('Free-subdomain automation appears to contain a hard-coded credential placeholder or secret.')
