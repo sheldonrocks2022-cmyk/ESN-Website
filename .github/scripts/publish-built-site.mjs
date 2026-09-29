@@ -4,12 +4,20 @@ const ROOT_DOMAIN='esnoffical.com'
 const ACTIVE_SUBDOMAIN_LABEL='free-subdomain-active'
 const PUBLISHED_LABEL='site-builder-published'
 const REJECTED_LABEL='site-builder-rejected'
-const THEMES=new Set(['midnight','neon','clean','ember','ocean','void','aurora','forest','rose','gold'])
+const THEMES=new Set(['midnight','neon','clean','ember','ocean','void','aurora','forest','rose','gold','ice','sunset','mono','lime','royal','candy'])
 const EXPERIENCE_PACKS=new Set(['essential','showcase','network','full'])
 const SHAPES=new Set(['rounded','sharp','soft'])
 const DENSITIES=new Set(['airy','balanced','dense'])
 const MOTIONS=new Set(['calm','dynamic','cinematic'])
-const LAYOUTS=new Set(['spotlight','split','editorial','flagship'])
+const LAYOUTS=new Set(['spotlight','split','editorial','flagship','stacked','poster','studio','dashboard'])
+const STYLE_PRESETS=new Set(['studio','cyber','luxury','editorial','minimal','playful','brutalist','glass','retro','organic','arcade','cinematic'])
+const BACKGROUNDS=new Set(['solid','gradient','mesh','grid','aurora','spotlight','paper','noise'])
+const SURFACES=new Set(['solid','glass','frosted','outline','elevated','flat'])
+const HERO_STYLES=new Set(['left','center','split','poster','stacked'])
+const CARD_STYLES=new Set(['clean','glass','glow','outline','tiles','floating'])
+const BUTTON_STYLES=new Set(['pill','rounded','square','outline','glow'])
+const FX_STYLES=new Set(['none','glow','grain','scanlines','stars'])
+const CONTRASTS=new Set(['soft','normal','high'])
 const BLOCKED=/password|passcode|seed phrase|wallet recovery|credit card|social security|bank login|verify your account|sign in to continue/i
 const SLUG_RE=/^[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?$/
 
@@ -90,7 +98,7 @@ function sanitize(site){
   const rawVisual=site.visual&&typeof site.visual==='object'?site.visual:{}
   const hex=value=>/^#[0-9a-f]{6}$/i.test(String(value||'').trim())?String(value).trim():'#65e8ff'
   return {
-    version:4,
+    version:5,
     multiPage:site.multiPage===true,
     slug:String(site.slug||'').toLowerCase(),
     brand:text(site.brand,60),
@@ -105,6 +113,14 @@ function sanitize(site){
       motion:MOTIONS.has(rawVisual.motion)?rawVisual.motion:'dynamic',
       nav:['glass','minimal','rail'].includes(rawVisual.nav)?rawVisual.nav:'glass',
       type:['display','editorial','technical'].includes(rawVisual.type)?rawVisual.type:'display',
+      style:STYLE_PRESETS.has(rawVisual.style)?rawVisual.style:'studio',
+      background:BACKGROUNDS.has(rawVisual.background)?rawVisual.background:'gradient',
+      surface:SURFACES.has(rawVisual.surface)?rawVisual.surface:'elevated',
+      hero:HERO_STYLES.has(rawVisual.hero)?rawVisual.hero:'left',
+      cards:CARD_STYLES.has(rawVisual.cards)?rawVisual.cards:'clean',
+      buttons:BUTTON_STYLES.has(rawVisual.buttons)?rawVisual.buttons:'rounded',
+      fx:FX_STYLES.has(rawVisual.fx)?rawVisual.fx:'glow',
+      contrast:CONTRASTS.has(rawVisual.contrast)?rawVisual.contrast:'normal',
     },
     pages:Array.isArray(site.pages)?site.pages.slice(0,3).map((page,index)=>({
       slug:String(page.slug||('page-'+(index+1))).toLowerCase().replace(/[^a-z0-9-]/g,'').slice(0,48),
