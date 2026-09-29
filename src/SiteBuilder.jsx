@@ -393,6 +393,58 @@ function generatedFaq(analysis,name){
     {q:'What should I do next?',a:'Use the main call-to-action on the page to continue, connect, learn more, or take the next step.'},
   ]
 }
+function generatedExperience(analysis,name){
+  const topic=analysis.keywords[0]||analysis.label
+  const secondary=analysis.keywords[1]||'community'
+  const third=analysis.keywords[2]||'updates'
+  const announcement={
+    label:analysis.category==='event'?'EVENT':analysis.category==='business'?'OPEN':'NOW',
+    title:analysis.category==='fortnite'?'A new way to look at Fortnite.':analysis.category==='minecraft'?'The world is ready for players.':analysis.category==='music'?'The latest sound starts here.':name+' is live.',
+    copy:'A focused update around '+topic+', '+secondary+', and '+third+'.'
+  }
+  const status=[
+    {label:analysis.category==='minecraft'?'World':'Main experience',value:'ONLINE',state:'live'},
+    {label:analysis.category==='business'?'Availability':'Community',value:'ACTIVE',state:'live'},
+    {label:'Latest update',value:'READY',state:'ready'},
+  ]
+  const timeline=[
+    {kicker:'01',title:'The idea',copy:'Start with '+topic+' and explain what made '+name+' worth building.'},
+    {kicker:'02',title:'The build',copy:'Show how '+secondary+' became part of the experience and helped shape the project.'},
+    {kicker:'03',title:'Right now',copy:'Focus on '+third+' and what visitors should know or explore today.'},
+    {kicker:'04',title:'Next',copy:'Keep the story moving with the next release, milestone, event, feature, or community goal.'},
+  ]
+  const testimonials=[
+    {quote:'The purpose is clear immediately, and the next step is easy to find.',name:'Featured voice',role:analysis.audience},
+    {quote:'The experience feels organized instead of looking like a pile of random sections.',name:'Featured voice',role:'Community'},
+    {quote:'The strongest parts of the project actually get room to stand out.',name:'Featured voice',role:'Visitor'},
+  ]
+  const gallery=[
+    {title:analysis.keywords[0]||'Main experience',copy:'A visual feature tile built around the first major topic in the prompt.'},
+    {title:analysis.keywords[1]||'Latest highlight',copy:'A premium showcase block for another important part of '+name+'.'},
+    {title:analysis.keywords[2]||'Community',copy:'Use this space for the people, content, service, mode, product, or feature behind the site.'},
+    {title:analysis.keywords[3]||'What comes next',copy:'A final showcase tile for the next release, milestone, event, or reason to return.'},
+  ]
+  return {
+    announcement,status,timeline,testimonials,gallery,
+    socials:[
+      {label:'Discord',url:''},
+      {label:analysis.category==='music'?'Spotify':'YouTube',url:''},
+      {label:'Main link',url:analysis.url||''},
+    ],
+    pack:'full',
+    sections:{announcement:true,status:true,timeline:true,testimonials:true,gallery:true,socials:true},
+  }
+}
+function applyExperiencePack(site,pack){
+  const next=EXPERIENCE_PACKS.includes(pack)?pack:'full'
+  const flags={
+    essential:{announcement:false,status:false,timeline:false,testimonials:false,gallery:false,socials:true},
+    showcase:{announcement:true,status:false,timeline:false,testimonials:true,gallery:true,socials:true},
+    network:{announcement:true,status:true,timeline:true,testimonials:false,gallery:false,socials:true},
+    full:{announcement:true,status:true,timeline:true,testimonials:true,gallery:true,socials:true},
+  }[next]
+  return {...site,pack:next,sections:flags}
+}
 function generateSite(prompt,brand,slug,variant){
   const analysis=analyzePrompt(prompt)
   const preset=PRESETS[analysis.category]||PRESETS.creator
@@ -422,6 +474,7 @@ function generateSite(prompt,brand,slug,variant){
     }),
     stats:generatedStats(analysis),
     faq:generatedFaq(analysis,name),
+    ...generatedExperience(analysis,name),
     ctaTitle:cta[0],
     ctaCopy:cta[1],
     ctaLabel:cta[2],
@@ -437,12 +490,14 @@ function regenerateSection(site,prompt,section,variant){
   if(section==='stats')return {...site,stats:next.stats}
   if(section==='faq')return {...site,faq:next.faq}
   if(section==='seo')return {...site,seoTitle:next.seoTitle,seoDescription:next.seoDescription}
+  if(section==='experience')return {...site,announcement:next.announcement,status:next.status,timeline:next.timeline,testimonials:next.testimonials,gallery:next.gallery,socials:next.socials}
   if(section==='cta')return {...site,category:next.category,ctaTitle:next.ctaTitle,ctaCopy:next.ctaCopy,ctaLabel:next.ctaLabel,ctaUrl:next.ctaUrl}
   return next
 }
 function safeSite(site){
+  const sections={...STARTER.sections,...(site.sections||{})}
   return {
-    version:2,
+    version:3,
     slug:cleanSlug(site.slug),
     brand:clamp(site.brand,60),
     category:clamp(site.category,24),
@@ -458,6 +513,25 @@ function safeSite(site){
     cards:(site.cards||[]).slice(0,3).map(function(card){return {title:clamp(card.title,70),copy:clamp(card.copy,260)}}),
     stats:(site.stats||STARTER.stats).slice(0,3).map(function(item){return {value:clamp(item.value,20),label:clamp(item.label,70)}}),
     faq:(site.faq||STARTER.faq).slice(0,3).map(function(item){return {q:clamp(item.q,120),a:clamp(item.a,360)}}),
+    pack:EXPERIENCE_PACKS.includes(site.pack)?site.pack:'full',
+    sections:{
+      announcement:sections.announcement!==false,
+      status:sections.status!==false,
+      timeline:sections.timeline!==false,
+      testimonials:sections.testimonials!==false,
+      gallery:sections.gallery!==false,
+      socials:sections.socials!==false,
+    },
+    announcement:{
+      label:clamp(site.announcement?.label||STARTER.announcement.label,24),
+      title:clamp(site.announcement?.title||STARTER.announcement.title,100),
+      copy:clamp(site.announcement?.copy||STARTER.announcement.copy,240),
+    },
+    status:(site.status||STARTER.status).slice(0,3).map(function(item){return {label:clamp(item.label,60),value:clamp(item.value,30),state:['live','ready','offline'].includes(item.state)?item.state:'ready'}}),
+    timeline:(site.timeline||STARTER.timeline).slice(0,4).map(function(item){return {kicker:clamp(item.kicker,20),title:clamp(item.title,80),copy:clamp(item.copy,260)}}),
+    testimonials:(site.testimonials||STARTER.testimonials).slice(0,3).map(function(item){return {quote:clamp(item.quote,280),name:clamp(item.name,60),role:clamp(item.role,60)}}),
+    gallery:(site.gallery||STARTER.gallery).slice(0,4).map(function(item){return {title:clamp(item.title,80),copy:clamp(item.copy,220)}}),
+    socials:(site.socials||STARTER.socials).slice(0,3).map(function(item){return {label:clamp(item.label,40),url:safeUrl(item.url)}}),
     ctaTitle:clamp(site.ctaTitle,100),
     ctaCopy:clamp(site.ctaCopy,260),
     ctaLabel:clamp(site.ctaLabel,50),
