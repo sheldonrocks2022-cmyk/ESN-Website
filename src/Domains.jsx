@@ -3,9 +3,11 @@ import './domains.css'
 
 const ROOT_DOMAIN='esnoffical.com'
 const DISCORD_URL='https://discord.gg/3gxA66KZ8'
+const FREE_ISSUE_BASE='https://github.com/sheldonrocks2022-cmyk/ESN-Website/issues/new'
 const STAFF_HASH='645569b472b3670b547fd45aa2a626177a8fb71f722bb7c3dc07d0d670311cab'
 const REQUEST_KEY='esn_hosting_requests_v1'
 const PLAN_PRICES={
+  free:{label:'FREE',cents:0},
   subdomain:{label:'$0.50/month',cents:50},
   custom:{label:'$1.00/month',cents:100},
   hosting:{label:'Price pending',cents:null},
@@ -34,6 +36,22 @@ function validStripeLink(value){
     const url=new URL(value.trim())
     return url.protocol==='https:'&&url.hostname==='buy.stripe.com'
   }catch{return false}
+}
+function freeIssueUrl(label,target){
+  const host=new URL(target).hostname.toLowerCase()
+  const body=[
+    '<!-- ESN_FREE_SUBDOMAIN_REQUEST_V1 -->',
+    'Subdomain: `'+label+'`',
+    'Target: `'+host+'`',
+    'Terms: I agree to the ESN free subdomain rules.',
+    '',
+    'I understand that ESN may remove this free subdomain if it is used for phishing, malware, impersonation, spam, or other abuse.',
+  ].join('\n')
+  const params=new URLSearchParams({
+    title:'[FREE-SUBDOMAIN] '+label,
+    body,
+  })
+  return FREE_ISSUE_BASE+'?'+params.toString()
 }
 function readRequests(){
   try{
@@ -97,7 +115,7 @@ function paymentText(request){
 }
 
 export default function DomainsPage(){
-  const [mode,setMode]=useState('subdomain')
+  const [mode,setMode]=useState('free')
   const [label,setLabel]=useState('')
   const [customDomain,setCustomDomain]=useState('')
   const [target,setTarget]=useState('')
@@ -132,7 +150,7 @@ export default function DomainsPage(){
     if(!clean){setEligibility({ok:false,title:'ENTER A NAME',copy:'Choose the subdomain you want first.'});return}
     if(RESERVED.has(clean)){setEligibility({ok:false,title:'RESERVED BY ESN',copy:'That name is protected and cannot be rented.'});return}
     if(!validLabel(clean)){setEligibility({ok:false,title:'INVALID NAME',copy:'Use 1–48 lowercase letters, numbers, or hyphens.'});return}
-    setEligibility({ok:true,title:'NAME FORMAT OK',copy:'Final availability is confirmed manually by ESN staff before payment.'})
+    setEligibility({ok:true,title:'NAME FORMAT OK',copy:mode==='free'?'Spaceship availability is re-checked automatically before DNS creation.':'Final availability is confirmed manually by ESN staff before payment.'})
   }
 
   const buildRequest=event=>{
@@ -143,20 +161,32 @@ export default function DomainsPage(){
     const domain=normalizeDomain(customDomain)
     const destination=normalizeTarget(target)
 
-    if((mode==='subdomain'||mode==='hosting')&&!validLabel(clean)){
+    if((mode==='free'||mode==='subdomain'||mode==='hosting')&&!validLabel(clean)){
       setResult({ok:false,message:'Choose a valid ESN subdomain first.'});return
     }
     if(mode==='custom'&&!validDomain(domain)){
       setResult({ok:false,message:'Enter a valid custom domain, such as yourbusiness.com.'});return
     }
-    if((mode==='subdomain'||mode==='custom')&&!destination){
+    if((mode==='free'||mode==='subdomain'||mode==='custom')&&!destination){
       setResult({ok:false,message:'Enter the website or hosting destination ESN should connect.'});return
     }
     if(mode==='hosting'&&!details.trim()){
       setResult({ok:false,message:'Tell ESN what website or project you want hosted.'});return
     }
-    if(!contact.trim()){
+    if(mode!=='free'&&!contact.trim()){
       setResult({ok:false,message:'Enter a Discord username or email so ESN staff can identify the request.'});return
+    }
+
+    if(mode==='free'){
+      const issueUrl=freeIssueUrl(clean,destination)
+      setResult({
+        ok:true,
+        free:true,
+        issueUrl,
+        message:'Your free subdomain request is ready. Submit the pre-filled GitHub request and the ESN automation will check Spaceship DNS and create the CNAME automatically.',
+        hostname:clean+'.'+ROOT_DOMAIN,
+      })
+      return
     }
 
     const request={
@@ -210,31 +240,34 @@ export default function DomainsPage(){
   return <>
     <section className="page-hero domains-hero"><div className="shell page-hero-inner">
       <div className="page-hero-copy">
-        <span className="eyebrow">ESN HOSTING // MANUAL BETA</span>
-        <h1>Choose an ESN subdomain or connect your own domain.</h1>
-        <p>ESN keeps <strong>{ROOT_DOMAIN}</strong> on its current Spaceship nameservers. Customer activations are handled one DNS record at a time, so the main ESN website does not need another nameserver switch.</p>
+        <span className="eyebrow">ESN HOSTING // FREE SUBDOMAINS</span>
+        <h1>Get a free ESN subdomain — automatically.</h1>
+        <p>Choose a name like <strong>yourname.{ROOT_DOMAIN}</strong>. ESN's GitHub automation securely checks and creates the DNS record through the official Spaceship API. Paid subdomain and custom-domain options are still available too.</p>
       </div>
-      <div className="page-hero-mark"><span>WEB</span><small>STRIPE + MANUAL ACTIVATION</small></div>
+      <div className="page-hero-mark"><span>DNS</span><small>AUTO + SPACESHIP API</small></div>
     </div></section>
 
     <section className="section"><div className="shell">
       <div className="domains-system-banner ready">
-        <div><span>ESN HOSTING STATUS</span><strong>REQUESTS + STRIPE PAYMENT STAGE READY</strong><small>Staff approval comes first. Stripe checkout is attached only after the request is verified.</small></div>
+        <div><span>ESN HOSTING STATUS</span><strong>FREE SUBDOMAIN AUTOMATION INSTALLED</strong><small>Free requests use GitHub + Spaceship API automation. Paid options still use the staff payment flow.</small></div>
         <button onClick={()=>setShowStaff(true)}>STAFF</button>
       </div>
 
       <div className="domains-safety-strip">
         <strong>NO NAMESERVER CHANGE</strong>
-        <span>ESN stays on Spaceship DNS. Staff only adds or edits the specific record needed for an approved customer.</span>
+        <span>ESN stays on Spaceship DNS. Free subdomains create only their own CNAME record — the main ESN nameservers are never changed.</span>
       </div>
 
       <div className="domains-payment-flow" aria-label="ESN Hosting payment workflow">
         {['STAFF REVIEW','AWAITING PAYMENT','PAID','ACTIVE'].map((step,index)=><div key={step}><b>{String(index+1).padStart(2,'0')}</b><span>{step}</span></div>)}
       </div>
 
-      <div className="domains-plan-grid three">
+      <div className="domains-plan-grid four">
+        <button className={mode==='free'?'active':''} onClick={()=>{setMode('free');setResult(null)}}>
+          <span>FREE ESN SUBDOMAIN</span><strong>FREE</strong><p>One automatic subdomain per GitHub account. No payment. GitHub confirmation is required to prevent anonymous DNS abuse.</p>
+        </button>
         <button className={mode==='subdomain'?'active':''} onClick={()=>{setMode('subdomain');setResult(null)}}>
-          <span>ESN SUBDOMAIN RENTAL</span><strong>$0.50 / MONTH</strong><p>Choose an address like <b>yourname.{ROOT_DOMAIN}</b> and connect it to an existing compatible website or host.</p>
+          <span>ESN SUBDOMAIN RENTAL</span><strong>$0.50 / MONTH</strong><p>Choose an address like <b>yourname.{ROOT_DOMAIN}</b> with the existing staff-supported paid flow.</p>
         </button>
         <button className={mode==='custom'?'active':''} onClick={()=>{setMode('custom');setResult(null)}}>
           <span>CONNECT YOUR DOMAIN</span><strong>$1.00 / MONTH</strong><p>Use a domain you already own. ESN staff verifies the destination and gives you the exact DNS record to add.</p>
@@ -246,35 +279,43 @@ export default function DomainsPage(){
 
       <div className="domains-builder">
         <div className="domains-preview">
-          <span>{mode==='custom'?'CUSTOM DOMAIN':mode==='hosting'?'FUTURE ESN HOST':'YOUR ESN ADDRESS'}</span>
+          <span>{mode==='custom'?'CUSTOM DOMAIN':mode==='hosting'?'FUTURE ESN HOST':mode==='free'?'FREE ESN SUBDOMAIN':'YOUR ESN ADDRESS'}</span>
           <strong>{mode==='custom'?(normalizeDomain(customDomain)||'yourbusiness.com'):subdomain}</strong>
-          <small>{mode==='hosting'?'Reserved request for the upcoming ESN-owned hosting server.':selectedPlan.label+' • Stripe checkout is provided after staff approval.'}</small>
+          <small>{mode==='hosting'?'Reserved request for the upcoming ESN-owned hosting server.':mode==='free'?'Free • automatic DNS creation after GitHub confirmation.':selectedPlan.label+' • Stripe checkout is provided after staff approval.'}</small>
         </div>
 
         <form onSubmit={buildRequest}>
-          {(mode==='subdomain'||mode==='hosting')&&<>
+          {(mode==='free'||mode==='subdomain'||mode==='hosting')&&<>
             <label>CHOOSE ESN SUBDOMAIN<div className="domains-domain-input"><input value={label} onChange={e=>{setLabel(cleanLabel(e.target.value));setEligibility(null)}} placeholder="yourname"/><span>.{ROOT_DOMAIN}</span></div></label>
             <button type="button" className="domains-check" onClick={checkName} disabled={!label}>CHECK NAME</button>
             {eligibility&&<div className={'domains-availability '+(eligibility.ok?'yes':'no')}><strong>{eligibility.title}</strong><span>{eligibility.copy}</span></div>}
           </>}
 
           {mode==='custom'&&<label>YOUR CUSTOM DOMAIN<input value={customDomain} onChange={e=>setCustomDomain(e.target.value)} placeholder="yourbusiness.com"/></label>}
-          {(mode==='subdomain'||mode==='custom')&&<label>CURRENT WEBSITE / DESTINATION<input value={target} onChange={e=>setTarget(e.target.value)} placeholder="https://your-current-site.com"/></label>}
+          {(mode==='free'||mode==='subdomain'||mode==='custom')&&<label>{mode==='free'?'TARGET HOST / WEBSITE':'CURRENT WEBSITE / DESTINATION'}<input value={target} onChange={e=>setTarget(e.target.value)} placeholder={mode==='free'?'https://username.github.io':'https://your-current-site.com'}/></label>}
           {mode==='hosting'&&<label>WHAT DO YOU WANT ESN TO HOST?<textarea value={details} onChange={e=>setDetails(e.target.value)} placeholder="Describe the site, files, framework, storage needs, or project."/></label>}
-          {mode!=='hosting'&&<label>NOTES <textarea value={details} onChange={e=>setDetails(e.target.value)} placeholder="Optional details for ESN staff."/></label>}
-          <label>CONTACT<input value={contact} onChange={e=>setContact(e.target.value)} placeholder="Discord username or email"/></label>
+          {mode!=='hosting'&&mode!=='free'&&<label>NOTES <textarea value={details} onChange={e=>setDetails(e.target.value)} placeholder="Optional details for ESN staff."/></label>}
+          {mode!=='free'&&<label>CONTACT<input value={contact} onChange={e=>setContact(e.target.value)} placeholder="Discord username or email"/></label>}
+          {mode==='free'&&<div className="domains-free-rules"><strong>FREE SUBDOMAIN RULES</strong><span>One active free subdomain per GitHub account. The target must be a real hostname. Phishing, malware, impersonation, spam, and abuse are not allowed.</span></div>}
 
           <div className="domains-order-summary">
             <div><span>PRICE</span><strong>{selectedPlan.label}</strong></div>
-            <div><span>PAYMENT</span><strong>{mode==='hosting'?'Not open yet':'Stripe after approval'}</strong></div>
-            <div><span>ACTIVATION</span><strong>After payment + DNS check</strong></div>
+            <div><span>PAYMENT</span><strong>{mode==='free'?'None':mode==='hosting'?'Not open yet':'Stripe after approval'}</strong></div>
+            <div><span>ACTIVATION</span><strong>{mode==='free'?'Automatic via Spaceship API':'After payment + DNS check'}</strong></div>
           </div>
 
-          <button className="domains-submit" type="submit">{mode==='hosting'?'JOIN HOSTING WAITLIST':'SUBMIT FOR STAFF REVIEW'}</button>
+          <button className="domains-submit" type="submit">{mode==='free'?'CREATE FREE SUBDOMAIN':mode==='hosting'?'JOIN HOSTING WAITLIST':'SUBMIT FOR STAFF REVIEW'}</button>
           {result&&<div className={'domains-result '+(result.ok?'ok':'error')}>
             <strong>{result.ok?'REQUEST READY':'FIX REQUEST'}</strong>
             <p>{result.message}</p>
-            {result.ok&&<>
+            {result.ok&&result.free&&<>
+              <small>{result.hostname} • FREE • one per GitHub account</small>
+              <div className="domains-result-actions">
+                <a href={result.issueUrl} target="_blank" rel="noreferrer">CONTINUE TO GITHUB →</a>
+              </div>
+              <small>Submit the pre-filled GitHub issue. The workflow will re-check the name and create the Spaceship CNAME automatically if it is available.</small>
+            </>}
+            {result.ok&&!result.free&&<>
               <small>Request ID: {result.request.id} • {result.request.priceLabel}</small>
               <div className="domains-result-actions">
                 <button type="button" onClick={()=>copyRequest(result.request)}>{copied===result.request.id?'COPIED ✓':'COPY REQUEST'}</button>
@@ -287,7 +328,17 @@ export default function DomainsPage(){
     </div></section>
 
     <section className="section dark-section"><div className="shell">
-      <div className="section-heading"><div><span className="eyebrow">HOW PAYMENT WORKS</span><h2>Approval first. Payment second. Activation last.</h2></div></div>
+      <div className="section-heading"><div><span className="eyebrow">FREE SUBDOMAIN FLOW</span><h2>Pick it. Confirm it. ESN creates it.</h2></div></div>
+      <div className="domains-steps">
+        <article><span>01</span><h3>Choose</h3><p>Enter an available-looking name and the hostname your subdomain should point to.</p></article>
+        <article><span>02</span><h3>Confirm</h3><p>The site opens one pre-filled GitHub request. Your GitHub identity prevents completely anonymous DNS creation.</p></article>
+        <article><span>03</span><h3>Create</h3><p>GitHub Actions checks the ESN reserved list and live Spaceship DNS, then creates the CNAME automatically.</p></article>
+        <article><span>04</span><h3>Connect</h3><p>Add the new ESN hostname as a custom domain at your destination host so HTTPS and the website can load correctly.</p></article>
+      </div>
+    </div></section>
+
+    <section className="section"><div className="shell">
+      <div className="section-heading"><div><span className="eyebrow">PAID HOSTING FLOW</span><h2>Approval first. Payment second. Activation last.</h2></div></div>
       <div className="domains-steps">
         <article><span>01</span><h3>Request</h3><p>Customer chooses a plan and sends the generated request to ESN staff in Discord.</p></article>
         <article><span>02</span><h3>Approve</h3><p>Staff confirms the requested name, destination, and DNS setup before asking for money.</p></article>
