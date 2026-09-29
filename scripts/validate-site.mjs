@@ -194,7 +194,7 @@ if (freeSubdomainProvisioner.includes('REPLACE_KEY_VALUE') || freeSubdomainWorkf
 if (!seo.includes("'/hosting':{") || !seo.includes("canonical:'/hosting'")) problems.push('ESN Hosting SEO route or Domains alias canonical is missing.')
 if (!sitemap.includes('https://esnoffical.com/hosting')) problems.push('ESN Hosting missing from sitemap.')
 if (!app.includes("import SiteBuilderPage, { HostedSitePage } from './SiteBuilder'") || !app.includes('path="/site-builder" element={<SiteBuilderPage />}') || !app.includes('path="/sites/:slug" element={<HostedSitePage />}')) problems.push('ESN Website Builder routes or module wiring missing.')
-for (const marker of ['ESN WEBSITE BUILDER // BETA','GENERATE WEBSITE','DOWNLOAD HTML','PUBLISH BUILD','LIVE PREVIEW','script-free','ESN_SITE_BUILD_V1']) {
+for (const marker of ['ESN WEBSITE BUILDER // SMART GENERATOR V2','GENERATE SMARTER WEBSITE','DOWNLOAD HTML','PUBLISH BUILD','LIVE PREVIEW','script-free','ESN_SITE_BUILD_V1','REGENERATE HERO','REGENERATE ABOUT','REGENERATE CARDS','REGENERATE CTA','QUICK_PROMPTS','analyzePrompt','promptKeywords','fortnite','minecraft','music','technology','/sites/']) {
   if (!siteBuilder.includes(marker)) problems.push(`ESN Website Builder missing: ${marker}.`)
 }
 if (!siteBuilder.includes('BLOCKED_TEXT') || !siteBuilder.includes('safeSite') || !siteBuilder.includes('HostedSitePage')) problems.push('ESN Website Builder safety or hosted-preview renderer is incomplete.')
