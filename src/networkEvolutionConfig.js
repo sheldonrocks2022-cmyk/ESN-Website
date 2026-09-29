@@ -54,7 +54,7 @@ export const SEARCH_INDEX=[
   {label:'Reward Vault',meta:'Account-free Network Shard marketplace, inventory, and local identity cosmetics',path:'/rewards',category:'Network'},
   {label:'Challenge Lab',meta:'Create and accept shareable ESN Arcade challenges without accounts',path:'/challenges',category:'Arcade'},
   {label:'ESN Store AI',meta:'Catalog-aware assistant for ESN products, services, prices, delivery, checkout, comparisons, and staff store tools',path:'/store-ai',category:'Services'},
-  {label:'ESN Hosting',meta:'Request an ESN subdomain, connect your own domain, or join the full web-hosting waitlist',path:'/hosting',category:'Services'},
+  {label:'ESN Hosting',meta:'Get a free ESN subdomain, connect your own domain, or join the full web-hosting waitlist',path:'/hosting',category:'Services'},
   {label:'Staff Dashboard',meta:'Code-gated ESN operator console and local network notice controls',path:'/staff',category:'Network'},
   {label:'Operations Map',meta:'Connected ESN system map with website, SMP, Arcade, Terminal, Store, Nexus, and Staff status',path:'/operations',category:'Network'},
   {label:'Diagnostic Center',meta:'Run account-free browser, cache, service worker, SMP, plugin, and Discord checks',path:'/diagnostics',category:'Help'},
