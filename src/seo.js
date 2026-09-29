@@ -39,11 +39,18 @@ export const SEO_ROUTES={
     canonical:'/store-ai',
     index:false,
   },
-  '/domains':{
-    label:'ESN Domains',
-    title:'ESN Domains | Rent a Subdomain or Connect Your Domain',
-    description:'Choose an ESN subdomain, connect a domain you already own, and manage routing through the ESN Domains control layer.',
+  '/hosting':{
+    label:'ESN Hosting',
+    title:'ESN Hosting | Subdomains, Custom Domains & Web Hosting',
+    description:'Request an ESN subdomain, connect a domain you own, or join the ESN web-hosting waitlist with safe manual activation.',
     index:true,
+  },
+  '/domains':{
+    label:'ESN Hosting',
+    title:'ESN Hosting | Subdomains, Custom Domains & Web Hosting',
+    description:'ESN hosting and domain requests now use the manual activation portal.',
+    canonical:'/hosting',
+    index:false,
   },
   '/storesmp':{
     label:'SMP Store',
