@@ -5,6 +5,7 @@ const ACTIVE_SUBDOMAIN_LABEL='free-subdomain-active'
 const PUBLISHED_LABEL='site-builder-published'
 const REJECTED_LABEL='site-builder-rejected'
 const THEMES=new Set(['midnight','neon','clean','ember','ocean'])
+const LAYOUTS=new Set(['spotlight','split','editorial'])
 const BLOCKED=/password|passcode|seed phrase|wallet recovery|credit card|social security|bank login|verify your account|sign in to continue/i
 const SLUG_RE=/^[a-z0-9](?:[a-z0-9-]{0,46}[a-z0-9])?$/
 
@@ -82,16 +83,22 @@ function url(value){
 }
 function sanitize(site){
   return {
-    version:1,
+    version:2,
     slug:String(site.slug||'').toLowerCase(),
     brand:text(site.brand,60),
     category:text(site.category,24),
     theme:THEMES.has(site.theme)?site.theme:'midnight',
+    layout:LAYOUTS.has(site.layout)?site.layout:'spotlight',
+    audience:text(site.audience,60),
+    seoTitle:text(site.seoTitle||site.brand,70),
+    seoDescription:text(site.seoDescription||site.heroCopy,160),
     heroTitle:text(site.heroTitle,100),
     heroCopy:text(site.heroCopy,320),
     aboutTitle:text(site.aboutTitle,100),
     aboutCopy:text(site.aboutCopy,500),
     cards:Array.isArray(site.cards)?site.cards.slice(0,3).map(card=>({title:text(card.title,70),copy:text(card.copy,260)})):[],
+    stats:Array.isArray(site.stats)?site.stats.slice(0,3).map(item=>({value:text(item.value,20),label:text(item.label,70)})):[],
+    faq:Array.isArray(site.faq)?site.faq.slice(0,3).map(item=>({q:text(item.q,120),a:text(item.a,360)})):[],
     ctaTitle:text(site.ctaTitle,100),
     ctaCopy:text(site.ctaCopy,260),
     ctaLabel:text(site.ctaLabel,50),
@@ -104,13 +111,13 @@ function sanitize(site){
 
 if(!agreed)await reject('The required safe-publishing confirmation is missing.')
 if(!SLUG_RE.test(slug))await reject('The ESN subdomain name is invalid.')
-if(!encoded||encoded.length>14000)await reject('The site payload is missing or too large.')
+if(!encoded||encoded.length>24000)await reject('The site payload is missing or too large.')
 
 let decoded
 try{decoded=decodePayload(encoded)}catch{await reject('The site payload could not be decoded.')}
 const site=sanitize(decoded)
 if(site.slug!==slug)await reject('The site payload does not match the requested ESN subdomain.')
-if(!site.brand||!site.heroTitle||site.cards.length!==3)await reject('The generated site is missing required content.')
+if(!site.brand||!site.heroTitle||site.cards.length!==3||site.stats.length!==3||site.faq.length!==3)await reject('The generated site is missing required content.')
 if(BLOCKED.test(JSON.stringify(site)))await reject('This build contains wording associated with collecting sensitive credentials or payment information. ESN free sites cannot be used for that.')
 
 const owned=await gh('/repos/'+repo+'/issues?state=all&creator='+encodeURIComponent(actor)+'&labels='+encodeURIComponent(ACTIVE_SUBDOMAIN_LABEL)+'&per_page=100')
