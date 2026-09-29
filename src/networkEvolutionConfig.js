@@ -53,6 +53,7 @@ export const SEARCH_INDEX=[
   {label:'Notification Center',meta:'Local ESN alerts, achievements, releases, rewards, and SMP notices',path:'/notifications',category:'Network'},
   {label:'Reward Vault',meta:'Account-free Network Shard marketplace, inventory, and local identity cosmetics',path:'/rewards',category:'Network'},
   {label:'Challenge Lab',meta:'Create and accept shareable ESN Arcade challenges without accounts',path:'/challenges',category:'Arcade'},
+  {label:'ESN Store AI',meta:'Catalog-aware assistant for ESN products, services, prices, delivery, checkout, comparisons, and staff store tools',path:'/store-ai',category:'Services'},
   {label:'Staff Dashboard',meta:'Code-gated ESN operator console and local network notice controls',path:'/staff',category:'Network'},
   {label:'Operations Map',meta:'Connected ESN system map with website, SMP, Arcade, Terminal, Store, Nexus, and Staff status',path:'/operations',category:'Network'},
   {label:'Diagnostic Center',meta:'Run account-free browser, cache, service worker, SMP, plugin, and Discord checks',path:'/diagnostics',category:'Help'},
@@ -87,6 +88,24 @@ export const DECK_DESTINATIONS=[
   {id:'notifications',label:'Alerts',path:'/notifications',glyph:'!'},
   {id:'rewards',label:'Rewards',path:'/rewards',glyph:'R'},
   {id:'challenges',label:'Challenge',path:'/challenges',glyph:'C'},
+  {id:'store-ai',label:'Store AI',path:'/store-ai',glyph:'  {id:'operations',label:'Ops',path:'/operations',glyph:'O'},
+  {id:'diagnostics',label:'Diagnose',path:'/diagnostics',glyph:'D'},
+  {id:'session',label:'Session',path:'/session',glyph:'S'},
+]
+
+export const SMP_EVENT_BOARD=[
+  {type:'SMP',status:'LIVE',title:'ESN SMP Network',copy:'Server access is active at fr3.plugged.host:43353.',to:'/smpconnection'},
+  {type:'WEBSITE',status:'LIVE',title:'Network Evolution 12X',copy:'The major interactive website systems expansion is live.',to:'/updates'},
+  {type:'EVENTS',status:'DISCORD',title:'Bosses, giveaways & timed events',copy:'No timed public event is hard-coded here; Discord remains the source of truth for new event announcements.',external:true},
+  {type:'MAINTENANCE',status:'CLEAR',title:'Scheduled maintenance',copy:'No scheduled website maintenance is currently configured in the public event board.',to:'/status'},
+]
+
+export const RARE_EVENTS=[
+  {key:'blackout',title:'BLACKOUT PROTOCOL',copy:'A rare visual blackout crossed the ESN Core.'},
+  {key:'rift',title:'RIFT BREACH',copy:'A rare Rift signal opened across the network layer.'},
+  {key:'warden',title:'WARDEN PULSE',copy:'A rare Warden resonance was detected by the ESN Core.'},
+]
+},
   {id:'operations',label:'Ops',path:'/operations',glyph:'O'},
   {id:'diagnostics',label:'Diagnose',path:'/diagnostics',glyph:'D'},
   {id:'session',label:'Session',path:'/session',glyph:'S'},
