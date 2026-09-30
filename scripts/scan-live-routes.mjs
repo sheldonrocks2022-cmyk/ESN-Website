@@ -1,11 +1,11 @@
 import fs from 'node:fs'
 import path from 'node:path'
+import { chromium } from 'playwright'
 import { SEO_ROUTES } from '../src/seo.js'
 
 const BASE_URL='https://esnoffical.com'
 const routes=new Set(Object.keys(SEO_ROUTES))
 
-// Include every currently published ESN Builder site and its generated subpages.
 const manifestPath=path.join('public','generated-sites','index.json')
 if(fs.existsSync(manifestPath)){
   try{
@@ -32,42 +32,70 @@ if(fs.existsSync(manifestPath)){
 const targets=[...routes].sort()
 const failures=[]
 const results=[]
+const browser=await chromium.launch({headless:true})
 
-async function check(route){
+async function inspect(route,viewport,label){
   const url=BASE_URL+(route==='/'?'/':route)
+  const context=await browser.newContext({viewport})
+  const page=await context.newPage()
+  const pageErrors=[]
+  page.on('pageerror',error=>pageErrors.push(error.message))
   try{
-    const response=await fetch(url,{redirect:'follow',headers:{'user-agent':'ESN-Live-Route-Scan/1.0','cache-control':'no-cache'}})
-    const contentType=response.headers.get('content-type')||''
-    let body=''
-    if(contentType.includes('text/html'))body=await response.text()
-    const badBody=/That page isn't here\.|Page Not Found \| ES Network/i.test(body)
-    const ok=response.ok&&!badBody
-    results.push({route,status:response.status,finalUrl:response.url,ok})
-    if(!ok)failures.push({route,status:response.status,finalUrl:response.url,badBody})
+    const response=await page.goto(url,{waitUntil:'domcontentloaded',timeout:30000})
+    await page.waitForTimeout(900)
+    const state=await page.evaluate(()=>{
+      const root=document.querySelector('#root')
+      const main=document.querySelector('main')
+      const body=document.body
+      const rootText=(root?.innerText||'').replace(/\s+/g,' ').trim()
+      const mainText=(main?.innerText||'').replace(/\s+/g,' ').trim()
+      const rootRect=root?.getBoundingClientRect()
+      const mainRect=main?.getBoundingClientRect()
+      const style=main?getComputedStyle(main):null
+      return {
+        title:document.title,
+        rootTextLength:rootText.length,
+        mainTextLength:mainText.length,
+        rootHeight:rootRect?.height||0,
+        mainHeight:mainRect?.height||0,
+        mainDisplay:style?.display||'',
+        mainVisibility:style?.visibility||'',
+        bodyTextLength:(body?.innerText||'').replace(/\s+/g,' ').trim().length,
+        notFound:/That page isn't here\.|Page Not Found \| ES Network/i.test(document.documentElement.innerText||document.title),
+      }
+    })
+    const status=response?.status()||0
+    const blank=state.rootTextLength<20||state.rootHeight<40||state.mainDisplay==='none'||state.mainVisibility==='hidden'
+    const fatal=pageErrors.length>0
+    const ok=status>=200&&status<400&&!state.notFound&&!blank&&!fatal
+    const result={route,label,status,ok,blank,pageErrors,state}
+    results.push(result)
+    if(!ok)failures.push(result)
   }catch(error){
-    failures.push({route,status:'FETCH_ERROR',error:error.message})
+    const result={route,label,status:'BROWSER_ERROR',ok:false,blank:true,pageErrors,error:error.message}
+    results.push(result)
+    failures.push(result)
+  }finally{
+    await context.close()
   }
 }
 
-const workers=Math.min(8,targets.length)
-let cursor=0
-await Promise.all(Array.from({length:workers},async()=>{
-  while(true){
-    const index=cursor++
-    if(index>=targets.length)break
-    await check(targets[index])
-  }
-}))
+for(const route of targets){
+  await inspect(route,{width:1365,height:900},'desktop')
+  await inspect(route,{width:390,height:844},'mobile')
+}
 
-results.sort((a,b)=>a.route.localeCompare(b.route))
+await browser.close()
+
 for(const item of results){
-  console.log(`${item.ok?'PASS':'FAIL'} ${String(item.status).padEnd(3)} ${item.route}${item.finalUrl&&item.finalUrl!==BASE_URL+item.route?' -> '+item.finalUrl:''}`)
+  const note=item.pageErrors?.length?' pageerror='+item.pageErrors.join(' | '):''
+  console.log(`${item.ok?'PASS':'FAIL'} ${String(item.status).padEnd(3)} ${item.label.padEnd(7)} ${item.route}${item.blank?' BLANK':''}${note}`)
 }
 
 if(failures.length){
-  console.error('\nBroken live ESN routes:')
+  console.error('\nBroken rendered ESN routes:')
   for(const failure of failures)console.error('-',JSON.stringify(failure))
   process.exit(1)
 }
 
-console.log(`\nLive route scan passed for ${targets.length} deployed routes.`)
+console.log(`\nRendered route scan passed for ${targets.length} deployed routes on desktop and mobile.`)
