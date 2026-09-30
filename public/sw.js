@@ -1,4 +1,4 @@
-const CACHE='esn-pwa-v4'
+const CACHE='esn-pwa-v5'
 const CORE=['/','/offline.html','/esn-mark.svg','/esn-social-card.svg']
 
 self.addEventListener('install',event=>{
@@ -15,7 +15,7 @@ self.addEventListener('activate',event=>{
       .then(keys=>Promise.all(keys.filter(key=>key!==CACHE).map(key=>caches.delete(key))))
       .then(()=>self.clients.claim())
       .then(()=>self.clients.matchAll({type:'window',includeUncontrolled:true}))
-      .then(clients=>clients.forEach(client=>client.postMessage({type:'ESN_SW_UPDATED'})))
+      .then(clients=>clients.forEach(client=>client.postMessage({type:'ESN_SW_UPDATED',cache:CACHE})))
   )
 })
 
