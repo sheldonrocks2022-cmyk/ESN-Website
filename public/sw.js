@@ -1,5 +1,5 @@
-const CACHE='esn-pwa-v2'
-const CORE=['/offline.html','/esn-mark.svg','/esn-social-card.svg']
+const CACHE='esn-pwa-v3'
+const CORE=['/','/offline.html','/esn-mark.svg','/esn-social-card.svg']
 
 self.addEventListener('install',event=>{
   event.waitUntil(
@@ -26,10 +26,21 @@ self.addEventListener('fetch',event=>{
   if(url.origin!==self.location.origin)return
 
   if(request.mode==='navigate'){
-    event.respondWith(
-      fetch(request,{cache:'no-store'})
-        .catch(()=>caches.match('/offline.html'))
-    )
+    event.respondWith((async()=>{
+      try{
+        const response=await fetch(request,{cache:'no-store'})
+        // GitHub Pages returns a 404 document for client-side/dynamic routes.
+        // Serve the app shell instead so BrowserRouter can render the requested URL.
+        if(response.status===404){
+          const shell=await fetch('/',{cache:'no-store'})
+          if(shell.ok)return shell
+        }
+        return response
+      }catch{
+        const shell=await caches.match('/')
+        return shell||caches.match('/offline.html')
+      }
+    })())
     return
   }
 
