@@ -10,7 +10,15 @@ function arcadeXpMultiplier(){
 }
 
 export function loadLocal(key,fallback){
-  try { return {...fallback,...JSON.parse(localStorage.getItem(key)||'{}')} }
+  try {
+    const parsed=JSON.parse(localStorage.getItem(key)||'{}')
+    if(!parsed||typeof parsed!=='object'||Array.isArray(parsed))return fallback
+    const next={...fallback,...parsed}
+    if(Array.isArray(fallback?.recent))next.recent=Array.isArray(parsed.recent)?parsed.recent:fallback.recent
+    if(fallback?.totals&&typeof fallback.totals==='object')next.totals=parsed.totals&&typeof parsed.totals==='object'&&!Array.isArray(parsed.totals)?{...fallback.totals,...parsed.totals}:fallback.totals
+    if(fallback?.achievements&&typeof fallback.achievements==='object')next.achievements=parsed.achievements&&typeof parsed.achievements==='object'&&!Array.isArray(parsed.achievements)?parsed.achievements:fallback.achievements
+    return next
+  }
   catch { return fallback }
 }
 export function saveLocal(key,value){ try { localStorage.setItem(key,JSON.stringify(value)) } catch {} }
