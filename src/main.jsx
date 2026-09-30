@@ -36,6 +36,11 @@ class ESNErrorBoundary extends React.Component {
   }
 }
 
+// Recover from any stale interaction locks left by an older SPA build.
+document.documentElement.classList.remove('route-transition-locked')
+document.documentElement.style.removeProperty('touch-action')
+document.body.style.removeProperty('touch-action')
+
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <ESNErrorBoundary>
@@ -48,6 +53,17 @@ ReactDOM.createRoot(document.getElementById('root')).render(
 
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
+    navigator.serviceWorker.addEventListener('message',event=>{
+      if(event.data?.type!=='ESN_SW_UPDATED')return
+      const version=String(event.data?.cache||'unknown')
+      const key='esn_sw_seen_version'
+      try{
+        if(sessionStorage.getItem(key)===version)return
+        sessionStorage.setItem(key,version)
+      }catch{}
+      window.location.reload()
+    })
+
     navigator.serviceWorker.register('/sw.js', { updateViaCache: 'none' })
       .then(registration=>registration.update().catch(()=>{}))
       .catch(() => {})
