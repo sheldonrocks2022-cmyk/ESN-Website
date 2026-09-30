@@ -67,7 +67,7 @@ const missingRoutes = requiredRoutes.filter((route) => {
 
 const missingPayments = requiredPaymentLinks.filter((url) => !app.includes(url))
 
-const sitemapExcludedAliases = new Set(['/home', '/store', '/store/smp', '/tools', '/vault', '/storesmp', '/smpconnection', '/smpconsole', '/smpplugin', '/smpguide', '/smpcheck', '/domains'])
+const sitemapExcludedAliases = new Set(['/home', '/store', '/store/smp', '/tools', '/vault', '/domains'])
 const sitemapRoutes = requiredRoutes
   .filter((route) => !sitemapExcludedAliases.has(route))
   .filter((route) => !sitemap.includes(`https://esnoffical.com${route === '/' ? '/' : route}`))
@@ -206,10 +206,12 @@ for (const marker of ['free-subdomain-active','site-builder-published','public/g
 }
 if (!seo.includes("'/site-builder':{")) problems.push('ESN Website Builder SEO route missing.')
 if (!sitemap.includes('https://esnoffical.com/site-builder')) problems.push('ESN Website Builder missing from sitemap.')
-const smpGate = fs.readFileSync('src/SMPStaffGate.jsx','utf8')
-if (!smpGate.includes("SMP_ACCESS_SESSION_KEY") || !smpGate.includes("STAFF_CODE_HASH") || smpGate.includes("052609")) problems.push('SMP staff gate missing, unhashed, or staff code exposed in source.')
-for (const route of ['/storesmp','/smpconnection','/smpconsole','/smpplugin','/smpguide','/smpcheck']) { if (!app.includes(`path="${route}" element={<SMPStaffGate`)) problems.push(`SMP route is not staff-gated: ${route}`) }
-for (const route of ['/storesmp','/smpconnection','/smpconsole','/smpplugin','/smpguide','/smpcheck']) { const start=seo.indexOf(`'${route}':{`); if (start<0 || !seo.slice(start,start+700).includes('index:false') || !seo.slice(start,start+700).includes('nofollow:true')) problems.push(`Locked SMP route must be noindex/nofollow: ${route}`) }
+for (const route of ['/storesmp','/smpconnection','/smpconsole','/smpplugin','/smpguide','/smpcheck']) {
+  if (!app.includes(`path="${route}"`) || app.includes(`path="${route}" element={<SMPStaffGate`)) problems.push(`SMP route must be publicly accessible: ${route}`)
+  const start=seo.indexOf(`'${route}':{`)
+  const block=start<0?'':seo.slice(start,start+700)
+  if (start<0 || block.includes('index:false') || block.includes('nofollow:true')) problems.push(`Public SMP route must be indexable/followable: ${route}`)
+}
 if (!liveExperience.includes('Expansion 20') || !liveExperience.includes('release-filter-row') || !liveExperience.includes('INCIDENT HISTORY')) problems.push('Expansion 20 release log, filters, or incident history missing.')
 if (!indexHtml.includes('site.webmanifest')) problems.push('PWA manifest link missing from base HTML.')
 if (!networkEvolution.includes('ESN Passport') || !networkEvolution.includes('ESN Terminal') || !networkEvolution.includes('Universal ESN Search')) problems.push('Network Evolution Passport, Terminal, or universal search system missing.')
