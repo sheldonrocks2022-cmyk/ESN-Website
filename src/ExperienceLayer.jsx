@@ -37,6 +37,8 @@ export function RouteTransition(){
     const mobile=window.matchMedia('(max-width: 860px), (pointer: coarse)').matches
     if(!mobile)return
 
+    // Keep the five-second cinematic route portal, but never let it swallow taps.
+    // Only freeze the page's background scroll while the visual is active.
     const root=document.documentElement
     const body=document.body
     const previous={
@@ -44,29 +46,18 @@ export function RouteTransition(){
       rootOverscroll:root.style.overscrollBehavior,
       bodyOverflow:body.style.overflow,
       bodyOverscroll:body.style.overscrollBehavior,
-      bodyTouchAction:body.style.touchAction,
     }
 
-    root.classList.add('route-transition-locked')
     root.style.overflow='hidden'
     root.style.overscrollBehavior='none'
     body.style.overflow='hidden'
     body.style.overscrollBehavior='none'
-    body.style.touchAction='none'
-
-    const block=event=>event.preventDefault()
-    window.addEventListener('touchmove',block,{passive:false})
-    window.addEventListener('wheel',block,{passive:false})
 
     return()=>{
-      window.removeEventListener('touchmove',block)
-      window.removeEventListener('wheel',block)
-      root.classList.remove('route-transition-locked')
       root.style.overflow=previous.rootOverflow
       root.style.overscrollBehavior=previous.rootOverscroll
       body.style.overflow=previous.bodyOverflow
       body.style.overscrollBehavior=previous.bodyOverscroll
-      body.style.touchAction=previous.bodyTouchAction
     }
   },[scene])
 
