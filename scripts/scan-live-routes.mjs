@@ -194,11 +194,52 @@ async function inspectCoreOverlays(){
   page.on('pageerror',error=>pageErrors.push(error.message))
   try{
     await page.goto(BASE_URL+'/',{waitUntil:'domcontentloaded',timeout:30000})
-    await page.waitForTimeout(1200)
+    // Wait for the every-load startup animation to fully clear before testing real taps.
+    await page.waitForTimeout(2600)
+
+    // Test the actual mobile controls instead of only dispatching synthetic events.
+    let terminalTap=false
+    let terminalRun=false
+    try{
+      const terminalButton=page.locator('.mobile-network-strip-actions button').filter({hasText:'Terminal'}).first()
+      await terminalButton.click({timeout:4000})
+      await page.waitForSelector('.ev-terminal-modal',{state:'visible',timeout:4000})
+      terminalTap=true
+      const input=page.locator('.ev-terminal-input input')
+      await input.fill('help')
+      await page.locator('.ev-terminal-input button[type="submit"]').click()
+      await page.waitForFunction(()=>[...document.querySelectorAll('.ev-terminal-output div')].some(node=>node.textContent?.includes('> help')),{timeout:4000})
+      terminalRun=true
+    }catch{}
+    {
+      const result={route:'/',label:'tap-terminal',status:200,ok:terminalTap&&terminalRun&&pageErrors.length===0,blank:false,stuck:false,pageErrors:[...pageErrors],state:{terminalTap,terminalRun}}
+      results.push(result)
+      if(!result.ok)failures.push(result)
+    }
+    await page.keyboard.press('Escape').catch(()=>{})
+    await page.waitForTimeout(180)
+
+    let commandCenterTap=false
+    let terminalFromMore=false
+    try{
+      const more=page.locator('.mobile-bottom-nav button').filter({hasText:'More'}).first()
+      await more.click({timeout:4000})
+      await page.waitForSelector('.premium-command.open',{state:'visible',timeout:4000})
+      commandCenterTap=true
+      const terminalUtility=page.locator('.premium-command.open .mobile-network-utilities button').filter({hasText:'Terminal'}).first()
+      await terminalUtility.click({timeout:4000})
+      await page.waitForSelector('.ev-terminal-modal',{state:'visible',timeout:4000})
+      terminalFromMore=true
+    }catch{}
+    {
+      const result={route:'/',label:'tap-more-terminal',status:200,ok:commandCenterTap&&terminalFromMore&&pageErrors.length===0,blank:false,stuck:false,pageErrors:[...pageErrors],state:{commandCenterTap,terminalFromMore}}
+      results.push(result)
+      if(!result.ok)failures.push(result)
+    }
+    await page.keyboard.press('Escape').catch(()=>{})
+    await page.waitForTimeout(180)
 
     const checks=[
-      ['terminal','esn-open-terminal','.ev-terminal-modal'],
-      ['command-center','esn-open-command','.premium-command.open'],
       ['notifications','esn-open-notifications','.notification-panel.open'],
     ]
 
