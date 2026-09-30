@@ -90,7 +90,7 @@ export const SEO_ROUTES={
   '/smpconnection':{
     label:'SMP Connection',
     title:'ESN SMP Server IP & Port | Join ES Network Minecraft',
-    description:'Join the ESN SMP Minecraft server at esn.ggwp.cc on port 17769 and find the current connection details for the ES Network SMP.',
+    description:'Join ESN SMP at esn.ggwp.cc using Java port 17769 or Bedrock/Xbox port 17429, with current connection details for the ES Network SMP.',
     index:true,
   },
   '/smpconsole':{
@@ -606,7 +606,7 @@ export const CONSOLE_HOWTO_STEPS=[
   ['Open Bedrock Connect on your phone','Open the Bedrock Connect method used by the ESN console guide and keep the phone on the same network as the console.'],
   ['Open Custom','Choose Custom inside Bedrock Connect.'],
   ['Tap the + button','Create a new custom server entry.'],
-  ['Enter the ESN SMP details','Use server name ESN SMP, address esn.ggwp.cc, and port 17769.'],
+  ['Enter the ESN SMP details','Use server name ESN SMP, address esn.ggwp.cc, and Bedrock port 17429.'],
   ['Save the server','Save the custom server entry.'],
   ['Select ESN SMP','Select the ESN SMP entry you created.'],
   ['Press Add & Start','Start the Bedrock Connect console connection process.'],
@@ -843,6 +843,7 @@ export function structuredDataFor(pathname){
       url,
       identifier:'esn.ggwp.cc:17769',
       game:{'@type':'VideoGame',name:'Minecraft'},
+      description:'Java: esn.ggwp.cc:17769 • Bedrock/Xbox: esn.ggwp.cc:17429',
     })
   }
 
