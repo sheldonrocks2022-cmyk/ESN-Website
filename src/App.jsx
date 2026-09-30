@@ -40,7 +40,7 @@ const SMP_PORT = '17769'
 const PLUGIN_VERSION = 'v2.9.6'
 const PLUGIN_DOWNLOAD_URL = 'https://github.com/sheldonrocks2022-cmyk/ESNSMP/releases/latest/download/ESNSMP.jar'
 const PLUGIN_RELEASE_URL = 'https://github.com/sheldonrocks2022-cmyk/ESNSMP/releases/tag/v2.9.6'
-const PLUGIN_SHA256 = '4439a6c8bf7ea6b0bf170098eeb1dff3f9f2f7008c06556140a1c1cfd8afd356'
+const PLUGIN_SHA256 = '2bbcf9d1409a39e6bb5ecf3fc371bedfcf1c632b2db72f7fb26158418c92b55c'
 
 const SERVICES = [
   {

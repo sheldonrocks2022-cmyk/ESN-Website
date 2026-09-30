@@ -221,7 +221,7 @@ if (!app.includes('<ES3DViewer variant={product.name} compact')) problems.push('
 if (!app.includes('<ES3DViewer variant="hero"') && !immersiveLayer.includes('<ES3DViewer variant="hero"')) problems.push('3D homepage viewer missing from App or HeroReactor.')
 if (!app.includes('https://github.com/sheldonrocks2022-cmyk/ESNSMP/releases/latest/download/ESNSMP.jar')) problems.push('Latest ESNSMP.jar download URL missing.')
 if (!app.includes("PLUGIN_VERSION = 'v2.9.6'")) problems.push('Verified ESNSMP v2.9.6 label missing.')
-if (!app.includes('4439a6c8bf7ea6b0bf170098eeb1dff3f9f2f7008c06556140a1c1cfd8afd356')) problems.push('Verified v2.9.6 SHA-256 missing.')
+if (!app.includes('2bbcf9d1409a39e6bb5ecf3fc371bedfcf1c632b2db72f7fb26158418c92b55c')) problems.push('Verified v2.9.6 SHA-256 missing.')
 if (!app.includes('Add & Start') || !app.includes('Open Bedrock Connect on your phone') || !app.includes('Same Wi-Fi / internet required')) problems.push('Official ESN console connection flow missing.')
 if (!app.includes('<ExperienceEffects />')) problems.push('Premium interaction effects are not mounted.')
 if (!app.includes("import PremiumChrome from './PremiumChrome'")) problems.push('Premium command center import missing.')
