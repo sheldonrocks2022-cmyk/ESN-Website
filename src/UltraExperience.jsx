@@ -74,12 +74,18 @@ export default function UltraExperience() {
       'main .page-hero, main .section, main article, main .split-panel, main .connection-card, main .store-security'
     )]
 
+    const mobile = window.matchMedia('(max-width: 860px), (pointer: coarse)').matches
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
     targets.forEach((node, index) => {
       node.classList.add('esn-ultra-reveal')
       node.style.setProperty('--ultra-delay', `${Math.min(index % 5, 4) * 36}ms`)
     })
 
-    if (!('IntersectionObserver' in window) || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    // Never hide mobile sections behind IntersectionObserver. Mobile browsers
+    // can change their visual viewport while ESN's fixed navigation is active,
+    // which can leave valid sections permanently at opacity .001.
+    if (mobile || reduced || !('IntersectionObserver' in window)) {
       targets.forEach(node => node.classList.add('is-ultra-visible'))
       return
     }
