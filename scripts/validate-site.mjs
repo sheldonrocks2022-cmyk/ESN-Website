@@ -209,7 +209,8 @@ if (!sitemap.includes('https://esnoffical.com/site-builder')) problems.push('ESN
 for (const route of ['/storesmp','/smpconnection','/smpconsole','/smpplugin','/smpguide','/smpcheck']) {
   if (!app.includes(`path="${route}"`) || app.includes(`path="${route}" element={<SMPStaffGate`)) problems.push(`SMP route must be publicly accessible: ${route}`)
   const start=seo.indexOf(`'${route}':{`)
-  const block=start<0?'':seo.slice(start,start+700)
+  const end=start<0?-1:seo.indexOf('\n  },',start)
+  const block=start<0?'':seo.slice(start,end<0?start+700:end)
   if (start<0 || block.includes('index:false') || block.includes('nofollow:true')) problems.push(`Public SMP route must be indexable/followable: ${route}`)
 }
 if (!liveExperience.includes('Expansion 20') || !liveExperience.includes('release-filter-row') || !liveExperience.includes('INCIDENT HISTORY')) problems.push('Expansion 20 release log, filters, or incident history missing.')
