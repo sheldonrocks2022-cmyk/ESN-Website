@@ -37,9 +37,9 @@ const GUARDIAN_INVITE_URL = 'https://discord.com/oauth2/authorize?client_id=1544
 const SMP_HOST = 'esn.ggwp.cc'
 const SMP_PORT = '17769'
 const PLUGIN_VERSION = 'v2.9.8'
-const PLUGIN_DOWNLOAD_URL = 'https://github.com/sheldonrocks2022-cmyk/ESNSMP/releases/latest/download/ESNSMP.jar'
+const PLUGIN_DOWNLOAD_URL = 'https://github.com/sheldonrocks2022-cmyk/ESNSMP/releases/download/v2.9.8/ESNSMP.jar'
 const PLUGIN_RELEASE_URL = 'https://github.com/sheldonrocks2022-cmyk/ESNSMP/releases/tag/v2.9.8'
-const PLUGIN_SHA256 = '31ce3aec87518b15d63301ec3351babbde42dcc9c913442a8159d9567fe227e2'
+const PLUGIN_SHA256 = '2098b7d6c4b28c938988b17ae7ce37441678c37f07527c1357cdcd7b49856d91'
 
 const SERVICES = [
   {
@@ -1313,7 +1313,7 @@ function SMPPluginDownload() {
       <PageHero
         eyebrow="ESNSMP Plugin • Public Download"
         title="Run the ESN SMP plugin on your server."
-        text="Download the newest published ESNSMP.jar directly from the official ESNSMP GitHub release. The download button follows the latest release automatically."
+        text="Download the verified ESNSMP v2.9.8 JAR directly from the official ESNSMP GitHub release. This build targets Paper 26.2 for the current DaTHost server and includes Stripe config.yml auto-delivery support."
         actions={<a className="button primary" href={PLUGIN_DOWNLOAD_URL}>Download latest ESNSMP.jar <span>↓</span></a>}
       />
 
@@ -1327,7 +1327,7 @@ function SMPPluginDownload() {
           <div className="plugin-release-card">
             <span className="eyebrow">Latest Public Release</span>
             <h2>ESNSMP {PLUGIN_VERSION}</h2>
-            <p>The current public release passed its GitHub build and publish workflows before being attached as <b>ESNSMP.jar</b>.</p>
+            <p>The current public release passed its GitHub build and publish workflows, targets <b>Paper 26.2</b>, and includes the DaTHost-compatible Stripe auto-delivery configuration.</p>
 
             <div className="plugin-release-stats">
               <div><span>FILE</span><strong>ESNSMP.jar</strong></div>
@@ -1358,7 +1358,7 @@ function SMPPluginDownload() {
         <div className="shell plugin-integrity-card">
           <div><span className="eyebrow">Release Integrity</span><h2>SHA-256</h2></div>
           <code>{PLUGIN_SHA256}</code>
-          <p>Current checksum for the verified {PLUGIN_VERSION} release asset. The “latest” download URL will move forward when a newer release is published, so check that release's checksum when the version changes.</p>
+          <p>Current checksum for the verified {PLUGIN_VERSION} release asset. The download is pinned to this exact release so the file and checksum stay matched.</p>
         </div>
       </section>
       <RelatedLinks
