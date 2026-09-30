@@ -4,6 +4,14 @@ import { chromium } from 'playwright'
 import { SEO_ROUTES } from '../src/seo.js'
 
 const BASE_URL='https://esnoffical.com'
+const ROUTE_ALIASES={
+  '/domains':'/hosting',
+  '/store':'/storesmp',
+  '/store/smp':'/storesmp',
+  '/storeai':'/store-ai',
+  '/tools':'/estools',
+}
+const expectedPath=route=>ROUTE_ALIASES[route]||route
 const routes=new Set(Object.keys(SEO_ROUTES))
 
 const manifestPath=path.join('public','generated-sites','index.json')
@@ -145,15 +153,17 @@ async function inspectInternalMobile(route){
         mainDisplay:mainStyle?.display||'',
         mainVisibility:mainStyle?.visibility||'',
         transitionPresent:Boolean(transition),
+        transitionPointerEvents:transition?getComputedStyle(transition).pointerEvents:'',
         transitionLocked:document.documentElement.classList.contains('route-transition-locked'),
         centerTag:center?.tagName||'',
         centerClass:center?.className||'',
       }
     })
     const blank=state.rootTextLength<20||state.rootHeight<40||state.mainDisplay==='none'||state.mainVisibility==='hidden'
-    const stuck=state.transitionPresent||state.transitionLocked
-    const ok=!blank&&!stuck&&pageErrors.length===0&&state.path===route
-    const result={route,label:'mobile-nav',status:200,ok,blank,stuck,pageErrors,state}
+    const stuck=state.transitionLocked||(state.transitionPresent&&state.transitionPointerEvents!=='none')
+    const expected=expectedPath(route)
+    const ok=!blank&&!stuck&&pageErrors.length===0&&state.path===expected
+    const result={route,expectedPath:expected,label:'mobile-nav',status:200,ok,blank,stuck,pageErrors,state}
     results.push(result)
     if(!ok)failures.push(result)
   }catch(error){
@@ -171,6 +181,49 @@ await Promise.all(Array.from({length:navWorkers},async()=>{
     await inspectInternalMobile(targets[index])
   }
 }))
+
+async function inspectCoreOverlays(){
+  const context=await browser.newContext({
+    viewport:{width:412,height:915},
+    isMobile:true,
+    hasTouch:true,
+    userAgent:'Mozilla/5.0 (Linux; Android 16; Pixel 8a) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0 Mobile Safari/537.36'
+  })
+  const page=await context.newPage()
+  const pageErrors=[]
+  page.on('pageerror',error=>pageErrors.push(error.message))
+  try{
+    await page.goto(BASE_URL+'/',{waitUntil:'domcontentloaded',timeout:30000})
+    await page.waitForTimeout(1200)
+
+    const checks=[
+      ['terminal','esn-open-terminal','.ev-terminal-modal'],
+      ['command-center','esn-open-command','.premium-command.open'],
+      ['notifications','esn-open-notifications','.notification-panel.open'],
+    ]
+
+    for(const [name,eventName,selector] of checks){
+      await page.evaluate(eventName=>window.dispatchEvent(new Event(eventName)),eventName)
+      let visible=false
+      try{
+        await page.waitForSelector(selector,{state:'visible',timeout:4000})
+        visible=true
+      }catch{}
+      const result={route:'/',label:'interaction-'+name,status:200,ok:visible&&pageErrors.length===0,blank:false,stuck:false,pageErrors:[...pageErrors],state:{selector,visible}}
+      results.push(result)
+      if(!result.ok)failures.push(result)
+      await page.keyboard.press('Escape').catch(()=>{})
+      await page.waitForTimeout(120)
+    }
+  }catch(error){
+    const result={route:'/',label:'interaction-smoke',status:'BROWSER_ERROR',ok:false,blank:false,stuck:false,pageErrors,error:error.message}
+    results.push(result);failures.push(result)
+  }finally{
+    await context.close()
+  }
+}
+
+await inspectCoreOverlays()
 
 await browser.close()
 
