@@ -15,7 +15,10 @@ self.addEventListener('activate',event=>{
       .then(keys=>Promise.all(keys.filter(key=>key!==CACHE).map(key=>caches.delete(key))))
       .then(()=>self.clients.claim())
       .then(()=>self.clients.matchAll({type:'window',includeUncontrolled:true}))
-      .then(clients=>clients.forEach(client=>client.postMessage({type:'ESN_SW_UPDATED',cache:CACHE})))
+      .then(async clients=>{
+        clients.forEach(client=>client.postMessage({type:'ESN_SW_UPDATED',cache:CACHE}))
+        await Promise.all(clients.map(client=>client.navigate(client.url).catch(()=>null)))
+      })
   )
 })
 
