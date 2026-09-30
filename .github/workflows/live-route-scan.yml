@@ -29,3 +29,11 @@ jobs:
 
       - name: Scan deployed ESN routes
         run: node scripts/scan-live-routes.mjs
+
+      - name: Upload rendered route scan
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: rendered-route-scan
+          path: route-scan-results.json
+          if-no-files-found: warn
