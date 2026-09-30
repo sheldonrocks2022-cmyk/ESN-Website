@@ -80,12 +80,21 @@ async function inspect(route,viewport,label){
   }
 }
 
-for(const route of targets){
-  await inspect(route,{width:1365,height:900},'desktop')
-  await inspect(route,{width:390,height:844},'mobile')
-}
+let cursor=0
+const workers=Math.min(6,targets.length)
+await Promise.all(Array.from({length:workers},async()=>{
+  while(true){
+    const index=cursor++
+    if(index>=targets.length)break
+    const route=targets[index]
+    await inspect(route,{width:1365,height:900},'desktop')
+    await inspect(route,{width:390,height:844},'mobile')
+  }
+}))
 
 await browser.close()
+
+fs.writeFileSync('route-scan-results.json',JSON.stringify({generatedAt:new Date().toISOString(),targetCount:targets.length,failures,results},null,2))
 
 for(const item of results){
   const note=item.pageErrors?.length?' pageerror='+item.pageErrors.join(' | '):''
