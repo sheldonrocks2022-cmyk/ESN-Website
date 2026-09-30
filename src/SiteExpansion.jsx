@@ -12,7 +12,7 @@ const RETENTION_KEY='esn_retention_v1'
 const WEEKLY_KEY='esn_weekly_missions_v1'
 const VOTE_KEY='esn_community_vote_v1'
 const GAME_ROUTES=['/esclicker','/esfactory','/esmines','/esmoto','/estower','/estowerdefense']
-const PLUGIN_SHA256 = '31ce3aec87518b15d63301ec3351babbde42dcc9c913442a8159d9567fe227e2'
+const PLUGIN_SHA256 = '2098b7d6c4b28c938988b17ae7ce37441678c37f07527c1357cdcd7b49856d91'
 
 const ROUTE_META={
   '/':{label:'Home',category:'Network'},
