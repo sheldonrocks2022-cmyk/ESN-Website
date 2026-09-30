@@ -59,6 +59,50 @@ for (const [route, meta] of Object.entries(SEO_ROUTES)) {
   if (['/esclicker','/esfactory','/esmines','/esmoto','/estower','/estowerdefense'].includes(route) && !html.includes('"@type":"VideoGame"')) failures.push(`Individual VideoGame structured data missing from ${route}`)
 }
 
+
+function safePublishedSegment(value) {
+  const segment = String(value || '').trim()
+  return /^[a-z0-9][a-z0-9-]{0,79}$/.test(segment) ? segment : ''
+}
+
+const publishedManifestPath = path.join('public', 'generated-sites', 'index.json')
+if (fs.existsSync(publishedManifestPath)) {
+  try {
+    const manifest = JSON.parse(fs.readFileSync(publishedManifestPath, 'utf8'))
+    for (const entry of manifest.sites || []) {
+      const slug = safePublishedSegment(entry?.slug)
+      if (!slug) {
+        failures.push(`Invalid published site slug: ${entry?.slug || '(missing)'}`)
+        continue
+      }
+
+      const siteFile = path.join('public', 'generated-sites', `${slug}.json`)
+      if (!fs.existsSync(siteFile)) {
+        failures.push(`Missing published site data: ${siteFile}`)
+        continue
+      }
+
+      const site = JSON.parse(fs.readFileSync(siteFile, 'utf8'))
+      const rootFile = path.join('dist', 'sites', slug, 'index.html')
+      if (!fs.existsSync(rootFile)) failures.push(`Missing published site route: ${rootFile}`)
+
+      if (site.multiPage && Array.isArray(site.pages)) {
+        for (const page of site.pages) {
+          const pageSlug = safePublishedSegment(page?.slug)
+          if (!pageSlug) {
+            failures.push(`Invalid published subpage slug for ${slug}: ${page?.slug || '(missing)'}`)
+            continue
+          }
+          const pageFile = path.join('dist', 'sites', slug, pageSlug, 'index.html')
+          if (!fs.existsSync(pageFile)) failures.push(`Missing published subpage route: ${pageFile}`)
+        }
+      }
+    }
+  } catch (error) {
+    failures.push(`Published-site route validation failed: ${error.message}`)
+  }
+}
+
 const notFoundFile = path.join('dist', '404.html')
 if (!fs.existsSync(notFoundFile)) {
   failures.push('Missing built 404.html')
