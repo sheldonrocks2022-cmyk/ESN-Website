@@ -62,6 +62,21 @@ async function inspect(route,viewport,label){
         mainVisibility:style?.visibility||'',
         bodyTextLength:(body?.innerText||'').replace(/\s+/g,' ').trim().length,
         notFound:/That page isn't here\.|Page Not Found \| ES Network/i.test(document.documentElement.innerText||document.title),
+        builder:location.pathname==='/site-builder'?(()=>{
+          const hero=document.querySelector('.builder-hero')
+          const section=document.querySelector('.builder-hero + .section')
+          const layout=document.querySelector('.builder-layout')
+          const controls=document.querySelector('.builder-controls')
+          const panel=document.querySelector('.builder-controls .builder-panel')
+          const preview=document.querySelector('.builder-preview-column')
+          const info=node=>{
+            if(!node)return null
+            const r=node.getBoundingClientRect()
+            const s=getComputedStyle(node)
+            return {top:r.top,bottom:r.bottom,height:r.height,width:r.width,display:s.display,visibility:s.visibility,opacity:s.opacity,position:s.position}
+          }
+          return {scrollY,innerHeight,hero:info(hero),section:info(section),layout:info(layout),controls:info(controls),panel:info(panel),preview:info(preview)}
+        })():null,
       }
     })
     const status=response?.status()||0
