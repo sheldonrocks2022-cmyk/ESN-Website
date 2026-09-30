@@ -8281,9 +8281,9 @@ html[data-flashing="on"] .network-event{
   html:not([data-motion="reduced"]) .route-transition{
     display:grid!important;
     place-items:center!important;
-    pointer-events:auto!important;
-    touch-action:none!important;
-    overscroll-behavior:none!important;
+    pointer-events:none!important;
+    touch-action:auto!important;
+    overscroll-behavior:auto!important;
     opacity:1!important;
     transform:none!important;
     background:#02050d!important;
