@@ -59,8 +59,15 @@ function PageIntro({eyebrow,title,copy,actions}){
   return <section className="page-hero platform-page-hero"><div className="shell page-hero-inner"><div className="page-hero-copy"><span className="eyebrow">{eyebrow}</span><h1>{title}</h1><p>{copy}</p>{actions&&<div className="hero-actions">{actions}</div>}</div><div className="platform-page-mark">ESN<span>//</span>NO ACCOUNT</div></div></section>
 }
 
-function writeLocal(key,value){localStorage.setItem(key,JSON.stringify(value))}
-function readLocal(key,fallback=[]){try{const value=JSON.parse(localStorage.getItem(key)||'null');return value??fallback}catch{return fallback}}
+function writeLocal(key,value){try{localStorage.setItem(key,JSON.stringify(value))}catch{}}
+function readLocal(key,fallback=[]){
+  try{
+    const value=JSON.parse(localStorage.getItem(key)||'null')
+    if(Array.isArray(fallback))return Array.isArray(value)?value:fallback
+    if(fallback&&typeof fallback==='object')return value&&typeof value==='object'&&!Array.isArray(value)?value:fallback
+    return value??fallback
+  }catch{return fallback}
+}
 async function copyText(value){try{await navigator.clipboard.writeText(value);return true}catch{return false}}
 
 export function PlatformHomeSection(){
