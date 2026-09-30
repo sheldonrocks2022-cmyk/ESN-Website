@@ -35,11 +35,11 @@ import { useArcadeProgress } from './arcade/shared'
 
 const DISCORD_URL = 'https://discord.gg/3gxA66KZ8'
 const GUARDIAN_INVITE_URL = 'https://discord.com/oauth2/authorize?client_id=1544503232674664573'
-const SMP_HOST = 'fr3.plugged.host'
-const SMP_PORT = '43353'
-const PLUGIN_VERSION = 'v2.9.4'
+const SMP_HOST = 'esn.ggwp.cc'
+const SMP_PORT = '17769'
+const PLUGIN_VERSION = 'v2.9.6'
 const PLUGIN_DOWNLOAD_URL = 'https://github.com/sheldonrocks2022-cmyk/ESNSMP/releases/latest/download/ESNSMP.jar'
-const PLUGIN_RELEASE_URL = 'https://github.com/sheldonrocks2022-cmyk/ESNSMP/releases/tag/v2.9.4'
+const PLUGIN_RELEASE_URL = 'https://github.com/sheldonrocks2022-cmyk/ESNSMP/releases/tag/v2.9.6'
 const PLUGIN_SHA256 = '4439a6c8bf7ea6b0bf170098eeb1dff3f9f2f7008c06556140a1c1cfd8afd356'
 
 const SERVICES = [
