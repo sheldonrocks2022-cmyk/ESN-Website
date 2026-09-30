@@ -35,7 +35,9 @@ import { useArcadeProgress } from './arcade/shared'
 const DISCORD_URL = 'https://discord.gg/3gxA66KZ8'
 const GUARDIAN_INVITE_URL = 'https://discord.com/oauth2/authorize?client_id=1544503232674664573'
 const SMP_HOST = 'esn.ggwp.cc'
-const SMP_PORT = '17769'
+const SMP_JAVA_PORT = '17769'
+const SMP_BEDROCK_PORT = '17429'
+const SMP_PORT = SMP_JAVA_PORT
 const PLUGIN_VERSION = 'v2.9.8'
 const PLUGIN_DOWNLOAD_URL = 'https://github.com/sheldonrocks2022-cmyk/ESNSMP/releases/download/v2.9.8/ESNSMP.jar'
 const PLUGIN_RELEASE_URL = 'https://github.com/sheldonrocks2022-cmyk/ESNSMP/releases/tag/v2.9.8'
@@ -735,7 +737,7 @@ function Home() {
 
             <article className="story-panel story-smp">
               <span className="story-index">02</span>
-              <div><span className="eyebrow">ESN SMP</span><h3>A Minecraft world inside the network.</h3><p>Join at {SMP_HOST}:{SMP_PORT}, browse the official store, use the console guide, or download the public ESNSMP plugin.</p><Link to="/smpconnection">Enter the SMP hub →</Link></div>
+              <div><span className="eyebrow">ESN SMP</span><h3>A Minecraft world inside the network.</h3><p>Java: {SMP_HOST}:{SMP_JAVA_PORT} • Bedrock/Xbox: {SMP_HOST}:{SMP_BEDROCK_PORT}. Browse the official store, use the console guide, or download the public ESNSMP plugin.</p><Link to="/smpconnection">Enter the SMP hub →</Link></div>
               <strong>SMP</strong>
             </article>
 
@@ -789,7 +791,7 @@ function Home() {
             <span className="eyebrow">MINECRAFT NETWORK</span>
             <h2>The network has its own world.</h2>
             <p>Connect to the ESN SMP, shop official server items, use the console walkthrough, or download the latest public ESNSMP plugin release.</p>
-            <div className="flagship-smp-address"><span>SERVER</span><strong>{SMP_HOST}</strong><small>PORT {SMP_PORT}</small></div>
+            <div className="flagship-smp-address"><span>SERVER</span><strong>{SMP_HOST}</strong><small>JAVA {SMP_JAVA_PORT} • BEDROCK {SMP_BEDROCK_PORT}</small></div>
             <div className="hero-actions">
               <Link className="button primary" to="/smpconnection">Connection details</Link>
               <Link className="button secondary" to="/storesmp">Open SMP Store</Link>
@@ -1170,7 +1172,7 @@ function SMPConnection() {
   const [copied, setCopied] = useState(false)
   const copy = async () => {
     try {
-      await navigator.clipboard.writeText(`${SMP_HOST}:${SMP_PORT}`)
+      await navigator.clipboard.writeText(`${SMP_HOST}:${SMP_JAVA_PORT}`)
       setCopied(true)
       window.setTimeout(() => setCopied(false), 1600)
     } catch {
@@ -1183,7 +1185,7 @@ function SMPConnection() {
       <PageHero
         eyebrow="ESN SMP"
         title="Your gateway into the ESN world."
-        text="Use the official connection details below. Console players have a dedicated walkthrough built into the site."
+        text="Use the official connection details below. Java uses port 17769; Bedrock and console players use port 17429."
         actions={<Link className="button secondary" to="/smpconsole">Console connection guide</Link>}
       />
 
@@ -1192,9 +1194,9 @@ function SMPConnection() {
           <div className="connection-card premium-connection">
             <span className="eyebrow">OFFICIAL SERVER ADDRESS</span>
             <strong>{SMP_HOST}</strong>
-            <span className="connection-port">PORT {SMP_PORT}</span>
+            <span className="connection-port">JAVA PORT {SMP_JAVA_PORT}</span>
             <button className="button primary copy-button" type="button" onClick={copy}>{copied ? 'Copied to clipboard' : 'Copy server address'}</button>
-            <small>Copy: {SMP_HOST}:{SMP_PORT}</small>
+            <small>Java: {SMP_HOST}:{SMP_JAVA_PORT} • Bedrock/Xbox: {SMP_HOST}:{SMP_BEDROCK_PORT}</small>
           </div>
 
           <div className="smp-side-stack">
@@ -1234,7 +1236,7 @@ function ConsoleConnection() {
   const [copied, setCopied] = useState(false)
   const copyServer = async () => {
     try {
-      await navigator.clipboard.writeText(`${SMP_HOST}:${SMP_PORT}`)
+      await navigator.clipboard.writeText(`${SMP_HOST}:${SMP_BEDROCK_PORT}`)
       setCopied(true)
       window.setTimeout(() => setCopied(false), 1500)
     } catch {
@@ -1246,7 +1248,7 @@ function ConsoleConnection() {
     ['01', 'Open Bedrock Connect on your phone', 'Use the Bedrock Connect app/method from the ESN console guide. Your phone and your console need to be connected to the same Wi-Fi or internet network.'],
     ['02', 'Open Custom', 'Inside Bedrock Connect, choose Custom so you can add the ESN SMP manually.'],
     ['03', 'Tap the + button', 'Create a new custom server entry.'],
-    ['04', 'Enter the ESN SMP details', `Server name: ESN SMP • Address: ${SMP_HOST} • Port: ${SMP_PORT}`],
+    ['04', 'Enter the ESN SMP details', `Server name: ESN SMP • Address: ${SMP_HOST} • Port: ${SMP_BEDROCK_PORT}`],
     ['05', 'Save the server', 'Save the custom entry after all three fields match the ESN details above.'],
     ['06', 'Select ESN SMP', 'Tap the ESN SMP entry you just created so it becomes the active server.'],
     ['07', 'Press Add & Start', 'Bedrock Connect will begin the console connection process. Keep the phone and console on the same network while it starts.'],
@@ -1266,7 +1268,7 @@ function ConsoleConnection() {
         <div className="shell console-server-ribbon">
           <div><span>SERVER NAME</span><strong>ESN SMP</strong></div>
           <div><span>ADDRESS</span><strong>{SMP_HOST}</strong></div>
-          <div><span>PORT</span><strong>{SMP_PORT}</strong></div>
+          <div><span>BEDROCK PORT</span><strong>{SMP_BEDROCK_PORT}</strong></div>
           <div><span>CONSOLES</span><strong>Xbox • PlayStation • Switch</strong></div>
         </div>
       </section>
