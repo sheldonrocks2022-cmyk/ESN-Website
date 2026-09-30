@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useState } from 'react'
 
-export const SITE_RELEASE='ESN Website Builder • 2026.09.28'
-export const SMP_ADDRESS='fr3.plugged.host'
-export const SMP_PORT='43353'
+export const SITE_RELEASE='ESN Website • 2026.09.30'
+export const SMP_ADDRESS='esn.ggwp.cc'
+export const SMP_PORT='17769'
 export const DISCORD_INVITE='3gxA66KZ8'
 export const DISCORD_URL='https://discord.gg/3gxA66KZ8'
 export const PLUGIN_REPO='sheldonrocks2022-cmyk/ESNSMP'
