@@ -124,7 +124,7 @@ const CATALOG=[
   },
 ]
 
-function readJson(key,fallback){try{const value=JSON.parse(localStorage.getItem(key)||'null');return value==null?fallback:value}catch{return fallback}}
+function readJson(key,fallback){try{const value=JSON.parse(localStorage.getItem(key)||'null');if(Array.isArray(fallback))return Array.isArray(value)?value:fallback;if(fallback&&typeof fallback==='object')return value&&typeof value==='object'&&!Array.isArray(value)?value:fallback;return value==null?fallback:value}catch{return fallback}}
 function writeJson(key,value){try{localStorage.setItem(key,JSON.stringify(value))}catch{}}
 function currency(value){return '$'+Number(value).toFixed(2)}
 function normalize(value){return String(value||'').toLowerCase().replace(/[^a-z0-9.$ ]/g,' ').replace(/\s+/g,' ').trim()}
