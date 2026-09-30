@@ -1,4 +1,4 @@
-const CACHE='esn-pwa-v3'
+const CACHE='esn-pwa-v4'
 const CORE=['/','/offline.html','/esn-mark.svg','/esn-social-card.svg']
 
 self.addEventListener('install',event=>{
