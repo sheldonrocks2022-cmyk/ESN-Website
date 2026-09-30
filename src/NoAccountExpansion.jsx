@@ -40,6 +40,8 @@ const MARKET_ITEMS=[
 function readJson(key,fallback){
   try{
     const value=JSON.parse(localStorage.getItem(key)||'null')
+    if(Array.isArray(fallback))return Array.isArray(value)?value:fallback
+    if(fallback&&typeof fallback==='object')return value&&typeof value==='object'&&!Array.isArray(value)?value:fallback
     return value==null?fallback:value
   }catch{return fallback}
 }
