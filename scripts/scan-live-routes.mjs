@@ -92,6 +92,71 @@ await Promise.all(Array.from({length:workers},async()=>{
   }
 }))
 
+
+async function inspectInternalMobile(route){
+  const context=await browser.newContext({
+    viewport:{width:412,height:915},
+    isMobile:true,
+    hasTouch:true,
+    userAgent:'Mozilla/5.0 (Linux; Android 16; Pixel 8a) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0 Mobile Safari/537.36'
+  })
+  const page=await context.newPage()
+  const pageErrors=[]
+  page.on('pageerror',error=>pageErrors.push(error.message))
+  try{
+    await page.goto(BASE_URL+'/',{waitUntil:'domcontentloaded',timeout:30000})
+    await page.waitForTimeout(2400)
+    await page.evaluate(target=>{
+      history.pushState({},'',target)
+      window.dispatchEvent(new PopStateEvent('popstate'))
+    },route)
+    await page.waitForTimeout(5400)
+    const state=await page.evaluate(()=>{
+      const root=document.querySelector('#root')
+      const main=document.querySelector('main')
+      const transition=document.querySelector('.route-transition')
+      const rootText=(root?.innerText||'').replace(/\s+/g,' ').trim()
+      const mainText=(main?.innerText||'').replace(/\s+/g,' ').trim()
+      const rootRect=root?.getBoundingClientRect()
+      const mainRect=main?.getBoundingClientRect()
+      const mainStyle=main?getComputedStyle(main):null
+      const center=document.elementFromPoint(Math.floor(innerWidth/2),Math.floor(innerHeight/2))
+      return {
+        path:location.pathname,
+        rootTextLength:rootText.length,
+        mainTextLength:mainText.length,
+        rootHeight:rootRect?.height||0,
+        mainHeight:mainRect?.height||0,
+        mainDisplay:mainStyle?.display||'',
+        mainVisibility:mainStyle?.visibility||'',
+        transitionPresent:Boolean(transition),
+        transitionLocked:document.documentElement.classList.contains('route-transition-locked'),
+        centerTag:center?.tagName||'',
+        centerClass:center?.className||'',
+      }
+    })
+    const blank=state.rootTextLength<20||state.rootHeight<40||state.mainDisplay==='none'||state.mainVisibility==='hidden'
+    const stuck=state.transitionPresent||state.transitionLocked
+    const ok=!blank&&!stuck&&pageErrors.length===0&&state.path===route
+    const result={route,label:'mobile-nav',status:200,ok,blank,stuck,pageErrors,state}
+    results.push(result)
+    if(!ok)failures.push(result)
+  }catch(error){
+    const result={route,label:'mobile-nav',status:'BROWSER_ERROR',ok:false,blank:true,stuck:false,pageErrors,error:error.message}
+    results.push(result);failures.push(result)
+  }finally{await context.close()}
+}
+
+let navCursor=0
+const navWorkers=Math.min(8,targets.length)
+await Promise.all(Array.from({length:navWorkers},async()=>{
+  while(true){
+    const index=navCursor++
+    if(index>=targets.length)break
+    await inspectInternalMobile(targets[index])
+  }
+}))
+
 await browser.close()
 
 fs.writeFileSync('route-scan-results.json',JSON.stringify({generatedAt:new Date().toISOString(),targetCount:targets.length,failures,results},null,2))
