@@ -2,7 +2,9 @@ import { useCallback, useEffect, useState } from 'react'
 
 export const SITE_RELEASE='ESN Website • 2026.09.30'
 export const SMP_ADDRESS='esn.ggwp.cc'
-export const SMP_PORT='17769'
+export const SMP_JAVA_PORT='17769'
+export const SMP_BEDROCK_PORT='17429'
+export const SMP_PORT=SMP_JAVA_PORT
 export const DISCORD_INVITE='3gxA66KZ8'
 export const DISCORD_URL='https://discord.gg/3gxA66KZ8'
 export const PLUGIN_REPO='sheldonrocks2022-cmyk/ESNSMP'
@@ -56,7 +58,7 @@ export function useLiveNetwork(){
       {
         name:'mcstatus-java',
         run:async()=>{
-          const value=await fetchJson(`https://api.mcstatus.io/v2/status/java/${SMP_ADDRESS}:${SMP_PORT}?query=true&timeout=5`)
+          const value=await fetchJson(`https://api.mcstatus.io/v2/status/java/${SMP_ADDRESS}:${SMP_JAVA_PORT}?query=true&timeout=5`)
           return {
             source:'mcstatus-java',
             confirmed:true,
@@ -73,7 +75,7 @@ export function useLiveNetwork(){
       {
         name:'mcstatus-bedrock',
         run:async()=>{
-          const value=await fetchJson(`https://api.mcstatus.io/v2/status/bedrock/${SMP_ADDRESS}:${SMP_PORT}?timeout=5`)
+          const value=await fetchJson(`https://api.mcstatus.io/v2/status/bedrock/${SMP_ADDRESS}:${SMP_BEDROCK_PORT}?timeout=5`)
           return {
             source:'mcstatus-bedrock',
             confirmed:true,
@@ -90,7 +92,7 @@ export function useLiveNetwork(){
       {
         name:'mcsrvstat',
         run:async()=>{
-          const value=await fetchJson(`https://api.mcsrvstat.us/3/${SMP_ADDRESS}:${SMP_PORT}`)
+          const value=await fetchJson(`https://api.mcsrvstat.us/3/${SMP_ADDRESS}:${SMP_JAVA_PORT}`)
           return {
             source:'mcsrvstat',
             confirmed:true,
