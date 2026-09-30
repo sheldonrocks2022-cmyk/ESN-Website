@@ -38,10 +38,10 @@ const SMP_HOST = 'esn.ggwp.cc'
 const SMP_JAVA_PORT = '17769'
 const SMP_BEDROCK_PORT = '17429'
 const SMP_PORT = SMP_JAVA_PORT
-const PLUGIN_VERSION = 'v2.9.8'
-const PLUGIN_DOWNLOAD_URL = 'https://github.com/sheldonrocks2022-cmyk/ESNSMP/releases/download/v2.9.8/ESNSMP.jar'
-const PLUGIN_RELEASE_URL = 'https://github.com/sheldonrocks2022-cmyk/ESNSMP/releases/tag/v2.9.8'
-const PLUGIN_SHA256 = '2098b7d6c4b28c938988b17ae7ce37441678c37f07527c1357cdcd7b49856d91'
+const PLUGIN_VERSION = 'v2.10.0'
+const PLUGIN_DOWNLOAD_URL = 'https://github.com/sheldonrocks2022-cmyk/ESNSMP/releases/download/v2.10.0/ESNSMP.jar'
+const PLUGIN_RELEASE_URL = 'https://github.com/sheldonrocks2022-cmyk/ESNSMP/releases/tag/v2.10.0'
+const PLUGIN_SHA256 = '35e525384829f3bf00d3d69996f9e2d2c95471d259056ca5830074f89d99e949'
 
 const SERVICES = [
   {
@@ -1315,7 +1315,7 @@ function SMPPluginDownload() {
       <PageHero
         eyebrow="ESNSMP Plugin • Public Download"
         title="Run the ESN SMP plugin on your server."
-        text="Download the verified ESNSMP v2.9.8 JAR directly from the official ESNSMP GitHub release. This build targets Paper 26.2 for the current DaTHost server and includes Stripe config.yml auto-delivery support."
+        text="Download the verified ESNSMP v2.10.0 JAR directly from the official ESNSMP GitHub release. This build targets Paper 26.2 and adds the staged ESN Store cosmetics platform: Aura Packs, Exclusive Titles, Kill Effects, Spawn + Teleport Effects, Companion Pets, Chat Customization, Weapon Cosmetic Packs, Supporter Ranks, ESN Cosmetic Tokens, Seasonal Collections, and the seven named collection sets."
         actions={<a className="button primary" href={PLUGIN_DOWNLOAD_URL}>Download latest ESNSMP.jar <span>↓</span></a>}
       />
 
@@ -1329,7 +1329,7 @@ function SMPPluginDownload() {
           <div className="plugin-release-card">
             <span className="eyebrow">Latest Public Release</span>
             <h2>ESNSMP {PLUGIN_VERSION}</h2>
-            <p>The current public release passed its GitHub build and publish workflows, targets <b>Paper 26.2</b>, and includes the DaTHost-compatible Stripe auto-delivery configuration.</p>
+            <p>The current public release passed its GitHub build and publish workflows, targets <b>Paper 26.2</b>, includes the DaTHost-compatible Stripe auto-delivery configuration, and adds the full staged ESN Store cosmetics platform for gradual releases.</p>
 
             <div className="plugin-release-stats">
               <div><span>FILE</span><strong>ESNSMP.jar</strong></div>
