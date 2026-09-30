@@ -34,6 +34,7 @@ import TowerDefenseGame from './arcade/TowerDefense'
 import { useArcadeProgress } from './arcade/shared'
 
 const DISCORD_URL = 'https://discord.gg/3gxA66KZ8'
+const GUARDIAN_INVITE_URL = 'https://discord.com/oauth2/authorize?client_id=1544503232674664573'
 const SMP_HOST = 'fr3.plugged.host'
 const SMP_PORT = '43353'
 const PLUGIN_VERSION = 'v2.9.4'
@@ -836,6 +837,7 @@ function Home() {
           </div>
           <div className="flagship-community-actions">
             <a className="button primary" href={DISCORD_URL} target="_blank" rel="noreferrer">Join ESN Discord</a>
+            <a className="button secondary" href={GUARDIAN_INVITE_URL} target="_blank" rel="noreferrer">Add our security bot ESN Guardian <span>↗</span></a>
             <div className="flagship-community-status"><i/><span>COMMUNITY ACCESS</span><strong>OPEN</strong></div>
           </div>
         </div>
