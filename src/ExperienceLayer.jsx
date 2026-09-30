@@ -37,27 +37,19 @@ export function RouteTransition(){
     const mobile=window.matchMedia('(max-width: 860px), (pointer: coarse)').matches
     if(!mobile)return
 
-    // Keep the five-second cinematic route portal, but never let it swallow taps.
-    // Only freeze the page's background scroll while the visual is active.
+    // Mobile route transitions are visual-only. Never lock touch, pointer,
+    // scrolling, or overscroll because those locks can strand interactive
+    // panels after a route change on mobile browsers.
     const root=document.documentElement
     const body=document.body
-    const previous={
-      rootOverflow:root.style.overflow,
-      rootOverscroll:root.style.overscrollBehavior,
-      bodyOverflow:body.style.overflow,
-      bodyOverscroll:body.style.overscrollBehavior,
-    }
-
-    root.style.overflow='hidden'
-    root.style.overscrollBehavior='none'
-    body.style.overflow='hidden'
-    body.style.overscrollBehavior='none'
+    root.classList.remove('route-transition-locked')
+    if(root.style.touchAction==='none')root.style.removeProperty('touch-action')
+    if(body.style.touchAction==='none')body.style.removeProperty('touch-action')
 
     return()=>{
-      root.style.overflow=previous.rootOverflow
-      root.style.overscrollBehavior=previous.rootOverscroll
-      body.style.overflow=previous.bodyOverflow
-      body.style.overscrollBehavior=previous.bodyOverscroll
+      root.classList.remove('route-transition-locked')
+      if(root.style.touchAction==='none')root.style.removeProperty('touch-action')
+      if(body.style.touchAction==='none')body.style.removeProperty('touch-action')
     }
   },[scene])
 
