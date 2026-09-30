@@ -337,7 +337,7 @@ function Guide(){
     }
 
     if((q.includes('copy')||q.includes('give me'))&&(q.includes('smp')||q.includes('ip')||q.includes('address'))){
-      const value='fr3.plugged.host:43353'
+      const value='esn.ggwp.cc:17769'
       try{await navigator.clipboard.writeText(value);setReply('Copied the ESN SMP address: '+value)}
       catch{setReply('ESN SMP address: '+value)}
       return
@@ -373,7 +373,7 @@ function Guide(){
     else if(q.includes('notification')||q.includes('alert'))setReply('The Notification Center stores release, achievement, reward, SMP, and network notices locally. Browser alerts can be enabled without an ESN account.')
     else if(q.includes('reward')||q.includes('shard'))setReply('The Reward Vault lets you spend locally earned Network Shards on cosmetic core skins and profile titles. Nothing uses real money.')
     else if(q.includes('challenge'))setReply('Challenge Lab creates shareable Arcade target links. The other player uses their own real local stats, with no account or fake global lobby.')
-    else if(q.includes('smp')||q.includes('minecraft'))setReply('ESN SMP is at fr3.plugged.host:43353. I can also copy the address or open the SMP page for you.')
+    else if(q.includes('smp')||q.includes('minecraft'))setReply('ESN SMP is at esn.ggwp.cc:17769. I can also copy the address or open the SMP page for you.')
     else if(q.includes('arcade')||q.includes('game'))setReply('The Arcade has Clicker, Factory, Mines, MOTO, Tower, and Tower Defense with shared local XP and achievements.')
     else if(q.includes('update')||q.includes('new')||q.includes('change'))setReply('The Release Center and What’s New pages track website, SMP, Arcade, mobile, store, and security changes.')
     else setReply('I can now take actions too. Try “open notifications,” “open rewards,” “open challenge lab,” “copy the SMP IP,” “install ESN,” “open terminal,” or “change theme to void.”')
