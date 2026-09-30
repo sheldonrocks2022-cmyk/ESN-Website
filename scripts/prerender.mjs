@@ -154,6 +154,123 @@ function injectSeo(html, route) {
   return html
 }
 
+function safePublishedSegment(value) {
+  const segment = String(value || '').trim()
+  return /^[a-z0-9][a-z0-9-]{0,79}$/.test(segment) ? segment : ''
+}
+
+function publishedSiteShell(html, site, route, page = null) {
+  const title = String(
+    page?.title
+    || site?.seoTitle
+    || site?.brand
+    || 'Published ESN Site'
+  ).slice(0, 120)
+  const description = String(
+    page?.copy
+    || page?.description
+    || site?.seoDescription
+    || site?.heroCopy
+    || site?.description
+    || 'Published with the ESN Website Builder.'
+  ).replace(/\s+/g, ' ').trim().slice(0, 240)
+  const url = 'https://esnoffical.com' + route
+
+  html = html.replace(/<title>.*?<\/title>/s, `<title>${escapeHtml(title)}</title>`)
+  html = replaceMeta(
+    html,
+    /<meta name="description" content="[^"]*"\s*\/?>/,
+    `<meta name="description" content="${escapeHtml(description)}" />`,
+  )
+  html = replaceMeta(
+    html,
+    /<meta name="robots" content="[^"]*"\s*\/?>/,
+    '<meta name="robots" content="index, follow" />',
+  )
+  html = replaceMeta(
+    html,
+    /<meta name="googlebot" content="[^"]*"\s*\/?>/,
+    '<meta name="googlebot" content="index, follow" />',
+  )
+  html = replaceMeta(
+    html,
+    /<meta property="og:title" content="[^"]*"\s*\/?>/,
+    `<meta property="og:title" content="${escapeHtml(title)}" />`,
+  )
+  html = replaceMeta(
+    html,
+    /<meta property="og:description" content="[^"]*"\s*\/?>/,
+    `<meta property="og:description" content="${escapeHtml(description)}" />`,
+  )
+  html = replaceMeta(
+    html,
+    /<meta property="og:url" content="[^"]*"\s*\/?>/,
+    `<meta property="og:url" content="${url}" />`,
+  )
+  html = replaceMeta(
+    html,
+    /<meta name="twitter:title" content="[^"]*"\s*\/?>/,
+    `<meta name="twitter:title" content="${escapeHtml(title)}" />`,
+  )
+  html = replaceMeta(
+    html,
+    /<meta name="twitter:description" content="[^"]*"\s*\/?>/,
+    `<meta name="twitter:description" content="${escapeHtml(description)}" />`,
+  )
+  html = html.replace(
+    /<link rel="canonical" href="[^"]*"\s*\/?>/,
+    `<link rel="canonical" href="${url}" />`,
+  )
+  return html
+}
+
+function generatePublishedSiteRoutes() {
+  const manifestPath = path.join('public', 'generated-sites', 'index.json')
+  if (!fs.existsSync(manifestPath)) return 0
+
+  let manifest
+  try {
+    manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'))
+  } catch (error) {
+    console.warn(`Could not parse published-site manifest: ${error.message}`)
+    return 0
+  }
+
+  let count = 0
+  for (const entry of manifest.sites || []) {
+    const slug = safePublishedSegment(entry?.slug)
+    if (!slug) continue
+
+    const dataPath = path.join('public', 'generated-sites', `${slug}.json`)
+    if (!fs.existsSync(dataPath)) continue
+
+    let site
+    try {
+      site = { ...entry, ...JSON.parse(fs.readFileSync(dataPath, 'utf8')) }
+    } catch (error) {
+      console.warn(`Could not parse published site ${slug}: ${error.message}`)
+      continue
+    }
+
+    const routes = [[`/sites/${slug}`, null]]
+    if (site.multiPage && Array.isArray(site.pages)) {
+      for (const page of site.pages) {
+        const pageSlug = safePublishedSegment(page?.slug)
+        if (pageSlug) routes.push([`/sites/${slug}/${pageSlug}`, page])
+      }
+    }
+
+    for (const [route, page] of routes) {
+      const routeDirectory = path.join('dist', route.replace(/^\//, ''))
+      fs.mkdirSync(routeDirectory, { recursive: true })
+      fs.writeFileSync(path.join(routeDirectory, 'index.html'), publishedSiteShell(source, site, route, page))
+      count += 1
+    }
+  }
+
+  return count
+}
+
 for (const route of Object.keys(SEO_ROUTES)) {
   const html = injectSeo(source, route)
 
@@ -166,6 +283,8 @@ for (const route of Object.keys(SEO_ROUTES)) {
   fs.mkdirSync(routeDirectory, { recursive: true })
   fs.writeFileSync(path.join(routeDirectory, 'index.html'), html)
 }
+
+const publishedSiteRouteCount = generatePublishedSiteRoutes()
 
 let notFoundHtml = source
   .replace(/<title>.*?<\/title>/s, '<title>Page Not Found | ES Network</title>')
@@ -209,4 +328,4 @@ const sitemap = [
 ].join('\n')
 fs.writeFileSync(path.join('dist', 'sitemap.xml'), sitemap)
 
-console.log(`Generated SEO-ready route HTML for ${Object.keys(SEO_ROUTES).length} routes, noindex 404.html, and ${sitemapUrls.length} canonical sitemap URLs.`)
+console.log(`Generated SEO-ready route HTML for ${Object.keys(SEO_ROUTES).length} routes, ${publishedSiteRouteCount} published Builder routes, noindex 404.html, and ${sitemapUrls.length} canonical sitemap URLs.`)
