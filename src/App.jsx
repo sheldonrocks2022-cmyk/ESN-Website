@@ -36,9 +36,9 @@ const DISCORD_URL = 'https://discord.gg/3gxA66KZ8'
 const GUARDIAN_INVITE_URL = 'https://discord.com/oauth2/authorize?client_id=1544503232674664573'
 const SMP_HOST = 'esn.ggwp.cc'
 const SMP_PORT = '17769'
-const PLUGIN_VERSION = 'v2.9.6'
+const PLUGIN_VERSION = 'v2.9.7'
 const PLUGIN_DOWNLOAD_URL = 'https://github.com/sheldonrocks2022-cmyk/ESNSMP/releases/latest/download/ESNSMP.jar'
-const PLUGIN_RELEASE_URL = 'https://github.com/sheldonrocks2022-cmyk/ESNSMP/releases/tag/v2.9.6'
+const PLUGIN_RELEASE_URL = 'https://github.com/sheldonrocks2022-cmyk/ESNSMP/releases/tag/v2.9.7'
 const PLUGIN_SHA256 = '2bbcf9d1409a39e6bb5ecf3fc371bedfcf1c632b2db72f7fb26158418c92b55c'
 
 const SERVICES = [
