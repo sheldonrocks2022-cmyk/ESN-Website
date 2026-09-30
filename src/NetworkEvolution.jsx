@@ -287,8 +287,23 @@ function passportSnapshot(visited,eggs){
 }
 
 function SystemModal({title,kicker,onClose,children,className=''}) {
-  return <div className="ev-backdrop" role="presentation" onMouseDown={event=>{if(event.target===event.currentTarget)onClose()}}>
-    <section className={'ev-modal '+className} role="dialog" aria-modal="true" aria-label={title}>
+  useEffect(()=>{
+    const root=document.documentElement
+    const body=document.body
+    const previousRootOverflow=root.style.overflow
+    const previousBodyOverflow=body.style.overflow
+    root.classList.add('esn-system-modal-open')
+    root.style.overflow='hidden'
+    body.style.overflow='hidden'
+    return()=>{
+      root.classList.remove('esn-system-modal-open')
+      root.style.overflow=previousRootOverflow
+      body.style.overflow=previousBodyOverflow
+    }
+  },[])
+
+  return <div className="ev-backdrop" role="presentation" onPointerDown={event=>{if(event.target===event.currentTarget)onClose()}}>
+    <section className={'ev-modal '+className} role="dialog" aria-modal="true" aria-label={title} onPointerDown={event=>event.stopPropagation()}>
       <header className="ev-modal-head">
         <div><span>{kicker}</span><strong>{title}</strong></div>
         <button type="button" onClick={onClose} aria-label="Close">×</button>
