@@ -66,7 +66,7 @@ const EXPLORE_FEATURES=[
   ['Install ESN','Add the ESN website to your home screen as an installable web app.','/settings','PWA'],
   ['Performance Mode','Automatic device-aware performance mode plus manual Performance / Premium controls.','/settings','SYSTEM'],
   ["What's New",'See updates that landed since your last visit.','/whatsnew','UPDATES'],
-  ['SMP Encyclopedia','Search progression, bosses, crates, systems, and verified commands from ESNSMP v2.9.4.','/smpguide','SMP'],
+  ['SMP Encyclopedia','Search progression, bosses, crates, systems, and verified commands from ESNSMP v2.9.6.','/smpguide','SMP'],
   ['Bug Reporter','Create a diagnostic report and take it straight to ESN Discord support.','/support','HELP'],
   ['Release Filters','Filter the Release Center by Website, Mobile, SMP, Arcade, Store, Network, and Security.','/updates','LOGS'],
   ['Incident History','Current status plus a transparent incident-history area with no invented outages.','/status','STATUS'],
@@ -248,7 +248,7 @@ const WHAT_IS_NEW=[
   ['Installable ESN','PWA manifest, service worker registration, install prompt support, home-screen launch, and standalone display mode.'],
   ['Adaptive Performance','Automatic device-aware mode plus manual Auto, Performance, and Premium selection.'],
   ['Accessibility Center','Reduced motion, no flashing, high contrast, larger text, and larger touch targets.'],
-  ['SMP Knowledge Base','Searchable encyclopedia plus verified v2.9.4 command database sourced from the current ESNSMP plugin metadata.'],
+  ['SMP Knowledge Base','Searchable encyclopedia plus verified v2.9.6 command database sourced from the current ESNSMP plugin metadata.'],
   ['Arcade Meta Progression','Daily challenges, streaks, cross-game achievements, and global achievement notifications.'],
   ['Smarter Navigation','Recent destinations, favorites, categorized search, feature discovery, quick-copy tools, and a simplified mobile header.'],
 ]
@@ -438,7 +438,7 @@ export function SMPEncyclopediaPage(){
   }
 
   return <>
-    <section className="page-hero"><div className="shell page-hero-inner"><div className="page-hero-copy"><span className="eyebrow">ESN SMP ENCYCLOPEDIA</span><h1>Search the server, not a Discord wall.</h1><p>Current public ESNSMP v2.9.4 systems and declared player-facing commands organized into one searchable reference.</p></div><div className="page-hero-mark"><span>SMP</span><small>CODEX</small></div></div></section>
+    <section className="page-hero"><div className="shell page-hero-inner"><div className="page-hero-copy"><span className="eyebrow">ESN SMP ENCYCLOPEDIA</span><h1>Search the server, not a Discord wall.</h1><p>Current public ESNSMP v2.9.6 systems and declared player-facing commands organized into one searchable reference.</p></div><div className="page-hero-mark"><span>SMP</span><small>CODEX</small></div></div></section>
     <section className="section compact-section"><div className="shell quick-copy-strip">
       <button type="button" onClick={()=>doCopy(SMP_ADDRESS)}><span>IP</span><strong>{SMP_ADDRESS}</strong><small>{copied===SMP_ADDRESS?'COPIED':'COPY'}</small></button>
       <button type="button" onClick={()=>doCopy(SMP_PORT)}><span>PORT</span><strong>{SMP_PORT}</strong><small>{copied===SMP_PORT?'COPIED':'COPY'}</small></button>
@@ -447,7 +447,7 @@ export function SMPEncyclopediaPage(){
     </div></section>
     <section className="section"><div className="shell"><div className="section-heading"><div><span className="eyebrow">ENCYCLOPEDIA</span><h2>Major ESNSMP systems.</h2></div></div><div className="encyclopedia-grid">{ENCYCLOPEDIA.map(([title,copy])=><article key={title}><h3>{title}</h3><p>{copy}</p></article>)}</div></div></section>
     <section className="section compact-section"><div className="shell"><div className="section-heading"><div><span className="eyebrow">KNOWN CUSTOM ITEMS + SETS</span><h2>Current website/store-backed item reference.</h2><p>Only items already surfaced by the current ESN SMP store or progression experience are listed here; the site does not invent undocumented gear.</p></div></div><div className="known-item-grid">{KNOWN_ITEMS.map(([title,items])=><article key={title}><strong>{title}</strong><p>{items}</p></article>)}</div></div></section>
-    <section className="section dark-section"><div className="shell"><div className="section-heading"><div><span className="eyebrow">COMMAND DATABASE</span><h2>Search verified command metadata.</h2><p>Command names and descriptions here follow the current v2.9.4 plugin metadata. Permission-gated admin commands are intentionally not presented as normal player tools.</p></div></div>
+    <section className="section dark-section"><div className="shell"><div className="section-heading"><div><span className="eyebrow">COMMAND DATABASE</span><h2>Search verified command metadata.</h2><p>Command names and descriptions here follow the current v2.9.6 plugin metadata. Permission-gated admin commands are intentionally not presented as normal player tools.</p></div></div>
       <div className="command-search-bar"><input value={query} onChange={event=>setQuery(event.target.value)} placeholder="Search home, boss, realm, trade, season…"/><span>{filtered.length} RESULTS</span></div>
       <div className="command-category-row">{categories.map(item=><button className={category===item?'active':''} type="button" onClick={()=>setCategory(item)} key={item}>{item}</button>)}</div>
       <div className="smp-command-grid">{filtered.map(([command,copy,group])=><article key={command}><div><span>{group}</span><button type="button" onClick={()=>doCopy(command.split(' ')[0])}>{copied===command.split(' ')[0]?'COPIED':'COPY'}</button></div><code>{command}</code><p>{copy}</p></article>)}</div>
@@ -489,7 +489,7 @@ export function GalleryPage(){
     {type:'BRAND',title:'ES Network Mark',copy:'Current ESN mark used across the website and installable app experience.',image:'/esn-mark.svg'},
     {type:'MILESTONE',title:'Network Evolution 12X',copy:'Missions, Passport, Terminal, search, event board, achievements, and mobile-safe systems shipped together.'},
     {type:'MILESTONE',title:'Custom .com Launch',copy:'The rebuilt production website moved onto esnoffical.com with production indexing enabled.'},
-    {type:'SMP',title:'ESNSMP v2.9.4',copy:'Current public plugin metadata used by the website command encyclopedia.'},
+    {type:'SMP',title:'ESNSMP v2.9.6',copy:'Current public plugin metadata used by the website command encyclopedia.'},
     {type:'MEDIA',title:'Community Media Slots',copy:'Approved SMP screenshots, builds, event photos, and promotional media can be added here without using fake placeholders.'},
   ]
   return <>
