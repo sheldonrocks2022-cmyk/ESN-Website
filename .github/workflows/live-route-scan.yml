@@ -22,5 +22,10 @@ jobs:
         with:
           node-version: 20
 
+      - name: Install rendered-page scanner
+        run: |
+          npm install --no-save playwright@1.55.0
+          npx playwright install --with-deps chromium
+
       - name: Scan deployed ESN routes
         run: node scripts/scan-live-routes.mjs
