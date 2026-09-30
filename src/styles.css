@@ -8528,3 +8528,61 @@ html[data-motion="reduced"] .energy-trail-particle{
   .network-directory-card>p{margin:16px 0 20px}
   .organized-footer-links{grid-template-columns:1fr 1fr;gap:22px 18px}
 }
+
+
+/* ESN MOBILE INTERACTION SAFETY 2026-09-30 */
+@media(max-width:860px), (pointer:coarse){
+  html:not([data-motion="reduced"]) .route-transition{
+    pointer-events:none!important;
+    touch-action:auto!important;
+    overscroll-behavior:auto!important;
+  }
+
+  .premium-command-backdrop.open{
+    z-index:12000!important;
+    pointer-events:auto!important;
+  }
+  .premium-command.open{
+    z-index:12010!important;
+    pointer-events:auto!important;
+  }
+  .notification-backdrop.open{
+    z-index:12020!important;
+    pointer-events:auto!important;
+  }
+  .notification-panel.open{
+    z-index:12030!important;
+    pointer-events:auto!important;
+  }
+  .ev-backdrop{
+    z-index:12040!important;
+    pointer-events:auto!important;
+  }
+  .ev-modal{
+    pointer-events:auto!important;
+  }
+
+  .mobile-bottom-nav,
+  .mobile-network-strip,
+  .mobile-pinned-deck,
+  .premium-dock{
+    pointer-events:auto!important;
+    touch-action:manipulation!important;
+  }
+
+  .mobile-bottom-nav button,
+  .mobile-bottom-nav a,
+  .mobile-network-strip button,
+  .mobile-network-strip a,
+  .mobile-pinned-deck button,
+  .mobile-pinned-deck a,
+  .premium-command.open button,
+  .premium-command.open a,
+  .notification-panel.open button,
+  .notification-panel.open a,
+  .ev-modal button,
+  .ev-modal a{
+    pointer-events:auto!important;
+    touch-action:manipulation!important;
+  }
+}
