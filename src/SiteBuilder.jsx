@@ -921,19 +921,21 @@ function regenerateSection(site,prompt,section,variant){
   return next
 }
 function safeSite(site){
+  site=site&&typeof site==='object'&&!Array.isArray(site)?site:{}
+  const list=(value,fallback=[])=>Array.isArray(value)?value:fallback
   const sourceVersion=Number(site.version||1)
   const legacy=sourceVersion<3
   const legacySections={announcement:false,status:false,timeline:false,testimonials:false,gallery:false,socials:false}
   const sections={...(legacy?legacySections:STARTER.sections),...(site.sections||{})}
   const rawVisual={...STARTER.visual,...(site.visual||{})}
-  const pages=(site.pages||STARTER.pages).slice(0,3).map(function(page,index){
+  const pages=list(site.pages,STARTER.pages).slice(0,3).map(function(page,index){
     return {
       slug:cleanSlug(page.slug)||STARTER.pages[index]?.slug||('page-'+(index+1)),
       title:clamp(page.title,40),
       eyebrow:clamp(page.eyebrow,50),
       headline:clamp(page.headline,100),
       copy:clamp(page.copy,480),
-      items:(page.items||[]).slice(0,3).map(function(item){return {title:clamp(item.title,80),copy:clamp(item.copy,260)}}),
+      items:list(page.items).slice(0,3).map(function(item){return {title:clamp(item.title,80),copy:clamp(item.copy,260)}}),
     }
   })
   return {
@@ -969,9 +971,9 @@ function safeSite(site){
     heroCopy:clamp(site.heroCopy,320),
     aboutTitle:clamp(site.aboutTitle,100),
     aboutCopy:clamp(site.aboutCopy,500),
-    cards:(site.cards||[]).slice(0,3).map(function(card){return {title:clamp(card.title,70),copy:clamp(card.copy,260)}}),
-    stats:(site.stats||STARTER.stats).slice(0,3).map(function(item){return {value:clamp(item.value,20),label:clamp(item.label,70)}}),
-    faq:(site.faq||STARTER.faq).slice(0,3).map(function(item){return {q:clamp(item.q,120),a:clamp(item.a,360)}}),
+    cards:list(site.cards).slice(0,3).map(function(card){return {title:clamp(card.title,70),copy:clamp(card.copy,260)}}),
+    stats:list(site.stats,STARTER.stats).slice(0,3).map(function(item){return {value:clamp(item.value,20),label:clamp(item.label,70)}}),
+    faq:list(site.faq,STARTER.faq).slice(0,3).map(function(item){return {q:clamp(item.q,120),a:clamp(item.a,360)}}),
     pack:EXPERIENCE_PACKS.includes(site.pack)?site.pack:(legacy?'essential':'full'),
     sections:{
       announcement:sections.announcement!==false,
@@ -989,13 +991,13 @@ function safeSite(site){
       title:clamp(site.announcement?.title||STARTER.announcement.title,100),
       copy:clamp(site.announcement?.copy||STARTER.announcement.copy,240),
     },
-    status:(site.status||STARTER.status).slice(0,3).map(function(item){return {label:clamp(item.label,60),value:clamp(item.value,30),state:['live','ready','offline'].includes(item.state)?item.state:'ready'}}),
-    timeline:(site.timeline||STARTER.timeline).slice(0,4).map(function(item){return {kicker:clamp(item.kicker,20),title:clamp(item.title,80),copy:clamp(item.copy,260)}}),
-    testimonials:(site.testimonials||STARTER.testimonials).slice(0,3).map(function(item){return {quote:clamp(item.quote,280),name:clamp(item.name,60),role:clamp(item.role,60)}}),
-    gallery:(site.gallery||STARTER.gallery).slice(0,4).map(function(item){return {title:clamp(item.title,80),copy:clamp(item.copy,220),image:safeImage(item.image),alt:clamp(item.alt||item.title,100)}}),
-    socials:(site.socials||STARTER.socials).slice(0,3).map(function(item){return {label:clamp(item.label,40),url:safeUrl(item.url)}}),
+    status:list(site.status,STARTER.status).slice(0,3).map(function(item){return {label:clamp(item.label,60),value:clamp(item.value,30),state:['live','ready','offline'].includes(item.state)?item.state:'ready'}}),
+    timeline:list(site.timeline,STARTER.timeline).slice(0,4).map(function(item){return {kicker:clamp(item.kicker,20),title:clamp(item.title,80),copy:clamp(item.copy,260)}}),
+    testimonials:list(site.testimonials,STARTER.testimonials).slice(0,3).map(function(item){return {quote:clamp(item.quote,280),name:clamp(item.name,60),role:clamp(item.role,60)}}),
+    gallery:list(site.gallery,STARTER.gallery).slice(0,4).map(function(item){return {title:clamp(item.title,80),copy:clamp(item.copy,220),image:safeImage(item.image),alt:clamp(item.alt||item.title,100)}}),
+    socials:list(site.socials,STARTER.socials).slice(0,3).map(function(item){return {label:clamp(item.label,40),url:safeUrl(item.url)}}),
     galleryMode:['grid','carousel'].includes(site.galleryMode)?site.galleryMode:'grid',
-    sectionOrder:(Array.isArray(site.sectionOrder)?site.sectionOrder:STARTER.sectionOrder).filter(function(key,index,array){return HOME_SECTION_KEYS.includes(key)&&array.indexOf(key)===index}).concat(HOME_SECTION_KEYS.filter(function(key){return !(site.sectionOrder||[]).includes(key)})).slice(0,HOME_SECTION_KEYS.length),
+    sectionOrder:list(site.sectionOrder,STARTER.sectionOrder).filter(function(key,index,array){return HOME_SECTION_KEYS.includes(key)&&array.indexOf(key)===index}).concat(HOME_SECTION_KEYS.filter(function(key){return !list(site.sectionOrder).includes(key)})).slice(0,HOME_SECTION_KEYS.length),
     countdown:{title:clamp(site.countdown?.title||STARTER.countdown.title,80),target:clamp(site.countdown?.target,40),label:clamp(site.countdown?.label||STARTER.countdown.label,30)},
     minecraft:{address:clamp(site.minecraft?.address,120).replace(/[^a-z0-9.\-_:]/gi,''),bedrock:site.minecraft?.bedrock===true,title:clamp(site.minecraft?.title||STARTER.minecraft.title,80)},
     visitor:{label:clamp(site.visitor?.label||STARTER.visitor.label,60)},
@@ -1191,7 +1193,7 @@ function SitePreview({site,page='home',preview=false,onPageChange}){
 
 export default function SiteBuilderPage(){
   const [prompt,setPrompt]=useState('')
-  const [site,setSite]=useState(function(){try{return {...STARTER,...JSON.parse(localStorage.getItem(DRAFT_KEY)||'{}')}}catch{return STARTER}})
+  const [site,setSite]=useState(function(){try{const saved=JSON.parse(localStorage.getItem(DRAFT_KEY)||'{}');return safeSite({...STARTER,...(saved&&typeof saved==='object'&&!Array.isArray(saved)?saved:{})})}catch{return safeSite(STARTER)}})
   const [device,setDevice]=useState('desktop')
   const [message,setMessage]=useState('')
   const [generation,setGeneration]=useState(0)
@@ -1200,7 +1202,7 @@ export default function SiteBuilderPage(){
   const [referenceUrl,setReferenceUrl]=useState('')
   const [remixSource,setRemixSource]=useState('')
   const [dragSection,setDragSection]=useState('')
-  const [versions,setVersions]=useState(function(){try{return JSON.parse(localStorage.getItem(VERSION_HISTORY_KEY)||'[]')}catch{return []}})
+  const [versions,setVersions]=useState(function(){try{const saved=JSON.parse(localStorage.getItem(VERSION_HISTORY_KEY)||'[]');return Array.isArray(saved)?saved:[]}catch{return []}})
   const analysis=useMemo(function(){return analyzePrompt(prompt)},[prompt])
   const quality=useMemo(function(){return siteQuality(site,prompt)},[site,prompt])
   const accessibility=useMemo(function(){return accessibilityReadiness(site)},[site])
