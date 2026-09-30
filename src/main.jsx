@@ -12,25 +12,11 @@ ReactDOM.createRoot(document.getElementById('root')).render(
   </React.StrictMode>,
 )
 
-
 if ('serviceWorker' in navigator) {
-  window.addEventListener('load', async () => {
-    try {
-      const registration = await navigator.serviceWorker.register('/sw.js', { updateViaCache: 'none' })
-      await registration.update()
-
-      navigator.serviceWorker.addEventListener('message', event => {
-        if (event.data?.type !== 'ESN_SW_UPDATED') return
-        if (sessionStorage.getItem('esn_sw_reload_once') === '1') return
-        sessionStorage.setItem('esn_sw_reload_once', '1')
-        window.location.reload()
-      })
-
-      navigator.serviceWorker.addEventListener('controllerchange', () => {
-        if (sessionStorage.getItem('esn_sw_controller_reload') === '1') return
-        sessionStorage.setItem('esn_sw_controller_reload', '1')
-        window.location.reload()
-      })
-    } catch {}
+  window.addEventListener('load', () => {
+    // Let the browser update and activate the ESN service worker without
+    // forcibly reloading an already-rendering route. Forced reloads here
+    // could interrupt React during navigation and leave a temporary blank page.
+    navigator.serviceWorker.register('/sw.js', { updateViaCache: 'none' }).catch(() => {})
   })
 }
