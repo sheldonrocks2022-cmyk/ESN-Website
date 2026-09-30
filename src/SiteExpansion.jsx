@@ -263,7 +263,12 @@ const defaultPrefs={
 }
 
 function readJson(key,fallback){
-  try{return JSON.parse(localStorage.getItem(key)||JSON.stringify(fallback))}catch{return fallback}
+  try{
+    const value=JSON.parse(localStorage.getItem(key)||JSON.stringify(fallback))
+    if(Array.isArray(fallback))return Array.isArray(value)?value:fallback
+    if(fallback&&typeof fallback==='object')return value&&typeof value==='object'&&!Array.isArray(value)?value:fallback
+    return value??fallback
+  }catch{return fallback}
 }
 
 function writeJson(key,value){
