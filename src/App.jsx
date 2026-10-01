@@ -38,10 +38,10 @@ const SMP_HOST = 'esn.ggwp.cc'
 const SMP_JAVA_PORT = '17769'
 const SMP_BEDROCK_PORT = '17429'
 const SMP_PORT = SMP_JAVA_PORT
-const PLUGIN_VERSION = 'v2.10.1'
-const PLUGIN_DOWNLOAD_URL = 'https://github.com/sheldonrocks2022-cmyk/ESNSMP/releases/download/v2.10.1/ESNSMP.jar'
-const PLUGIN_RELEASE_URL = 'https://github.com/sheldonrocks2022-cmyk/ESNSMP/releases/tag/v2.10.1'
-const PLUGIN_SHA256 = 'fdd333fc8abccb8b85cfe78b088d634fbc0b80d3140e1cca47de7f2716b73d9f'
+const PLUGIN_VERSION = 'v2.10.2'
+const PLUGIN_DOWNLOAD_URL = 'https://github.com/sheldonrocks2022-cmyk/ESNSMP/releases/download/v2.10.2/ESNSMP.jar'
+const PLUGIN_RELEASE_URL = 'https://github.com/sheldonrocks2022-cmyk/ESNSMP/releases/tag/v2.10.2'
+const PLUGIN_SHA256 = 'd424ded198c7a94e66bd995b6fcbaab55fc174941bd0874a89a8c9f3ad6abd0c'
 
 const SERVICES = [
   {
@@ -1315,7 +1315,7 @@ function SMPPluginDownload() {
       <PageHero
         eyebrow="ESNSMP Plugin • Public Download"
         title="Run the ESN SMP plugin on your server."
-        text="Download the verified ESNSMP v2.10.1 JAR directly from the official ESNSMP GitHub release. This build targets Paper 26.2 and adds full inventory menus for ESN cosmetics and Kill Effects, automatic owner/admin exclusive access, an admin exclusive-gear menu, and 10-page / 450-slot persistent backpacks while keeping the staged cosmetics platform."
+        text="Download the verified ESNSMP v2.10.2 JAR directly from the official ESNSMP GitHub release. This build targets Paper 26.2 and adds full inventory menus for ESN cosmetics and Kill Effects, automatic owner/admin exclusive access, an admin exclusive-gear menu, 10-page / 450-slot persistent backpacks, and a persistent /void menu to toggle Void Warrior full-set teleport ON or OFF."
         actions={<a className="button primary" href={PLUGIN_DOWNLOAD_URL}>Download latest ESNSMP.jar <span>↓</span></a>}
       />
 
