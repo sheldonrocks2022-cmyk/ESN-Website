@@ -38,10 +38,10 @@ const SMP_HOST = 'esn.ggwp.cc'
 const SMP_JAVA_PORT = '17769'
 const SMP_BEDROCK_PORT = '17429'
 const SMP_PORT = SMP_JAVA_PORT
-const PLUGIN_VERSION = 'v2.10.3'
-const PLUGIN_DOWNLOAD_URL = 'https://github.com/sheldonrocks2022-cmyk/ESNSMP/releases/download/v2.10.3/ESNSMP.jar'
-const PLUGIN_RELEASE_URL = 'https://github.com/sheldonrocks2022-cmyk/ESNSMP/releases/tag/v2.10.3'
-const PLUGIN_SHA256 = 'eba808fab7393cd9dd80a433d5c53a169f598acaafd27f44aafd879e89e0788e'
+const PLUGIN_VERSION = 'v2.10.4'
+const PLUGIN_DOWNLOAD_URL = 'https://github.com/sheldonrocks2022-cmyk/ESNSMP/releases/download/v2.10.4/ESNSMP.jar'
+const PLUGIN_RELEASE_URL = 'https://github.com/sheldonrocks2022-cmyk/ESNSMP/releases/tag/v2.10.4'
+const PLUGIN_SHA256 = 'e93263158ab02bf5aa81e9209552ed4dfba6e18559576129bfa27c7f30980303'
 
 const SERVICES = [
   {
@@ -1315,7 +1315,7 @@ function SMPPluginDownload() {
       <PageHero
         eyebrow="ESNSMP Plugin • Public Download"
         title="Run the ESN SMP plugin on your server."
-        text="Download the verified ESNSMP v2.10.3 JAR directly from the official ESNSMP GitHub release. This build targets Paper 26.2 and adds full inventory menus for ESN cosmetics and Kill Effects, automatic owner/admin exclusive access, a persistent /void teleport toggle, a persistent /ownertag visibility menu, 10-page / 450-slot backpacks, and Realm 100+ ESN cosmetic weapons that remain below the exclusive weapon tier."
+        text="Download the verified ESNSMP v2.10.4 JAR directly from the official ESNSMP GitHub release. This build targets Paper 26.2 and adds full inventory menus for ESN cosmetics and Kill Effects, automatic owner/admin exclusive access, persistent /void and /ownertag menus, 10-page / 450-slot backpacks, Realm 100+ cosmetic weapons, and matching four-piece Realm 100+ armor sets for all seasonal and named collections while keeping Riftwalker, Immortal Warden, and Void Warrior gear above the cosmetic tier."
         actions={<a className="button primary" href={PLUGIN_DOWNLOAD_URL}>Download latest ESNSMP.jar <span>↓</span></a>}
       />
 
