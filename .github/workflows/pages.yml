@@ -3,6 +3,8 @@ name: Deploy GitHub Pages
 on:
   push:
     branches: [main]
+  schedule:
+    - cron: '23 7 * * *'
   workflow_dispatch:
 
 permissions:
@@ -29,6 +31,9 @@ jobs:
 
       - name: Install locked dependencies
         run: npm ci
+
+      - name: Sync latest verified ESNSMP JAR
+        run: node scripts/fetch-esnsmp.mjs
 
       - name: Validate site
         run: npm run validate

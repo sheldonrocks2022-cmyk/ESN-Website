@@ -39,9 +39,8 @@ const SMP_JAVA_PORT = '17769'
 const SMP_BEDROCK_PORT = '17429'
 const SMP_PORT = SMP_JAVA_PORT
 const PLUGIN_VERSION = 'v2.10.4'
-const PLUGIN_DOWNLOAD_URL = 'https://github.com/sheldonrocks2022-cmyk/ESNSMP/releases/download/v2.10.4/ESNSMP.jar'
-const PLUGIN_RELEASE_URL = 'https://github.com/sheldonrocks2022-cmyk/ESNSMP/releases/tag/v2.10.4'
-const PLUGIN_SHA256 = 'e93263158ab02bf5aa81e9209552ed4dfba6e18559576129bfa27c7f30980303'
+const PLUGIN_DOWNLOAD_URL = '/downloads/ESNSMP.jar'
+const PLUGIN_RELEASE_URL = 'https://github.com/sheldonrocks2022-cmyk/ESNSMP/actions/workflows/build.yml?query=branch%3Amain'
 
 const SERVICES = [
   {
@@ -1310,12 +1309,31 @@ function ConsoleConnection() {
   )
 }
 function SMPPluginDownload() {
+  const [pluginMeta, setPluginMeta] = useState(null)
+
+  useEffect(() => {
+    let active = true
+    fetch('/esnsmp-build.json', { cache: 'no-store' })
+      .then(response => response.ok ? response.json() : null)
+      .then(data => { if (active && data) setPluginMeta(data) })
+      .catch(() => {})
+    return () => { active = false }
+  }, [])
+
+  const pluginSize = pluginMeta?.sizeBytes
+    ? `${(pluginMeta.sizeBytes / 1024 / 1024).toFixed(1)} MB`
+    : 'Current'
+  const pluginBuild = pluginMeta?.commit
+    ? pluginMeta.commit.slice(0, 7)
+    : 'Verified'
+  const pluginSha = pluginMeta?.sha256 || 'Checksum generated during deployment'
+
   return (
     <>
       <PageHero
         eyebrow="ESNSMP Plugin • Public Download"
         title="Run the ESN SMP plugin on your server."
-        text="Download the verified ESNSMP v2.10.4 JAR directly from the official ESNSMP GitHub release. This build targets Paper 26.2 and adds full inventory menus for ESN cosmetics and Kill Effects, automatic owner/admin exclusive access, persistent /void and /ownertag menus, 10-page / 450-slot backpacks, Realm 100+ cosmetic weapons, and matching four-piece Realm 100+ armor sets for all seasonal and named collections while keeping Riftwalker, Immortal Warden, and Void Warrior gear above the cosmetic tier."
+        text="Download the newest verified ESNSMP v2.10.4 main-branch JAR. The site now syncs the latest successful GitHub Actions build automatically. Current builds include the Lightning King exclusive set, /lightning ability controls, Lightning King access inside Admin Exclusives, anti-cheat-safe movement for current and future exclusive abilities, the existing /void and /ownertag controls, 10-page backpacks, cosmetics, Kill Effects, and the rest of the ESN SMP systems."
         actions={<a className="button primary" href={PLUGIN_DOWNLOAD_URL}>Download latest ESNSMP.jar <span>↓</span></a>}
       />
 
@@ -1323,23 +1341,23 @@ function SMPPluginDownload() {
         <div className="shell plugin-showcase-grid">
           <div className="plugin-3d-panel">
             <ES3DViewer variant="ESNSMP Plugin" label="Interactive 3D ESNSMP plugin showcase" />
-            <span className="plugin-version-float">{PLUGIN_VERSION} • LATEST VERIFIED RELEASE</span>
+            <span className="plugin-version-float">{PLUGIN_VERSION} • LATEST VERIFIED MAIN BUILD</span>
           </div>
 
           <div className="plugin-release-card">
-            <span className="eyebrow">Latest Public Release</span>
+            <span className="eyebrow">Latest Verified Build</span>
             <h2>ESNSMP {PLUGIN_VERSION}</h2>
-            <p>The current public release passed its GitHub build and publish workflows, targets <b>Paper 26.2</b>, includes the DaTHost-compatible Stripe auto-delivery configuration, and adds the full staged ESN Store cosmetics platform for gradual releases.</p>
+            <p>The download is synced from the newest successful <b>main</b> build of the official ESNSMP repository. It targets <b>Paper 26.2</b> and includes Lightning King, its ability-control menu, Admin Exclusives integration, and the shared exclusive-movement authorization that prevents ESN AntiCheat from kicking players for legitimate set abilities.</p>
 
             <div className="plugin-release-stats">
               <div><span>FILE</span><strong>ESNSMP.jar</strong></div>
-              <div><span>SIZE</span><strong>16.2 MB</strong></div>
-              <div><span>RELEASE</span><strong>{PLUGIN_VERSION}</strong></div>
-              <div><span>BUILD</span><strong>Verified</strong></div>
+              <div><span>SIZE</span><strong>{pluginSize}</strong></div>
+              <div><span>VERSION</span><strong>{PLUGIN_VERSION}</strong></div>
+              <div><span>BUILD</span><strong>{pluginBuild}</strong></div>
             </div>
 
             <a className="button primary plugin-download-button" href={PLUGIN_DOWNLOAD_URL}>Download latest .jar</a>
-            <a className="text-link" href={PLUGIN_RELEASE_URL} target="_blank" rel="noreferrer">View {PLUGIN_VERSION} release notes →</a>
+            <a className="text-link" href={PLUGIN_RELEASE_URL} target="_blank" rel="noreferrer">View verified main builds →</a>
           </div>
         </div>
       </section>
@@ -1359,8 +1377,8 @@ function SMPPluginDownload() {
       <section className="section compact-section">
         <div className="shell plugin-integrity-card">
           <div><span className="eyebrow">Release Integrity</span><h2>SHA-256</h2></div>
-          <code>{PLUGIN_SHA256}</code>
-          <p>Current checksum for the verified {PLUGIN_VERSION} release asset. The download is pinned to this exact release so the file and checksum stay matched.</p>
+          <code>{pluginSha}</code>
+          <p>The website generates this checksum from the exact ESNSMP.jar it publishes from the newest successful main build, so the displayed integrity value stays matched to the downloadable file.</p>
         </div>
       </section>
       <RelatedLinks
