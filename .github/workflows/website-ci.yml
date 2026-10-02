@@ -21,6 +21,8 @@ jobs:
           node-version: 20
       - name: Install dependencies
         run: npm ci
+      - name: Sync latest verified ESNSMP JAR
+        run: node scripts/fetch-esnsmp.mjs
       - name: Scan repository for leaked secrets
         run: npm run security:secrets
       - name: Audit npm dependencies
