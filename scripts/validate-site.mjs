@@ -1,4 +1,5 @@
 import fs from 'node:fs'
+import { createHash } from 'node:crypto'
 import { SEO_ROUTES, canonicalUrl } from '../src/seo.js'
 
 const app = fs.readFileSync('src/App.jsx', 'utf8')
@@ -222,10 +223,26 @@ if (!liveExperience.includes('Network Evolution 12X') || !liveExperience.include
 if (!app.includes("import ES3DViewer from './ES3DViewer'")) problems.push('3D viewer import missing.')
 if (!app.includes('<ES3DViewer variant={product.name} compact')) problems.push('3D store viewer missing.')
 if (!app.includes('<ES3DViewer variant="hero"') && !immersiveLayer.includes('<ES3DViewer variant="hero"')) problems.push('3D homepage viewer missing from App or HeroReactor.')
-if (!app.includes('https://github.com/sheldonrocks2022-cmyk/ESNSMP/releases/download/v2.10.4/ESNSMP.jar')) problems.push('Latest ESNSMP.jar download URL missing.')
+if (!app.includes("const PLUGIN_DOWNLOAD_URL = '/downloads/ESNSMP.jar'")) problems.push('Latest ESNSMP.jar website download path missing.')
 if (!app.includes("PLUGIN_VERSION = 'v2.10.4'")) problems.push('Verified ESNSMP v2.10.4 label missing.')
 if (!seo.includes("softwareVersion:'v2.10.4'")) problems.push('ESNSMP structured-data version is not v2.10.4.')
-if (!app.includes('e93263158ab02bf5aa81e9209552ed4dfba6e18559576129bfa27c7f30980303')) problems.push('Verified v2.10.4 SHA-256 missing.')
+
+const esnsmpJarPath = 'public/downloads/ESNSMP.jar'
+const esnsmpMetaPath = 'public/esnsmp-build.json'
+if (!fs.existsSync(esnsmpJarPath) || !fs.existsSync(esnsmpMetaPath)) {
+  problems.push('Synced ESNSMP.jar or build metadata missing.')
+} else {
+  try {
+    const jar = fs.readFileSync(esnsmpJarPath)
+    const buildMeta = JSON.parse(fs.readFileSync(esnsmpMetaPath, 'utf8'))
+    const actualSha = createHash('sha256').update(jar).digest('hex')
+    if (buildMeta.sha256 !== actualSha) problems.push('Synced ESNSMP.jar SHA-256 does not match build metadata.')
+    if (Number(buildMeta.sizeBytes) !== jar.length) problems.push('Synced ESNSMP.jar size does not match build metadata.')
+    if (buildMeta.source !== 'github-release-latest-main') problems.push('ESNSMP website download is not sourced from the rolling latest-main release.')
+  } catch (error) {
+    problems.push('Synced ESNSMP build metadata could not be verified: ' + error.message)
+  }
+}
 if (!app.includes('Add & Start') || !app.includes('Open Bedrock Connect on your phone') || !app.includes('Same Wi-Fi / internet required')) problems.push('Official ESN console connection flow missing.')
 if (!app.includes("SMP_BEDROCK_PORT = '17429'") || !app.includes("SMP_JAVA_PORT = '17769'")) problems.push('Verified ESN Java/Bedrock port split missing from App.')
 if (!liveNetwork.includes("SMP_BEDROCK_PORT='17429'") || !liveNetwork.includes("SMP_JAVA_PORT='17769'")) problems.push('Live Network must monitor verified Java and Bedrock ports separately.')
