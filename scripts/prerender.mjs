@@ -83,6 +83,11 @@ function injectSeo(html, route) {
   )
   html = replaceMeta(
     html,
+    /<meta property="og:image:secure_url" content="[^"]*"\s*\/?>/,
+    `<meta property="og:image:secure_url" content="${socialImage}" />`,
+  )
+  html = replaceMeta(
+    html,
     /<meta property="og:image:alt" content="[^"]*"\s*\/?>/,
     `<meta property="og:image:alt" content="${escapeHtml(SOCIAL_IMAGE_ALT)}" />`,
   )
