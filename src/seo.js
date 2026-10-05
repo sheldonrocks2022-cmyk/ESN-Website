@@ -17,15 +17,15 @@ export function socialImageFor(pathname=''){
 export const SEO_ROUTES={
   '/':{
     label:'Home',
-    title:'ES Network (ESN) | Creator Services, Gaming & ESN SMP',
-    description:'ES Network offers Fortnite coaching, creator editing, Discord server setups, website projects, ESN SMP, six browser games, free tools, and community support.',
+    title:'ES Network (ESN) | Minecraft SMP, Gaming & Creator Services',
+    description:'Join ES Network for ESN SMP Minecraft, Fortnite coaching, creator editing, Discord server setup, website projects, free browser games, tools, and community.',
     canonical:'/',
     index:true,
   },
   '/home':{
     label:'Home',
-    title:'ES Network (ESN) | Creator Services, Gaming & ESN SMP',
-    description:'ES Network offers Fortnite coaching, creator editing, Discord server setups, website projects, ESN SMP, six browser games, free tools, and community support.',
+    title:'ES Network (ESN) | Minecraft SMP, Gaming & Creator Services',
+    description:'Join ES Network for ESN SMP Minecraft, Fortnite coaching, creator editing, Discord server setup, website projects, free browser games, tools, and community.',
     canonical:'/',
     index:false,
   },
@@ -199,7 +199,7 @@ export const SEO_ROUTES={
   },
   '/smpguide':{
     label:'SMP Encyclopedia',
-    title:'ESN SMP Encyclopedia | Commands, Bosses, Realms & Progression',
+    title:'ESN SMP Encyclopedia | Commands, Bosses & Progression',
     description:'Search ESN SMP commands and learn the current ESNSMP systems for Realm progression, economy, bosses, crates, gear, travel, seasons, and Adventure content.',
     index:true,
   },
@@ -212,7 +212,7 @@ export const SEO_ROUTES={
   '/nexus':{
     label:'Network Nexus',
     title:'ES Network Nexus | XP, Missions, Arcade & Live Systems',
-    description:'Explore the ES Network Nexus with connected XP, missions, achievements, Arcade competition, live activity, secret lore, dynamic events, 3D systems, and the ESN Guide.',
+    description:'Explore the ES Network Nexus with XP, missions, achievements, Arcade competition, live activity, events, 3D systems, and the ESN Guide.',
     index:true,
   },
   '/notifications':{
@@ -223,13 +223,13 @@ export const SEO_ROUTES={
   },
   '/rewards':{
     label:'Reward Vault',
-    title:'ESN Reward Vault | Network Shards, Cosmetics & Local Inventory',
+    title:'ESN Reward Vault | Shards, Cosmetics & Inventory',
     description:'Spend locally earned ESN Network Shards on account-free cosmetic unlocks and manage a device-local ESN identity card.',
     index:true,
   },
   '/challenges':{
     label:'Challenge Lab',
-    title:'ESN Arcade Challenge Lab | Share Account-Free Game Challenges',
+    title:'ESN Arcade Challenge Lab | Share Game Challenges',
     description:'Create and accept shareable ESN Arcade target challenges using real local game progress without accounts or fake global scores.',
     index:true,
   },
@@ -261,7 +261,7 @@ export const SEO_ROUTES={
   '/diagnostics':{
     label:'Diagnostic Center',
     title:'ESN Diagnostic Center | Browser, Network & SMP Checks',
-    description:'Run safe account-free ES Network diagnostics for browser connectivity, local storage, notifications, service workers, cache, SMP telemetry, plugin releases, and Discord.',
+    description:'Run ES Network diagnostics for browser connectivity, storage, notifications, service workers, cache, SMP telemetry, plugin releases, and Discord.',
     index:true,
   },
   '/smpcheck':{
@@ -374,13 +374,13 @@ export const SEO_ROUTES={
   },
   '/estimate':{
     label:'Project Estimate',
-    title:'ESN Project Estimate | Scope Your Website, Editing or Discord Project',
+    title:'ESN Project Estimate | Websites, Editing & Discord',
     description:'Estimate ES Network project complexity and scope before opening a service ticket. Final pricing and delivery are confirmed separately.',
     index:true,
   },
   '/smp-items':{
     label:'SMP Item Encyclopedia',
-    title:'ESN SMP Item Encyclopedia | Warden, Riftwalker, Relics & More',
+    title:'ESN SMP Items | Warden, Riftwalker, Relics & More',
     description:'Search current ESN SMP store bundles and their published item contents, including Warden, Riftwalker, Season Pass relics, keys, and Void gear.',
     index:true,
   },
@@ -428,7 +428,7 @@ export const SEO_ROUTES={
   },
   '/fortnite-coaching':{
     label:'Fortnite Coaching',
-    title:'Fortnite Coaching | Practical Player Improvement by ES Network',
+    title:'Fortnite Coaching for Better Gameplay | ES Network',
     description:'Explore ES Network Fortnite coaching focused on practical improvement, stronger decisions, consistency, and a clear project brief before ordering.',
     index:true,
   },
@@ -557,6 +557,18 @@ export const SERVICE_SCHEMA=[
   ['Editing Services','Editing support for creators who want sharper, cleaner content built for their platform and audience.','/serviceshowcase#editing-services'],
   ['Discord Server Setups','Structured Discord setups designed around roles, channels, moderation, onboarding, and community growth.','/serviceshowcase#discord-server-setups'],
 ]
+
+export const SERVICE_PAGE_SCHEMA={
+  '/fortnite-coaching':{name:'Fortnite Coaching',serviceType:'Fortnite coaching and gameplay improvement'},
+  '/video-editing':{name:'Video Editing Services',serviceType:'Creator video editing'},
+  '/discord-server-setup':{name:'Discord Server Setup',serviceType:'Discord community setup and organization'},
+  '/hosting':{name:'ESN Hosting',serviceType:'Website hosting and domain connection support'},
+}
+
+export const WEB_APP_SCHEMA={
+  '/website-builder':{name:'ESN Website Builder',description:'Build, preview, edit, share, and publish a website with ES Network.'},
+  '/site-builder':{name:'ESN Website Builder',description:'Prompt-driven website builder with editable sections, responsive previews, HTML export, and ESN publishing.'},
+}
 
 export const ARCADE_SCHEMA=[
   ['ES Clicker','/esclicker'],
@@ -726,6 +738,36 @@ export function structuredDataFor(pathname){
         position:index+1,
         item:{'@type':'Service',name,description,url:SITE_URL+path,provider:{'@id':SITE_URL+'/#organization'}},
       })),
+    })
+  }
+
+  if(SERVICE_PAGE_SCHEMA[pathname]){
+    const service=SERVICE_PAGE_SCHEMA[pathname]
+    graph.push({
+      '@type':'Service',
+      '@id':url+'#service',
+      name:service.name,
+      serviceType:service.serviceType,
+      description:meta.description,
+      url,
+      provider:{'@id':SITE_URL+'/#organization'},
+      areaServed:'Worldwide',
+    })
+  }
+
+  if(WEB_APP_SCHEMA[pathname]){
+    const app=WEB_APP_SCHEMA[pathname]
+    graph.push({
+      '@type':'WebApplication',
+      '@id':url+'#webapp',
+      name:app.name,
+      description:app.description,
+      url,
+      applicationCategory:'DesignApplication',
+      operatingSystem:'Web Browser',
+      isAccessibleForFree:true,
+      publisher:{'@id':SITE_URL+'/#organization'},
+      offers:{'@type':'Offer',price:'0',priceCurrency:'USD',url},
     })
   }
 
