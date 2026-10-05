@@ -209,6 +209,7 @@ function MetaManager() {
     setMeta('meta[property="og:locale"]', 'property', 'og:locale', 'en_US')
     setMeta('meta[property="og:url"]', 'property', 'og:url', url)
     setMeta('meta[property="og:image"]', 'property', 'og:image', socialImage)
+    setMeta('meta[property="og:image:secure_url"]', 'property', 'og:image:secure_url', socialImage)
     setMeta('meta[property="og:image:alt"]', 'property', 'og:image:alt', SOCIAL_IMAGE_ALT)
     setMeta('meta[property="og:image:type"]', 'property', 'og:image:type', 'image/svg+xml')
     setMeta('meta[property="og:image:width"]', 'property', 'og:image:width', '1200')
