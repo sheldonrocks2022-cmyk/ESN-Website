@@ -39,6 +39,7 @@ for (const [route, meta] of Object.entries(SEO_ROUTES)) {
   if (!html.includes('name="twitter:title"')) failures.push(`Missing Twitter title in ${file}`)
   if (!html.includes('name="twitter:description"')) failures.push(`Missing Twitter description in ${file}`)
   if (!html.includes(`property="og:image" content="${expectedSocialImage}"`)) failures.push(`Missing social preview image in ${file}`)
+  if (!html.includes(`property="og:image:secure_url" content="${expectedSocialImage}"`)) failures.push(`Missing secure Open Graph image URL in ${file}`)
   if (!html.includes(`property="og:image:alt" content="${escapeHtml(SOCIAL_IMAGE_ALT)}"`)) failures.push(`Missing Open Graph image alt text in ${file}`)
   if (!html.includes('property="og:image:width" content="1200"') || !html.includes('property="og:image:height" content="630"')) failures.push(`Wrong social image dimensions in ${file}`)
   if (!html.includes('name="twitter:card" content="summary_large_image"')) failures.push(`Missing large Twitter/X card in ${file}`)
@@ -50,6 +51,8 @@ for (const [route, meta] of Object.entries(SEO_ROUTES)) {
 
   if (route === '/faq' && !html.includes('"@type":"FAQPage"')) failures.push('FAQPage structured data missing from /faq')
   if (route === '/serviceshowcase' && !html.includes('"@type":"Service"')) failures.push('Service structured data missing from /serviceshowcase')
+  if (['/fortnite-coaching','/video-editing','/discord-server-setup','/hosting'].includes(route) && !html.includes('"@type":"Service"')) failures.push(`Service structured data missing from ${route}`)
+  if (['/website-builder','/site-builder'].includes(route) && !html.includes('"@type":"WebApplication"')) failures.push(`WebApplication structured data missing from ${route}`)
   if (route === '/arcade' && !html.includes('"@type":"VideoGame"')) failures.push('Arcade VideoGame structured data missing from /arcade')
   if (route === '/storesmp' && (!html.includes('"@type":"Product"') || !html.includes('"@type":"Offer"'))) failures.push('Product/Offer structured data missing from /storesmp')
   if (route === '/smpplugin' && !html.includes('"@type":"SoftwareApplication"')) failures.push('SoftwareApplication structured data missing from /smpplugin')
