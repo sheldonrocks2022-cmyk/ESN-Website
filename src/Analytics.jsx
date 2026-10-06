@@ -69,10 +69,10 @@ export function AnalyticsTracker(){
       const a=e.target.closest?.('a[href]')
       if(!a)return
       let url
-      try{url=new URL(a.href,location.href)}catch{return}
+      try{url=new URL(a.href,window.location.href)}catch{return}
       if(a.hasAttribute('download')||/\/downloads\//i.test(url.pathname)){
         send('download',{target:url.pathname})
-      }else if(url.origin!==location.origin){
+      }else if(url.origin!==window.location.origin){
         send('outbound_click',{target:url.hostname+url.pathname.slice(0,120)})
       }
     }
