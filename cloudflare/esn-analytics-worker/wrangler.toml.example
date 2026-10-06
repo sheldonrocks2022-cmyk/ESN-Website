@@ -1,0 +1,22 @@
+name = "esn-analytics"
+main = "src/index.js"
+compatibility_date = "2026-10-05"
+workers_dev = true
+
+[vars]
+ALLOWED_ORIGINS = "https://esnoffical.com,https://www.esnoffical.com"
+ALLOW_LOCALHOST = "true"
+RETENTION_DAYS = "180"
+EXPOSE_ERRORS = "false"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "esn-analytics"
+database_id = "REPLACE_WITH_D1_DATABASE_ID"
+
+[triggers]
+crons = ["41 4 * * *"]
+
+# Secrets:
+# STAFF_CODE_HASH
+# ANALYTICS_SALT
