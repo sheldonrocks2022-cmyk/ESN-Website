@@ -108,7 +108,7 @@ export const SEO_ROUTES={
   '/smp/realm-ascension':{
     label:'Realm Ascension',
     title:'ESN SMP Realm Ascension | Realms, Quests, Raids & Mastery',
-    description:'Explore ESN SMP Realm Ascension v2.15.0: eight realm worlds, 24-chapter questlines, 50-level mastery, factions, skill trees, dungeons, raids, bosses, pets, mounts, PvP, crafting and the hidden Shattered Realm.',
+    description:'Explore ESN SMP Realm Ascension v2.15.0 with eight realm worlds, story quests, mastery, factions, dungeons, raids, bosses, pets, mounts, PvP and Shattered Realm.',
     index:true,
   },
   '/analytics':{
@@ -858,8 +858,8 @@ export function structuredDataFor(pathname){
       name:'ESNSMP',
       description:'The public ES Network Minecraft server plugin distributed as ESNSMP.jar.',
       url,
-      downloadUrl:'https://github.com/sheldonrocks2022-cmyk/ESNSMP/releases/download/v2.10.4/ESNSMP.jar',
-      softwareVersion:'v2.10.4',
+      downloadUrl:SITE_URL+'/downloads/ESNSMP.jar',
+      softwareVersion:'v2.15.0',
       applicationCategory:'DeveloperApplication',
       operatingSystem:'Minecraft Paper-compatible server',
       isAccessibleForFree:true,
