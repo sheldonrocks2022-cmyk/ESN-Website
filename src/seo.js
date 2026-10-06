@@ -102,8 +102,21 @@ export const SEO_ROUTES={
   '/smpplugin':{
     label:'ESNSMP Plugin',
     title:'ESNSMP Plugin Download | ES Network Minecraft Plugin',
-    description:'Download the latest public ESNSMP Minecraft plugin release from the official ESNSMP GitHub repository and view verified plugin release information.',
+    description:'Download ESNSMP v2.15.0 Realm Ascension with automated realm worlds, mobs, quests, mastery, factions, dungeons, raids, events, pets, mounts, PvP and endgame progression.',
     index:true,
+  },
+  '/smp/realm-ascension':{
+    label:'Realm Ascension',
+    title:'ESN SMP Realm Ascension | Realms, Quests, Raids & Mastery',
+    description:'Explore ESN SMP Realm Ascension v2.15.0: eight realm worlds, 24-chapter questlines, 50-level mastery, factions, skill trees, dungeons, raids, bosses, pets, mounts, PvP, crafting and the hidden Shattered Realm.',
+    index:true,
+  },
+  '/analytics':{
+    label:'ESN Analytics',
+    title:'ESN Website Analytics | Private Staff Dashboard',
+    description:'Private first-party ES Network website analytics dashboard.',
+    index:false,
+    nofollow:true,
   },
   '/status':{
     label:'Network Status',
