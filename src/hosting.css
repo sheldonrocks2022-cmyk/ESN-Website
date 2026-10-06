@@ -1,0 +1,45 @@
+.esn-hosting-page{min-height:100vh;background:radial-gradient(circle at 72% 4%,rgba(40,112,255,.16),transparent 30%),#02050d;color:#eef5ff}
+.esn-hosting-hero{padding:clamp(110px,14vw,170px) 0 72px;border-bottom:1px solid rgba(130,168,235,.14);overflow:hidden}
+.esn-hosting-hero-grid{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(280px,.65fr);gap:clamp(28px,6vw,84px);align-items:center}
+.esn-hosting-hero h1{max-width:900px;margin:.55rem 0 1rem;font-size:clamp(3rem,8vw,7.4rem);line-height:.88;letter-spacing:-.065em}
+.esn-hosting-hero h1 em{font-style:normal;color:#7ca8ff}
+.esn-hosting-hero p{max-width:760px;color:#aebdd2;font-size:clamp(1rem,1.7vw,1.2rem);line-height:1.75}
+.esn-hosting-controller{padding:28px;border:1px solid rgba(124,168,255,.22);border-radius:24px;background:linear-gradient(180deg,rgba(14,28,54,.92),rgba(5,10,21,.94));box-shadow:0 32px 90px rgba(0,0,0,.35)}
+.esn-controller-top{display:flex;justify-content:space-between;gap:18px;color:#8da2c2;font-size:.76rem;font-weight:900;letter-spacing:.15em}
+.esn-controller-dot{width:10px;height:10px;border-radius:50%;background:#71809a;box-shadow:0 0 0 7px rgba(113,128,154,.1)}
+.esn-controller-dot.online{background:#58e696;box-shadow:0 0 0 7px rgba(88,230,150,.1),0 0 28px rgba(88,230,150,.45)}
+.esn-hosting-controller>strong{display:block;margin-top:34px;font-size:clamp(2rem,5vw,3.4rem);letter-spacing:-.05em}
+.esn-hosting-controller>small{display:block;margin-top:8px;color:#93a7c5}
+.esn-hosting-controller button{width:100%;min-height:44px;margin-top:26px;border:1px solid rgba(255,255,255,.14);border-radius:12px;background:rgba(255,255,255,.06);color:#fff;font-weight:900;cursor:pointer}
+.esn-hosting-controller button:disabled{opacity:.55;cursor:default}
+.esn-hosting-stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.esn-hosting-stat-grid>div{padding:22px;border:1px solid rgba(127,162,218,.13);border-radius:18px;background:rgba(8,17,34,.72)}
+.esn-hosting-stat-grid strong,.esn-hosting-stat-grid span{display:block}
+.esn-hosting-stat-grid strong{font-size:1.45rem}
+.esn-hosting-stat-grid span{margin-top:5px;color:#8194b1;font-size:.82rem}
+.esn-hosting-node-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+.esn-hosting-node{padding:24px;border:1px solid rgba(115,155,222,.16);border-radius:22px;background:#081224}
+.esn-hosting-node-head{display:flex;align-items:flex-start;justify-content:space-between;gap:20px}
+.esn-hosting-node h3{margin:.4rem 0 0;font-size:1.6rem}
+.esn-node-status{display:inline-flex;align-items:center;gap:7px;padding:7px 10px;border:1px solid rgba(255,255,255,.1);border-radius:999px;color:#93a2b7;font-size:.68rem;font-weight:900;letter-spacing:.08em}
+.esn-node-status i{width:7px;height:7px;border-radius:50%;background:#788397}
+.esn-node-status.online{color:#7bf0aa}.esn-node-status.online i{background:#58e696;box-shadow:0 0 14px rgba(88,230,150,.6)}
+.esn-node-specs{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-top:24px}
+.esn-node-specs div{padding:13px;border-radius:12px;background:rgba(255,255,255,.035)}
+.esn-node-specs span,.esn-node-specs strong{display:block}.esn-node-specs span{color:#7185a5;font-size:.65rem;font-weight:900;letter-spacing:.1em}.esn-node-specs strong{margin-top:5px;font-size:.9rem}
+.esn-node-actions{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:18px}
+.esn-node-actions button{min-height:39px;border:1px solid rgba(255,255,255,.08);border-radius:10px;background:rgba(255,255,255,.035);color:#6f7d93;font-weight:800}
+.esn-node-note{margin:13px 0 0;color:#6f829e;font-size:.78rem}
+.esn-hosting-empty{display:grid;grid-template-columns:130px 1fr;gap:30px;align-items:center;padding:32px;border:1px dashed rgba(123,159,220,.22);border-radius:24px;background:rgba(7,15,30,.6)}
+.esn-hosting-empty h3{margin:.35rem 0 .6rem;font-size:clamp(1.6rem,4vw,2.5rem)}
+.esn-hosting-empty p{margin:0;color:#91a4c0;line-height:1.65}
+.esn-empty-orbit{position:relative;width:100px;height:100px;border:1px solid rgba(119,164,255,.25);border-radius:50%;display:block}
+.esn-empty-orbit:before,.esn-empty-orbit:after{content:"";position:absolute;inset:16px;border:1px solid rgba(119,164,255,.17);border-radius:50%}.esn-empty-orbit:after{inset:34px}
+.esn-empty-orbit i{position:absolute;width:8px;height:8px;border-radius:50%;background:#77a4ff}.esn-empty-orbit i:nth-child(1){top:8px;left:44px}.esn-empty-orbit i:nth-child(2){right:11px;bottom:24px}.esn-empty-orbit i:nth-child(3){left:20px;bottom:18px}
+.esn-hosting-roadmap{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.esn-hosting-roadmap article{min-height:260px;padding:22px;border:1px solid rgba(129,166,227,.14);border-radius:20px;background:rgba(5,12,25,.78)}
+.esn-hosting-roadmap b{display:block;color:#6f91c9;font-size:2rem}.esn-hosting-roadmap span{display:block;margin-top:28px;color:#6f86a8;font-size:.68rem;font-weight:900;letter-spacing:.13em}.esn-hosting-roadmap h3{margin:.4rem 0 .65rem;font-size:1.25rem}.esn-hosting-roadmap p{margin:0;color:#91a3bd;line-height:1.6}
+.esn-hosting-architecture{display:grid;grid-template-columns:.8fr 1.2fr;gap:30px;align-items:center}.esn-hosting-architecture h2{margin:.4rem 0 .8rem;font-size:clamp(2rem,5vw,4rem)}.esn-hosting-architecture p{color:#91a3bd;line-height:1.7}
+.esn-architecture-flow{display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;padding:28px;border:1px solid rgba(122,164,235,.16);border-radius:20px;background:#071021}.esn-architecture-flow span{padding:14px 16px;border-radius:12px;background:rgba(124,168,255,.08);font-size:.78rem;font-weight:900;letter-spacing:.1em}.esn-architecture-flow b{color:#6285bd}
+@media (max-width:900px){.esn-hosting-hero-grid,.esn-hosting-architecture{grid-template-columns:1fr}.esn-hosting-stat-grid,.esn-hosting-roadmap{grid-template-columns:repeat(2,1fr)}.esn-hosting-node-grid{grid-template-columns:1fr}}
+@media (max-width:620px){.esn-hosting-hero{padding-top:104px}.esn-hosting-stat-grid,.esn-hosting-roadmap,.esn-node-specs,.esn-node-actions{grid-template-columns:repeat(2,1fr)}.esn-hosting-empty{grid-template-columns:1fr}.esn-empty-orbit{width:82px;height:82px}.esn-hosting-controller{padding:22px}}
