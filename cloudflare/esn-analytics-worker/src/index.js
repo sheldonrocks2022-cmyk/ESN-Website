@@ -7,14 +7,16 @@ async function sha256(value){
   const hash=await crypto.subtle.digest('SHA-256',enc.encode(String(value)))
   return [...new Uint8Array(hash)].map(x=>x.toString(16).padStart(2,'0')).join('')
 }
+function originAllowed(env,request){
+  const origin=request.headers.get('origin')||''
+  if(!origin)return true
+  const allowed=(env.ALLOWED_ORIGINS||'https://esnoffical.com').split(',').map(x=>x.trim()).filter(Boolean)
+  return allowed.includes(origin)||(/^http:\/\/localhost(?::\d+)?$/.test(origin)&&env.ALLOW_LOCALHOST==='true')
+}
 function cors(env,request){
   const origin=request.headers.get('origin')||''
-  const allowed=(env.ALLOWED_ORIGINS||'https://esnoffical.com').split(',').map(x=>x.trim()).filter(Boolean)
-  if(!origin)return {}
-  if(allowed.includes(origin)||(/^http:\/\/localhost(?::\d+)?$/.test(origin)&&env.ALLOW_LOCALHOST==='true')){
-    return {'access-control-allow-origin':origin,'vary':'origin','access-control-allow-headers':'content-type, authorization','access-control-allow-methods':'GET, POST, OPTIONS'}
-  }
-  return {}
+  if(!originAllowed(env,request)||!origin)return {}
+  return {'access-control-allow-origin':origin,'vary':'origin','access-control-allow-headers':'content-type, authorization','access-control-allow-methods':'GET, POST, OPTIONS'}
 }
 function cleanText(value,max=180){return String(value||'').replace(/[\u0000-\u001f\u007f]/g,' ').trim().slice(0,max)}
 function cleanPath(value){
@@ -91,7 +93,8 @@ async function rows(env,sql,...binds){
 }
 async function handle(request,env,url){
   const headers=cors(env,request)
-  if(request.method==='OPTIONS')return new Response(null,{status:204,headers})
+  if(request.method==='OPTIONS')return originAllowed(env,request)?new Response(null,{status:204,headers}):json({ok:false,message:'Origin not allowed.'},403)
+  if(!originAllowed(env,request))return json({ok:false,message:'Origin not allowed.'},403)
   if(url.pathname==='/api/health')return json({ok:true,service:'ESN Analytics',database:Boolean(env.DB)},200,headers)
 
   if(url.pathname==='/api/collect'&&request.method==='POST'){
