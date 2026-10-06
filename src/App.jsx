@@ -442,8 +442,8 @@ function Header() {
               <div className="dropdown-section">
                 <span className="dropdown-label">BUILD</span>
                 <Link onClick={close} to="/site-builder">AI Website Builder</Link>
-                <Link onClick={close} to="/hosting">ESN Hosting</Link>
-                <Link onClick={close} to="/domains">Domains</Link>
+                <Link onClick={close} to="/hosting">ESN Hosting & Domains</Link>
+                <Link onClick={close} to="/hosting/vps">Cloud VPS Control</Link>
                 <Link onClick={close} to="/store-ai">ESN Store AI</Link>
                 <Link onClick={close} to="/estools">ES Tools</Link>
               </div>
@@ -1594,8 +1594,9 @@ function App() {
           <Route path="/serviceshowcase" element={<ServicesShowcase />} />
           <Route path="/store-ai" element={<StoreAIPage />} />
           <Route path="/storeai" element={<Navigate to="/store-ai" replace />} />
-          <Route path="/hosting" element={<HostingPage />} />
-          <Route path="/domains" element={<DomainsPage />} />
+          <Route path="/hosting" element={<DomainsPage />} />
+          <Route path="/hosting/vps" element={<HostingPage />} />
+          <Route path="/domains" element={<Navigate to="/hosting" replace />} />
           <Route path="/site-builder" element={<SiteBuilderPage />} />
           <Route path="/sites/:slug" element={<HostedSitePage />} />
         <Route path="/sites/:slug/:page" element={<HostedSitePage />} />
