@@ -31,6 +31,8 @@ import MotoGame from './arcade/Moto'
 import TowerGame from './arcade/Tower'
 import TowerDefenseGame from './arcade/TowerDefense'
 import { useArcadeProgress } from './arcade/shared'
+import { AnalyticsDashboard, AnalyticsTracker } from './Analytics'
+import SMPAscensionPage from './SMPAscension'
 
 const DISCORD_URL = 'https://discord.gg/3gxA66KZ8'
 const GUARDIAN_INVITE_URL = 'https://discord.com/oauth2/authorize?client_id=1544503232674664573'
@@ -38,7 +40,7 @@ const SMP_HOST = 'esn.ggwp.cc'
 const SMP_JAVA_PORT = '17769'
 const SMP_BEDROCK_PORT = '17429'
 const SMP_PORT = SMP_JAVA_PORT
-const PLUGIN_VERSION = 'v2.10.4'
+const PLUGIN_VERSION = 'v2.15.0'
 const PLUGIN_DOWNLOAD_URL = '/downloads/ESNSMP.jar'
 const PLUGIN_RELEASE_URL = 'https://github.com/sheldonrocks2022-cmyk/ESNSMP/actions/workflows/build.yml?query=branch%3Amain'
 
@@ -397,8 +399,8 @@ function Header() {
   const inGroup = (paths) => paths.some((path) => location.pathname === path || location.pathname.startsWith(path + '/'))
   const arcadeActive = location.pathname === '/arcade' || ARCADE_GAMES.some(([, route]) => route === location.pathname)
   const createActive = inGroup(['/serviceshowcase','/portfolio','/store-ai','/hosting','/domains','/site-builder','/estools','/configure','/estimate','/showcase','/fortnite-coaching','/video-editing','/discord-server-setup','/website-builder'])
-  const playActive = arcadeActive || inGroup(['/smpconnection','/smpconsole','/smpplugin','/smpguide','/storesmp','/smpcheck','/smp-hub','/smp-items','/minecraft-server','/minecraft-smp'])
-  const networkActive = inGroup(['/status','/networkstats','/updates','/whatsnew','/timeline','/explore','/gallery','/nexus','/notifications','/rewards','/challenges','/operations','/incidents','/changelog','/diagnostics','/blueprint','/session','/share','/launchpad','/search','/labs','/activity','/share-generator','/network-map','/backup','/guides','/visibility','/free-browser-tools'])
+  const playActive = arcadeActive || inGroup(['/smpconnection','/smpconsole','/smpplugin','/smpguide','/storesmp','/smpcheck','/smp-hub','/smp-items','/minecraft-server','/minecraft-smp','/smp/realm-ascension'])
+  const networkActive = inGroup(['/status','/networkstats','/analytics','/updates','/whatsnew','/timeline','/explore','/gallery','/nexus','/notifications','/rewards','/challenges','/operations','/incidents','/changelog','/diagnostics','/blueprint','/session','/share','/launchpad','/search','/labs','/activity','/share-generator','/network-map','/backup','/guides','/visibility','/free-browser-tools'])
   const aboutActive = inGroup(['/about','/leadership','/testimonials','/faq','/settings','/support','/staff','/trust','/es-network'])
   const mobileSection = playActive ? (arcadeActive ? 'Arcade' : 'ESN SMP')
     : createActive ? 'Create'
@@ -454,6 +456,7 @@ function Header() {
                 <Link onClick={close} to="/smpconnection">Connect to SMP</Link>
                 <Link onClick={close} to="/smpconsole">Console Connection</Link>
                 <Link onClick={close} to="/smpguide">SMP Encyclopedia</Link>
+                <Link onClick={close} to="/smp/realm-ascension">Realm Ascension v2.15</Link>
                 <Link onClick={close} to="/storesmp">SMP Store</Link>
                 <Link onClick={close} to="/smpplugin">Download ESNSMP Plugin</Link>
               </div>
@@ -489,6 +492,7 @@ function Header() {
                 <Link onClick={close} to="/operations">Operations Map</Link>
                 <Link onClick={close} to="/diagnostics">Diagnostic Center</Link>
                 <Link onClick={close} to="/blueprint">System Blueprint</Link>
+                <Link onClick={close} to="/analytics">Site Analytics</Link>
                 <Link onClick={close} to="/incidents">Incident History</Link>
                 <Link onClick={close} to="/changelog">Network Changelog</Link>
                 <Link onClick={close} to="/session">Session Stats</Link>
@@ -551,12 +555,14 @@ function Footer() {
             <Link to="/smpconsole">Console Guide</Link>
             <Link to="/storesmp">SMP Store</Link>
             <Link to="/smpplugin">ESNSMP Plugin</Link>
+            <Link to="/smp/realm-ascension">Realm Ascension</Link>
             <Link to="/arcade">Arcade Hub</Link>
             <span>{SMP_HOST}</span>
           </div>
           <div>
             <h3>Network</h3>
             <Link to="/status">Status</Link>
+            <Link to="/analytics">Site Analytics</Link>
             <Link to="/nexus">Nexus</Link>
             <Link to="/explore">Explore</Link>
             <Link to="/whatsnew">What's New</Link>
@@ -1555,6 +1561,7 @@ function App() {
   const standaloneSite=location.pathname.startsWith('/sites/')
   return (
     <div className={standaloneSite ? 'site user-site-mode' : 'site'}>
+      <AnalyticsTracker />
       {!standaloneSite&&<a className="skip-link" href="#main-content">Skip to main content</a>}
       {!standaloneSite&&<StartupIntro />}
       {!standaloneSite&&<MetaManager />}
@@ -1597,6 +1604,7 @@ function App() {
           <Route path="/smpconsole" element={<ConsoleConnection />} />
           <Route path="/smpplugin" element={<SMPPluginDownload />} />
           <Route path="/smpguide" element={<SMPEncyclopediaPage />} />
+          <Route path="/smp/realm-ascension" element={<SMPAscensionPage />} />
           <Route path="/launchpad" element={<LaunchpadPage />} />
           <Route path="/configure" element={<ServiceConfiguratorPage />} />
           <Route path="/smp-hub" element={<SMPWorldHubPage />} />
@@ -1624,6 +1632,7 @@ function App() {
           <Route path="/visibility" element={<VisibilityInsightsPage />} />
           <Route path="/status" element={<StatusCenter />} />
           <Route path="/networkstats" element={<NetworkStatsPage />} />
+          <Route path="/analytics" element={<AnalyticsDashboard />} />
           <Route path="/nexus" element={<NetworkNexusPage />} />
           <Route path="/notifications" element={<NotificationCenterPage />} />
           <Route path="/rewards" element={<RewardMarketPage />} />
