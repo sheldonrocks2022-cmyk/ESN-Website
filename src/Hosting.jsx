@@ -11,12 +11,12 @@ const EMPTY_STATE = {
 }
 
 const BOT_PLANS = [
-  { name: 'Starter', ram: '512 MB', cpu: '35%', storage: '2 GB', price: '$1.99', featured: false },
-  { name: 'Basic', ram: '1 GB', cpu: '50%', storage: '4 GB', price: '$2.99', featured: true },
-  { name: 'Plus', ram: '2 GB', cpu: '100%', storage: '8 GB', price: '$4.99', featured: false },
-  { name: 'Pro', ram: '4 GB', cpu: '150%', storage: '15 GB', price: '$8.99', featured: false },
-  { name: 'Ultra', ram: '6 GB', cpu: '200%', storage: '20 GB', price: '$12.99', featured: false },
-  { name: 'Extreme', ram: '8 GB', cpu: '250%', storage: '30 GB', price: '$16.99', featured: false },
+  { name: 'Starter', ram: '512 MB', cpu: '35%', storage: '2 GB', price: '$0.99', featured: false },
+  { name: 'Basic', ram: '1 GB', cpu: '50%', storage: '4 GB', price: '$1.99', featured: true },
+  { name: 'Plus', ram: '2 GB', cpu: '100%', storage: '8 GB', price: '$3.49', featured: false },
+  { name: 'Pro', ram: '4 GB', cpu: '150%', storage: '15 GB', price: '$5.99', featured: false },
+  { name: 'Ultra', ram: '6 GB', cpu: '200%', storage: '20 GB', price: '$8.99', featured: false },
+  { name: 'Extreme', ram: '8 GB', cpu: '250%', storage: '30 GB', price: '$11.99', featured: false },
 ]
 
 const PANEL_FEATURES = [
