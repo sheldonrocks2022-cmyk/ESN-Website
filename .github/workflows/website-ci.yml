@@ -23,6 +23,12 @@ jobs:
         run: npm ci
       - name: Sync latest verified ESNSMP JAR
         run: node scripts/fetch-esnsmp.mjs
+
+      - name: Render PNG social previews and icons
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq librsvg2-bin
+          node scripts/render-social-assets.mjs
       - name: Scan repository for leaked secrets
         run: npm run security:secrets
       - name: Audit npm dependencies
