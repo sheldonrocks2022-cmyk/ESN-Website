@@ -88,7 +88,7 @@ export default function HostingPage() {
             </p>
             <div className="hero-actions page-actions">
               <a className="button primary" href="#node-setup">Connect first node <span>→</span></a>
-              <Link className="button secondary" to="/domains">Domains</Link>
+              <Link className="button secondary" to="/hosting">Hosting & Domains</Link>
             </div>
           </div>
           <aside className="esn-hosting-controller">
