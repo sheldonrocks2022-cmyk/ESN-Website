@@ -68,3 +68,10 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v5
+
+      - name: Checkout domain audit
+        uses: actions/checkout@v4
+
+      - name: Check public DNS and SEO
+        continue-on-error: true
+        run: node scripts/check-live-seo.mjs
