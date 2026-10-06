@@ -2,16 +2,16 @@ export const SITE_URL='https://esnoffical.com'
 export const SITE_NAME='ES Network'
 export const SITE_LANGUAGE='en-US'
 export const SEO_LAUNCH_MODE='production'
-export const SOCIAL_IMAGE_URL=SITE_URL+'/esn-social-card.svg'
+export const SOCIAL_IMAGE_URL=SITE_URL+'/esn-social-card.png'
 export const SOCIAL_IMAGE_ALT='ES Network — Build, Play, Create'
 export function socialImageFor(pathname=''){
   const path=pathname||'/'
-  if(path.startsWith('/guides')||['/minecraft-server','/minecraft-smp'].includes(path))return SITE_URL+'/social/esn-guides.svg'
-  if(path.startsWith('/smp/')||path.startsWith('/smp-')||['/storesmp','/smpguide','/smpconnection'].includes(path))return SITE_URL+'/social/esn-smp.svg'
-  if(['/fortnite-coaching','/video-editing','/discord-server-setup','/serviceshowcase','/configure','/estimate','/portfolio','/testimonials'].includes(path))return SITE_URL+'/social/esn-services.svg'
-  if(['/website-builder','/site-builder','/showcase','/hosting'].includes(path))return SITE_URL+'/social/esn-builder.svg'
-  if(['/free-browser-tools','/estools'].includes(path))return SITE_URL+'/social/esn-tools.svg'
-  return SITE_URL+'/social/esn-network.svg'
+  if(path.startsWith('/guides')||['/minecraft-server','/minecraft-smp'].includes(path))return SITE_URL+'/social/esn-guides.png'
+  if(path.startsWith('/smp/')||path.startsWith('/smp-')||['/storesmp','/smpguide','/smpconnection'].includes(path))return SITE_URL+'/social/esn-smp.png'
+  if(['/fortnite-coaching','/video-editing','/discord-server-setup','/serviceshowcase','/configure','/estimate','/portfolio','/testimonials'].includes(path))return SITE_URL+'/social/esn-services.png'
+  if(['/website-builder','/site-builder','/showcase','/hosting'].includes(path))return SITE_URL+'/social/esn-builder.png'
+  if(['/free-browser-tools','/estools'].includes(path))return SITE_URL+'/social/esn-tools.png'
+  return SITE_URL+'/social/esn-network.png'
 }
 
 export const SEO_ROUTES={
