@@ -224,8 +224,8 @@ if (!app.includes("import ES3DViewer from './ES3DViewer'")) problems.push('3D vi
 if (!app.includes('<ES3DViewer variant={product.name} compact')) problems.push('3D store viewer missing.')
 if (!app.includes('<ES3DViewer variant="hero"') && !immersiveLayer.includes('<ES3DViewer variant="hero"')) problems.push('3D homepage viewer missing from App or HeroReactor.')
 if (!app.includes("const PLUGIN_DOWNLOAD_URL = '/downloads/ESNSMP.jar'")) problems.push('Latest ESNSMP.jar website download path missing.')
-if (!app.includes("PLUGIN_VERSION = 'v2.10.4'")) problems.push('Verified ESNSMP v2.10.4 label missing.')
-if (!seo.includes("softwareVersion:'v2.10.4'")) problems.push('ESNSMP structured-data version is not v2.10.4.')
+if (!app.includes("PLUGIN_VERSION = 'v2.15.0'")) problems.push('Verified ESNSMP v2.15.0 label missing.')
+if (!seo.includes("softwareVersion:'v2.15.0'")) problems.push('ESNSMP structured-data version is not v2.15.0.')
 
 const esnsmpJarPath = 'public/downloads/ESNSMP.jar'
 const esnsmpMetaPath = 'public/esnsmp-build.json'
