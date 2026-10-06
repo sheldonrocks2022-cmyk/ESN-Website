@@ -4,6 +4,43 @@ import { SEO_ROUTES, SOCIAL_IMAGE_ALT, canonicalUrl, robotsContent, socialImageF
 
 const failures = []
 
+const socialPngPaths = new Set([
+  'esn-social-card.png',
+  'favicon-32.png',
+  'apple-touch-icon.png',
+  ...Object.keys(SEO_ROUTES).map(route => new URL(socialImageFor(route)).pathname.slice(1)),
+])
+
+for (const asset of socialPngPaths) {
+  const file = path.join('dist', asset)
+  if (!fs.existsSync(file)) {
+    failures.push('Missing generated PNG asset: ' + file)
+    continue
+  }
+  const png = fs.readFileSync(file)
+  if (png.subarray(0, 8).toString('hex') !== '89504e470d0a1a0a') {
+    failures.push('Invalid PNG asset: ' + file)
+    continue
+  }
+  const expectedWidth = asset === 'favicon-32.png' ? 32 : asset === 'apple-touch-icon.png' ? 180 : 1200
+  const expectedHeight = asset === 'favicon-32.png' ? 32 : asset === 'apple-touch-icon.png' ? 180 : 630
+  if (png.readUInt32BE(16) !== expectedWidth || png.readUInt32BE(20) !== expectedHeight) {
+    failures.push('Incorrect PNG dimensions for ' + file)
+  }
+}
+
+const robotsFile = path.join('dist', 'robots.txt')
+if (!fs.existsSync(robotsFile)) {
+  failures.push('Missing deployed robots.txt')
+} else {
+  const robots = fs.readFileSync(robotsFile, 'utf8')
+  if (!robots.includes('User-agent: *') || !robots.includes('Allow: /') ||
+      !robots.includes('Sitemap: https://esnoffical.com/sitemap.xml')) {
+    failures.push('Deployed robots.txt must permit indexing and declare the sitemap')
+  }
+}
+
+
 function escapeHtml(value) {
   return value
     .replaceAll('&', '&amp;')
@@ -40,6 +77,7 @@ for (const [route, meta] of Object.entries(SEO_ROUTES)) {
   if (!html.includes('name="twitter:description"')) failures.push(`Missing Twitter description in ${file}`)
   if (!html.includes(`property="og:image" content="${expectedSocialImage}"`)) failures.push(`Missing social preview image in ${file}`)
   if (!html.includes(`property="og:image:secure_url" content="${expectedSocialImage}"`)) failures.push(`Missing secure Open Graph image URL in ${file}`)
+  if (!html.includes('property="og:image:type" content="image/png"')) failures.push(`Wrong social preview MIME type in ${file}`)
   if (!html.includes(`property="og:image:alt" content="${escapeHtml(SOCIAL_IMAGE_ALT)}"`)) failures.push(`Missing Open Graph image alt text in ${file}`)
   if (!html.includes('property="og:image:width" content="1200"') || !html.includes('property="og:image:height" content="630"')) failures.push(`Wrong social image dimensions in ${file}`)
   if (!html.includes('name="twitter:card" content="summary_large_image"')) failures.push(`Missing large Twitter/X card in ${file}`)
