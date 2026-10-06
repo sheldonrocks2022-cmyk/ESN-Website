@@ -1,0 +1,80 @@
+name: Deploy ESN Analytics Worker
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'cloudflare/esn-analytics-worker/**'
+      - '.github/workflows/analytics-worker.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      ANALYTICS_D1_DATABASE_ID: ${{ secrets.ANALYTICS_D1_DATABASE_ID }}
+      ANALYTICS_STAFF_CODE_HASH: ${{ secrets.ANALYTICS_STAFF_CODE_HASH }}
+      ANALYTICS_SALT: ${{ secrets.ANALYTICS_SALT }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check analytics deployment configuration
+        id: config
+        shell: bash
+        run: |
+          if [[ -n "$CLOUDFLARE_API_TOKEN" && -n "$CLOUDFLARE_ACCOUNT_ID" && -n "$ANALYTICS_D1_DATABASE_ID" && -n "$ANALYTICS_STAFF_CODE_HASH" && -n "$ANALYTICS_SALT" ]]; then
+            echo "ready=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+            echo "Analytics Worker deploy skipped: required Cloudflare/analytics secrets are not configured."
+          fi
+
+      - name: Generate production Wrangler configuration
+        if: steps.config.outputs.ready == 'true'
+        working-directory: cloudflare/esn-analytics-worker
+        shell: bash
+        run: |
+          cat > wrangler.toml <<EOF
+          name = "esn-analytics"
+          main = "src/index.js"
+          compatibility_date = "2026-10-05"
+          account_id = "$CLOUDFLARE_ACCOUNT_ID"
+          workers_dev = true
+
+          [vars]
+          ALLOWED_ORIGINS = "https://esnoffical.com,https://www.esnoffical.com"
+          ALLOW_LOCALHOST = "false"
+          RETENTION_DAYS = "180"
+          EXPOSE_ERRORS = "false"
+
+          [[d1_databases]]
+          binding = "DB"
+          database_name = "esn-analytics"
+          database_id = "$ANALYTICS_D1_DATABASE_ID"
+
+          [triggers]
+          crons = ["41 4 * * *"]
+          EOF
+
+      - name: Apply D1 schema
+        if: steps.config.outputs.ready == 'true'
+        working-directory: cloudflare/esn-analytics-worker
+        run: npx --yes wrangler@4 d1 execute esn-analytics --remote --file=schema.sql --config=wrangler.toml
+
+      - name: Set Worker secrets
+        if: steps.config.outputs.ready == 'true'
+        working-directory: cloudflare/esn-analytics-worker
+        shell: bash
+        run: |
+          printf '%s' "$ANALYTICS_STAFF_CODE_HASH" | npx --yes wrangler@4 secret put STAFF_CODE_HASH --config=wrangler.toml
+          printf '%s' "$ANALYTICS_SALT" | npx --yes wrangler@4 secret put ANALYTICS_SALT --config=wrangler.toml
+
+      - name: Deploy Worker
+        if: steps.config.outputs.ready == 'true'
+        working-directory: cloudflare/esn-analytics-worker
+        run: npx --yes wrangler@4 deploy --config=wrangler.toml
