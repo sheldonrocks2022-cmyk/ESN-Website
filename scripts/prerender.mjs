@@ -94,7 +94,7 @@ function injectSeo(html, route) {
   html = replaceMeta(
     html,
     /<meta property="og:image:type" content="[^"]*"\s*\/?>/,
-    '<meta property="og:image:type" content="image/svg+xml" />',
+    '<meta property="og:image:type" content="image/png" />',
   )
   html = replaceMeta(
     html,
