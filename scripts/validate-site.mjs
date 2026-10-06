@@ -282,11 +282,11 @@ if (!immersiveLayer.includes('NetworkEvents') || !immersiveLayer.includes('VISUA
 if (!immersiveLayer.includes('FooterCommandDeck') || !immersiveLayer.includes('ESN COMMAND DECK')) problems.push('Interactive footer command deck missing.')
 if (!shareCenter.includes('1200') || !shareCenter.includes('630') || !shareCenter.includes('toBlob') || !shareCenter.includes('toDataURL') || !shareCenter.includes('navigator.share')) problems.push('Share Deck must generate real 1200x630 PNG cards and support native sharing.')
 if (!seo.includes("export const SEO_ROUTES=") || !seo.includes("export const SEO_LAUNCH_MODE='production'")) problems.push('Shared SEO route configuration missing or production launch mode is not enabled.')
-if (!seo.includes("SOCIAL_IMAGE_URL=SITE_URL+'/esn-social-card.svg'") || !seo.includes('SOCIAL_IMAGE_ALT')) problems.push('Shared ESN social preview metadata missing.')
+if (!seo.includes("SOCIAL_IMAGE_URL=SITE_URL+'/esn-social-card.png'") || !seo.includes('SOCIAL_IMAGE_ALT')) problems.push('Shared ESN social preview metadata missing.')
 if (!socialPreview.includes('width="1200"') || !socialPreview.includes('height="630"') || !socialPreview.includes('BUILD. PLAY. CREATE.')) problems.push('ESN 1200x630 social preview asset is missing or malformed.')
 if (!app.includes('SOCIAL_IMAGE_URL') || !app.includes("setAlternate('en-US')") || !app.includes("setAlternate('x-default')")) problems.push('Live SEO manager is missing social image or hreflang support.')
 if ((!prerender.includes('socialImageFor') && !prerender.includes('SOCIAL_IMAGE_URL')) || !prerender.includes('hreflang="en-US"') || !prerender.includes('hreflang="x-default"')) problems.push('Prerendered SEO is missing social image or hreflang support.')
-if (!indexHtml.includes('property="og:image" content="https://esnoffical.com/esn-social-card.svg"') || !indexHtml.includes('name="twitter:card" content="summary_large_image"')) problems.push('Base HTML social preview metadata missing.')
+if (!indexHtml.includes('property="og:image" content="https://esnoffical.com/esn-social-card.png"') || !indexHtml.includes('name="twitter:card" content="summary_large_image"')) problems.push('Base HTML social preview metadata missing.')
 if (!indexHtml.includes('hreflang="en-US"') || !indexHtml.includes('hreflang="x-default"')) problems.push('Base HTML hreflang links missing.')
 if (!seo.includes('export const STORE_SCHEMA=') || !seo.includes('export const GAME_SCHEMA_DETAILS=') || !seo.includes('export const TOOL_SCHEMA=') || !seo.includes('export const CONSOLE_HOWTO_STEPS=')) problems.push('Expanded route structured-data definitions missing.')
 for (const marker of ["'@type':'Product'","'@type':'SoftwareApplication'","'@type':'GameServer'","'@type':'HowTo'"]) {
