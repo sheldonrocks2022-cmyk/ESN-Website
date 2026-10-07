@@ -91,10 +91,10 @@ export default function HostingPage() {
         <div className="shell esn-hosting-hero-grid">
           <div>
             <span className="eyebrow">ESN BOT HOSTING // 24/7</span>
-            <h1>Your bot. Your panel. <em>Always online.</em></h1>
+            <h1>Your bot. Your files. <em>Your controls.</em></h1>
             <p>
-              Run Node.js and Python Discord bots on ESN infrastructure with a private customer panel,
-              live console, file management, resource controls, and 24/7 runtime.
+              Host your Python or Node.js Discord bot with access to its console, files,
+              startup settings, and resource graphs. Manage it from your own panel.
             </p>
             <div className="hero-actions page-actions">
               <a className="button primary" href={HOSTING_DISCORD} target="_blank" rel="noreferrer">
@@ -116,7 +116,7 @@ export default function HostingPage() {
               <span><b>100 GB</b> NVMe</span>
               <span><b>7 TB</b> transfer</span>
             </div>
-            <small>Customer capacity is limited so performance stays stable.</small>
+            <small>Availability depends on current node capacity.</small>
           </aside>
         </div>
       </section>
@@ -126,7 +126,7 @@ export default function HostingPage() {
           <div className="section-heading">
             <div>
               <span className="eyebrow">BOT HOSTING PLANS</span>
-              <h2>Start small. Scale when your bot grows.</h2>
+              <h2>Choose what your bot actually needs.</h2>
             </div>
             <p>Every plan includes 24/7 runtime, a private customer panel, console, files, SFTP, resource graphs, and Node.js or Python support.</p>
           </div>
