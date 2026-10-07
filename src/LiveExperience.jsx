@@ -64,8 +64,8 @@ export function StatusCenter(){
       <div className="shell page-hero-inner">
         <div className="page-hero-copy">
           <span className="eyebrow">ESN LIVE NETWORK</span>
-          <h1>Network Status Center.</h1>
-          <p>Live website, SMP, plugin, Arcade, and community connection information in one place.</p>
+          <h1>ESN status</h1>
+          <p>Check the Minecraft server, Discord connection, plugin release, and website from here.</p>
         </div>
         <div className="page-hero-mark" aria-hidden="true"><span>LIVE</span><small>STATUS</small></div>
       </div>
@@ -130,11 +130,11 @@ export function StatusCenter(){
     </section>
     <section className="section dark-section incident-history-section">
       <div className="shell">
-        <div className="section-heading"><div><span className="eyebrow">INCIDENT HISTORY</span><h2>Transparent status history.</h2><p>ESN will only list outages or maintenance here when there is a verified public record. No uptime percentage or historical outage is invented.</p></div></div>
+        <div className="section-heading"><div><span className="eyebrow">INCIDENT HISTORY</span><h2>Recorded incidents and maintenance.</h2><p>We list maintenance and outages when there is a documented record. Historical uptime percentages are not available yet.</p></div></div>
         <div className="incident-history-empty">
           <span>CURRENT PUBLIC RECORD</span>
-          <strong>No verified historical incident entries are published yet.</strong>
-          <p>Live status above remains the source for current availability. Future verified maintenance windows and resolved outages can be logged here with date, affected system, and resolution details.</p>
+          <strong>No incidents have been published here yet.</strong>
+          <p>Use the status cards above for current information. Documented incidents can be added here with dates and resolution details.</p>
         </div>
       </div>
     </section>
@@ -155,7 +155,7 @@ const timelinePhases=[
     index:'02',
     title:'ES Network',
     eyebrow:'Current Brand',
-    copy:'EP1C Services was renamed to ES Network, bringing services, community projects, gaming, tools, and web experiences under one current identity.',
+    copy:'We renamed EP1C Services to ES Network as we started taking on more gaming and community projects.',
     points:['One network identity','Unified navigation and branding','Services + community + digital experiences'],
   },
   {
@@ -171,7 +171,7 @@ const timelinePhases=[
     index:'04',
     title:'ESN Arcade',
     eyebrow:'Browser Games',
-    copy:'The network added six original browser game experiences: Clicker, Factory, Mines, MOTO, Tower, and Tower Defense.',
+    copy:'We added six browser games: Clicker, Factory, Mines, MOTO, Tower, and Tower Defense.',
     points:['Six original games','Shared ES Coin progression','Mobile-responsive controls'],
   },
   {
@@ -179,7 +179,7 @@ const timelinePhases=[
     index:'05',
     title:'Current Projects',
     eyebrow:'Now',
-    copy:'ESN is currently focused on a premium unified website experience with persistent local-device progression, live network systems, SMP development, Arcade improvements, tools, and public-facing infrastructure.',
+    copy:'We are updating the website, adding to ESN SMP, improving the Arcade, and building more free tools.',
     points:['Network Evolution 12X: missions, Passport, Terminal + search','Live status, event board + seasonal network states','Ongoing SMP and Arcade development'],
   },
 ]
@@ -191,7 +191,7 @@ export function TimelinePage(){
   return <>
     <section className="page-hero timeline-hero">
       <div className="shell page-hero-inner">
-        <div className="page-hero-copy"><span className="eyebrow">ESN HISTORY</span><h1>From EP1C to ES Network.</h1><p>An interactive view of the major eras that shaped the current ESN ecosystem. Exact historical dates are intentionally omitted where they have not been verified.</p></div>
+        <div className="page-hero-copy"><span className="eyebrow">ESN HISTORY</span><h1>From EP1C to ES Network.</h1><p>A look at how EP1C Services became ES Network and the projects that followed.</p></div>
         <div className="page-hero-mark" aria-hidden="true"><span>05</span><small>ERAS</small></div>
       </div>
     </section>
@@ -288,7 +288,7 @@ const portfolioDemos=[
     after:['Clear categories','Role-based permissions','Guided onboarding','Cleaner staff workflow'],
   },
   {
-    key:'website',label:'Website Creation',title:'Basic page → premium conversion-focused experience',
+    key:'website',label:'Website Creation',title:'Basic page → clearer project information',
     before:['Flat information layout','Weak mobile hierarchy','Minimal interaction','Generic calls-to-action'],
     after:['Premium hierarchy','Responsive composition','Interactive depth','Clear conversion paths'],
   },
