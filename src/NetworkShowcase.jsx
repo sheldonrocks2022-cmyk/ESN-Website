@@ -98,7 +98,7 @@ function NetworkMap({live}) {
       <circle cx="50" cy="48" r="34"/>
     </svg>
     <button className="network-map-core" type="button" data-easter="map-core" aria-label="ES Network core">
-      <span>ES</span><strong>NETWORK CORE</strong><small>INTERACTIVE</small>
+      <span>ES</span><strong>QUICK LINKS</strong><small>INTERACTIVE</small>
     </button>
     {nodes.map(node=>{
       const body=<><span className="network-node-dot"/><strong>{node.label}</strong><small>{node.meta}</small><em>{node.status}</em></>
@@ -106,7 +106,7 @@ function NetworkMap({live}) {
         ? <a className={`network-node node-${node.key}`} style={{'--node-x':node.x+'%','--node-y':node.y+'%'}} href={node.href} target="_blank" rel="noreferrer" key={node.key}>{body}</a>
         : <Link className={`network-node node-${node.key}`} style={{'--node-x':node.x+'%','--node-y':node.y+'%'}} to={node.to} key={node.key}>{body}</Link>
     })}
-    <div className="network-map-caption"><span>LIVE NETWORK TOPOLOGY</span><b>{SMP_ADDRESS}:{SMP_PORT}</b></div>
+    <div className="network-map-caption"><span>EXPLORE ESN</span><b>{SMP_ADDRESS}:{SMP_PORT}</b></div>
   </div>
 }
 
@@ -115,14 +115,14 @@ function ActivityFeed({live}) {
   const items=[
     {type:'SMP',title:live.smp.status==='online'?'ESN SMP operational':'SMP telemetry checking',detail:live.smp.players!=null?`${live.smp.players}/${live.smp.maxPlayers??'—'} players detected`:'Public player telemetry may be unavailable',state:statusLabel(live.smp.status)},
     {type:'PLUGIN',title:live.plugin.version||'Latest ESNSMP release',detail:'Public release channel connected',state:statusLabel(live.plugin.status)},
-    {type:'WEB',title:'Website experience online',detail:'GitHub Pages + ESN experience layer',state:'LIVE'},
+    {type:'WEB',title:'ESN website',detail:'Website and browser tools',state:'LIVE'},
     {type:'ARCADE',title:'Six original games ready',detail:'Shared ES Coin ecosystem',state:'LIVE'},
-    {type:'DISCORD',title:'Community gateway connected',detail:live.discord.members!=null?`${live.discord.members.toLocaleString()} approximate members`:'Official invite configured',state:statusLabel(live.discord.status)},
+    {type:'DISCORD',title:'ESN Discord',detail:live.discord.members!=null?`${live.discord.members.toLocaleString()} approximate members`:'Official invite configured',state:statusLabel(live.discord.status)},
   ]
 
   return <aside className="activity-feed">
     <div className="activity-feed-head">
-      <div><span>ESN TELEMETRY</span><h3>Live Network Activity</h3></div>
+      <div><span>LATEST CHECK</span><h3>Project and server status</h3></div>
       <small>LAST CHECK {checked}</small>
     </div>
     <div className="activity-feed-list">
@@ -133,7 +133,7 @@ function ActivityFeed({live}) {
         <em>{item.state}</em>
       </div>)}
     </div>
-    <Link className="activity-feed-link" to="/status">Open full Network Status <span>↗</span></Link>
+    <Link className="activity-feed-link" to="/status">See detailed status <span>↗</span></Link>
   </aside>
 }
 
@@ -142,7 +142,7 @@ export default function NetworkShowcase(){
   return <section className="section network-showcase-section">
     <div className="shell">
       <div className="section-heading flagship-heading">
-        <div><span className="eyebrow">LIVE NETWORK MAP</span><h2>Watch ESN operate as one connected system.</h2><p>Services, SMP, Arcade, tools, website systems, and community access connect through the same live network layer.</p></div>
+        <div><span className="eyebrow">LIVE NETWORK MAP</span><h2>See what's running across ESN.</h2><p>Check the SMP, see our latest plugin release, or jump into a part of ESN.</p></div>
         <Link className="text-link" to="/status">Network Status →</Link>
       </div>
 
