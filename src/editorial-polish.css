@@ -29,3 +29,54 @@ html[data-performance-mode="premium"] .flagship-hero-copy .hero-line-main {
     letter-spacing: -.055em;
   }
 }
+
+/* Round two: emphasize actual content instead of repeated glow and all-caps labels. */
+.page-hero-copy h1,
+.nexus-hero-copy h1,
+.section-heading h2,
+.flagship-story-sticky h2,
+.network-directory-heading h2 {
+  text-wrap: balance;
+  letter-spacing: -.035em;
+}
+.page-hero-copy > p,
+.nexus-hero-copy > p,
+.section-heading p {
+  max-width: 64ch;
+  line-height: 1.68;
+}
+.service-card p,
+.feature-panel p,
+.story-panel p,
+.network-directory-card > p,
+.visibility-related p {
+  line-height: 1.68;
+}
+.page-hero .eyebrow,
+.section-heading .eyebrow,
+.flagship-story .eyebrow,
+.flagship-services-section .eyebrow {
+  letter-spacing: .1em;
+}
+.page-hero .page-hero-orb,
+.page-hero .page-hero-grid {
+  opacity: .42;
+}
+.flagship-service-card h3,
+.network-directory-card-head strong,
+.story-panel h3 {
+  letter-spacing: -.025em;
+  text-wrap: balance;
+}
+:where(.service-card,.feature-panel,.story-panel) a:focus-visible,
+:where(.service-card,.feature-panel,.story-panel) button:focus-visible {
+  outline: 2px solid #a9dfff;
+  outline-offset: 4px;
+}
+@media (max-width: 600px) {
+  .page-hero-copy h1,
+  .section-heading h2,
+  .nexus-hero-copy h1 {
+    text-wrap: pretty;
+  }
+}
