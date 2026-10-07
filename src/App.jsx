@@ -50,19 +50,19 @@ const SERVICES = [
     id: 'fortnite-coaching',
     eyebrow: 'Competitive Gaming',
     title: 'Fortnite Coaching',
-    text: 'Focused coaching built around practical improvement, stronger decision-making, and better in-game consistency.',
+    text: 'Work on match decisions, positioning, and the parts of Fortnite you want to improve.',
   },
   {
     id: 'editing-services',
     eyebrow: 'Creator Services',
     title: 'Editing Services',
-    text: 'Editing support for creators who want sharper, cleaner content built for their platform and audience.',
+    text: 'Have footage that needs work? Tell us the style you're after, and we'll help put together a finished edit.',
   },
   {
     id: 'discord-server-setups',
     eyebrow: 'Community Infrastructure',
     title: 'Discord Server Setups',
-    text: 'Structured Discord setups designed around roles, channels, moderation, onboarding, and community growth.',
+    text: 'We set up channels, roles, moderation, and welcome flows so your Discord is easier to manage.',
   },
 ]
 
@@ -536,8 +536,8 @@ function Footer() {
       <div className="shell footer-top organized-footer">
         <div className="footer-brand-block">
           <Brand />
-          <h2>Build. Play. Create.<br />Stay inside the network.</h2>
-          <p>The official home of ES Network — creator services, website tools, ESN SMP, Arcade, network systems, and community support.</p>
+          <h2>Build. Play. Create.<br />Find your place at ESN.</h2>
+          <p>Find ESN services, website tools, the Minecraft SMP, Arcade games, and our Discord community here.</p>
           <a className="footer-discord" href={DISCORD_URL} target="_blank" rel="noreferrer">Join ESN Discord <span>↗</span></a>
         </div>
 
@@ -635,16 +635,16 @@ function RelatedLinks({ title, links }) {
 }
 function NetworkDirectory() {
   const groups=[
-    {index:'01',title:'Create',copy:'Services, website building, hosting, Store AI, portfolios, and free browser tools.',links:[['Services','/serviceshowcase'],['Site Builder','/site-builder'],['Hosting','/hosting'],['ES Tools','/estools']]},
-    {index:'02',title:'Play',copy:'Everything for the ESN SMP and all six original ESN Arcade games.',links:[['ESN SMP','/smpconnection'],['SMP Store','/storesmp'],['Arcade','/arcade'],['Console Guide','/smpconsole']]},
-    {index:'03',title:'Network',copy:'Live status, updates, Nexus, statistics, releases, and the systems behind ESN.',links:[['Status','/status'],['Nexus','/nexus'],['What\'s New','/whatsnew'],['Explore','/explore']]},
-    {index:'04',title:'About & Help',copy:'Learn who ESN is, meet leadership, read verified reviews, or get support.',links:[['About','/about'],['Leadership','/leadership'],['Reviews','/testimonials'],['Support','/support']]},
+    {index:'01',title:'Create',copy:'Get help with editing, websites, Discord setups, hosting, or everyday tools.',links:[['Services','/serviceshowcase'],['Site Builder','/site-builder'],['Hosting','/hosting'],['ES Tools','/estools']]},
+    {index:'02',title:'Play',copy:'Join the SMP, browse the store, or try one of our six browser games.',links:[['ESN SMP','/smpconnection'],['SMP Store','/storesmp'],['Arcade','/arcade'],['Console Guide','/smpconsole']]},
+    {index:'03',title:'Network',copy:'Server status, project updates, releases, and ESN extras.',links:[['Status','/status'],['Nexus','/nexus'],['What\'s New','/whatsnew'],['Explore','/explore']]},
+    {index:'04',title:'About & Help',copy:'Meet the team, read customer feedback, or get help.',links:[['About','/about'],['Leadership','/leadership'],['Reviews','/testimonials'],['Support','/support']]},
   ]
   return (
     <section className="section network-directory-section" aria-labelledby="network-directory-title">
       <div className="shell">
         <div className="section-heading flagship-heading network-directory-heading">
-          <div><span className="eyebrow">ESN DIRECTORY</span><h2 id="network-directory-title">Everything has a clear place now.</h2><p>Pick what you came to ESN for and jump straight into the right part of the network.</p></div>
+          <div><span className="eyebrow">ESN DIRECTORY</span><h2 id="network-directory-title">Looking for something? Start here.</h2><p>Go straight to the part of ESN you need.</p></div>
           <Link className="text-link" to="/explore">Explore everything →</Link>
         </div>
         <div className="network-directory-grid">
@@ -679,12 +679,12 @@ function Home() {
               <span className="hero-version" data-easter="hero-version" title="ES NETWORK // 2026">ES NETWORK // 2026</span>
             </div>
 
-            <span className="eyebrow">OFFICIAL ES NETWORK DIGITAL HUB</span>
-            <h1><span className="hero-line-small">One network.</span><br /><span className="hero-line-main">Everything ESN.</span></h1>
-            <p>Creator services, verified customer reviews, six original browser games, free tools, community support, and the ESN SMP — built as one connected digital network.</p>
+            <span className="eyebrow">ES NETWORK • OFFICIAL SITE</span>
+            <h1><span className="hero-line-small">Projects to build.</span><br /><span className="hero-line-main">Games to play.</span></h1>
+            <p>We build websites, help creators, run a Minecraft SMP, and make browser games and free tools. Take a look around or join us on Discord.</p>
 
             <div className="hero-actions flagship-actions">
-              <Link className="button primary" to="/serviceshowcase">Enter ES Network <span>↗</span></Link>
+              <Link className="button primary" to="/serviceshowcase">Browse our services <span>↗</span></Link>
               <a className="button secondary" href={DISCORD_URL} target="_blank" rel="noreferrer">Join the community</a>
             </div>
 
@@ -731,8 +731,8 @@ function Home() {
         <div className="shell flagship-story">
           <aside className="flagship-story-sticky">
             <span className="eyebrow">THE NETWORK</span>
-            <h2>Not a collection of pages.<br />One connected experience.</h2>
-            <p>Every major part of ESN now lives inside the same premium system — same navigation, same identity, same visual language.</p>
+            <h2>From commissions to Minecraft.<br />Here's what we work on.</h2>
+            <p>ESN covers a few different things. Here's a closer look at the services, games, server, and tools we're building.</p>
             <Link className="text-link" to="/about">About ES Network →</Link>
           </aside>
 
@@ -745,7 +745,7 @@ function Home() {
 
             <article className="story-panel story-smp">
               <span className="story-index">02</span>
-              <div><span className="eyebrow">ESN SMP</span><h3>A Minecraft world inside the network.</h3><p>Java: {SMP_HOST}:{SMP_JAVA_PORT} • Bedrock/Xbox: {SMP_HOST}:{SMP_BEDROCK_PORT}. Browse the official store, use the console guide, or download the public ESNSMP plugin.</p><Link to="/smpconnection">Enter the SMP hub →</Link></div>
+              <div><span className="eyebrow">ESN SMP</span><h3>Come play on the ESN SMP.</h3><p>Java: {SMP_HOST}:{SMP_JAVA_PORT} • Bedrock/Xbox: {SMP_HOST}:{SMP_BEDROCK_PORT}. Browse the official store, use the console guide, or download the public ESNSMP plugin.</p><Link to="/smpconnection">Enter the SMP hub →</Link></div>
               <strong>SMP</strong>
             </article>
 
@@ -797,7 +797,7 @@ function Home() {
           <div className="flagship-smp-copy">
             <div className="flagship-big-index">ESN // SMP</div>
             <span className="eyebrow">MINECRAFT NETWORK</span>
-            <h2>The network has its own world.</h2>
+            <h2>Our Minecraft server is open.</h2>
             <p>Connect to the ESN SMP, shop official server items, use the console walkthrough, or download the latest public ESNSMP plugin release.</p>
             <div className="flagship-smp-address"><span>SERVER</span><strong>{SMP_HOST}</strong><small>JAVA {SMP_JAVA_PORT} • BEDROCK {SMP_BEDROCK_PORT}</small></div>
             <div className="hero-actions">
@@ -818,7 +818,7 @@ function Home() {
       <section className="section flagship-arcade-section">
         <div className="shell">
           <div className="section-heading flagship-heading">
-            <div><span className="eyebrow">ESN ARCADE</span><h2>Six worlds. One launch deck.</h2></div>
+            <div><span className="eyebrow">ESN ARCADE</span><h2>Six games. Pick one and play.</h2></div>
             <Link className="text-link" to="/arcade">Enter Arcade →</Link>
           </div>
 
@@ -841,8 +841,8 @@ function Home() {
         <div className="shell flagship-community-stage">
           <div>
             <span className="eyebrow">COMMUNITY FIRST</span>
-            <h2>ES Network lives where the community does.</h2>
-            <p>Service support, updates, announcements, SMP information, and community access all connect back to the official ESN Discord.</p>
+            <h2>Find the ESN community on Discord.</h2>
+            <p>Get announcements, ask for help, report an issue, or open a service ticket in our Discord.</p>
           </div>
           <div className="flagship-community-actions">
             <a className="button primary" href={DISCORD_URL} target="_blank" rel="noreferrer">Join ESN Discord</a>
@@ -875,7 +875,7 @@ function Home() {
       <section className="section flagship-reviews-section" id="reviews">
         <div className="shell">
           <div className="flagship-review-header">
-            <div><span className="eyebrow">VERIFIED SOCIAL PROOF</span><h2>35 real ESN customer reviews.</h2><p>Discord feedback from Fortnite coaching, editing, and Discord server setup clients.</p></div>
+            <div><span className="eyebrow">CUSTOMER FEEDBACK</span><h2>What our customers have said.</h2><p>Discord feedback from Fortnite coaching, editing, and Discord server setup clients.</p></div>
             <div className="flagship-review-score"><strong>35</strong><span>VERIFIED</span><small>Discord reviews</small></div>
           </div>
           <div className="flagship-review-wall">
@@ -889,7 +889,7 @@ function Home() {
 
       <section className="section flagship-process-section" id="how-it-works">
         <div className="shell">
-          <div className="section-heading flagship-heading"><div><span className="eyebrow">HOW IT WORKS</span><h2>Three steps. One network.</h2></div></div>
+          <div className="section-heading flagship-heading"><div><span className="eyebrow">HOW IT WORKS</span><h2>Getting started with ESN</h2></div></div>
           <div className="flagship-process">
             <div><span>01</span><strong>Choose</strong><p>Find the service, tool, Arcade game, or SMP destination you need.</p></div>
             <div><span>02</span><strong>Connect</strong><p>Use the official ESN Discord for service ordering and support.</p></div>
@@ -910,8 +910,8 @@ function Home() {
       <section className="section flagship-final-section">
         <div className="shell flagship-final-cta">
           <span className="flagship-final-kicker">ES NETWORK</span>
-          <h2>Build. Play. Create.<br/><span>Stay inside the network.</span></h2>
-          <p>Everything ESN — services, community, tools, Arcade, and SMP — in one connected experience.</p>
+          <h2>Build. Play. Create.<br/><span>Find your place at ESN.</span></h2>
+          <p>Need help with a project, want to try a game, or looking for the SMP? It's all here.</p>
           <div className="hero-actions">
             <Link className="button primary" to="/serviceshowcase">Explore ESN</Link>
             <a className="button secondary" href={DISCORD_URL} target="_blank" rel="noreferrer">Join Discord</a>
@@ -926,7 +926,7 @@ function About() {
     <>
       <PageHero
         eyebrow="About ES Network"
-        title="Built as one network, not a pile of separate projects."
+        title="Get to know ES Network."
         text="ES Network is the current organization and brand. EP1C Services was the former name — not a separate current division."
       />
 
