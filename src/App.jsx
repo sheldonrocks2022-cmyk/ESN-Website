@@ -56,7 +56,7 @@ const SERVICES = [
     id: 'editing-services',
     eyebrow: 'Creator Services',
     title: 'Editing Services',
-    text: 'Have footage that needs work? Tell us the style you're after, and we'll help put together a finished edit.',
+    text: "Have footage that needs work? Tell us the style you're after, and we'll help put together a finished edit.",
   },
   {
     id: 'discord-server-setups',
