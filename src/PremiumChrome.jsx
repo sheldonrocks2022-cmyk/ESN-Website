@@ -304,7 +304,7 @@ export default function PremiumChrome(){
     <div className={open?'premium-command-backdrop open':'premium-command-backdrop'} onClick={()=>setOpen(false)} aria-hidden={!open}/>
 
     <aside className={open?'premium-command open':'premium-command'} aria-hidden={!open} inert={!open}>
-      <div className="premium-command-head"><div><span>ES NETWORK</span><strong>Quick navigation</strong></div><button type="button" onClick={()=>setOpen(false)} aria-label="Close command center">×</button></div>
+      <div className="premium-command-head"><div><span>ES NETWORK</span><strong>ESN Command Center</strong></div><button type="button" onClick={()=>setOpen(false)} aria-label="Close command center">×</button></div>
 
       <div className="premium-command-status">
         <div><i/><span>NETWORK</span><b>ONLINE</b></div>
