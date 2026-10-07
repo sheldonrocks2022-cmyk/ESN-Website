@@ -4,10 +4,10 @@ import { Link } from 'react-router-dom'
 import { SITE_RELEASE, SMP_ADDRESS, SMP_PORT, useLiveNetwork } from './liveNetwork'
 
 const templates=[
-  {id:'smp',type:'ESN SMP',title:'JOIN ESN SMP',subtitle:SMP_ADDRESS+' • PORT '+SMP_PORT,body:'Custom survival, progression, events, bosses, crates, and ESN systems.',link:'/smpconnection',accent:'#45e59d'},
+  {id:'smp',type:'ESN SMP',title:'JOIN ESN SMP',subtitle:SMP_ADDRESS+' • PORT '+SMP_PORT,body:'Join our survival server with boss fights, events, crates, and custom gear.',link:'/smpconnection',accent:'#45e59d'},
   {id:'arcade',type:'ESN ARCADE',title:'PLAY THE ESN ARCADE',subtitle:'6 ORIGINAL BROWSER GAMES',body:'Clicker • Factory • Mines • MOTO • Tower • Tower Defense',link:'/arcade',accent:'#a75dff'},
-  {id:'services',type:'ES NETWORK',title:'BUILD WITH ESN',subtitle:'CREATOR • GAMING • COMMUNITY',body:'Fortnite coaching, editing, Discord setups, website projects, and selected digital services.',link:'/serviceshowcase',accent:'#5aa9ff'},
-  {id:'release',type:'ESN UPDATE',title:'WHAT CHANGED?',subtitle:SITE_RELEASE,body:'See current website upgrades, ESNSMP releases, Arcade work, live systems, and roadmap candidates.',link:'/updates',accent:'#70d8ff'},
+  {id:'services',type:'ES NETWORK',title:'BUILD WITH ESN',subtitle:'CREATOR • GAMING • COMMUNITY',body:'Get help with editing, coaching, Discord setups, and websites.',link:'/serviceshowcase',accent:'#5aa9ff'},
+  {id:'release',type:'ESN UPDATE',title:'WHAT CHANGED?',subtitle:SITE_RELEASE,body:'See what changed on the website, SMP, and Arcade.',link:'/updates',accent:'#70d8ff'},
   {id:'realm',type:'ESN SMP STORE',title:'20 REALM 100 KEYS',subtitle:'$1.25',body:'Twenty Realm 100 keys through the official ESN SMP store.',link:'/storesmp#product-20-realm-100-keys',accent:'#f4c35e'},
   {id:'relic',type:'ESN SMP STORE',title:'SEASON PASS RELIC BUNDLE',subtitle:'$0.50',body:'Angel Wings • Inferno Scepter • Storm Crystal • Tideheart • Void Relic • Celestial Star',link:'/storesmp#product-esn-season-pass-relic-bundle',accent:'#77f3ff'},
   {id:'riftwalker',type:'ESN SMP STORE',title:'RIFTWALKER BUNDLE',subtitle:'$0.50',body:'Riftblade • Rift Wings • Phase Boots • Rift Bow • Rift Core • Void Compass',link:'/storesmp#product-esn-riftwalker-bundle',accent:'#925cff'},
@@ -148,8 +148,8 @@ export default function ShareCenter(){
       <div className="shell page-hero-inner">
         <div className="page-hero-copy">
           <span className="eyebrow">ESN SHARE DECK</span>
-          <h1>Turn ESN into something worth sharing.</h1>
-          <p>Generate branded 1200×630 cards from current ESN information, then share them through your phone or save the PNG.</p>
+          <h1>Make your own ESN share card.</h1>
+          <p>Choose a card for the SMP, Arcade, or a service, then share it or save the image.</p>
         </div>
         <div className="page-hero-mark" aria-hidden="true"><span>↗</span><small>SHARE</small></div>
       </div>
@@ -175,7 +175,7 @@ export default function ShareCenter(){
             </div>
           </div>
           {notice&&<div className="share-notice">{notice}</div>}
-          <p className="share-source-note">Cards are generated locally in your browser from the ESN information shown on this website. No customer claims or fake statistics are added.</p>
+          <p className="share-source-note">These cards are created in your browser from the information on this site. Check details before posting, as offers can change.</p>
         </div>
       </div>
     </section>
