@@ -140,7 +140,7 @@ function ProjectMap(){
     else navigate(item.to)
   }
   return <section className="nexus-panel nexus-map-panel">
-    <div className="nexus-panel-head"><div><span>INTERACTIVE ESN WORLD MAP</span><h2>One network. Multiple live systems.</h2></div><small>SELECT A NODE</small></div>
+    <div className="nexus-panel-head"><div><span>INTERACTIVE ESN WORLD MAP</span><h2>Find your way around ESN.</h2></div><small>SELECT A NODE</small></div>
     <div className="nexus-map" data-easter="map-core">
       <div className="nexus-map-grid"/>
       <div className="nexus-map-core"><span>ES</span><b>NETWORK</b><i/></div>
@@ -207,7 +207,7 @@ function Missions({snapshot,onRefresh}){
     </article>
   }
   return <section className="nexus-panel">
-    <div className="nexus-panel-head"><div><span>DAILY + WEEKLY MISSIONS</span><h2>Progress that feeds your Network level.</h2></div><small>{today}</small></div>
+    <div className="nexus-panel-head"><div><span>DAILY + WEEKLY MISSIONS</span><h2>Earn XP from your own progress.</h2></div><small>{today}</small></div>
     <div className="nexus-mission-grid">{daily.map(item=>render('daily',item,today))}{weekly.map(item=>render('weekly',item,week))}</div>
   </section>
 }
@@ -220,7 +220,7 @@ function ActivityFeed({snapshot,live}){
     ...snapshot.recent.slice(0,4).map(path=>({type:'ROUTE',title:'Visited '+(ROUTE_LABELS[path]||path),meta:'Local activity'})),
   ]
   return <section className="nexus-panel">
-    <div className="nexus-panel-head"><div><span>LIVE ACTIVITY FEED</span><h2>What the network is doing now.</h2></div><small>LIVE + LOCAL</small></div>
+    <div className="nexus-panel-head"><div><span>STATUS & RECENT ACTIVITY</span><h2>Your recent activity and current ESN status.</h2></div><small>STATUS + THIS DEVICE</small></div>
     <div className="nexus-feed">{rows.slice(0,10).map((row,index)=><article key={row.type+row.title+index}><span>{row.type}</span><strong>{row.title}</strong><small>{row.meta}</small><i/></article>)}</div>
   </section>
 }
@@ -239,24 +239,24 @@ function ArcadeCompetition({snapshot}){
   const target=50+(week%6)*25
   const ranked=GAME_META.map(([name,to,key,label])=>({name,to,label,value:Number(snapshot.arcadeTotals[key]||0)})).sort((a,b)=>b.value-a.value)
   const demo=[
-    {name:'MOTO',copy:'Rider lean • suspension • nitro telemetry',value:85+((frame*7)%130),unit:'KM/H'},
-    {name:'TOWER',copy:'Vertical climb • door risk • cashout simulation',value:18+(frame%9),unit:'FLOOR'},
-    {name:'TOWER DEFENSE',copy:'Turret tracking • enemy lane • wave telemetry',value:4+(frame%8),unit:'WAVE'},
+    {name:'MOTO',copy:'Animated speed example, not live game data',value:85+((frame*7)%130),unit:'KM/H'},
+    {name:'TOWER',copy:'Animated floor example, not live game data',value:18+(frame%9),unit:'FLOOR'},
+    {name:'TOWER DEFENSE',copy:'Animated wave example, not live game data',value:4+(frame%8),unit:'WAVE'},
   ][frame%3]
   return <section className="nexus-panel nexus-competition">
-    <div className="nexus-panel-head"><div><span>ARCADE LEADERBOARDS + TOURNAMENTS</span><h2>Competition layer without fake global scores.</h2></div><small>GLOBAL SYNC READY</small></div>
+    <div className="nexus-panel-head"><div><span>ARCADE RECORDS + CHALLENGES</span><h2>See your own records and set a goal.</h2></div><small>THIS DEVICE</small></div>
     <div className="nexus-competition-grid">
       <article className="nexus-leaderboard">
         <div className="nexus-subhead"><strong>PERSONAL MASTERY BOARD</strong><small>Current device until shared backend is connected</small></div>
         {ranked.map((item,index)=><Link to={item.to} key={item.name}><b>#{index+1}</b><span>{item.name}</span><strong>{item.value.toLocaleString()}</strong><small>{item.label}</small></Link>)}
       </article>
       <article className="nexus-tournament">
-        <span>WEEKLY TOURNAMENT</span><h3>{tournament[0]} // TARGET RUN</h3><p>Push your personal {tournament[3].toLowerCase()} record this week. This local tournament shell is ready for real cross-user sync when a shared backend exists.</p>
+        <span>WEEKLY PERSONAL CHALLENGE</span><h3>{tournament[0]} // TARGET RUN</h3><p>Beat your own {tournament[3].toLowerCase()} record this week. This is a personal target, not a live competition with other players.</p>
         <div className="nexus-target"><strong>{current.toLocaleString()}</strong><i><b style={{width:clamp(current/target*100,0,100)+'%'}}/></i><span>{target} TARGET</span></div>
         <Link className="button primary" to={tournament[1]}>Enter challenge</Link>
       </article>
       <article className="nexus-spectator">
-        <div className="nexus-subhead"><strong>ARCADE SPECTATOR MODE</strong><button type="button" onClick={()=>setSpectating(v=>!v)}>{spectating?'PAUSE':'PLAY'}</button></div>
+        <div className="nexus-subhead"><strong>ARCADE ANIMATION PREVIEW</strong><button type="button" onClick={()=>setSpectating(v=>!v)}>{spectating?'PAUSE':'PLAY'}</button></div>
         <div className={'spectator-stage spectator-'+demo.name.toLowerCase().replaceAll(' ','-')}>
           <div className="spectator-grid"/><i className="spectator-object"/><em/><span>{demo.name}</span>
         </div>
@@ -269,7 +269,7 @@ function ArcadeCompetition({snapshot}){
 function LoreArchive({snapshot}){
   const state={arcadeXp:snapshot.arcadeXp,operatorCommands:snapshot.operator.commands||0,vaultUnlocked:snapshot.vaultUnlocked,eggs:snapshot.eggs.length}
   return <section className="nexus-panel">
-    <div className="nexus-panel-head"><div><span>SECRET WEBSITE LORE</span><h2>Encrypted files unlock as the network knows you.</h2></div><small>ARCHIVE</small></div>
+    <div className="nexus-panel-head"><div><span>SECRET WEBSITE LORE</span><h2>Find more story files as you explore.</h2></div><small>ARCHIVE</small></div>
     <div className="nexus-lore">{LORE.map((item,index)=>{
       const unlocked=item.need(state)
       return <article className={unlocked?'unlocked':'locked'} key={item.id}><span>{unlocked?'ACCESS GRANTED':'ENCRYPTED'}</span><h3>{unlocked?item.title:'FILE '+String(index+1).padStart(3,'0')+' // ███████'}</h3><p>{unlocked?item.copy:'Continue exploring, playing, and using hidden ESN systems to decrypt this file.'}</p></article>
@@ -280,7 +280,7 @@ function LoreArchive({snapshot}){
 function PersonalizedDock({snapshot}){
   const items=[...snapshot.favorites,...snapshot.recent].filter((value,index,array)=>array.indexOf(value)===index).slice(0,8)
   return <section className="nexus-panel">
-    <div className="nexus-panel-head"><div><span>PERSONALIZED HOME SCREEN</span><h2>Your ESN launch deck on this device.</h2></div><small>LOCAL MEMORY</small></div>
+    <div className="nexus-panel-head"><div><span>PERSONALIZED HOME SCREEN</span><h2>The pages you keep coming back to.</h2></div><small>LOCAL MEMORY</small></div>
     <div className="nexus-dock">
       {items.map(path=><Link key={path} to={path}><span>{ROUTE_LABELS[path]?.slice(0,2).toUpperCase()||'ES'}</span><strong>{ROUTE_LABELS[path]||path}</strong><small>{snapshot.favorites.includes(path)?'FAVORITE':'RECENT'}</small></Link>)}
       {!items.length&&<p className="nexus-empty">Browse ESN and favorite destinations to build your personal launch deck.</p>}
@@ -290,7 +290,7 @@ function PersonalizedDock({snapshot}){
 
 function NetworkVisualization(){
   return <section className="nexus-panel nexus-visual-panel">
-    <div className="nexus-panel-head"><div><span>3D NETWORK VISUALIZATION</span><h2>The ESN core rendered as a live system.</h2></div><small>INTERACTIVE</small></div>
+    <div className="nexus-panel-head"><div><span>3D NETWORK VISUALIZATION</span><h2>Explore the 3D ESN display.</h2></div><small>INTERACTIVE</small></div>
     <div className="nexus-3d"><ES3DViewer variant="hero" label="Interactive ES Network core visualization"/></div>
   </section>
 }
@@ -377,13 +377,13 @@ function Guide(){
     else if(q.includes('smp')||q.includes('minecraft'))setReply('ESN SMP uses esn.ggwp.cc:17769 for Java and esn.ggwp.cc:17429 for Bedrock/Xbox. I can copy the address or open the SMP page for you.')
     else if(q.includes('arcade')||q.includes('game'))setReply('The Arcade has Clicker, Factory, Mines, MOTO, Tower, and Tower Defense with shared local XP and achievements.')
     else if(q.includes('update')||q.includes('new')||q.includes('change'))setReply('The Release Center and What’s New pages track website, SMP, Arcade, mobile, store, and security changes.')
-    else setReply('I can now take actions too. Try “open notifications,” “open rewards,” “open challenge lab,” “copy the SMP IP,” “install ESN,” “open terminal,” or “change theme to void.”')
+    else setReply('Try “open notifications,” “open rewards,” “open challenge lab,” “copy the SMP IP,” “install ESN,” “open terminal,” or “change theme to void.”')
   }
   function wordOr(words){return words[0]}
 
   const quick=(label,route)=>route?navigate(route):window.dispatchEvent(new Event('esn-open-terminal'))
   return <section className="nexus-panel nexus-guide">
-    <div className="nexus-panel-head"><div><span>ESN AI GUIDE</span><h2>Ask the network — or tell it what to do.</h2></div><small>LOCAL ACTION GUIDE</small></div>
+    <div className="nexus-panel-head"><div><span>ESN SITE GUIDE</span><h2>Find pages and run quick commands.</h2></div><small>LOCAL ACTION GUIDE</small></div>
     <div className="nexus-guide-console"><div className="nexus-guide-reply"><span>ESN GUIDE</span><p>{reply}</p></div><label><input value={query} onChange={e=>setQuery(e.target.value)} onKeyDown={e=>{if(e.key==='Enter')answer()}} placeholder="Try: open notifications"/><button type="button" onClick={answer}>ASK</button></label></div>
     <div className="nexus-guide-actions"><button onClick={()=>quick('Terminal')} type="button">OPEN TERMINAL</button><button onClick={()=>quick('Notifications','/notifications')} type="button">ALERTS</button><button onClick={()=>quick('Rewards','/rewards')} type="button">REWARDS</button><button onClick={()=>quick('Challenges','/challenges')} type="button">CHALLENGES</button><button onClick={()=>quick('Arcade','/arcade')} type="button">ARCADE</button><button onClick={()=>quick('SMP','/smpconnection')} type="button">SMP</button></div>
   </section>
@@ -404,8 +404,8 @@ export function NetworkNexusPage(){
       <div className="shell nexus-hero-inner">
         <div className="nexus-hero-copy">
           <span className="eyebrow">ES NETWORK // NETWORK NEXUS</span>
-          <h1>Your entire ESN world in one command layer.</h1>
-          <p>Command Center, progression, missions, Arcade competition, live activity, secret lore, dynamic events, personalized routing, spectator systems, 3D network visualization, and the ESN Guide are now connected to the systems already running across the site.</p>
+          <h1>Your ESN shortcuts and progress.</h1>
+          <p>Open your favorite pages, check the SMP, track missions, and see your Arcade progress. Your personal records and achievements stay on this device.</p>
           <div className="hero-actions"><button className="button primary" type="button" onClick={openCommand}>Open Command Center</button><button className="button secondary" type="button" onClick={openTerminal}>Launch Terminal</button></div>
         </div>
         <div className="nexus-level-card">
@@ -420,7 +420,7 @@ export function NetworkNexusPage(){
         <Stat label="ACHIEVEMENTS" value={achievements} copy="Arcade + signals + network"/>
         <Stat label="MISSIONS" value={(Object.values(snapshot.claims.daily||{}).flat().length+Object.values(snapshot.claims.weekly||{}).flat().length)} copy="Claimed Nexus missions"/>
         <Stat label="HIDDEN SIGNALS" value={snapshot.eggs.length+'/24'} copy="Easter egg discoveries"/>
-        <Stat label="CURRENT EVENT" value={event.label} copy="Hourly network state"/>
+        <Stat label="CURRENT EVENT" value={event.label} copy="Rotating site theme"/>
       </div>
     </section>
 
@@ -435,7 +435,7 @@ export function NetworkNexusPage(){
         <LoreArchive snapshot={snapshot}/>
         <PersonalizedDock snapshot={snapshot}/>
         <section className="nexus-panel nexus-terminal-card">
-          <div><span>TERMINAL OPERATING SYSTEM</span><h2>Operator Core is already connected.</h2><p>{snapshot.operator.commands||0} commands executed • {snapshot.operator.xp||0} operator XP • {(snapshot.operator.relics||[]).length} Terminal relics. Use aliases, macros, history search, watch mode, dashboards, diagnostics, lore files, themes, signals, and challenges without leaving ESN.</p></div>
+          <div><span>ESN TERMINAL</span><h2>Your terminal shortcuts</h2><p>{snapshot.operator.commands||0} commands executed • {snapshot.operator.xp||0} operator XP • {(snapshot.operator.relics||[]).length} Terminal relics. Open shortcuts, search past commands, check diagnostics, and switch themes without leaving ESN.</p></div>
           <button className="button primary" type="button" onClick={openTerminal}>Boot Terminal</button>
         </section>
         <section className="nexus-panel nexus-links-panel">

@@ -201,14 +201,14 @@ export function NotificationCenterPage(){
     writeJson(NOTICE_KEY,[])
     window.dispatchEvent(new Event('esn-notification-center-change'))
   }
-  const test=()=>window.dispatchEvent(new CustomEvent('esn-local-notification',{detail:{type:'TEST',title:'ESN test alert',copy:'Your local notification pipeline is working.'}}))
+  const test=()=>window.dispatchEvent(new CustomEvent('esn-local-notification',{detail:{type:'TEST',title:'ESN test alert',copy:'Notifications are working on this device.'}}))
 
   return <>
     <section className="page-hero noacct-hero"><div className="shell page-hero-inner"><div className="page-hero-copy"><span className="eyebrow">NOTIFICATION CENTER</span><h1>Your ESN alerts in one place.</h1><p>Release notices, achievements, rewards, SMP status, and network alerts are stored on this device without an account.</p></div><div className="page-hero-mark"><span>{unread}</span><small>UNREAD</small></div></div></section>
     <section className="section"><div className="shell noacct-layout">
       <article className="noacct-panel">
         <span className="noacct-kicker">BROWSER ALERTS</span><h2>{prefs.enabled?'Enabled':'Optional'}</h2>
-        <p>Permission: <strong>{permission}</strong>. These alerts are account-free and device-local. True remote push while the site is fully closed still requires a server push service.</p>
+        <p>Permission: <strong>{permission}</strong>. Alerts work while ESN is open on this device. We cannot currently send push alerts when the site is completely closed.</p>
         <div className="noacct-actions"><button type="button" onClick={toggleAlerts}>{prefs.enabled?'DISABLE ALERTS':'ENABLE ALERTS'}</button><button type="button" onClick={test}>SEND TEST</button></div>
       </article>
       <article className="noacct-panel">
@@ -218,7 +218,7 @@ export function NotificationCenterPage(){
       </article>
     </div></section>
     <section className="section dark-section"><div className="shell">
-      <div className="section-heading"><div><span className="eyebrow">LOCAL INBOX</span><h2>Recent network activity.</h2></div><div className="noacct-actions"><button type="button" onClick={markAll}>MARK ALL READ</button><button type="button" onClick={clear}>CLEAR LOCAL LOG</button></div></div>
+      <div className="section-heading"><div><span className="eyebrow">LOCAL INBOX</span><h2>Notifications on this device.</h2></div><div className="noacct-actions"><button type="button" onClick={markAll}>MARK ALL READ</button><button type="button" onClick={clear}>CLEAR LOCAL LOG</button></div></div>
       <div className="noacct-feed">{notices.length?notices.map(item=><article className={item.read?'read':''} key={item.id}><span>{item.type||'NETWORK'}</span><div><strong>{item.title}</strong><p>{item.copy}</p></div><time>{new Date(item.at).toLocaleString()}</time></article>):<p>No local alerts yet. New ESN activity will appear here.</p>}</div>
     </div></section>
   </>
@@ -269,7 +269,7 @@ export function RewardMarketPage(){
         <div className="noacct-tags">{(retention.collectibles||[]).map(item=><span key={item}>{item}</span>)}{!(retention.collectibles||[]).length&&<small>No collectible relics yet.</small>}</div>
       </article>
     </div></section>
-    <section className="section dark-section"><div className="shell"><div className="section-heading"><div><span className="eyebrow">SHARD MARKET</span><h2>Local cosmetic unlocks.</h2><p>Nothing here is paid and nothing is traded between users.</p></div></div>
+    <section className="section dark-section"><div className="shell"><div className="section-heading"><div><span className="eyebrow">SHARD MARKET</span><h2>Unlock colors and titles.</h2><p>Nothing here is paid and nothing is traded between users.</p></div></div>
       <div className="market-grid">{MARKET_ITEMS.map(item=>{
         const has=owned.has(item.id)
         const equipped=(item.cosmetic&&market.equipped===item.cosmetic)||(item.title&&market.title===item.title)
@@ -343,7 +343,7 @@ export function ChallengeLabPage(){
         <div className="noacct-actions"><button type="button" onClick={share}>SHARE CHALLENGE</button><button type="button" onClick={copy}>COPY LINK</button></div>
       </article>
       <article className="noacct-panel">
-        <span className="noacct-kicker">HOW IT WORKS</span><h2>No fake lobby.</h2><p>This uses a normal shareable URL, not accounts or invented opponents. The target is real, the receiving player uses their own local game stats, and completion is tracked only on their device.</p>
+        <span className="noacct-kicker">HOW IT WORKS</span><h2>Share a challenge with a friend.</h2><p>Send a target with a shareable link. Each player uses their own saved Arcade scores, so this is not a real-time multiplayer lobby.</p>
         <div className="noacct-tags"><span>NO ACCOUNT</span><span>NO BACKEND</span><span>REAL LOCAL STATS</span></div>
       </article>
     </div></section>
@@ -615,7 +615,7 @@ export function StaffDashboardPage(){
 
     <section className="section"><div className="shell staff-operations-grid">
       <article className="noacct-panel">
-        <span className="noacct-kicker">ANNOUNCEMENT BUILDER</span><h2>Build staff copy fast.</h2>
+        <span className="noacct-kicker">ANNOUNCEMENT BUILDER</span><h2>Prepare a Discord announcement.</h2>
         <label>TYPE<select value={announcement.type} onChange={e=>setAnnouncement({...announcement,type:e.target.value})}><option>WEBSITE UPDATE</option><option>SMP UPDATE</option><option>MAINTENANCE</option><option>STORE NOTICE</option><option>GENERAL ESN</option></select></label>
         <label>TITLE<input value={announcement.title} onChange={e=>setAnnouncement({...announcement,title:e.target.value.slice(0,80)})}/></label>
         <label>MESSAGE<textarea value={announcement.copy} onChange={e=>setAnnouncement({...announcement,copy:e.target.value.slice(0,800)})} placeholder="Write the main announcement here…"/></label>
@@ -624,7 +624,7 @@ export function StaffDashboardPage(){
       </article>
 
       <article className="noacct-panel">
-        <span className="noacct-kicker">SAFE SITE TOOLS</span><h2>Operator utilities.</h2>
+        <span className="noacct-kicker">SAFE SITE TOOLS</span><h2>Cache and recovery tools.</h2>
         <p>Refresh cached website files without deleting local Arcade progress, missions, rewards, Vault state, or preferences.</p>
         <div className="staff-tool-stack">
           <button type="button" onClick={safeRefreshCaches}>REFRESH ESN SITE CACHE</button>
@@ -639,7 +639,7 @@ export function StaffDashboardPage(){
     <StaffOpsExpansion />
 
     <section className="section dark-section"><div className="shell">
-      <div className="section-heading"><div><span className="eyebrow">STAFF ACTIVITY</span><h2>Local operator log.</h2><p>Tracks actions performed from this browser’s Staff Dashboard.</p></div><button className="staff-secondary-action" type="button" onClick={()=>{writeJson(STAFF_ACTIVITY_KEY,[]);setActivity([])}}>CLEAR ACTIVITY</button></div>
+      <div className="section-heading"><div><span className="eyebrow">STAFF ACTIVITY</span><h2>Staff actions on this device.</h2><p>Tracks actions performed from this browser’s Staff Dashboard.</p></div><button className="staff-secondary-action" type="button" onClick={()=>{writeJson(STAFF_ACTIVITY_KEY,[]);setActivity([])}}>CLEAR ACTIVITY</button></div>
       <div className="staff-activity-log">{activity.length?activity.slice(0,25).map(item=><article key={item.id}><span>{new Date(item.at).toLocaleString()}</span><strong>{item.action}</strong><small>{item.copy}</small></article>):<p>No staff activity recorded yet.</p>}</div>
       <div className="staff-quicklinks"><Link to="/store-ai">Store AI</Link><Link to="/domains">Domains</Link><Link to="/updates">Release Center</Link><Link to="/nexus">Nexus</Link><Link to="/notifications">Notifications</Link><Link to="/rewards">Reward Vault</Link><Link to="/challenges">Challenge Lab</Link><Link to="/storesmp">SMP Store</Link><a href={DISCORD_URL} target="_blank" rel="noreferrer">Discord</a></div>
       <button className="staff-lock-button" type="button" onClick={()=>{addStaffActivity('STAFF CONSOLE LOCKED','Operator session ended.');sessionStorage.removeItem(STAFF_SESSION_KEY);setAuthorized(false)}}>LOCK STAFF CONSOLE</button>

@@ -64,27 +64,27 @@ const ROUTE_META={
 
 const EXPLORE_FEATURES=[
   ['Install ESN','Add the ESN website to your home screen as an installable web app.','/settings','PWA'],
-  ['Performance Mode','Automatic device-aware performance mode plus manual Performance / Premium controls.','/settings','SYSTEM'],
-  ["What's New",'See updates that landed since your last visit.','/whatsnew','UPDATES'],
+  ['Performance Mode','Let ESN choose a lighter layout for your device or change the visual settings yourself.','/settings','SYSTEM'],
+  ["What's New",'Catch up on recent site changes and new features.','/whatsnew','UPDATES'],
   ['SMP Encyclopedia','Search progression, bosses, crates, systems, and verified commands from ESNSMP v2.9.8.','/smpguide','SMP'],
   ['Bug Reporter','Create a diagnostic report and take it straight to ESN Discord support.','/support','HELP'],
   ['Release Filters','Filter the Release Center by Website, Mobile, SMP, Arcade, Store, Network, and Security.','/updates','LOGS'],
-  ['Incident History','Current status plus a transparent incident-history area with no invented outages.','/status','STATUS'],
+  ['Incident History','Check service status and read documented incidents.','/status','STATUS'],
   ['Favorites + Recents','Keep your favorite and recently visited ESN destinations on this device.','/explore','LOCAL'],
   ['Arcade Daily Challenges','Three rotating daily challenges tied to your real local Arcade progress.','/arcade','ARCADE'],
   ['Arcade Achievements','Cross-game trophies now connect into the existing shared Arcade progression.','/arcade','ARCADE'],
   ['Achievement Alerts','Clean achievement notifications instead of constant random visual effects.','/arcade','ALERTS'],
-  ['Media Gallery','A dedicated ESN media and milestone gallery ready for approved screenshots and media.','/gallery','MEDIA'],
-  ['Network Statistics','Live and local ESN stats in one dashboard.','/networkstats','STATS'],
+  ['Media Gallery','See ESN artwork, milestones, and published media.','/gallery','MEDIA'],
+  ['Network Statistics','Check live system checks alongside your own saved activity.','/networkstats','STATS'],
   ['Quick Copy','One-tap copy for SMP IP, port, plugin checksum, commands, and useful support details.','/smpguide','UTILITY'],
-  ['Smart Mobile Header','A simpler phone header that prioritizes brand, current area, and the menu.','/explore','MOBILE'],
+  ['Smart Mobile Header','Find the navigation menu more easily on smaller screens.','/explore','MOBILE'],
   ['Accessibility Center','Text size, contrast, motion, flashing, target-size, and performance controls.','/settings','ACCESS'],
   ['Search Categories','Universal Search now groups ESN results by category.','/explore','SEARCH'],
-  ['Feature Discovery','This page shows the major systems the ESN website can actually do.','/explore','DISCOVER'],
+  ['Feature Discovery','Browse the different parts of ESN in one place.','/explore','DISCOVER'],
   ['Notification Center','Keep release, reward, achievement, SMP, and local browser alerts in one account-free inbox.','/notifications','ALERTS'],
   ['Reward Vault','Spend locally earned Network Shards on cosmetic core skins and profile titles.','/rewards','REWARDS'],
-  ['Challenge Lab','Create and accept shareable Arcade target challenges without accounts or fake opponents.','/challenges','CHALLENGE'],
-  ['Operations Map','See Website, Nexus, SMP, Arcade, Terminal, Store, and Staff as one connected live system.','/operations','OPS'],
+  ['Challenge Lab','Challenge a friend using local Arcade scores and a shared link.','/challenges','CHALLENGE'],
+  ['Operations Map','See where the main ESN pages and tools connect.','/operations','OPS'],
   ['Diagnostic Center','Run safe browser, service worker, cache, SMP, plugin, and Discord checks before opening support.','/diagnostics','DIAG'],
   ['SMP Connection Tester','Test the current SMP address, port, telemetry, plugin release, and website reachability.','/smpcheck','SMP'],
   ['System Blueprint','Explore how Nexus, Terminal, Vault, Arcade, SMP, Staff, and Operations connect.','/blueprint','SYSTEM'],
@@ -399,10 +399,10 @@ export function SettingsPage(){
   ]
 
   return <>
-    <section className="page-hero"><div className="shell page-hero-inner"><div className="page-hero-copy"><span className="eyebrow">SYSTEM CONTROL</span><h1>Performance & Accessibility.</h1><p>Control how much visual work ESN does on this device and tune the interface for comfort, readability, and battery life.</p></div><div className="page-hero-mark"><span>SYS</span><small>SETTINGS</small></div></div></section>
+    <section className="page-hero"><div className="shell page-hero-inner"><div className="page-hero-copy"><span className="eyebrow">SITE SETTINGS</span><h1>Make ESN work better for you.</h1><p>Adjust text size, motion, contrast, and performance to suit your device.</p></div><div className="page-hero-mark"><span>SYS</span><small>SETTINGS</small></div></div></section>
     <section className="section"><div className="shell expansion-settings-grid">
       <article className="expansion-panel">
-        <span className="eyebrow">PERFORMANCE MODE</span><h2>Choose your rendering profile.</h2><p>Auto detects phone/low-power conditions. Performance reduces visual cost. Premium keeps the richer desktop presentation where the device can handle it.</p>
+        <span className="eyebrow">PERFORMANCE MODE</span><h2>Choose how ESN looks and runs.</h2><p>Auto selects a mode based on your device. Performance uses fewer effects; Premium enables more visuals.</p>
         <div className="mode-selector">{['auto','performance','premium'].map(mode=><button className={prefs.performance===mode?'active':''} type="button" onClick={()=>save({...prefs,performance:mode})} key={mode}><strong>{mode.toUpperCase()}</strong><small>{mode==='auto'?'Device-aware':mode==='performance'?'Battery + smoothness':'Maximum desktop visuals'}</small></button>)}</div>
         <div className="effective-mode"><span>ACTIVE PROFILE</span><strong>{effective.toUpperCase()}</strong></div>
       </article>
@@ -419,9 +419,9 @@ export function SettingsPage(){
 export function WhatsNewPage(){
   useEffect(()=>{localStorage.setItem('esn_last_seen_release',RELEASE_ID)},[])
   return <>
-    <section className="page-hero"><div className="shell page-hero-inner"><div className="page-hero-copy"><span className="eyebrow">WHAT'S NEW</span><h1>Everything added in the latest ESN expansion.</h1><p>This center marks the current feature batch as seen on this device and keeps the major changes easy to find.</p></div><div className="page-hero-mark"><span>NEW</span><small>NO-ACCOUNT EXPANSION</small></div></div></section>
+    <section className="page-hero"><div className="shell page-hero-inner"><div className="page-hero-copy"><span className="eyebrow">WHAT'S NEW</span><h1>Recent changes to ESN.</h1><p>A rundown of recently added features, shortcuts, and site improvements.</p></div><div className="page-hero-mark"><span>ESN</span><small>UPDATES</small></div></div></section>
     <section className="section"><div className="shell whats-new-grid">{WHAT_IS_NEW.map(([title,copy],index)=><article key={title}><span>{String(index+1).padStart(2,'0')}</span><h2>{title}</h2><p>{copy}</p></article>)}</div></section>
-    <section className="section compact-section dark-section"><div className="shell expansion-callout"><div><span className="eyebrow">FULL CHANGELOG</span><h2>Release Center keeps the long-term history.</h2></div><Link className="button secondary" to="/updates">Open Release Center</Link></div></section>
+    <section className="section compact-section dark-section"><div className="shell expansion-callout"><div><span className="eyebrow">FULL CHANGELOG</span><h2>Looking for an older change?</h2></div><Link className="button secondary" to="/updates">Open Release Center</Link></div></section>
   </>
 }
 
@@ -447,7 +447,7 @@ export function SMPEncyclopediaPage(){
     </div></section>
     <section className="section"><div className="shell"><div className="section-heading"><div><span className="eyebrow">ENCYCLOPEDIA</span><h2>Major ESNSMP systems.</h2></div></div><div className="encyclopedia-grid">{ENCYCLOPEDIA.map(([title,copy])=><article key={title}><h3>{title}</h3><p>{copy}</p></article>)}</div></div></section>
     <section className="section compact-section"><div className="shell"><div className="section-heading"><div><span className="eyebrow">KNOWN CUSTOM ITEMS + SETS</span><h2>Current website/store-backed item reference.</h2><p>Only items already surfaced by the current ESN SMP store or progression experience are listed here; the site does not invent undocumented gear.</p></div></div><div className="known-item-grid">{KNOWN_ITEMS.map(([title,items])=><article key={title}><strong>{title}</strong><p>{items}</p></article>)}</div></div></section>
-    <section className="section dark-section"><div className="shell"><div className="section-heading"><div><span className="eyebrow">COMMAND DATABASE</span><h2>Search verified command metadata.</h2><p>Command names and descriptions here follow the current v2.9.8 plugin metadata. Permission-gated admin commands are intentionally not presented as normal player tools.</p></div></div>
+    <section className="section dark-section"><div className="shell"><div className="section-heading"><div><span className="eyebrow">COMMAND DATABASE</span><h2>Search verified command metadata.</h2><p>This reference uses published ESNSMP v2.9.8 command metadata. Newer releases may include additional commands. Admin-only commands are not shown as standard player commands.</p></div></div>
       <div className="command-search-bar"><input value={query} onChange={event=>setQuery(event.target.value)} placeholder="Search home, boss, realm, trade, season…"/><span>{filtered.length} RESULTS</span></div>
       <div className="command-category-row">{categories.map(item=><button className={category===item?'active':''} type="button" onClick={()=>setCategory(item)} key={item}>{item}</button>)}</div>
       <div className="smp-command-grid">{filtered.map(([command,copy,group])=><article key={command}><div><span>{group}</span><button type="button" onClick={()=>doCopy(command.split(' ')[0])}>{copied===command.split(' ')[0]?'COPIED':'COPY'}</button></div><code>{command}</code><p>{copy}</p></article>)}</div>
@@ -489,7 +489,7 @@ export function GalleryPage(){
     {type:'BRAND',title:'ES Network Mark',copy:'Current ESN mark used across the website and installable app experience.',image:'/esn-mark.svg'},
     {type:'MILESTONE',title:'Network Evolution 12X',copy:'Missions, Passport, Terminal, search, event board, achievements, and mobile-safe systems shipped together.'},
     {type:'MILESTONE',title:'Custom .com Launch',copy:'The rebuilt production website moved onto esnoffical.com with production indexing enabled.'},
-    {type:'SMP',title:'ESNSMP v2.9.8',copy:'Current public plugin metadata used by the website command encyclopedia.'},
+    {type:'SMP',title:'ESNSMP v2.9.8',copy:'Reference version used for the command list. Check the plugin page for current releases.'},
     {type:'MEDIA',title:'Community Media Slots',copy:'Approved SMP screenshots, builds, event photos, and promotional media can be added here without using fake placeholders.'},
   ]
   return <>
@@ -767,7 +767,7 @@ export function RetentionHub(){
 
   return <section className="section retention-hub-section"><div className="shell retention-hub">
     <div className="section-heading retention-heading">
-      <div><span className="eyebrow">RETURN LOOP</span><h2>There is always something waiting.</h2><p>Daily rewards, weekly missions, records, rotating events, collectibles, and cross-system progression all feed the same ESN experience on this device.</p></div>
+      <div><span className="eyebrow">KEEP PLAYING</span><h2>Pick up where you left off.</h2><p>Claim a daily reward, work on weekly missions, or return to your last Arcade game. Progress is saved in this browser.</p></div>
       <div className={weekend?'retention-event live':'retention-event'}><span>{weekend?'LIMITED EVENT LIVE':'NEXT SURGE'}</span><strong>{weekend?'2× XP WEEKEND':'FRIDAY → SUNDAY'}</strong><small>{weekend?'Arcade + reward XP is boosted right now.':'Network Surge activates every weekend.'}</small></div>
     </div>
 
@@ -810,7 +810,7 @@ export function RetentionHub(){
     </div>
 
     <div className="retention-vote" id="community-ballot">
-      <div><span className="eyebrow">COMMUNITY BALLOT</span><h3>What should ESN push next?</h3><p>Your choice is remembered for this weekly ballot. The public community tally remains handled through ESN community channels until account-backed voting is available.</p></div>
+      <div><span className="eyebrow">COMMUNITY BALLOT</span><h3>What should ESN work on next?</h3><p>Your pick stays on this device. Use the official ESN Discord for community-wide voting.</p></div>
       <div className="retention-vote-options">{VOTE_OPTIONS.map(([id,title,copy])=><button type="button" className={voteNow.week===week&&voteNow.choice===id?'selected':''} onClick={()=>vote(id)} key={id}><strong>{title}</strong><small>{copy}</small></button>)}</div>
     </div>
   </div></section>

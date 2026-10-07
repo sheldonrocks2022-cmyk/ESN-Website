@@ -160,7 +160,7 @@ export default function DomainsPage(){
     if(!clean){setEligibility({ok:false,title:'ENTER A NAME',copy:'Choose the subdomain you want first.'});return}
     if(RESERVED.has(clean)){setEligibility({ok:false,title:'RESERVED BY ESN',copy:'That name is protected and cannot be rented.'});return}
     if(!validLabel(clean)){setEligibility({ok:false,title:'INVALID NAME',copy:'Use 1–48 lowercase letters, numbers, or hyphens.'});return}
-    setEligibility({ok:true,title:'NAME FORMAT OK',copy:mode==='free'?'Spaceship availability is re-checked automatically before DNS creation.':'Final availability is confirmed manually by ESN staff before payment.'})
+    setEligibility({ok:true,title:'NAME FORMAT OK',copy:mode==='free'?'We check name availability again before creating the DNS record.':'Final availability is confirmed manually by ESN staff before payment.'})
   }
 
   const buildRequest=event=>{
@@ -254,15 +254,15 @@ export default function DomainsPage(){
     <section className="page-hero domains-hero"><div className="shell page-hero-inner">
       <div className="page-hero-copy">
         <span className="eyebrow">ESN HOSTING // FREE SUBDOMAINS</span>
-        <h1>Get a free ESN subdomain — automatically.</h1>
-        <p>Choose a name like <strong>yourname.{ROOT_DOMAIN}</strong>. ESN's GitHub automation securely checks and creates the DNS record through the official Spaceship API. Paid subdomain and custom-domain options are still available too.</p>
+        <h1>Choose your ESN web address.</h1>
+        <p>Choose a name like <strong>yourname.{ROOT_DOMAIN}</strong>. Free requests use automated DNS setup through GitHub. Need to connect a domain you already own? You can request that here, too.</p>
       </div>
       <div className="page-hero-mark"><span>DNS</span><small>AUTO + SPACESHIP API</small></div>
     </div></section>
 
     <section className="section"><div className="shell">
       <div className="domains-system-banner ready">
-        <div><span>ESN HOSTING STATUS</span><strong>FREE SUBDOMAIN AUTOMATION INSTALLED</strong><small>Free requests use GitHub + Spaceship API automation. Paid options still use the staff payment flow.</small></div>
+        <div><span>DOMAIN REQUESTS</span><strong>FREE SUBDOMAIN REQUESTS AVAILABLE</strong><small>Free subdomains use GitHub for verification. Paid requests go through the ESN team.</small></div>
         <button onClick={()=>setShowStaff(true)}>STAFF</button>
       </div>
 
@@ -272,7 +272,7 @@ export default function DomainsPage(){
       </div>
 
       <div className="domains-builder-callout">
-        <div><span>NEW // ESN WEBSITE BUILDER</span><strong>Build the website for your subdomain.</strong><p>Generate a site from a prompt, edit every section, preview phone/desktop, export HTML, and publish a safe ESN-hosted preview.</p></div>
+        <div><span>ESN WEBSITE BUILDER</span><strong>Build the website for your subdomain.</strong><p>Describe your idea, edit the pages, check the mobile preview, and export or publish your site.</p></div>
         <Link to="/site-builder">OPEN SITE BUILDER →</Link>
       </div>
 
@@ -352,9 +352,9 @@ export default function DomainsPage(){
     </div></section>
 
     <section className="section dark-section"><div className="shell">
-      <div className="section-heading"><div><span className="eyebrow">FREE SUBDOMAIN FLOW</span><h2>Pick it. Confirm it. ESN creates it.</h2></div></div>
+      <div className="section-heading"><div><span className="eyebrow">FREE SUBDOMAIN FLOW</span><h2>How the free setup works</h2></div></div>
       <div className="domains-steps">
-        <article><span>01</span><h3>Choose</h3><p>Enter an available-looking name and the hostname your subdomain should point to.</p></article>
+        <article><span>01</span><h3>Choose</h3><p>Enter the name you want and the hostname where your site is hosted.</p></article>
         <article><span>02</span><h3>Prepare host</h3><p>Confirm your destination provider supports the ESN hostname as a custom domain and can issue HTTPS for it.</p></article>
         <article><span>03</span><h3>Create DNS</h3><p>GitHub Actions checks the ESN reserved list and live Spaceship DNS, then creates only the CNAME automatically.</p></article>
         <article><span>04</span><h3>Finish HTTPS</h3><p>Your destination host must accept the ESN hostname and finish its SSL certificate before the browser will show a secure website.</p></article>
@@ -362,9 +362,9 @@ export default function DomainsPage(){
     </div></section>
 
     <section className="section"><div className="shell">
-      <div className="section-heading"><div><span className="eyebrow">PAID HOSTING FLOW</span><h2>Approval first. Payment second. Activation last.</h2></div></div>
+      <div className="section-heading"><div><span className="eyebrow">PAID HOSTING FLOW</span><h2>How paid requests work</h2></div></div>
       <div className="domains-steps">
-        <article><span>01</span><h3>Request</h3><p>Customer chooses a plan and sends the generated request to ESN staff in Discord.</p></article>
+        <article><span>01</span><h3>Request</h3><p>Choose a plan and send your request to the ESN team on Discord.</p></article>
         <article><span>02</span><h3>Approve</h3><p>Staff confirms the requested name, destination, and DNS setup before asking for money.</p></article>
         <article><span>03</span><h3>Pay</h3><p>Staff sends the verified Stripe checkout link. Payment is manually confirmed in Stripe during the beta.</p></article>
         <article><span>04</span><h3>Activate</h3><p>After payment, staff completes the one-record DNS setup, verifies HTTPS, and marks the request Active.</p></article>
@@ -372,7 +372,7 @@ export default function DomainsPage(){
     </div></section>
 
     {requests.length>0&&<section className="section"><div className="shell">
-      <div className="section-heading"><div><span className="eyebrow">THIS DEVICE</span><h2>Your recent hosting requests.</h2><p>These are saved only in this browser. The Discord handoff is still required because the current ESN site has no shared hosting database.</p></div></div>
+      <div className="section-heading"><div><span className="eyebrow">THIS DEVICE</span><h2>Requests saved on this device</h2><p>You can review requests here on this device. Send the request through Discord so staff can complete it.</p></div></div>
       <div className="domains-request-list">
         {requests.slice(0,5).map(request=><article key={request.id}>
           <div><span>{request.typeLabel}</span><strong>{request.hostname||request.customDomain||'ESN Hosting'}</strong><small>{request.id} • {request.priceLabel} • {request.status}</small></div>
