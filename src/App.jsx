@@ -67,11 +67,11 @@ const SERVICES = [
 ]
 
 const SHOWCASE_EXTRAS = [
-  ['Website Creation', 'Web Projects', 'Website Creation includes Basic, Startup, and Enterprise options. ES Tools also includes the previously surfaced $180 starter and $320 multi-page starting estimates; final scope is confirmed through ESN.'],
-  ['Memberships', 'Community', 'Existing ESN membership offers preserved from the current Service Showcase. Exact current tiers and prices will only be migrated once verified.'],
-  ['Hashtag Packs', 'Creator Growth', 'Existing hashtag-pack offers preserved from the current Service Showcase without inventing package details.'],
-  ['Stream Branding', 'Creator Branding', 'Branding work for streams and creator channels, preserved as an existing ESN showcase category.'],
-  ['Custom Services', 'Custom Projects', 'For ESN work that does not fit a standard package, handled through Discord tickets.'],
+  ['Website Creation', 'Web Projects', 'Choose a Basic, Startup, or Enterprise website project. Tell us what you need and we will confirm the scope and final quote before work begins.'],
+  ['Memberships', 'Community', 'Ask about membership options in a ticket. We will confirm current availability and pricing before you order.'],
+  ['Hashtag Packs', 'Creator Growth', 'Need help choosing hashtags for a post or campaign? Tell us what you are promoting in a ticket.'],
+  ['Stream Branding', 'Creator Branding', 'Talk to us about the visuals and branding your stream or creator channel needs.'],
+  ['Custom Services', 'Custom Projects', 'Have a project that is not listed? Open a Discord ticket and tell us what you have in mind.'],
 ]
 
 const LEADERS = [
@@ -935,21 +935,21 @@ function About() {
           <div><strong>ESN</strong><span>Current brand</span></div>
           <div><strong>35</strong><span>Verified reviews</span></div>
           <div><strong>6</strong><span>Arcade games</span></div>
-          <div><strong>1</strong><span>Connected network</span></div>
+          <div><strong>Free</strong><span>Browser tools</span></div>
         </div>
       </section>
 
       <section className="section">
         <div className="shell about-story-grid">
           <div className="about-story-copy">
-            <span className="eyebrow">The Network</span>
-            <h2>Gaming, creator services, tools, community, and ESN SMP.</h2>
-            <p className="large-copy">ESN brings together creator services, gaming, community projects, browser experiences, tools, and the ESN SMP under one recognizable identity.</p>
+            <span className="eyebrow">What we do</span>
+            <h2>Services, games, and projects built by ESN.</h2>
+            <p className="large-copy">We started out as EP1C Services and grew into ES Network. Today you can hire us for creative work, join our Minecraft server, play Arcade games, or try our free tools.</p>
           </div>
           <div className="brand-timeline">
             <div><span>THEN</span><strong>EP1C Services</strong><p>The former name.</p></div>
             <div className="timeline-line"><i /></div>
-            <div><span>NOW</span><strong>ES Network</strong><p>The current organization and brand moving forward.</p></div>
+            <div><span>NOW</span><strong>ES Network</strong><p>Our name today, and the home for our projects.</p></div>
           </div>
         </div>
       </section>
@@ -957,12 +957,12 @@ function About() {
       <section className="section dark-section">
         <div className="shell">
           <div className="section-heading">
-            <div><span className="eyebrow">Why ES Network</span><h2>Everything connects back to the same identity.</h2></div>
+            <div><span className="eyebrow">Why ES Network</span><h2>What can you do here?</h2></div>
           </div>
           <div className="card-grid three">
             <article className="feature-panel"><span className="eyebrow">Services</span><h3>Direct ordering & support</h3><p>Service requests and support are routed through ESN Discord tickets so visitors have one clear place to start.</p></article>
-            <article className="feature-panel"><span className="eyebrow">Gaming</span><h3>ESN SMP & Arcade</h3><p>The Minecraft server and browser Arcade live under the same ES Network navigation and visual system.</p></article>
-            <article className="feature-panel"><span className="eyebrow">Tools</span><h3>Free browser utilities</h3><p>ES Tools provides browser-first creator and gaming utilities without requiring an account.</p></article>
+            <article className="feature-panel"><span className="eyebrow">Gaming</span><h3>ESN SMP & Arcade</h3><p>Join the Minecraft SMP, check the connection guide, or play one of six browser games.</p></article>
+            <article className="feature-panel"><span className="eyebrow">Tools</span><h3>Free browser utilities</h3><p>Try timers, randomizers, prompt tools, and other utilities without signing up.</p></article>
           </div>
         </div>
       </section>
@@ -975,7 +975,7 @@ function Leadership() {
       <PageHero
         eyebrow="ES Network Team"
         title="The people behind ESN."
-        text="Founders and co-founders are separated from administration so the structure stays clear."
+        text="Meet the founders, co-founders, and administrators who help run ESN."
       />
 
       <section className="section leadership-spotlight-section">
@@ -1106,8 +1106,8 @@ function ServicesShowcase() {
     <>
       <PageHero
         eyebrow="Service Showcase"
-        title="ESN services, built around real people."
-        text="Gaming, creator, community, and web services with ordering and support handled through the official ES Network Discord."
+        title="Need a project done? Start here."
+        text="We handle editing, Fortnite coaching, Discord setups, and website work. Tell us what you need in a ticket and we can discuss the details."
         actions={<a className="button primary" href={DISCORD_URL} target="_blank" rel="noreferrer">Open a service ticket <span>↗</span></a>}
       />
 
@@ -1116,14 +1116,14 @@ function ServicesShowcase() {
           <div><strong>8</strong><span>Current service categories</span></div>
           <div><strong>35</strong><span>Verified customer reviews</span></div>
           <div><strong>Discord</strong><span>Ordering & support hub</span></div>
-          <div><strong>ESN</strong><span>One connected network</span></div>
+          <div><strong>Tickets</strong><span>Direct project support</span></div>
         </div>
       </section>
 
       <section className="section service-showcase-section">
         <div className="shell">
           <div className="section-heading">
-            <div><span className="eyebrow">Core Services</span><h2>Start with what ESN does best.</h2></div>
+            <div><span className="eyebrow">Core Services</span><h2>Choose what you need help with.</h2></div>
           </div>
           <div className="card-grid three">
             {SERVICES.map((service, index) => (
@@ -1142,7 +1142,7 @@ function ServicesShowcase() {
       <section className="section dark-section">
         <div className="shell">
           <div className="section-heading">
-            <div><span className="eyebrow">More from ESN</span><h2>Digital work beyond the core three.</h2></div>
+            <div><span className="eyebrow">More from ESN</span><h2>More ways to work with ESN.</h2></div>
           </div>
           <div className="card-grid two">
             {SHOWCASE_EXTRAS.map(([title, type, text], index) => (
@@ -1162,7 +1162,7 @@ function ServicesShowcase() {
         <div className="shell experience-flow">
           <div><span>01</span><strong>Choose</strong><p>Pick the service that matches what you need.</p></div>
           <div><span>02</span><strong>Open a ticket</strong><p>Tell ESN your goals, scope, and references in Discord.</p></div>
-          <div><span>03</span><strong>Build together</strong><p>Work through the correct ESN support channel through delivery.</p></div>
+          <div><span>03</span><strong>Build together</strong><p>Stay in the ticket for questions, updates, and delivery.</p></div>
         </div>
       </section>
       <RelatedLinks
@@ -1192,7 +1192,7 @@ function SMPConnection() {
     <>
       <PageHero
         eyebrow="ESN SMP"
-        title="Your gateway into the ESN world."
+        title="Join ESN SMP on Java or Bedrock."
         text="Use the official connection details below. Java uses port 17769; Bedrock and console players use port 17429."
         actions={<Link className="button secondary" to="/smpconsole">Console connection guide</Link>}
       />
@@ -1211,7 +1211,7 @@ function SMPConnection() {
             <article className="feature-panel">
               <span className="eyebrow">Console Players</span>
               <h3>Xbox, PlayStation & Switch</h3>
-              <p>Use the dedicated console page for third-party server connection guidance and the same ESN server details.</p>
+              <p>The console guide explains the extra steps for Xbox, PlayStation, and Switch players.</p>
               <Link to="/smpconsole">Open console guide →</Link>
             </article>
             <article className="feature-panel">
@@ -1223,7 +1223,7 @@ function SMPConnection() {
             <article className="feature-panel">
               <span className="eyebrow">Need Support?</span>
               <h3>ESN Discord</h3>
-              <p>Server announcements, connection help, store support, and community updates all run through the official Discord.</p>
+              <p>Need a hand connecting or have a store question? You can reach the ESN team on Discord.</p>
               <a href={DISCORD_URL} target="_blank" rel="noreferrer">Open Discord →</a>
             </article>
           </div>
