@@ -102,7 +102,7 @@ export function OperationsMapPage(){
   const live=useLiveNetwork()
   const systemStatus=id=>{
     if(id==='smp')return live.smp.online?'ONLINE':String(live.smp.status||'CHECK')
-    if(id==='website')return navigator.onLine?'ONLINE':'OFFLINE'
+    if(id==='website')return navigator.onLine?'CONNECTED':'OFFLINE'
     if(id==='store')return 'READY'
     return 'ACTIVE'
   }
@@ -111,13 +111,13 @@ export function OperationsMapPage(){
     else window.location.assign(node.route)
   }
   return <>
-    <section className="page-hero ops-hero"><div className="shell page-hero-inner"><div className="page-hero-copy"><span className="eyebrow">ESN OPERATIONS MAP</span><h1>The whole network on one command map.</h1><p>Website, Nexus, SMP, Arcade, Terminal, Store, and Staff shown as connected ES Network systems with current public/local status.</p></div><div className="page-hero-mark"><span>OPS</span><small>NETWORK MAP</small></div></div></section>
+    <section className="page-hero ops-hero"><div className="shell page-hero-inner"><div className="page-hero-copy"><span className="eyebrow">ESN OPERATIONS MAP</span><h1>Find ESN pages and status tools.</h1><p>Use the map to open ESN projects. Browser, Minecraft, plugin, and Discord information is shown below.</p></div><div className="page-hero-mark"><span>OPS</span><small>NETWORK MAP</small></div></div></section>
     <section className="section"><div className="shell"><div className="ops-map">
       <svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">{OPS_NODES.filter(n=>n.id!=='website').map(n=><line key={n.id} x1="50" y1="10" x2={n.x} y2={n.y}/>)}</svg>
       {OPS_NODES.map(node=><button key={node.id} type="button" style={{'--x':node.x+'%','--y':node.y+'%'}} onClick={()=>activate(node)}><i/><strong>{node.label}</strong><small>{systemStatus(node.id)}</small></button>)}
     </div></div></section>
     <section className="section dark-section"><div className="shell ops-status-grid">
-      <article><span>WEBSITE</span><strong>{navigator.onLine?'ONLINE':'CONNECTION LOST'}</strong><small>{SITE_RELEASE}</small></article>
+      <article><span>YOUR BROWSER</span><strong>{navigator.onLine?'CONNECTED':'OFFLINE'}</strong><small>{SITE_RELEASE}</small></article>
       <article><span>SMP</span><strong>{live.smp.online?'ONLINE':String(live.smp.status||'CHECKING').toUpperCase()}</strong><small>{live.smp.players!=null?live.smp.players+'/'+(live.smp.maxPlayers??'—')+' players':'Telemetry limited'}</small></article>
       <article><span>PLUGIN</span><strong>{live.plugin.version||live.plugin.status}</strong><small>Latest public release channel</small></article>
       <article><span>DISCORD</span><strong>{String(live.discord.status||'configured').toUpperCase()}</strong><small>{live.discord.members!=null?live.discord.members+' members':'Invite configured'}</small></article>
