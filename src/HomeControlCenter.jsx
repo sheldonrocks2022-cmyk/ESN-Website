@@ -96,8 +96,8 @@ export default function HomeControlCenter(){
           <header className="home-control-head">
             <div>
               <span className="eyebrow">MY ESN</span>
-              <h2 id="home-control-title">Your network, ready when you are.</h2>
-              <p>Recent places, saved destinations, quick actions, and device-aware network status — stored locally on this device.</p>
+              <h2 id="home-control-title">Your ESN shortcuts</h2>
+              <p>Pick up where you left off, save pages you use often, and check your shortcuts. Your choices stay on this device.</p>
             </div>
             <div className="home-control-system">
               <span className={online?'online':'offline'}><i/>{online?'ONLINE':'OFFLINE'}</span>
@@ -111,19 +111,19 @@ export default function HomeControlCenter(){
               <div className="home-control-label"><span>CONTINUE</span><b>{recent.length ? recent.length+' RECENT' : 'NEW VISIT'}</b></div>
               {last&&ROUTES[last]?(
                 <Link className="home-control-resume" to={last}>
-                  <div><small>{ROUTES[last].category}</small><strong>{ROUTES[last].label}</strong><span>Pick up where you left off.</span></div>
+                  <div><small>{ROUTES[last].category}</small><strong>{ROUTES[last].label}</strong><span>Open this page again.</span></div>
                   <em>↗</em>
                 </Link>
               ):(
                 <Link className="home-control-resume empty" to="/explore">
-                  <div><small>START HERE</small><strong>Explore ES Network</strong><span>Your recent destinations will appear here as you use the site.</span></div>
+                  <div><small>START HERE</small><strong>Explore ES Network</strong><span>Pages you visit will show up here.</span></div>
                   <em>↗</em>
                 </Link>
               )}
 
               <div className="home-control-recent">
                 {recent.slice(1).map(route=><Link to={route} key={route}><span>{ROUTES[route].category}</span><strong>{ROUTES[route].label}</strong><em>↗</em></Link>)}
-                {!recent.slice(1).length&&<div className="home-control-empty-line">More recent destinations will appear here.</div>}
+                {!recent.slice(1).length&&<div className="home-control-empty-line">You'll see more of your recent pages here.</div>}
               </div>
             </article>
 
@@ -142,9 +142,9 @@ export default function HomeControlCenter(){
           </div>
 
           <div className="home-control-next">
-            <span>NEXT MOVES</span>
+            <span>YOU MIGHT NEED</span>
             <div>{suggestions.map(item=><Link to={item.to} key={item.to}><strong>{item.label}</strong><small>{item.category}</small><em>→</em></Link>)}</div>
-            <Link className="home-control-all" to="/explore">Open full network map ↗</Link>
+            <Link className="home-control-all" to="/explore">See all pages ↗</Link>
           </div>
         </div>
       </div>
