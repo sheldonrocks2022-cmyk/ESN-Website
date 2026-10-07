@@ -1,0 +1,31 @@
+/* Quieter homepage typography without changing ESN navigation or features. */
+.flagship-hero-copy h1 {
+  line-height: .91;
+  letter-spacing: -.055em;
+}
+.flagship-hero-copy .hero-line-main {
+  background: linear-gradient(105deg, #f6fbff 12%, #a4d8ea 92%);
+  background-size: 100% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  animation: none;
+}
+html[data-performance-mode="premium"] .flagship-hero-copy .hero-line-main {
+  animation: none !important;
+}
+.flagship-hero-copy > p {
+  max-width: 590px;
+  line-height: 1.65;
+}
+.network-directory-heading p,
+.flagship-story-sticky > p,
+.flagship-community-stage p,
+.flagship-final-cta > p {
+  max-width: 62ch;
+  line-height: 1.7;
+}
+@media (max-width: 860px) {
+  .flagship-hero-copy h1 {
+    letter-spacing: -.055em;
+  }
+}
