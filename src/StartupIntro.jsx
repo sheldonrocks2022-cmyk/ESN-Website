@@ -26,7 +26,7 @@ export default function StartupIntro(){
         <div className="startup-logo">ES</div>
       </div>
       <span className="startup-kicker">ES NETWORK</span>
-      <h1>Opening ESN</h1>
+      <h1>Initializing ESN</h1>
       <div className="startup-modules">
         <span>NETWORK</span><i/>
         <span>ARCADE</span><i/>
