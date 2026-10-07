@@ -6,8 +6,8 @@ import './visibilityExpansion.css'
 const LANDINGS={
   'minecraft-server':{
     eyebrow:'MINECRAFT SERVER',
-    title:'A Minecraft server built around the ESN network.',
-    intro:'Looking for the ESN Minecraft server? Start with the public world hub, server status, connection information, progression guides, and current ESN SMP resources.',
+    title:'Join ESN SMP on Java or Bedrock.',
+    intro:'Get the server address and ports, check its status, and browse the ESN SMP guides before joining.',
     bullets:['Live server and plugin status','Java / Bedrock-aware telemetry where available','Progression, commands, bosses, gear, and economy guides','Official ESN community and support paths'],
     primary:['Open SMP World Hub','/smp-hub'],
     secondary:['Browse SMP guides','/guides/minecraft-smp-beginner-guide'],
@@ -15,8 +15,8 @@ const LANDINGS={
   },
   'minecraft-smp':{
     eyebrow:'MINECRAFT SMP',
-    title:'Explore the ESN SMP Minecraft experience.',
-    intro:'ESN SMP combines survival with custom progression systems, economy, bosses, gear, events, travel, and other ESNSMP features surfaced through the official ES Network website.',
+    title:'See what ESN SMP has to offer.',
+    intro:'Play survival with quests, boss fights, custom equipment, an economy, and more. Find the current server details and guides here.',
     bullets:['100-Realm progression surfaced by ESNSMP','Economy, trading, jobs, skills, quests, and titles','Boss, dungeon, raid, relic, rune, and Adventure systems','Official store items and searchable item encyclopedia'],
     primary:['Explore ESN SMP','/smp-hub'],
     secondary:['SMP beginner guide','/guides/minecraft-smp-beginner-guide'],
@@ -25,7 +25,7 @@ const LANDINGS={
   'fortnite-coaching':{
     eyebrow:'FORTNITE COACHING',
     title:'Fortnite coaching through ES Network.',
-    intro:'ESN offers focused Fortnite coaching built around practical improvement, decision-making, consistency, and clearer next steps for players.',
+    intro:'Work on the parts of Fortnite that matter to you, from match decisions and positioning to consistency.',
     bullets:['Focused improvement instead of generic advice','Project brief builder before opening a ticket','Discord-based ordering and support','Scope is confirmed before work begins'],
     primary:['Configure coaching','/configure'],
     secondary:['Explore ESN services','/serviceshowcase'],
@@ -34,7 +34,7 @@ const LANDINGS={
   'video-editing':{
     eyebrow:'VIDEO EDITING',
     title:'Video editing support for creators.',
-    intro:'ES Network editing services are built for creators who want cleaner, sharper content for their platform and audience, with project details confirmed through the official ESN workflow.',
+    intro:'Need a video edited? Share the footage, examples, and deadline in a Discord ticket so we can discuss the work.',
     bullets:['Gaming and creator-focused editing support','Build a clear project brief before contacting ESN','Flexible project scope instead of invented fixed promises','Official Discord handoff for ordering and support'],
     primary:['Build editing brief','/configure'],
     secondary:['See service showcase','/serviceshowcase'],
@@ -43,7 +43,7 @@ const LANDINGS={
   'discord-server-setup':{
     eyebrow:'DISCORD SERVER SETUP',
     title:'Discord server setup for communities and creators.',
-    intro:'ESN Discord setup work focuses on structured roles, channels, moderation, onboarding, and community organization based on what the project actually needs.',
+    intro:'Need a better Discord setup? We can discuss roles, channels, welcome messages, moderation, and server organization.',
     bullets:['Role and channel organization','Moderation and onboarding planning','Community-focused structure','Custom scope confirmed through ESN support'],
     primary:['Configure Discord project','/configure'],
     secondary:['Discord setup guide','/guides/gaming-discord-server-guide'],
@@ -52,7 +52,7 @@ const LANDINGS={
   'website-builder':{
     eyebrow:'WEBSITE BUILDER',
     title:'Build and publish a website with ESN.',
-    intro:'The ESN Website Builder creates structured websites, provides responsive previews and editing controls, and publishes approved sites under the ESN /sites path.',
+    intro:'Start with a description, edit the result, preview it on mobile or desktop, and publish through the ESN site builder.',
     bullets:['Prompt-driven site generation and editing','Desktop, tablet, and mobile previews','Real published-site showcase','Public /sites/yourname publishing flow'],
     primary:['Open Website Builder','/site-builder'],
     secondary:['See real showcase','/showcase'],
@@ -61,7 +61,7 @@ const LANDINGS={
   'free-browser-tools':{
     eyebrow:'FREE BROWSER TOOLS',
     title:'Free ES Tools, directly in your browser.',
-    intro:'ES Tools provides browser-based utilities for creators and players without an account wall.',
+    intro:'Free timers, randomizers, prompt tools, and other utilities you can use right in your browser.',
     bullets:['Challenge generator','Focus timer','Prompt generator and random picker','Coin flip, dice, and website estimates'],
     primary:['Open ES Tools','/estools'],
     secondary:['Explore ES Network','/explore'],
@@ -158,13 +158,13 @@ export function SearchLandingPage(){
   if(!page)return <Hero eyebrow="ES NETWORK" title="That ESN guide was not found." copy="Use the Explore page to find the current ESN destination."/>
   return <><Hero eyebrow={page.eyebrow} title={page.title} copy={page.intro}><div className="hero-actions"><Link className="button primary" to={page.primary[1]}>{page.primary[0]}</Link><Link className="button secondary" to={page.secondary[1]}>{page.secondary[0]}</Link></div></Hero>
     <section className="section"><div className="shell visibility-landing-grid"><article><span className="eyebrow">WHY THIS PAGE EXISTS</span><h2>Get to the useful part quickly.</h2><p>{page.intro}</p></article><div className="visibility-benefits">{page.bullets.map((item,index)=><div key={item}><span>{String(index+1).padStart(2,'0')}</span><strong>{item}</strong></div>)}</div></div></section>
-    <section className="section dark-section"><div className="shell visibility-related"><div><span className="eyebrow">KEEP EXPLORING</span><h2>Related ESN resources.</h2></div><div>{page.related.map(([label,to])=><Link to={to} key={to}>{label}<span>↗</span></Link>)}</div></div></section></>
+    <section className="section dark-section"><div className="shell visibility-related"><div><span className="eyebrow">KEEP EXPLORING</span><h2>Keep reading.</h2></div><div>{page.related.map(([label,to])=><Link to={to} key={to}>{label}<span>↗</span></Link>)}</div></div></section></>
 }
 
 export function GuidesHubPage(){
   const articles=Object.entries(GUIDES)
   const news=[['Release Center','Current website, SMP, Arcade, network, store, and security updates.','/updates'],['Network Activity','Recent ESN platform milestones plus local route activity.','/activity'],["What's New",'A quick view of major features added to the current ESN website.','/whatsnew'],['Network Changelog','Interactive change history across ESN systems.','/changelog']]
-  return <><Hero eyebrow="ESN GUIDES + NEWS" title="Useful answers that lead somewhere." copy="Practical ESN guides plus direct access to current network updates. No filler pages built just to create URLs."/>
+  return <><Hero eyebrow="ESN GUIDES + NEWS" title="Guides from ESN." copy="Connection steps, creator tips, Discord setup advice, and links to current ESN updates."/>
     <section className="section"><div className="shell"><div className="section-heading"><div><span className="eyebrow">EVERGREEN GUIDES</span><h2>Answers people can actually use.</h2></div></div><div className="visibility-guide-grid">{articles.map(([slug,item])=><Link to={'/guides/'+slug} key={slug}><span>{item.category}</span><h2>{item.title}</h2><p>{item.description}</p><small>Updated {item.updated}</small><em>Read guide ↗</em></Link>)}</div></div></section>
     <section className="section dark-section"><div className="shell"><div className="section-heading"><div><span className="eyebrow">ESN NEWS + RELEASES</span><h2>See what changed recently.</h2></div></div><div className="visibility-news-grid">{news.map(([title,copy,to])=><Link to={to} key={to}><strong>{title}</strong><p>{copy}</p><span>Open ↗</span></Link>)}</div></div></section></>
 }
@@ -178,14 +178,14 @@ export function GuideArticlePage(){
 }
 
 export function BrandAuthorityPage(){
-  return <><Hero eyebrow="ES NETWORK // OFFICIAL" title="ES Network: gaming, creator services, SMP, tools, and web projects." copy="ES Network (ESN) is the current organization and brand. EP1C Services was the former name, not a separate current division."/>
+  return <><Hero eyebrow="ES NETWORK // OFFICIAL" title="Meet ES Network." copy="ES Network (ESN) is the current organization and brand. EP1C Services was the former name, not a separate current division."/>
     <section className="section"><div className="shell visibility-brand-grid">
       <article><span>01</span><h2>Creator services</h2><p>Fortnite coaching, creator editing, Discord server setups, website projects, and selected custom digital work.</p><Link to="/serviceshowcase">Explore services →</Link></article>
       <article><span>02</span><h2>Gaming network</h2><p>ESN includes the ESN SMP and six original browser games inside the ESN Arcade.</p><Link to="/minecraft-smp">Explore gaming →</Link></article>
-      <article><span>03</span><h2>Tools + creation</h2><p>Free browser tools, the ESN Website Builder, Store AI, sharing systems, and platform utilities.</p><Link to="/website-builder">Explore creation →</Link></article>
-      <article><span>04</span><h2>Community</h2><p>Official ESN community access, service support, project handoffs, and announcements connect through the current ESN Discord.</p><a href={DISCORD_URL} target="_blank" rel="noreferrer">Official Discord ↗</a></article>
+      <article><span>03</span><h2>Tools + creation</h2><p>Try free browser tools, build a website, or find information about ESN products and services.</p><Link to="/website-builder">Explore creation →</Link></article>
+      <article><span>04</span><h2>Community</h2><p>Join the Discord for updates, support, project tickets, and community conversations.</p><a href={DISCORD_URL} target="_blank" rel="noreferrer">Official Discord ↗</a></article>
     </div></section>
-    <section className="section dark-section"><div className="shell visibility-official-card"><div><span className="eyebrow">IDENTITY</span><h2>One organization. One current brand.</h2><p>When you see ES Network or ESN on this site, it refers to the current organization. References to EP1C Services describe the former name and history.</p></div><div><Link to="/about">About ESN ↗</Link><Link to="/trust">Trust Center ↗</Link><Link to="/timeline">ESN Timeline ↗</Link><Link to="/leadership">Leadership ↗</Link></div></div></section></>
+    <section className="section dark-section"><div className="shell visibility-official-card"><div><span className="eyebrow">IDENTITY</span><h2>How ESN got its name.</h2><p>When you see ES Network or ESN on this site, it refers to the current organization. References to EP1C Services describe the former name and history.</p></div><div><Link to="/about">About ESN ↗</Link><Link to="/trust">Trust Center ↗</Link><Link to="/timeline">ESN Timeline ↗</Link><Link to="/leadership">Leadership ↗</Link></div></div></section></>
 }
 
 export function SMPFeaturePage(){
@@ -193,8 +193,8 @@ export function SMPFeaturePage(){
   const item=SMP_FEATURES[feature]
   if(!item)return <Hero eyebrow="ESN SMP" title="SMP feature not found." copy="Browse the current SMP Item Encyclopedia for published ESN gear and systems."/>
   return <><Hero eyebrow={item.tag} title={item.title} copy={item.copy}><div className="hero-actions"><Link className="button primary" to="/smp-items">Open item encyclopedia</Link><Link className="button secondary" to="/smp-hub">SMP World Hub</Link></div></Hero>
-    <section className="section"><div className="shell visibility-feature-layout"><article><span className="eyebrow">CURRENT PUBLISHED INFORMATION</span><h2>{item.title}</h2><p>{item.copy}</p><small>Product availability, checkout state, and live server behavior can change. Use the current ESN Store and SMP Hub as the source of truth.</small></article><div>{item.items.map((value,index)=><div key={value}><span>{String(index+1).padStart(2,'0')}</span><strong>{value}</strong></div>)}</div></div></section>
-    <section className="section dark-section"><div className="shell visibility-related"><div><span className="eyebrow">SMP DISCOVERY</span><h2>Explore more ESN SMP.</h2></div><div><Link to="/smp-items">Items <span>↗</span></Link><Link to="/smpguide">Encyclopedia <span>↗</span></Link><Link to="/smp-hub">World Hub <span>↗</span></Link></div></div></section></>
+    <section className="section"><div className="shell visibility-feature-layout"><article><span className="eyebrow">ITEM DETAILS</span><h2>{item.title}</h2><p>{item.copy}</p><small>Product availability, checkout state, and live server behavior can change. Use the current ESN Store and SMP Hub as the source of truth.</small></article><div>{item.items.map((value,index)=><div key={value}><span>{String(index+1).padStart(2,'0')}</span><strong>{value}</strong></div>)}</div></div></section>
+    <section className="section dark-section"><div className="shell visibility-related"><div><span className="eyebrow">SMP DISCOVERY</span><h2>More from the SMP.</h2></div><div><Link to="/smp-items">Items <span>↗</span></Link><Link to="/smpguide">Encyclopedia <span>↗</span></Link><Link to="/smp-hub">World Hub <span>↗</span></Link></div></div></section></>
 }
 
 function readObject(key){try{const value=JSON.parse(localStorage.getItem(key)||'{}');return value&&typeof value==='object'&&!Array.isArray(value)?value:{}}catch{return{}}}
