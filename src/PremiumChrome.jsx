@@ -280,16 +280,16 @@ export default function PremiumChrome(){
     <div className="premium-ticker" aria-label="ES Network highlights">
       <div className="premium-ticker-track">
         {[0,1].map(copy=><div className="premium-ticker-segment" key={copy}>
-          <span><i/> ESN SYSTEMS ONLINE</span><span>35 VERIFIED REVIEWS</span><span>6 ORIGINAL ARCADE GAMES</span><span>{SMP_HOST}</span><span>LIVE NETWORK STATUS</span><span>PUBLIC ESNSMP PLUGIN</span><span>FREE ES TOOLS</span>
+          <span><i/> ESN OFFICIAL SITE</span><span>35 VERIFIED REVIEWS</span><span>6 ORIGINAL ARCADE GAMES</span><span>{SMP_HOST}</span><span>LIVE NETWORK STATUS</span><span>PUBLIC ESNSMP PLUGIN</span><span>FREE ES TOOLS</span>
         </div>)}
       </div>
     </div>
 
-    <div className="lux-route-rail" aria-hidden="true"><span>ESN</span><i/><b>{routeLabel}</b><em>LIVE EXPERIENCE</em></div>
+    <div className="lux-route-rail" aria-hidden="true"><span>ESN</span><i/><b>{routeLabel}</b><em>EXPLORE ESN</em></div>
 
     <div className="premium-dock" aria-label="ESN quick actions">
       <button className={open?'premium-orb active':'premium-orb'} type="button" onClick={orbTap} aria-expanded={open} aria-label="Open ESN command center"><span>ES</span><i/></button>
-      <div className="premium-dock-label">COMMAND CENTER</div>
+      <div className="premium-dock-label">SITE TOOLS</div>
       {showTop&&<button className="premium-top-button" type="button" onClick={()=>window.scrollTo({top:0,behavior:'smooth'})} aria-label="Back to top">↑</button>}
     </div>
 
@@ -304,7 +304,7 @@ export default function PremiumChrome(){
     <div className={open?'premium-command-backdrop open':'premium-command-backdrop'} onClick={()=>setOpen(false)} aria-hidden={!open}/>
 
     <aside className={open?'premium-command open':'premium-command'} aria-hidden={!open} inert={!open}>
-      <div className="premium-command-head"><div><span>ES NETWORK</span><strong>Command Center 2.0</strong></div><button type="button" onClick={()=>setOpen(false)} aria-label="Close command center">×</button></div>
+      <div className="premium-command-head"><div><span>ES NETWORK</span><strong>ESN Command Center</strong></div><button type="button" onClick={()=>setOpen(false)} aria-label="Close command center">×</button></div>
 
       <div className="premium-command-status">
         <div><i/><span>NETWORK</span><b>ONLINE</b></div>
@@ -351,7 +351,7 @@ export default function PremiumChrome(){
       </section>
 
       <a className="premium-command-discord" href={DISCORD_URL} target="_blank" rel="noreferrer"><span><b>Join ESN Discord</b><small>Community • support • ordering</small></span><em>↗</em></a>
-      <div className="premium-command-hint"><span>CTRL / CMD + K</span><span>SEARCH • COMMANDS • THEMES</span></div>
+      <div className="premium-command-hint"><span>CTRL / CMD + K</span><span>PAGES • TOOLS • THEMES</span></div>
     </aside>
   </>
 }

@@ -1416,7 +1416,7 @@ export function NetworkEvolutionSection(){
   return <section className="section ev-hub-section">
     <div className="shell">
       <div className="section-heading flagship-heading">
-        <div><span className="eyebrow">NETWORK EVOLUTION 12X</span><h2>The website now remembers how you explore.</h2><p>Local-device missions, progression, live event information, universal search, commands, seasonal states, and hidden network events.</p></div>
+        <div><span className="eyebrow">YOUR ESN EXTRAS</span><h2>There is more to find around here.</h2><p>Collect badges, find hidden surprises, track your progress, and use quick search. Your progress stays on your device.</p></div>
         <button className="text-link ev-link-button" type="button" onClick={()=>window.dispatchEvent(new Event('esn-open-passport'))}>Open Passport →</button>
       </div>
       <div className="ev-home-grid">
@@ -1428,7 +1428,7 @@ export function NetworkEvolutionSection(){
           <button type="button" onClick={()=>window.dispatchEvent(new Event('esn-open-passport'))}>View missions & badges</button>
         </article>
         <article className="ev-home-terminal">
-          <span>ESN TERMINAL</span><strong>Command the entire network.</strong><p>Live status, Arcade stats and launching, missions, rewards, inventory, Passport identity, favorites, themes, performance controls, diagnostics, history, voting, hidden protocols, and more.</p>
+          <span>ESN TERMINAL</span><strong>Shortcuts when you need them.</strong><p>Open games, check status, find saved pages, change your theme, or look at your badges from one menu.</p>
           <button type="button" onClick={()=>window.dispatchEvent(new Event('esn-open-terminal'))}>Open Terminal</button>
         </article>
         <article className="ev-home-search">
@@ -1438,7 +1438,7 @@ export function NetworkEvolutionSection(){
       </div>
 
       <div className="ev-event-board">
-        <div className="ev-event-board-head"><div><span>LIVE SMP + NETWORK EVENT BOARD</span><strong>Current public signals</strong></div><small>Discord remains the source of truth for newly announced timed events.</small></div>
+        <div className="ev-event-board-head"><div><span>LIVE SMP + NETWORK EVENT BOARD</span><strong>SMP announcements and updates</strong></div><small>Discord remains the source of truth for newly announced timed events.</small></div>
         <div className="ev-event-board-grid">{SMP_EVENT_BOARD.map(item=><article key={item.title}>
           <div><span>{item.type}</span><b>{item.status}</b></div><strong>{item.title}</strong><p>{item.copy}</p>
           {item.external?<a href={DISCORD_URL} target="_blank" rel="noreferrer">Open Discord ↗</a>:<Link to={item.to}>Open →</Link>}

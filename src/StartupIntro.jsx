@@ -25,7 +25,7 @@ export default function StartupIntro(){
         <div className="startup-ring ring-b"/>
         <div className="startup-logo">ES</div>
       </div>
-      <span className="startup-kicker">ES NETWORK // SYSTEM STARTUP</span>
+      <span className="startup-kicker">ES NETWORK</span>
       <h1>Initializing ESN</h1>
       <div className="startup-modules">
         <span>NETWORK</span><i/>
@@ -34,9 +34,9 @@ export default function StartupIntro(){
         <span>TOOLS</span>
       </div>
       <div className="startup-progress"><span/></div>
-      <small>LOADING LIVE EXPERIENCE</small>
+      <small>LOADING THE SITE</small>
     </div>
     <div className="startup-corner tl">ESN // 2026</div>
-    <div className="startup-corner br">SECURE EXPERIENCE LAYER</div>
+    <div className="startup-corner br">BUILD • PLAY • CREATE</div>
   </div>
 }

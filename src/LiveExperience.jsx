@@ -17,7 +17,7 @@ export function WhatsHappeningNow(){
   return <section className="section now-section">
     <div className="shell">
       <div className="section-heading flagship-heading">
-        <div><span className="eyebrow">WHAT'S HAPPENING NOW</span><h2>Live across ES Network.</h2></div>
+        <div><span className="eyebrow">WHAT'S HAPPENING NOW</span><h2>What's happening at ESN</h2></div>
         <Link className="text-link" to="/status">Open Network Status →</Link>
       </div>
 
@@ -26,7 +26,7 @@ export function WhatsHappeningNow(){
           <div className="now-card-top"><span>ESN SMP</span><StatusPill status={live.smp.status}/></div>
           {live.smp.telemetry==='live'&&live.smp.players!=null
             ? <><strong>{live.smp.players}<small> / {live.smp.maxPlayers??'—'}</small></strong><p>Players online right now</p></>
-            : <><strong>LIVE</strong><p>ESN confirmed online • player telemetry unavailable</p></>}
+            : <><strong>{live.smp.status==='online'?'ONLINE':'CHECKING'}</strong><p>{live.smp.status==='online'?'ESN confirmed online • player telemetry unavailable':'Waiting for a confirmed SMP status'}</p></>}
           <div className="now-meta"><span>{SMP_ADDRESS}:{SMP_PORT}</span><span>{live.smp.version||'Version unavailable'}</span></div>
         </article>
 
