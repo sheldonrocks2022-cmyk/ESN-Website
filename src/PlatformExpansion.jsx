@@ -72,7 +72,7 @@ async function copyText(value){try{await navigator.clipboard.writeText(value);re
 
 export function PlatformHomeSection(){
   return <section className="section platform-home-section"><div className="shell">
-    <div className="section-heading flagship-heading"><div><span className="eyebrow">ESN PLATFORM LAYER</span><h2>More than pages. A usable network.</h2><p>Launch, configure, search, share, inspect SMP data, explore Labs, and protect your local progress — without creating an account.</p></div><Link className="text-link" to="/launchpad">Open Launchpad →</Link></div>
+    <div className="section-heading flagship-heading"><div><span className="eyebrow">SITE TOOLS & SHORTCUTS</span><h2>Useful things, all in one place.</h2><p>Search the site, check SMP information, put together a project brief, or use the free tools. No account needed.</p></div><Link className="text-link" to="/launchpad">Open Launchpad →</Link></div>
     <div className="platform-module-grid">{MODULES.slice(0,8).map(([to,label,copy,tag],index)=><Link to={to} key={to}><span>{String(index+1).padStart(2,'0')}</span><small>{tag}</small><strong>{label}</strong><p>{copy}</p><em>↗</em></Link>)}</div>
   </div></section>
 }
