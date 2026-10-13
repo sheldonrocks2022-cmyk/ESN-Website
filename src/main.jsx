@@ -54,19 +54,19 @@ ReactDOM.createRoot(document.getElementById('root')).render(
 
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.addEventListener('message',event=>{
-      if(event.data?.type!=='ESN_SW_UPDATED')return
-      const version=String(event.data?.cache||'unknown')
-      const key='esn_sw_seen_version'
-      try{
-        if(sessionStorage.getItem(key)===version)return
-        sessionStorage.setItem(key,version)
-      }catch{}
+    const hadController = Boolean(navigator.serviceWorker.controller)
+    let reloadingForUpdate = false
+
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+      // A first-time install should never interrupt the page that just loaded.
+      // Only refresh an already-controlled tab when a newer worker takes over.
+      if (!hadController || reloadingForUpdate) return
+      reloadingForUpdate = true
       window.location.reload()
     })
 
     navigator.serviceWorker.register('/sw.js', { updateViaCache: 'none' })
-      .then(registration=>registration.update().catch(()=>{}))
+      .then(registration => registration.update().catch(() => {}))
       .catch(() => {})
   })
 }
