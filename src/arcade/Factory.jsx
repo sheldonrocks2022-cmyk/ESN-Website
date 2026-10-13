@@ -76,7 +76,7 @@ export default function FactoryGame(){
     if(spend(cost)){
       arcadeFeedback('power')
       setG(x=>({...x,unlockedFloors:Math.max(x.unlockedFloors,i)}))
-      arcade.gainXp(45+​i*2,'Factory floor '+i)
+      arcade.gainXp(45+i*2,'Factory floor '+i)
     }
   }
 
