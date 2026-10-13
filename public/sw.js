@@ -1,5 +1,5 @@
-const CACHE='esn-pwa-v5'
-const CORE=['/','/offline.html','/esn-mark.svg','/esn-social-card.svg']
+const CACHE='esn-pwa-v6'
+const CORE=['/','/offline.html','/esn-mark.svg','/esn-social-card.png','/favicon-32.png']
 
 self.addEventListener('install',event=>{
   event.waitUntil(
@@ -15,9 +15,8 @@ self.addEventListener('activate',event=>{
       .then(keys=>Promise.all(keys.filter(key=>key!==CACHE).map(key=>caches.delete(key))))
       .then(()=>self.clients.claim())
       .then(()=>self.clients.matchAll({type:'window',includeUncontrolled:true}))
-      .then(async clients=>{
+      .then(clients=>{
         clients.forEach(client=>client.postMessage({type:'ESN_SW_UPDATED',cache:CACHE}))
-        await Promise.all(clients.map(client=>client.navigate(client.url).catch(()=>null)))
       })
   )
 })
@@ -53,7 +52,7 @@ self.addEventListener('fetch',event=>{
     return
   }
 
-  if(url.pathname.endsWith('.svg')){
+  if(url.pathname.endsWith('.svg')||url.pathname.endsWith('.png')){
     event.respondWith(
       fetch(request,{cache:'no-store'})
         .then(response=>{
