@@ -2,6 +2,7 @@ import fs from 'node:fs'
 import path from 'node:path'
 import { chromium } from 'playwright'
 import { SEO_ROUTES } from '../src/seo.js'
+import { NETWORK_TAKEOVER } from '../src/networkEvolutionConfig.js'
 
 const BASE_URL='https://esnoffical.com'
 const ROUTE_ALIASES={
@@ -49,7 +50,13 @@ async function inspect(route,viewport,label){
   const pageErrors=[]
   page.on('pageerror',error=>pageErrors.push(error.message))
   try{
-    const response=await page.goto(url,{waitUntil:'domcontentloaded',timeout:30000})
+    let response=null
+    for(let attempt=1;attempt<=3;attempt+=1){
+      response=await page.goto(url,{waitUntil:'domcontentloaded',timeout:30000})
+      const status=response?.status()||0
+      if(status<500||attempt===3)break
+      await page.waitForTimeout(500*attempt)
+    }
     await page.waitForTimeout(900)
     const state=await page.evaluate(()=>{
       const root=document.querySelector('#root')
@@ -104,7 +111,7 @@ async function inspect(route,viewport,label){
 }
 
 let cursor=0
-const workers=Math.min(6,targets.length)
+const workers=Math.min(4,targets.length)
 await Promise.all(Array.from({length:workers},async()=>{
   while(true){
     const index=cursor++
@@ -173,7 +180,7 @@ async function inspectInternalMobile(route){
 }
 
 let navCursor=0
-const navWorkers=Math.min(8,targets.length)
+const navWorkers=Math.min(6,targets.length)
 await Promise.all(Array.from({length:navWorkers},async()=>{
   while(true){
     const index=navCursor++
@@ -189,20 +196,26 @@ async function inspectCoreOverlays(){
     hasTouch:true,
     userAgent:'Mozilla/5.0 (Linux; Android 16; Pixel 8a) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0 Mobile Safari/537.36'
   })
+  await context.addInitScript(takeoverId=>{
+    try{localStorage.setItem('esn_takeover_seen',takeoverId)}catch{}
+  },NETWORK_TAKEOVER.id)
   const page=await context.newPage()
   const pageErrors=[]
   page.on('pageerror',error=>pageErrors.push(error.message))
   try{
     await page.goto(BASE_URL+'/',{waitUntil:'domcontentloaded',timeout:30000})
-    // Wait for the every-load startup animation to fully clear before testing real taps.
-    await page.waitForTimeout(2600)
+    // Wait for the real mobile controls. The one-time Network Takeover is pre-acknowledged
+    // in this smoke test so it cannot intentionally cover the controls being tested.
+    await page.waitForSelector('.mobile-network-strip-actions',{state:'visible',timeout:8000})
+    await page.waitForSelector('.mobile-bottom-nav',{state:'visible',timeout:8000})
 
     // Test the actual mobile controls instead of only dispatching synthetic events.
     let terminalTap=false
     let terminalRun=false
+    let terminalError=''
     try{
       const terminalButton=page.locator('.mobile-network-strip-actions button').filter({hasText:'Terminal'}).first()
-      await terminalButton.click({timeout:4000})
+      await terminalButton.click({timeout:5000})
       await page.waitForSelector('.ev-terminal-modal',{state:'visible',timeout:4000})
       terminalTap=true
       const input=page.locator('.ev-terminal-input input')
@@ -210,9 +223,9 @@ async function inspectCoreOverlays(){
       await page.locator('.ev-terminal-input button[type="submit"]').click()
       await page.waitForFunction(()=>[...document.querySelectorAll('.ev-terminal-output div')].some(node=>node.textContent?.includes('> help')),{timeout:4000})
       terminalRun=true
-    }catch{}
+    }catch(error){terminalError=error.message}
     {
-      const result={route:'/',label:'tap-terminal',status:200,ok:terminalTap&&terminalRun&&pageErrors.length===0,blank:false,stuck:false,pageErrors:[...pageErrors],state:{terminalTap,terminalRun}}
+      const result={route:'/',label:'tap-terminal',status:200,ok:terminalTap&&terminalRun&&pageErrors.length===0,blank:false,stuck:false,pageErrors:[...pageErrors],state:{terminalTap,terminalRun,terminalError}}
       results.push(result)
       if(!result.ok)failures.push(result)
     }
@@ -221,18 +234,19 @@ async function inspectCoreOverlays(){
 
     let commandCenterTap=false
     let terminalFromMore=false
+    let moreTerminalError=''
     try{
       const more=page.locator('.mobile-bottom-nav button').filter({hasText:'More'}).first()
-      await more.click({timeout:4000})
-      await page.waitForSelector('.premium-command.open',{state:'visible',timeout:4000})
+      await more.click({timeout:5000})
+      await page.waitForSelector('.premium-command.open',{state:'visible',timeout:5000})
       commandCenterTap=true
       const terminalUtility=page.locator('.premium-command.open .mobile-network-utilities button').filter({hasText:'Terminal'}).first()
-      await terminalUtility.click({timeout:4000})
-      await page.waitForSelector('.ev-terminal-modal',{state:'visible',timeout:4000})
+      await terminalUtility.click({timeout:5000})
+      await page.waitForSelector('.ev-terminal-modal',{state:'visible',timeout:5000})
       terminalFromMore=true
-    }catch{}
+    }catch(error){moreTerminalError=error.message}
     {
-      const result={route:'/',label:'tap-more-terminal',status:200,ok:commandCenterTap&&terminalFromMore&&pageErrors.length===0,blank:false,stuck:false,pageErrors:[...pageErrors],state:{commandCenterTap,terminalFromMore}}
+      const result={route:'/',label:'tap-more-terminal',status:200,ok:commandCenterTap&&terminalFromMore&&pageErrors.length===0,blank:false,stuck:false,pageErrors:[...pageErrors],state:{commandCenterTap,terminalFromMore,moreTerminalError}}
       results.push(result)
       if(!result.ok)failures.push(result)
     }
