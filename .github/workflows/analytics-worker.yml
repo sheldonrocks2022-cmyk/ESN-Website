@@ -21,7 +21,7 @@ jobs:
       ANALYTICS_STAFF_CODE_HASH: ${{ secrets.ANALYTICS_STAFF_CODE_HASH }}
       ANALYTICS_SALT: ${{ secrets.ANALYTICS_SALT }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Check analytics deployment configuration
         id: config
