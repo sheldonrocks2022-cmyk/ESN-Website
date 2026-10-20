@@ -50,3 +50,158 @@
 @media(max-width:980px){.esn-hosting-plan-grid{grid-template-columns:repeat(2,1fr)}.esn-hosting-roadmap,.esn-panel-feature-grid{grid-template-columns:repeat(2,1fr)}.esn-panel-preview{grid-template-columns:160px 1fr}.esn-panel-metrics{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:820px){.esn-hosting-hero-grid{grid-template-columns:1fr}.esn-hosting-stat-grid{grid-template-columns:repeat(2,1fr)}.esn-hosting-node-grid{grid-template-columns:1fr}.esn-panel-access,.esn-hosting-discord-cta{align-items:flex-start;flex-direction:column}}
 @media(max-width:620px){.esn-hosting-hero{padding-top:104px}.esn-hosting-plan-grid,.esn-hosting-roadmap,.esn-panel-feature-grid,.esn-hosting-stat-grid{grid-template-columns:1fr}.esn-panel-preview{grid-template-columns:1fr}.esn-panel-preview>aside{display:none}.esn-panel-preview>main{padding:16px}.esn-panel-metrics{grid-template-columns:repeat(2,1fr)}.esn-launch-specs{grid-template-columns:repeat(2,1fr)}.esn-node-specs{grid-template-columns:repeat(2,1fr)}}
+
+
+/* Expanded ESN plan catalogue: simple, readable and consistent with the calm theme. */
+.esn-hosting-page {
+  background:#0b111b;
+}
+.esn-hosting-page .esn-hosting-hero{
+  padding-top:clamp(98px,11vw,150px);
+}
+.esn-hosting-page .esn-hosting-plan-groups{
+  display:grid;
+  gap:clamp(36px,5vw,60px);
+  margin-top:20px;
+}
+.esn-hosting-page .esn-hosting-plan-group{
+  min-width:0;
+}
+.esn-hosting-page .esn-hosting-group-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:end;
+  gap:14px;
+  margin-bottom:18px;
+}
+.esn-hosting-page .esn-hosting-group-head h3{
+  margin:0 0 7px;
+  font-size:clamp(1.35rem,2.2vw,1.8rem);
+  letter-spacing:-.035em;
+  color:#eef4fb;
+}
+.esn-hosting-page .esn-hosting-group-head p{
+  margin:0;
+  color:#adbbcd;
+  line-height:1.55;
+  font-size:.9rem;
+}
+.esn-hosting-page .esn-hosting-group-head>span{
+  flex-shrink:0;
+  border:1px solid rgba(180,201,225,.13);
+  border-radius:999px;
+  padding:7px 12px;
+  color:#b6c9df;
+  font-size:.75rem;
+}
+.esn-hosting-page .esn-hosting-plan-grid{
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:13px;
+  align-items:stretch;
+}
+.esn-hosting-page .esn-hosting-plan{
+  min-width:0;
+  min-height:410px;
+  padding:25px 19px 20px;
+  background:#152235;
+  border:1px solid rgba(181,201,228,.14);
+  border-radius:16px;
+  box-shadow:none;
+  display:flex;
+  flex-direction:column;
+}
+.esn-hosting-page .esn-hosting-plan.featured{
+  background:#1b2f47;
+  border-color:#7fa8d1;
+  box-shadow:0 10px 34px rgba(0,0,0,.14);
+}
+.esn-hosting-page .esn-plan-badge{
+  padding:7px 9px;
+  background:#8bb9e9;
+  color:#0c1a2c;
+  font-weight:800;
+  letter-spacing:.045em;
+  font-size:.61rem;
+}
+.esn-hosting-page .esn-plan-badge.subtle{
+  background:#2d435e;
+  color:#e5edf8;
+  border:1px solid rgba(180,201,225,.15);
+}
+.esn-hosting-page .esn-plan-price{
+  margin:19px 0 22px;
+}
+.esn-hosting-page .esn-plan-price strong{
+  font-size:clamp(1.85rem,2.5vw,2.45rem);
+}
+.esn-hosting-page .esn-plan-price span{color:#a3b3c9}
+.esn-hosting-page .esn-plan-resources{gap:5px}
+.esn-hosting-page .esn-plan-resources div{
+  min-width:0;
+  padding:10px 7px;
+  border-radius:8px;
+  background:#1f3045;
+}
+.esn-hosting-page .esn-plan-resources span{
+  color:#a7bad0;
+  font-size:.58rem;
+}
+.esn-hosting-page .esn-plan-resources b{
+  font-size:.84rem;
+  overflow-wrap:anywhere;
+}
+.esn-hosting-page .esn-hosting-plan ul{
+  margin:16px 0 20px;
+  line-height:1.7;
+  font-size:.8rem;
+  color:#b0bfd1;
+}
+.esn-hosting-page .esn-hosting-plan>a{
+  margin-top:auto;
+  min-height:43px;
+  border-radius:10px;
+  background:#294768;
+  color:#f1f6fc;
+  font-size:.84rem;
+  font-weight:750;
+  gap:10px;
+}
+.esn-hosting-page .esn-hosting-plan>a:hover{
+  background:#355c87;
+}
+.esn-hosting-page .esn-hosting-payment-safety{
+  margin-top:30px;
+  border:1px solid rgba(174,199,230,.16);
+  border-radius:14px;
+  padding:21px 24px;
+  background:#16243a;
+}
+.esn-hosting-page .esn-hosting-payment-safety strong{
+  color:#d4e5f7;
+  font-size:.94rem;
+}
+.esn-hosting-page .esn-hosting-payment-safety p{
+  font-size:.85rem;
+  margin:8px 0 0;
+  color:#b8c7da;
+  line-height:1.7;
+}
+@media(max-width:1250px){
+  .esn-hosting-page .esn-hosting-plan-grid{
+    grid-template-columns:repeat(3,minmax(0,1fr));
+  }
+}
+@media(max-width:980px){
+  .esn-hosting-page .esn-hosting-plan-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+}
+@media(max-width:620px){
+  .esn-hosting-page .esn-hosting-plan-grid{
+    grid-template-columns:minmax(0,1fr);
+  }
+  .esn-hosting-page .esn-hosting-group-head{align-items:flex-start}
+  .esn-hosting-page .esn-hosting-group-head>span{margin-top:4px}
+  .esn-hosting-page .esn-hosting-plan{min-height:0}
+  .esn-hosting-page .esn-plan-price strong{font-size:2.35rem}
+}
