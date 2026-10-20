@@ -744,10 +744,6 @@ function Home() {
         </div>
       </section>
 
-      <HomeControlCenter />
-
-      <PlatformHomeSection />
-
       <NetworkDirectory />
 
       <section className="section flagship-services-section" aria-labelledby="services-title">
@@ -824,6 +820,10 @@ function Home() {
           </div>
         </div>
       </section>
+
+      <HomeControlCenter />
+
+      <PlatformHomeSection />
 
 
       <WhatsHappeningNow />
