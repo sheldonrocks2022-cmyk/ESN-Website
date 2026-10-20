@@ -1570,6 +1570,7 @@ function App() {
       {!standaloneSite&&<MetaManager />}
       {!standaloneSite&&<ScrollToHash />}
       {!standaloneSite&&<ExperienceEffects />}
+      {!standaloneSite&&<Global3DLighting />}
       {!standaloneSite&&<UltraExperience />}
       {!standaloneSite&&<ExperienceCoreV2 />}
       {!standaloneSite&&<PlatformLayer />}
