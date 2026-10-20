@@ -205,3 +205,83 @@
   .esn-hosting-page .esn-hosting-plan{min-height:0}
   .esn-hosting-page .esn-plan-price strong{font-size:2.35rem}
 }
+
+
+/* Hosting is sold by plan, not by publishing physical node capacity. */
+.esn-hosting-page .esn-hosting-benefits-card {
+  min-height: 0;
+  background:#142238;
+  border:1px solid rgba(170,198,233,.17);
+  box-shadow:0 20px 45px rgba(0,0,0,.13);
+}
+.esn-hosting-page .esn-hosting-benefits-card>strong {
+  font-size:clamp(1.7rem,3vw,2.5rem);
+  line-height:1.14;
+  margin:17px 0 12px;
+}
+.esn-hosting-page .esn-hosting-benefits-card>p {
+  font-size:.95rem;
+  line-height:1.65;
+  margin:0 0 24px;
+  color:#afbed1;
+}
+.esn-hosting-page .esn-hosting-benefits-list {
+  list-style:none;
+  padding:0;
+  margin:0;
+  display:grid;
+  gap:10px;
+}
+.esn-hosting-page .esn-hosting-benefits-list li {
+  display:grid;
+  gap:6px;
+  padding:15px;
+  background:#1c2d44;
+  border:1px solid rgba(181,208,238,.11);
+  border-radius:11px;
+}
+.esn-hosting-page .esn-hosting-benefits-list b {
+  font-size:.9rem;
+  color:#edf4fc;
+}
+.esn-hosting-page .esn-hosting-benefits-list span {
+  font-size:.8rem;
+  color:#a8bacf;
+  line-height:1.5;
+}
+.esn-hosting-page .esn-hosting-benefits-card>small {
+  font-size:.78rem;
+  color:#a6b9cf;
+}
+.esn-hosting-page .esn-hosting-availability {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:26px;
+  padding:30px;
+  border:1px solid rgba(166,195,227,.15);
+  border-radius:17px;
+  background:#172539;
+}
+.esn-hosting-page .esn-hosting-availability h2 {
+  margin:9px 0;
+  font-size:clamp(1.5rem,2.6vw,2.3rem);
+}
+.esn-hosting-page .esn-hosting-availability p {
+  max-width:65ch;
+  margin:0;
+  line-height:1.7;
+  font-size:.92rem;
+  color:#abbfd5;
+}
+.esn-hosting-page .esn-hosting-availability .button {
+  white-space:nowrap;
+}
+@media(max-width:760px) {
+  .esn-hosting-page .esn-hosting-availability {
+    flex-direction:column;
+    align-items:flex-start;
+    padding:24px;
+  }
+  .esn-hosting-page .esn-hosting-availability .button {width:100%}
+}
