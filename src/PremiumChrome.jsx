@@ -36,6 +36,10 @@ const userThemes={
 }
 
 const baseCommands=[
+  {label:'Discord Bot Hosting',meta:'Run and manage Python or Node.js bots',keywords:'hosting bots panel node vps servers python nodejs order',kind:'route',value:'/hosting/vps'},
+  {label:'Hosting & Domains',meta:'ESN domain and hosting requests',keywords:'hosting domains subdomain request website',kind:'route',value:'/hosting'},
+  {label:'ESN Services',meta:'Websites, editing, community setup and creator work',keywords:'services editing website discord team orders',kind:'route',value:'/serviceshowcase'},
+  {label:'Arcade Games',meta:'All six original ESN browser games',keywords:'arcade game play clicker factory mines tower moto',kind:'route',value:'/arcade'},
   {label:'ESN Guides + News',meta:'Minecraft, Discord, website guides, releases, and current ESN updates',keywords:'guides news articles minecraft discord website updates help',kind:'route',value:'/guides'},
   {label:'What is ES Network?',meta:'Official ESN brand, projects, services, SMP, tools, and community',keywords:'es network esn official ep1c services brand about',kind:'route',value:'/es-network'},
   {label:'Minecraft Server',meta:'ESN server hub, status, guides, items, and official resources',keywords:'minecraft server smp ip join java bedrock',kind:'route',value:'/minecraft-server'},
@@ -93,7 +97,7 @@ export default function PremiumChrome(){
   const gameRoutes=arcadeRoutes.filter(route=>route!=='/arcade')
   const routeKey=location.pathname.startsWith('/smp')||location.pathname.startsWith('/store')||location.pathname==='/minecraft-server'||location.pathname==='/minecraft-smp'?'smp'
     :arcadeRoutes.includes(location.pathname)?'arcade'
-    :['/serviceshowcase','/portfolio','/site-builder','/fortnite-coaching','/video-editing','/discord-server-setup','/website-builder'].includes(location.pathname)?'services'
+    :location.pathname.startsWith('/hosting')||['/serviceshowcase','/portfolio','/site-builder','/fortnite-coaching','/video-editing','/discord-server-setup','/website-builder'].includes(location.pathname)?'services'
     :location.pathname==='/estools'||location.pathname==='/tools'||location.pathname==='/free-browser-tools'?'tools'
     :location.pathname==='/testimonials'?'reviews'
     :['/about','/leadership','/faq','/timeline','/updates','/status','/share','/vault','/nexus'].includes(location.pathname)?'about':'home'
@@ -295,7 +299,7 @@ export default function PremiumChrome(){
 
     {!isGame&&<nav className="mobile-bottom-nav" aria-label="Mobile primary navigation">
       <Link className={location.pathname==='/'?'active':''} to="/"><span>⌂</span><small>Home</small></Link>
-      <Link className={['/serviceshowcase','/portfolio','/store-ai','/hosting','/site-builder','/estools'].includes(location.pathname)?'active':''} to="/serviceshowcase"><span>◇</span><small>Create</small></Link>
+      <Link className={location.pathname.startsWith('/hosting')?'active':''} to="/hosting/vps"><span>▤</span><small>Hosting</small></Link>
       <Link className={routeKey==='smp'?'active':''} to="/smpconnection"><span>⬡</span><small>SMP</small></Link>
       <Link className={routeKey==='arcade'?'active':''} to="/arcade"><span>▣</span><small>Arcade</small></Link>
       <button type="button" className={open?'active':''} onClick={()=>setOpen(true)}><span>•••</span><small>More</small></button>
