@@ -453,7 +453,6 @@
   border-bottom: 1px solid rgba(201,215,235,.10) !important;
 }
 .site:not(.user-site-mode) .header-glow,
-.site:not(.user-site-mode) .nexus-global-event,
 .site:not(.user-site-mode) .premium-ticker,
 .site:not(.user-site-mode) .ev-season-pill,
 .site:not(.user-site-mode) .ev-system-rail,
