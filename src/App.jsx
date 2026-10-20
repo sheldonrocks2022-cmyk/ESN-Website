@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link, Navigate, Route, Routes, useLocation } from 'react-router-dom'
 import StartupIntro from './StartupIntro'
+import Global3DLighting from './Global3DLighting'
 import ESToolsSuite from './Tools'
 import ES3DViewer from './ES3DViewer'
 import PremiumChrome from './PremiumChrome'
