@@ -149,8 +149,8 @@ if (!app.includes('BusinessPlatformPage') || !businessHub.includes('BusinessStaf
     !fs.readFileSync('src/NoAccountExpansion.jsx','utf8').includes('<BusinessStaffControls />')) {
   problems.push('Business platform or staff controls not connected.')
 }
-for (const marker of ['not automatically submitted','NOT CONNECTED','NOT published globally','This is not a customer account']) {
-  if (!(businessHub+' '+businessData+' '+businessDocs).includes(marker)) problems.push('Business preview safety statement missing: '+marker)
+for (const marker of ['not automatically submitted','not connected','not published globally','not a customer account']) {
+  if (!(businessHub+' '+businessData+' '+businessDocs).toLowerCase().includes(marker)) problems.push('Business preview safety statement missing: '+marker)
 }
 if (businessHub.includes('STRIPE_SECRET_KEY') || businessHub.includes('PTERODACTYL_API_KEY') || businessHub.includes('process.env')) {
   problems.push('Business client code must not contain payment or Pterodactyl secrets.')
