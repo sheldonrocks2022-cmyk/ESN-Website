@@ -208,10 +208,10 @@
   filter: none !important;
   transform: none !important;
 }
-.site:not(.user-site-mode) :is(
-  .service-card::before, .product-card::before,
-  .flagship-service-card::before, .flagship-game-card::before
-) {
+.site:not(.user-site-mode) .service-card::before,
+.site:not(.user-site-mode) .product-card::before,
+.site:not(.user-site-mode) .flagship-service-card::before,
+.site:not(.user-site-mode) .flagship-game-card::before {
   opacity: 0 !important;
   animation: none !important;
 }
