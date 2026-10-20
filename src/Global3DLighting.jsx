@@ -136,6 +136,9 @@ export default function Global3DLighting(){
   const location=useLocation()
 
   useEffect(()=>{
+    // The default ESN presentation is quiet and GPU-friendly.
+    // Keep the old shader available only for explicitly enabled cinematic mode.
+    if(document.documentElement.dataset.visualIntensity!=='cinematic')return
     const canvas=canvasRef.current
     const mobile=matchMedia('(max-width: 860px), (pointer: coarse)').matches
 
