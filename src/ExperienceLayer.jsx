@@ -278,9 +278,7 @@ export function FooterCommandDeck(){
 
 export default function ExperienceLayer(){
   return <>
-    <RouteTransition/>
-    <EnergyTrail/>
-    <NetworkEvents/>
+    {/* Keep notifications; pause cosmetic transitions, pointer trails and random effects. */}
     <NotificationCenter/>
   </>
 }
