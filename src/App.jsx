@@ -47,6 +47,13 @@ const PLUGIN_RELEASE_URL = 'https://github.com/sheldonrocks2022-cmyk/ESNSMP/acti
 
 const SERVICES = [
   {
+    id: 'bot-hosting',
+    eyebrow: 'ESN Hosting',
+    title: 'Discord Bot Hosting',
+    text: 'A straightforward place to run and manage your Python or Node.js bot, with console and file access.',
+    route: '/hosting/vps',
+  },
+  {
     id: 'fortnite-coaching',
     eyebrow: 'Competitive Gaming',
     title: 'Fortnite Coaching',
@@ -399,14 +406,16 @@ function Header() {
   const close = () => setOpen(false)
   const inGroup = (paths) => paths.some((path) => location.pathname === path || location.pathname.startsWith(path + '/'))
   const arcadeActive = location.pathname === '/arcade' || ARCADE_GAMES.some(([, route]) => route === location.pathname)
-  const createActive = inGroup(['/serviceshowcase','/portfolio','/store-ai','/hosting','/domains','/site-builder','/estools','/configure','/estimate','/showcase','/fortnite-coaching','/video-editing','/discord-server-setup','/website-builder'])
-  const playActive = arcadeActive || inGroup(['/smpconnection','/smpconsole','/smpplugin','/smpguide','/storesmp','/smpcheck','/smp-hub','/smp-items','/minecraft-server','/minecraft-smp','/smp/realm-ascension'])
-  const networkActive = inGroup(['/status','/networkstats','/analytics','/updates','/whatsnew','/timeline','/explore','/gallery','/nexus','/notifications','/rewards','/challenges','/operations','/incidents','/changelog','/diagnostics','/blueprint','/session','/share','/launchpad','/search','/labs','/activity','/share-generator','/network-map','/backup','/guides','/visibility','/free-browser-tools'])
-  const aboutActive = inGroup(['/about','/leadership','/testimonials','/faq','/settings','/support','/staff','/trust','/es-network'])
-  const mobileSection = playActive ? (arcadeActive ? 'Arcade' : 'ESN SMP')
-    : createActive ? 'Create'
-    : networkActive ? 'Network'
-    : aboutActive ? 'About'
+  const hostingActive = inGroup(['/hosting', '/domains'])
+  const servicesActive = inGroup(['/serviceshowcase', '/portfolio', '/testimonials', '/store-ai', '/site-builder', '/estools', '/configure', '/estimate', '/showcase', '/fortnite-coaching', '/video-editing', '/discord-server-setup', '/website-builder'])
+  const playActive = arcadeActive || inGroup(['/smpconnection', '/smpconsole', '/smpplugin', '/smpguide', '/storesmp', '/smpcheck', '/smp-hub', '/smp-items', '/minecraft-server', '/minecraft-smp', '/smp/realm-ascension'])
+  const discoverActive = inGroup(['/status', '/networkstats', '/analytics', '/updates', '/whatsnew', '/timeline', '/explore', '/gallery', '/nexus', '/notifications', '/rewards', '/challenges', '/operations', '/incidents', '/changelog', '/diagnostics', '/blueprint', '/session', '/share', '/launchpad', '/search', '/labs', '/activity', '/share-generator', '/network-map', '/backup', '/guides', '/visibility', '/free-browser-tools'])
+  const aboutActive = inGroup(['/about', '/leadership', '/faq', '/settings', '/support', '/staff', '/trust', '/es-network'])
+  const mobileSection = hostingActive ? 'Hosting'
+    : playActive ? (arcadeActive ? 'Arcade' : 'Minecraft')
+    : servicesActive ? 'Services'
+    : discoverActive ? 'Explore'
+    : aboutActive ? 'About & help'
     : 'Home'
 
   return (
@@ -430,22 +439,41 @@ function Header() {
         <nav className={open ? 'nav open organized-nav' : 'nav organized-nav'} aria-label="Main navigation">
           <Link className={location.pathname === '/' || location.pathname === '/home' ? 'nav-direct active' : 'nav-direct'} onClick={close} to="/">Home</Link>
 
-          <div className={createActive ? 'nav-group active' : 'nav-group'}>
-            <button className="nav-trigger" type="button" aria-haspopup="true">Create</button>
+          <div className={hostingActive ? 'nav-group active' : 'nav-group'}>
+            <button className="nav-trigger" type="button" aria-haspopup="true">Hosting</button>
             <div className="dropdown organized-dropdown">
               <div className="dropdown-section">
-                <span className="dropdown-label">SERVICES</span>
-                <Link onClick={close} to="/serviceshowcase">Service Showcase</Link>
-                <Link onClick={close} to="/portfolio">Portfolio & Results</Link>
-                <Link onClick={close} to="/testimonials">Verified Reviews</Link>
+                <span className="dropdown-label">SERVER HOSTING</span>
+                <Link onClick={close} to="/hosting/vps">Discord Bot Hosting</Link>
+                <Link onClick={close} to="/hosting">Domains & Hosting Requests</Link>
+                <Link onClick={close} to="/status">Service Status</Link>
               </div>
               <div className="dropdown-section">
-                <span className="dropdown-label">BUILD</span>
-                <Link onClick={close} to="/site-builder">AI Website Builder</Link>
-                <Link onClick={close} to="/hosting">ESN Hosting & Domains</Link>
-                <Link onClick={close} to="/hosting/vps">Cloud VPS Control</Link>
-                <Link onClick={close} to="/store-ai">ESN Store AI</Link>
-                <Link onClick={close} to="/estools">ES Tools</Link>
+                <span className="dropdown-label">NEED A HAND?</span>
+                <Link onClick={close} to="/site-builder">Website Builder</Link>
+                <Link onClick={close} to="/support">Support & Questions</Link>
+                <a onClick={close} href={DISCORD_URL} target="_blank" rel="noreferrer">Ask in Discord ↗</a>
+              </div>
+            </div>
+          </div>
+
+          <div className={servicesActive ? 'nav-group active' : 'nav-group'}>
+            <button className="nav-trigger" type="button" aria-haspopup="true">Services</button>
+            <div className="dropdown organized-dropdown">
+              <div className="dropdown-section">
+                <span className="dropdown-label">WORK WITH US</span>
+                <Link onClick={close} to="/serviceshowcase">All Services</Link>
+                <Link onClick={close} to="/portfolio">Our Portfolio</Link>
+                <Link onClick={close} to="/testimonials">Customer Reviews</Link>
+                <Link onClick={close} to="/configure">Plan a Project</Link>
+                <Link onClick={close} to="/estimate">Project Estimate</Link>
+              </div>
+              <div className="dropdown-section">
+                <span className="dropdown-label">TOOLS & BUILDERS</span>
+                <Link onClick={close} to="/site-builder">Website Builder</Link>
+                <Link onClick={close} to="/showcase">Published Websites</Link>
+                <Link onClick={close} to="/store-ai">Store AI</Link>
+                <Link onClick={close} to="/estools">Free Browser Tools</Link>
               </div>
             </div>
           </div>
@@ -454,50 +482,52 @@ function Header() {
             <button className="nav-trigger" type="button" aria-haspopup="true">Play</button>
             <div className="dropdown organized-dropdown play-dropdown">
               <div className="dropdown-section">
-                <span className="dropdown-label">ESN SMP</span>
-                <Link onClick={close} to="/smpconnection">Connect to SMP</Link>
+                <span className="dropdown-label">MINECRAFT SMP</span>
+                <Link onClick={close} to="/smpconnection">Join ESN SMP</Link>
                 <Link onClick={close} to="/smpconsole">Console Connection</Link>
-                <Link onClick={close} to="/smpguide">SMP Encyclopedia</Link>
-                <Link onClick={close} to="/smp/realm-ascension">Realm Ascension v2.15</Link>
+                <Link onClick={close} to="/smpguide">SMP Guide</Link>
+                <Link onClick={close} to="/smp-hub">SMP World Hub</Link>
                 <Link onClick={close} to="/storesmp">SMP Store</Link>
-                <Link onClick={close} to="/smpplugin">Download ESNSMP Plugin</Link>
+                <Link onClick={close} to="/smpplugin">Plugin Download</Link>
+                <Link onClick={close} to="/smp/realm-ascension">Realm Ascension</Link>
               </div>
               <div className="dropdown-section">
-                <span className="dropdown-label">ESN ARCADE</span>
-                <Link onClick={close} to="/arcade">Arcade Hub</Link>
+                <span className="dropdown-label">ARCADE GAMES</span>
+                <Link onClick={close} to="/arcade">All Arcade Games</Link>
                 {ARCADE_GAMES.map(([name, route]) => <Link onClick={close} key={route} to={route}>{name}</Link>)}
               </div>
             </div>
           </div>
 
-          <div className={networkActive ? 'nav-group active' : 'nav-group'}>
-            <button className="nav-trigger" type="button" aria-haspopup="true">Network</button>
+          <div className={discoverActive ? 'nav-group active' : 'nav-group'}>
+            <button className="nav-trigger" type="button" aria-haspopup="true">Explore</button>
             <div className="dropdown organized-dropdown network-dropdown">
               <div className="dropdown-section">
-                <span className="dropdown-label">LIVE</span>
-                <Link onClick={close} to="/status">Network Status</Link>
-                <Link onClick={close} to="/nexus">Network Nexus</Link>
-                <Link onClick={close} to="/notifications">Notifications</Link>
-                <Link onClick={close} to="/networkstats">Network Statistics</Link>
-              </div>
-              <div className="dropdown-section">
-                <span className="dropdown-label">DISCOVER</span>
-                <Link onClick={close} to="/explore">Explore ESN</Link>
+                <span className="dropdown-label">LATEST FROM ESN</span>
                 <Link onClick={close} to="/whatsnew">What's New</Link>
-                <Link onClick={close} to="/updates">Release Center</Link>
+                <Link onClick={close} to="/updates">Updates & Releases</Link>
+                <Link onClick={close} to="/status">Network Status</Link>
+                <Link onClick={close} to="/notifications">Notifications</Link>
+                <Link onClick={close} to="/guides">Guides & News</Link>
                 <Link onClick={close} to="/timeline">Timeline</Link>
-                <Link onClick={close} to="/gallery">Media Gallery</Link>
-                <Link onClick={close} to="/share">Share Deck</Link>
               </div>
               <div className="dropdown-section">
-                <span className="dropdown-label">SYSTEM</span>
-                <Link onClick={close} to="/operations">Operations Map</Link>
-                <Link onClick={close} to="/diagnostics">Diagnostic Center</Link>
-                <Link onClick={close} to="/blueprint">System Blueprint</Link>
+                <span className="dropdown-label">EXPLORE & CREATE</span>
+                <Link onClick={close} to="/explore">Explore All Pages</Link>
+                <Link onClick={close} to="/search">Search the Site</Link>
+                <Link onClick={close} to="/nexus">Network Nexus</Link>
+                <Link onClick={close} to="/gallery">Media Gallery</Link>
+                <Link onClick={close} to="/share">Share Center</Link>
+                <Link onClick={close} to="/launchpad">Launchpad</Link>
+              </div>
+              <div className="dropdown-section">
+                <span className="dropdown-label">ADVANCED TOOLS</span>
+                <Link onClick={close} to="/networkstats">Network Stats</Link>
+                <Link onClick={close} to="/operations">Operations</Link>
+                <Link onClick={close} to="/diagnostics">Diagnostics</Link>
                 <Link onClick={close} to="/analytics">Site Analytics</Link>
-                <Link onClick={close} to="/incidents">Incident History</Link>
-                <Link onClick={close} to="/changelog">Network Changelog</Link>
-                <Link onClick={close} to="/session">Session Stats</Link>
+                <Link onClick={close} to="/incidents">Incidents</Link>
+                <Link onClick={close} to="/changelog">Changelog</Link>
               </div>
             </div>
           </div>
@@ -506,16 +536,17 @@ function Header() {
             <button className="nav-trigger" type="button" aria-haspopup="true">About</button>
             <div className="dropdown organized-dropdown">
               <div className="dropdown-section">
-                <span className="dropdown-label">ES NETWORK</span>
-                <Link onClick={close} to="/about">About ES Network</Link>
-                <Link onClick={close} to="/leadership">Leadership</Link>
-                <Link onClick={close} to="/testimonials">35 Verified Reviews</Link>
-                <Link onClick={close} to="/faq">FAQ</Link>
+                <span className="dropdown-label">OUR TEAM</span>
+                <Link onClick={close} to="/about">About ESN</Link>
+                <Link onClick={close} to="/leadership">Meet the Team</Link>
+                <Link onClick={close} to="/testimonials">Customer Reviews</Link>
+                <Link onClick={close} to="/trust">Trust & Safety</Link>
               </div>
               <div className="dropdown-section">
                 <span className="dropdown-label">HELP</span>
-                <Link onClick={close} to="/support">Support / Report a Problem</Link>
-                <Link onClick={close} to="/settings">Performance & Accessibility</Link>
+                <Link onClick={close} to="/faq">Frequently Asked Questions</Link>
+                <Link onClick={close} to="/support">Contact Support</Link>
+                <Link onClick={close} to="/settings">Settings & Accessibility</Link>
                 <Link onClick={close} to="/staff">Staff Dashboard</Link>
               </div>
             </div>
@@ -635,16 +666,16 @@ function RelatedLinks({ title, links }) {
 }
 function NetworkDirectory() {
   const groups=[
-    {index:'01',title:'Create',copy:'Get help with editing, websites, Discord setups, hosting, or everyday tools.',links:[['Services','/serviceshowcase'],['Site Builder','/site-builder'],['Hosting','/hosting'],['ES Tools','/estools']]},
-    {index:'02',title:'Play',copy:'Join the SMP, browse the store, or try one of our six browser games.',links:[['ESN SMP','/smpconnection'],['SMP Store','/storesmp'],['Arcade','/arcade'],['Console Guide','/smpconsole']]},
-    {index:'03',title:'Network',copy:'Server status, project updates, releases, and ESN extras.',links:[['Status','/status'],['Nexus','/nexus'],['What\'s New','/whatsnew'],['Explore','/explore']]},
-    {index:'04',title:'About & Help',copy:'Meet the team, read customer feedback, or get help.',links:[['About','/about'],['Leadership','/leadership'],['Reviews','/testimonials'],['Support','/support']]},
+    {index:'01',title:'Hosting',copy:'Start a Discord bot, manage a server, or request a domain.',links:[['Bot Hosting','/hosting/vps'],['Domains & Hosting','/hosting'],['Service Status','/status'],['Get Support','/support']]},
+    {index:'02',title:'Services',copy:'Work with our team on a website, Discord community, or creator project.',links:[['All Services','/serviceshowcase'],['Portfolio','/portfolio'],['Website Builder','/site-builder'],['Customer Reviews','/testimonials']]},
+    {index:'03',title:'Minecraft & Arcade',copy:'Join our Minecraft server or play one of the free browser games.',links:[['Join the SMP','/smpconnection'],['SMP Store','/storesmp'],['Arcade Games','/arcade'],['SMP Guides','/smpguide']]},
+    {index:'04',title:'Tools & Updates',copy:'Find free utilities, latest news, and answers to common questions.',links:[['Free Tools','/estools'],['What\'s New','/whatsnew'],['Guides & News','/guides'],['Help Center','/faq']]},
   ]
   return (
     <section className="section network-directory-section" aria-labelledby="network-directory-title">
       <div className="shell">
         <div className="section-heading flagship-heading network-directory-heading">
-          <div><span className="eyebrow">ESN DIRECTORY</span><h2 id="network-directory-title">Looking for something? Start here.</h2><p>Go straight to the part of ESN you need.</p></div>
+          <div><span className="eyebrow">ESN DIRECTORY</span><h2 id="network-directory-title">Looking for something? Start here.</h2><p>Choose hosting, services, games, or help without digging through menus.</p></div>
           <Link className="text-link" to="/explore">Explore everything →</Link>
         </div>
         <div className="network-directory-grid">
@@ -684,8 +715,9 @@ function Home() {
             <p>We're a small team working on hosting, websites, creator services, and a Minecraft community. We also make free tools and games. Have a question? Come talk to us on Discord.</p>
 
             <div className="hero-actions flagship-actions">
-              <Link className="button primary" to="/serviceshowcase">Browse our services <span>↗</span></Link>
-              <a className="button secondary" href={DISCORD_URL} target="_blank" rel="noreferrer">Join the community</a>
+              <Link className="button primary" to="/hosting/vps">Explore hosting <span>↗</span></Link>
+              <Link className="button secondary" to="/serviceshowcase">Our services</Link>
+              <a className="button secondary" href={DISCORD_URL} target="_blank" rel="noreferrer">Join Discord</a>
             </div>
 
             <div className="flagship-metrics">
@@ -706,10 +738,10 @@ function Home() {
         </div>
 
         <div className="shell flagship-route-strip">
-          <Link to="/serviceshowcase"><span>01</span><b>Services</b><small>Creator & gaming</small><em>↗</em></Link>
-          <Link to="/arcade"><span>02</span><b>Arcade</b><small>Six original games</small><em>↗</em></Link>
-          <Link to="/smpconnection"><span>03</span><b>ESN SMP</b><small>Connect & play</small><em>↗</em></Link>
-          <Link to="/estools"><span>04</span><b>ES Tools</b><small>Free browser utilities</small><em>↗</em></Link>
+          <Link to="/hosting/vps"><span>01</span><b>Hosting</b><small>Bot servers & controls</small><em>↗</em></Link>
+          <Link to="/serviceshowcase"><span>02</span><b>Services</b><small>Websites & creative work</small><em>↗</em></Link>
+          <Link to="/smpconnection"><span>03</span><b>Minecraft</b><small>Connect to ESN SMP</small><em>↗</em></Link>
+          <Link to="/arcade"><span>04</span><b>Arcade</b><small>Free browser games</small><em>↗</em></Link>
         </div>
       </section>
 
@@ -718,51 +750,6 @@ function Home() {
       <PlatformHomeSection />
 
       <NetworkDirectory />
-
-      <WhatsHappeningNow />
-
-      <NetworkShowcase />
-
-      <NetworkEvolutionSection />
-
-      <RetentionHub />
-
-      <section className="section flagship-story-section">
-        <div className="shell flagship-story">
-          <aside className="flagship-story-sticky">
-            <span className="eyebrow">THE NETWORK</span>
-            <h2>From commissions to Minecraft.<br />Here's what we work on.</h2>
-            <p>ESN covers a few different things. Here's a closer look at the services, games, server, and tools we're building.</p>
-            <Link className="text-link" to="/about">About ES Network →</Link>
-          </aside>
-
-          <div className="flagship-story-stack">
-            <article className="story-panel story-services" id="fortnite-coaching">
-              <span className="story-index">01</span>
-              <div><span className="eyebrow">CREATOR & GAMING SERVICES</span><h3>Work directly with ESN.</h3><p>Fortnite coaching, editing, Discord server setups, website projects, and other selected digital services.</p><Link to="/serviceshowcase">Explore services →</Link></div>
-              <strong>SERVICES</strong>
-            </article>
-
-            <article className="story-panel story-smp">
-              <span className="story-index">02</span>
-              <div><span className="eyebrow">ESN SMP</span><h3>Come play on the ESN SMP.</h3><p>Java: {SMP_HOST}:{SMP_JAVA_PORT} • Bedrock/Xbox: {SMP_HOST}:{SMP_BEDROCK_PORT}. Browse the official store, use the console guide, or download the public ESNSMP plugin.</p><Link to="/smpconnection">Enter the SMP hub →</Link></div>
-              <strong>SMP</strong>
-            </article>
-
-            <article className="story-panel story-arcade">
-              <span className="story-index">03</span>
-              <div><span className="eyebrow">ESN ARCADE</span><h3>Six original browser games.</h3><p>Clicker, Factory, Mines, MOTO, Tower, and Tower Defense — all inside the same ESN shell.</p><Link to="/arcade">Open the Arcade →</Link></div>
-              <strong>PLAY</strong>
-            </article>
-
-            <article className="story-panel story-tools" id="home-tools">
-              <span className="story-index">04</span>
-              <div><span className="eyebrow">ES TOOLS</span><h3>Fast utilities with no account wall.</h3><p>Challenge generation, timers, prompt building, randomizers, coin/dice tools, and website estimates.</p><Link to="/estools">Open ES Tools →</Link></div>
-              <strong>TOOLS</strong>
-            </article>
-          </div>
-        </div>
-      </section>
 
       <section className="section flagship-services-section" aria-labelledby="services-title">
         <div className="shell">
@@ -778,7 +765,9 @@ function Home() {
                 <span className="eyebrow">{service.eyebrow}</span>
                 <h3>{service.title}</h3>
                 <p>{service.text}</p>
-                <a href={DISCORD_URL} target="_blank" rel="noreferrer">Open a Discord ticket <span>↗</span></a>
+                {service.route
+                  ? <Link to={service.route}>View hosting options <span>↗</span></Link>
+                  : <a href={DISCORD_URL} target="_blank" rel="noreferrer">Open a Discord ticket <span>↗</span></a>}
               </article>
             ))}
 
@@ -833,6 +822,52 @@ function Home() {
                 <div className="flagship-game-launch"><span>LAUNCH</span><b>↗</b></div>
               </Link>
             ))}
+          </div>
+        </div>
+      </section>
+
+
+      <WhatsHappeningNow />
+
+      <NetworkShowcase />
+
+      <NetworkEvolutionSection />
+
+      <RetentionHub />
+
+      <section className="section flagship-story-section">
+        <div className="shell flagship-story">
+          <aside className="flagship-story-sticky">
+            <span className="eyebrow">THE NETWORK</span>
+            <h2>From commissions to Minecraft.<br />Here's what we work on.</h2>
+            <p>ESN covers a few different things. Here's a closer look at the services, games, server, and tools we're building.</p>
+            <Link className="text-link" to="/about">About ES Network →</Link>
+          </aside>
+
+          <div className="flagship-story-stack">
+            <article className="story-panel story-services" id="fortnite-coaching">
+              <span className="story-index">01</span>
+              <div><span className="eyebrow">CREATOR & GAMING SERVICES</span><h3>Work directly with ESN.</h3><p>Fortnite coaching, editing, Discord server setups, website projects, and other selected digital services.</p><Link to="/serviceshowcase">Explore services →</Link></div>
+              <strong>SERVICES</strong>
+            </article>
+
+            <article className="story-panel story-smp">
+              <span className="story-index">02</span>
+              <div><span className="eyebrow">ESN SMP</span><h3>Come play on the ESN SMP.</h3><p>Java: {SMP_HOST}:{SMP_JAVA_PORT} • Bedrock/Xbox: {SMP_HOST}:{SMP_BEDROCK_PORT}. Browse the official store, use the console guide, or download the public ESNSMP plugin.</p><Link to="/smpconnection">Enter the SMP hub →</Link></div>
+              <strong>SMP</strong>
+            </article>
+
+            <article className="story-panel story-arcade">
+              <span className="story-index">03</span>
+              <div><span className="eyebrow">ESN ARCADE</span><h3>Six original browser games.</h3><p>Clicker, Factory, Mines, MOTO, Tower, and Tower Defense — all inside the same ESN shell.</p><Link to="/arcade">Open the Arcade →</Link></div>
+              <strong>PLAY</strong>
+            </article>
+
+            <article className="story-panel story-tools" id="home-tools">
+              <span className="story-index">04</span>
+              <div><span className="eyebrow">ES TOOLS</span><h3>Fast utilities with no account wall.</h3><p>Challenge generation, timers, prompt building, randomizers, coin/dice tools, and website estimates.</p><Link to="/estools">Open ES Tools →</Link></div>
+              <strong>TOOLS</strong>
+            </article>
           </div>
         </div>
       </section>
