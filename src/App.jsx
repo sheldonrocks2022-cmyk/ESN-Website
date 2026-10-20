@@ -5,8 +5,6 @@ import ES3DViewer from './ES3DViewer'
 import PremiumChrome from './PremiumChrome'
 import UltraExperience from './UltraExperience'
 import ExperienceCoreV2 from './ExperienceCoreV2'
-import Global3DLighting from './Global3DLighting'
-import StartupIntro from './StartupIntro'
 import ExperienceLayer, { FooterCommandDeck, HeroReactor } from './ExperienceLayer'
 import NetworkShowcase, { EasterEggLayer } from './NetworkShowcase'
 import NetworkEvolution, { NetworkEvolutionSection } from './NetworkEvolution'
@@ -675,13 +673,13 @@ function Home() {
         <div className="shell flagship-hero-layout">
           <div className="flagship-hero-copy">
             <div className="hero-badge-row">
-              <span className="signal-badge"><i /> ESN SYSTEMS ONLINE</span>
+              <span className="signal-badge"><i /> WELCOME TO ESN</span>
               <span className="hero-version" data-easter="hero-version" title="ES NETWORK // 2026">ES NETWORK // 2026</span>
             </div>
 
             <span className="eyebrow">ES NETWORK • OFFICIAL SITE</span>
-            <h1><span className="hero-line-small">Projects to build.</span><br /><span className="hero-line-main">Games to play.</span></h1>
-            <p>We build websites, help creators, run a Minecraft SMP, and make browser games and free tools. Take a look around or join us on Discord.</p>
+            <h1><span className="hero-line-small">Made for your projects.</span><br /><span className="hero-line-main">Built around our community.</span></h1>
+            <p>We're a small team working on hosting, websites, creator services, and a Minecraft community. We also make free tools and games. Have a question? Come talk to us on Discord.</p>
 
             <div className="hero-actions flagship-actions">
               <Link className="button primary" to="/serviceshowcase">Browse our services <span>↗</span></Link>
@@ -1565,11 +1563,9 @@ function App() {
     <div className={standaloneSite ? 'site user-site-mode' : 'site'}>
       <AnalyticsTracker />
       {!standaloneSite&&<a className="skip-link" href="#main-content">Skip to main content</a>}
-      {!standaloneSite&&<StartupIntro />}
       {!standaloneSite&&<MetaManager />}
       {!standaloneSite&&<ScrollToHash />}
       {!standaloneSite&&<ExperienceEffects />}
-      {!standaloneSite&&<Global3DLighting />}
       {!standaloneSite&&<UltraExperience />}
       {!standaloneSite&&<ExperienceCoreV2 />}
       {!standaloneSite&&<PlatformLayer />}
