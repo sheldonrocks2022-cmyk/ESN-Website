@@ -1,0 +1,270 @@
+/*
+ * ESN: calmer, more approachable visual direction.
+ * This stylesheet only styles the ESN shell. Customer-created /sites/* pages
+ * and the actual Arcade game layouts remain untouched.
+ */
+
+.site:not(.user-site-mode) {
+  --bg: #0d131d;
+  --panel: #121c29;
+  --panel-2: #172331;
+  --line: rgba(183, 204, 229, .16);
+  --muted: #b0bbca;
+  --white: #edf2f8;
+  --blue: #7ba8df;
+  --cyan: #9ac4ed;
+  --violet: #a1afd4;
+  --shadow: 0 14px 36px rgba(0, 0, 0, .16);
+  background: #0d131d;
+  color: var(--white);
+}
+
+.site:not(.user-site-mode) p {
+  color: var(--muted);
+  line-height: 1.68;
+}
+
+.site:not(.user-site-mode) :is(h1, h2, h3) {
+  line-height: 1.14;
+  letter-spacing: -.035em;
+  text-shadow: none !important;
+}
+
+.site:not(.user-site-mode) :is(.eyebrow, .card-number, .section-kicker) {
+  color: #9fc2e8;
+  letter-spacing: .075em !important;
+  font-weight: 750;
+}
+
+/* Remove decorative layers, not page content or working controls. */
+.site:not(.user-site-mode) :is(
+  .startup-intro,
+  .route-transition,
+  .premium-ticker,
+  .premium-aurora,
+  .premium-grain,
+  .premium-vignette,
+  .lux-cursor-field,
+  .lux-cursor-ring,
+  .lux-cursor-core,
+  .lux-edge-beam,
+  .route-lux-flare,
+  .lux-route-rail,
+  .energy-trail-particle,
+  .touch-energy-ring,
+  .network-event,
+  .global-3d-lighting,
+  .hero-grid,
+  .hero-orb,
+  .hero-scanline,
+  .flagship-horizon,
+  .flagship-lines,
+  .flagship-game-glow,
+  .page-hero-orb,
+  .page-hero-grid
+) {
+  display: none !important;
+}
+
+.site:not(.user-site-mode) .premium-ambient {
+  display: block !important;
+  background: #0d131d !important;
+}
+
+.site:not(.user-site-mode) .site-header {
+  border-bottom: 1px solid var(--line) !important;
+  background: rgba(13, 19, 29, .97) !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+  box-shadow: none !important;
+}
+
+.site:not(.user-site-mode) .header-inner { min-height: 68px; }
+.site:not(.user-site-mode) .brand-mark {
+  background: #1d3450 !important;
+  border: 1px solid rgba(143, 182, 225, .24) !important;
+  box-shadow: none !important;
+  border-radius: 10px !important;
+}
+.site:not(.user-site-mode) .brand-copy strong { letter-spacing: .045em; }
+.site:not(.user-site-mode) :is(.nav-trigger, .nav > a, .nav-direct) {
+  font-weight: 650;
+  letter-spacing: normal !important;
+  border-radius: 9px !important;
+}
+.site:not(.user-site-mode) :is(.dropdown, .nav.open, .premium-command, .mobile-bottom-nav) {
+  background: #141e2b !important;
+  border-color: var(--line) !important;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, .18) !important;
+}
+
+/* Make the home intro read like a real business rather than a sci-fi console. */
+.site:not(.user-site-mode) :is(.hero, .flagship-hero, .page-hero, .esn-hosting-hero) {
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.site:not(.user-site-mode) :is(.hero, .flagship-hero) {
+  min-height: auto !important;
+}
+.site:not(.user-site-mode) .flagship-hero-layout {
+  min-height: auto !important;
+  padding-top: clamp(38px, 6vw, 76px) !important;
+  padding-bottom: clamp(30px, 5vw, 62px) !important;
+}
+.site:not(.user-site-mode) :is(.flagship-hero-copy h1, .page-hero h1, .nexus-hero-copy h1) {
+  font-size: clamp(2.8rem, 6.4vw, 5.25rem) !important;
+  line-height: 1.09 !important;
+  letter-spacing: -.05em !important;
+}
+.site:not(.user-site-mode) .flagship-hero-copy .hero-line-small,
+.site:not(.user-site-mode) .flagship-hero-copy .hero-line-main,
+.site:not(.user-site-mode) .hero h1 span,
+.site:not(.user-site-mode) .flagship-final-cta h2 span {
+  background: none !important;
+  color: #edf2f8 !important;
+  -webkit-text-fill-color: #edf2f8 !important;
+  filter: none !important;
+  text-shadow: none !important;
+  animation: none !important;
+}
+.site:not(.user-site-mode) .flagship-hero-copy .hero-line-main {
+  color: #acc8e6 !important;
+  -webkit-text-fill-color: #acc8e6 !important;
+}
+.site:not(.user-site-mode) :is(.flagship-hero-copy > p, .page-hero > p, .page-hero-copy > p) {
+  max-width: 63ch;
+  font-size: clamp(1rem, 1.4vw, 1.16rem) !important;
+  line-height: 1.75 !important;
+}
+.site:not(.user-site-mode) .signal-badge {
+  background: #1b2b3c !important;
+  color: #b6d2ed !important;
+  border: 1px solid var(--line) !important;
+  box-shadow: none !important;
+}
+
+/* Keep the homepage reactor interactive; remove the loud surrounding chrome. */
+.site:not(.user-site-mode) :is(.flagship-core-stage, .flagship-core-visual, .reactor-console) {
+  background: #14202e !important;
+  border-color: var(--line) !important;
+  box-shadow: none !important;
+}
+.site:not(.user-site-mode) :is(.reactor-burst, .reactor-energy-ring, .flagship-core-top i) {
+  opacity: .16 !important;
+  animation: none !important;
+}
+.site:not(.user-site-mode) .flagship-core-top,
+.site:not(.user-site-mode) .flagship-core-footer {
+  color: #aebbd0 !important;
+  letter-spacing: .035em !important;
+}
+
+/* Solid, understandable buttons instead of gradients, magnetism, and glow. */
+.site:not(.user-site-mode) :is(.button, .nav-cta, .premium-command-discord) {
+  border-radius: 10px !important;
+  box-shadow: none !important;
+  filter: none !important;
+  font-weight: 700 !important;
+  letter-spacing: 0 !important;
+}
+.site:not(.user-site-mode) :is(.button.primary, .nav-cta) {
+  background: #376fae !important;
+  border-color: #376fae !important;
+  color: #fff !important;
+}
+.site:not(.user-site-mode) .button.secondary {
+  background: #172332 !important;
+  border: 1px solid #304154 !important;
+  color: #e1e9f2 !important;
+}
+.site:not(.user-site-mode) :is(.button, .nav-cta):hover {
+  transform: none !important;
+  background: #4480c2 !important;
+  box-shadow: none !important;
+}
+.site:not(.user-site-mode) .button.secondary:hover { background: #213146 !important; }
+
+/* Use tidy panels, consistent spacing, and less exaggerated borders. */
+.site:not(.user-site-mode) :is(
+  .service-card, .product-card, .review-card, .feature-panel,
+  .story-panel, .flagship-service-card, .flagship-game-card,
+  .network-directory-card, .flagship-core-stage, .flagship-route-strip a,
+  .split-panel, .connection-card, .flagship-smp-grid a,
+  .flagship-smp-address, .faq-list details, .esn-hosting-launch-card
+) {
+  border: 1px solid var(--line) !important;
+  border-radius: 15px !important;
+  background: #14202e !important;
+  box-shadow: none !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
+.site:not(.user-site-mode) :is(
+  .service-card, .product-card, .review-card, .feature-panel,
+  .story-panel, .flagship-game-card, .network-directory-card
+):hover {
+  box-shadow: none !important;
+  filter: none !important;
+  transform: none !important;
+}
+.site:not(.user-site-mode) .service-card::before,
+.site:not(.user-site-mode) .product-card::before,
+.site:not(.user-site-mode) .flagship-service-card::before,
+.site:not(.user-site-mode) .flagship-game-card::before {
+  opacity: 0 !important;
+  animation: none !important;
+}
+.site:not(.user-site-mode) :is(
+  .flagship-services-section, .flagship-arcade-section, .flagship-reviews-section,
+  .dark-section
+) { background: #111b28 !important; }
+.site:not(.user-site-mode) :is(
+  .flagship-story-section, .flagship-smp-section, .flagship-community-section,
+  .flagship-safety-section, .flagship-leadership-section, .flagship-process-section,
+  .flagship-faq-section, .flagship-final-section
+) { background: transparent !important; }
+.site:not(.user-site-mode) .section { padding-block: clamp(52px, 7vw, 86px); }
+.site:not(.user-site-mode) .section-heading h2 { font-size: clamp(2rem, 4.1vw, 3.25rem); }
+.site:not(.user-site-mode) .section-heading { margin-bottom: 28px; }
+
+/* A practical, low-distraction command control that still works. */
+.site:not(.user-site-mode) .premium-dock {
+  background: #192636 !important;
+  border: 1px solid var(--line) !important;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, .2) !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
+.site:not(.user-site-mode) .premium-orb {
+  background: #264765 !important;
+  box-shadow: none !important;
+}
+.site:not(.user-site-mode) .premium-command { border-radius: 16px !important; }
+.site:not(.user-site-mode) :is(.premium-tilt, .premium-tilt:hover) {
+  transform: none !important;
+  will-change: auto !important;
+}
+.site:not(.user-site-mode) :is(.reveal-ready, .reveal-ready.is-visible) {
+  opacity: 1 !important;
+  visibility: visible !important;
+  filter: none !important;
+}
+
+/* Keep navigation and forms accessible after removing glow-based focus cues. */
+.site:not(.user-site-mode) :is(a, button, input, select, textarea):focus-visible {
+  outline: 2px solid #aacdf2 !important;
+  outline-offset: 3px !important;
+}
+
+@media (max-width: 860px) {
+  .site:not(.user-site-mode) .flagship-hero-layout {
+    padding-top: 32px !important;
+    padding-bottom: 26px !important;
+  }
+  .site:not(.user-site-mode) .flagship-hero-copy h1 {
+    font-size: clamp(2.45rem, 10vw, 3.85rem) !important;
+  }
+  .site:not(.user-site-mode) :is(.page-hero, .flagship-hero) { min-height: auto !important; }
+  .site:not(.user-site-mode) .premium-dock { bottom: calc(87px + env(safe-area-inset-bottom)) !important; }
+}
