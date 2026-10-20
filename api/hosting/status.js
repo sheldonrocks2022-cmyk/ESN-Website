@@ -1,22 +1,5 @@
-function safeNumber(value) {
-  const number = Number(value)
-  return Number.isFinite(number) && number > 0 ? number : null
-}
-
-function nodeFromEnvironment() {
-  if (!process.env.ESN_NODE_1_NAME) return null
-  return {
-    id: 'node-1',
-    name: process.env.ESN_NODE_1_NAME,
-    provider: process.env.ESN_NODE_1_PROVIDER || 'Cloud',
-    status: process.env.ESN_NODE_1_STATUS || 'provisioning',
-    ramGb: safeNumber(process.env.ESN_NODE_1_RAM_GB),
-    cpu: process.env.ESN_NODE_1_CPU || null,
-    region: process.env.ESN_NODE_1_REGION || null,
-    role: process.env.ESN_NODE_1_ROLE || 'Compute',
-  }
-}
-
+// Public hosting responses must never disclose infrastructure node identities,
+// providers, capacity, regions or raw environment configuration.
 export default function handler(req, res) {
   if (req.method !== 'GET') {
     res.setHeader('Allow', 'GET')
@@ -24,11 +7,9 @@ export default function handler(req, res) {
   }
 
   res.setHeader('Cache-Control', 'no-store, max-age=0')
-  const nodes = [nodeFromEnvironment()].filter(Boolean)
   return res.status(200).json({
-    connected: nodes.length > 0,
-    controller: nodes.length ? 'configured' : 'not-configured',
-    nodes,
-    updatedAt: new Date().toISOString(),
+    visibility: 'private',
+    availability: 'contact_support',
+    message: 'Please open an official ESN Hosting ticket to check service availability.',
   })
 }
