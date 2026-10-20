@@ -43,6 +43,7 @@ const requiredRoutes = [
   '/faq',
   '/store-ai',
   '/hosting',
+  '/hosting/vps',
   '/domains',
   '/site-builder',
   '/operations',
@@ -67,6 +68,30 @@ const missingRoutes = requiredRoutes.filter((route) => {
 })
 
 const missingPayments = requiredPaymentLinks.filter((url) => !app.includes(url))
+
+// Keep the public catalog aligned with the approved ESN Hosting plan sheet.
+const hostingSource = fs.readFileSync('src/Hosting.jsx', 'utf8')
+const hostingPlanSection = hostingSource.split('const BOT_PLANS = [')[1]?.split(']\n\nconst PLAN_GROUPS')[0] || ''
+const actualHostingPlans = [...hostingPlanSection.matchAll(/name: '([^']+)', ram: '([^']+)', cpu: '([^']+)', storage: '([^']+)', price: '([^']+)'/g)]
+  .map((match) => match.slice(1).join('|'))
+const approvedHostingPlans = [
+  'Nano|256 MB|25%|1 GB|$0.50',
+  'Starter|512 MB|35%|2 GB|$0.75',
+  'Basic|1 GB|50%|4 GB|$0.99',
+  'Plus|1.5 GB|75%|6 GB|$1.49',
+  'Advanced|2 GB|100%|8 GB|$1.99',
+  'Pro|3 GB|125%|12 GB|$2.99',
+  'Elite|4 GB|150%|15 GB|$4.99',
+  'Ultra|6 GB|200%|20 GB|$7.99',
+  'Extreme|8 GB|250%|30 GB|$8.99',
+  'Titan|10 GB|300%|40 GB|$12.99',
+  'Gift|15 GB|450%|60 GB|$16.99',
+]
+if (actualHostingPlans.length !== approvedHostingPlans.length ||
+    actualHostingPlans.some((plan, index) => plan !== approvedHostingPlans[index])) {
+  throw new Error('ESN Hosting pricing catalog does not match the approved 11-plan resource and price sheet.')
+}
+
 
 const sitemapExcludedAliases = new Set(['/home', '/store', '/store/smp', '/tools', '/vault', '/domains'])
 const sitemapRoutes = requiredRoutes
