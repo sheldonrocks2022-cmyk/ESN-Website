@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link, Navigate, Route, Routes, useLocation } from 'react-router-dom'
+import StartupIntro from './StartupIntro'
 import ESToolsSuite from './Tools'
 import ES3DViewer from './ES3DViewer'
 import PremiumChrome from './PremiumChrome'
@@ -1563,6 +1564,8 @@ function App() {
     <div className={standaloneSite ? 'site user-site-mode' : 'site'}>
       <AnalyticsTracker />
       {!standaloneSite&&<a className="skip-link" href="#main-content">Skip to main content</a>}
+      {/* Kept for compatibility with legacy route checks; its visuals are hidden by calm-theme.css. */}
+      {!standaloneSite&&<StartupIntro />}
       {!standaloneSite&&<MetaManager />}
       {!standaloneSite&&<ScrollToHash />}
       {!standaloneSite&&<ExperienceEffects />}
