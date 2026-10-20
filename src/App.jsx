@@ -574,42 +574,41 @@ function Footer() {
 
         <div className="footer-links organized-footer-links">
           <div>
-            <h3>Create</h3>
-            <Link to="/serviceshowcase">Services</Link>
-            <Link to="/portfolio">Portfolio</Link>
-            <Link to="/site-builder">Website Builder</Link>
+            <h3>Hosting</h3>
+            <Link to="/hosting/vps">Discord Bot Hosting</Link>
             <Link to="/hosting">Hosting & Domains</Link>
-            <Link to="/store-ai">Store AI</Link>
-            <Link to="/estools">ES Tools</Link>
+            <Link to="/site-builder">Website Builder</Link>
+            <Link to="/status">Service Status</Link>
+            <Link to="/support">Hosting Support</Link>
           </div>
           <div>
-            <h3>Play</h3>
+            <h3>Services & Tools</h3>
+            <Link to="/serviceshowcase">All Services</Link>
+            <Link to="/portfolio">Our Portfolio</Link>
+            <Link to="/testimonials">Customer Reviews</Link>
+            <Link to="/estools">Free Tools</Link>
+            <Link to="/store-ai">Store AI</Link>
+            <Link to="/configure">Plan a Project</Link>
+          </div>
+          <div>
+            <h3>Minecraft & Games</h3>
             <Link to="/smpconnection">ESN SMP</Link>
             <Link to="/smpconsole">Console Guide</Link>
             <Link to="/storesmp">SMP Store</Link>
-            <Link to="/smpplugin">ESNSMP Plugin</Link>
+            <Link to="/smpplugin">SMP Plugin</Link>
             <Link to="/smp/realm-ascension">Realm Ascension</Link>
-            <Link to="/arcade">Arcade Hub</Link>
-            <span>{SMP_HOST}</span>
+            <Link to="/arcade">Arcade Games</Link>
           </div>
           <div>
-            <h3>Network</h3>
-            <Link to="/status">Status</Link>
-            <Link to="/analytics">Site Analytics</Link>
-            <Link to="/nexus">Nexus</Link>
-            <Link to="/explore">Explore</Link>
+            <h3>Explore & Help</h3>
             <Link to="/whatsnew">What's New</Link>
-            <Link to="/updates">Releases</Link>
-            <Link to="/timeline">Timeline</Link>
-          </div>
-          <div>
-            <h3>About & Help</h3>
-            <Link to="/about">About ESN</Link>
-            <Link to="/leadership">Leadership</Link>
-            <Link to="/testimonials">Verified Reviews</Link>
+            <Link to="/updates">Updates & Releases</Link>
+            <Link to="/guides">Guides & News</Link>
+            <Link to="/explore">Explore ESN</Link>
+            <Link to="/about">About the Team</Link>
             <Link to="/faq">FAQ</Link>
-            <Link to="/support">Support</Link>
-            <Link to="/settings">Accessibility</Link>
+            <Link to="/support">Contact Support</Link>
+            <Link to="/settings">Settings</Link>
           </div>
         </div>
       </div>
