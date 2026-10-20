@@ -11,12 +11,23 @@ const EMPTY_STATE = {
 }
 
 const BOT_PLANS = [
-  { name: 'Starter', ram: '512 MB', cpu: '35%', storage: '2 GB', price: '$0.99', featured: false },
-  { name: 'Basic', ram: '1 GB', cpu: '50%', storage: '4 GB', price: '$1.99', featured: true },
-  { name: 'Plus', ram: '2 GB', cpu: '100%', storage: '8 GB', price: '$3.49', featured: false },
-  { name: 'Pro', ram: '4 GB', cpu: '150%', storage: '15 GB', price: '$5.99', featured: false },
-  { name: 'Ultra', ram: '6 GB', cpu: '200%', storage: '20 GB', price: '$8.99', featured: false },
-  { name: 'Extreme', ram: '8 GB', cpu: '250%', storage: '30 GB', price: '$11.99', featured: false },
+  { name: 'Nano', ram: '256 MB', cpu: '25%', storage: '1 GB', price: '$0.50', group: 'budget' },
+  { name: 'Starter', ram: '512 MB', cpu: '35%', storage: '2 GB', price: '$0.75', group: 'budget' },
+  { name: 'Basic', ram: '1 GB', cpu: '50%', storage: '4 GB', price: '$0.99', group: 'budget' },
+  { name: 'Plus', ram: '1.5 GB', cpu: '75%', storage: '6 GB', price: '$1.49', group: 'budget' },
+  { name: 'Advanced', ram: '2 GB', cpu: '100%', storage: '8 GB', price: '$1.99', group: 'performance' },
+  { name: 'Pro', ram: '3 GB', cpu: '125%', storage: '12 GB', price: '$2.99', group: 'performance', featured: true, label: 'MOST POPULAR' },
+  { name: 'Elite', ram: '4 GB', cpu: '150%', storage: '15 GB', price: '$4.99', group: 'performance' },
+  { name: 'Ultra', ram: '6 GB', cpu: '200%', storage: '20 GB', price: '$7.99', group: 'performance' },
+  { name: 'Extreme', ram: '8 GB', cpu: '250%', storage: '30 GB', price: '$8.99', group: 'premium' },
+  { name: 'Titan', ram: '10 GB', cpu: '300%', storage: '40 GB', price: '$12.99', group: 'premium', label: 'BEST VALUE' },
+  { name: 'Gift', ram: '15 GB', cpu: '450%', storage: '60 GB', price: '$16.99', group: 'premium', label: 'MAX RESOURCES' },
+]
+
+const PLAN_GROUPS = [
+  { id: 'budget', label: 'Budget Plans', copy: 'Affordable options for smaller bots and projects.' },
+  { id: 'performance', label: 'Performance Plans', copy: 'More room for active communities and heavier workloads.' },
+  { id: 'premium', label: 'Premium Plans', copy: 'Higher resources for demanding projects. Ask us about game compatibility.' },
 ]
 
 const PANEL_FEATURES = [
@@ -93,8 +104,8 @@ export default function HostingPage() {
             <span className="eyebrow">ESN BOT HOSTING // 24/7</span>
             <h1>Your bot. Your files. <em>Your controls.</em></h1>
             <p>
-              Host your Python or Node.js Discord bot with access to its console, files,
-              startup settings, and resource graphs. Manage it from your own panel.
+              Start from $0.50/month with 11 plans for Discord bots and larger projects.
+              Get your own panel with console, files, startup settings, and resource graphs.
             </p>
             <div className="hero-actions page-actions">
               <a className="button primary" href={HOSTING_DISCORD} target="_blank" rel="noreferrer">
@@ -103,7 +114,7 @@ export default function HostingPage() {
               <a className="button secondary" href="#customer-panel">See the customer panel</a>
             </div>
             <p className="esn-hosting-purchase-note">
-              Purchases and support are handled only through the official ESN Hosting Discord.
+              Open a hosting ticket to order. Payments must be approved by an authorized ESN CEO.
             </p>
           </div>
 
@@ -126,32 +137,50 @@ export default function HostingPage() {
           <div className="section-heading">
             <div>
               <span className="eyebrow">BOT HOSTING PLANS</span>
-              <h2>Choose what your bot actually needs.</h2>
+              <h2>11 plans. Starting at $0.50/month.</h2>
             </div>
-            <p>Every plan includes 24/7 runtime, a private customer panel, console, files, SFTP, resource graphs, and Node.js or Python support.</p>
+            <p>Every plan includes a private Pterodactyl panel, Python and Node.js support, console, file manager, SFTP, resource monitoring, startup and environment settings, crash restarting, and Discord ticket support.</p>
           </div>
 
-          <div className="esn-hosting-plan-grid">
-            {BOT_PLANS.map((plan) => (
-              <article className={plan.featured ? 'esn-hosting-plan featured' : 'esn-hosting-plan'} key={plan.name}>
-                {plan.featured && <span className="esn-plan-badge">MOST POPULAR</span>}
-                <span className="eyebrow">ESN {plan.name.toUpperCase()}</span>
-                <div className="esn-plan-price"><strong>{plan.price}</strong><span>/ month</span></div>
-                <div className="esn-plan-resources">
-                  <div><span>RAM</span><b>{plan.ram}</b></div>
-                  <div><span>CPU</span><b>{plan.cpu}</b></div>
-                  <div><span>STORAGE</span><b>{plan.storage}</b></div>
+          <div className="esn-hosting-plan-groups">
+            {PLAN_GROUPS.map((group) => (
+              <section className="esn-hosting-plan-group" key={group.id} aria-labelledby={`esn-plan-${group.id}`}>
+                <div className="esn-hosting-group-head">
+                  <div>
+                    <h3 id={`esn-plan-${group.id}`}>{group.label}</h3>
+                    <p>{group.copy}</p>
+                  </div>
+                  <span>{BOT_PLANS.filter((plan) => plan.group === group.id).length} plans</span>
                 </div>
-                <ul>
-                  <li>24/7 bot runtime</li>
-                  <li>Node.js + Python</li>
-                  <li>Private customer panel</li>
-                  <li>Console + file manager</li>
-                  <li>Crash restart support</li>
-                </ul>
-                <a href={HOSTING_DISCORD} target="_blank" rel="noreferrer">Buy in Discord <span>→</span></a>
-              </article>
+                <div className="esn-hosting-plan-grid">
+                  {BOT_PLANS.filter((plan) => plan.group === group.id).map((plan) => (
+                    <article className={plan.featured ? 'esn-hosting-plan featured' : 'esn-hosting-plan'} key={plan.name}>
+                      {plan.label && <span className={plan.featured ? 'esn-plan-badge' : 'esn-plan-badge subtle'}>{plan.label}</span>}
+                      <span className="eyebrow">ESN {plan.name.toUpperCase()}</span>
+                      <div className="esn-plan-price"><strong>{plan.price}</strong><span>/ month</span></div>
+                      <div className="esn-plan-resources">
+                        <div><span>RAM</span><b>{plan.ram}</b></div>
+                        <div><span>CPU</span><b>{plan.cpu}</b></div>
+                        <div><span>STORAGE</span><b>{plan.storage}</b></div>
+                      </div>
+                      <ul>
+                        <li>24/7 hosting availability</li>
+                        <li>Python + Node.js support</li>
+                        <li>Private Pterodactyl panel</li>
+                        <li>Console, files + SFTP</li>
+                        <li>Resource monitoring + auto restart</li>
+                      </ul>
+                      <a href={HOSTING_DISCORD} target="_blank" rel="noreferrer">Order ESN {plan.name} <span>→</span></a>
+                    </article>
+                  ))}
+                </div>
+              </section>
             ))}
+          </div>
+
+          <div className="esn-hosting-payment-safety">
+            <strong>Payment safety</strong>
+            <p>Open a hosting ticket first. Payments are handled only by authorized ESN CEOs (Discord IDs 811100216052547594 and 1515077206886453469). Never send money to unauthorized staff members.</p>
           </div>
         </div>
       </section>
@@ -243,7 +272,7 @@ export default function HostingPage() {
             <div>
               <span className="eyebrow">OFFICIAL HOSTING DISCORD</span>
               <h3>Ready to order?</h3>
-              <p>Join the permanent ESN Hosting server and open a hosting ticket.</p>
+              <p>Choose one of our 11 plans, starting at $0.50/month, then open a hosting ticket. Our team can discuss custom requirements too.</p>
             </div>
             <a className="button primary" href={HOSTING_DISCORD} target="_blank" rel="noreferrer">Join & buy hosting <span>→</span></a>
           </div>
