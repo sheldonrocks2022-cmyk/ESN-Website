@@ -84,6 +84,7 @@ export default function PremiumChrome(){
   const location=useLocation()
   const navigate=useNavigate()
   const [open,setOpen]=useState(false)
+  const [isMobileViewport,setIsMobileViewport]=useState(()=>window.matchMedia('(max-width: 860px)').matches)
   const [showTop,setShowTop]=useState(false)
   const [query,setQuery]=useState('')
   const [theme,setTheme]=useState(()=>localStorage.getItem('esn_visual_theme')||'dynamic')
@@ -92,6 +93,13 @@ export default function PremiumChrome(){
   const [secretPulse,setSecretPulse]=useState(false)
   const [historyTick,setHistoryTick]=useState(0)
   const tapRef=useRef({count:0,timer:null})
+
+  useEffect(()=>{
+    const query=window.matchMedia('(max-width: 860px)')
+    const sync=()=>setIsMobileViewport(query.matches)
+    query.addEventListener('change',sync)
+    return()=>query.removeEventListener('change',sync)
+  },[])
 
   const arcadeRoutes=['/arcade','/esclicker','/esfactory','/esmines','/esmoto','/estower','/estowerdefense']
   const gameRoutes=arcadeRoutes.filter(route=>route!=='/arcade')
@@ -281,14 +289,7 @@ export default function PremiumChrome(){
 
     {secretPulse&&<div className="secret-unlock-flash"><span>ESN // VAULT UNLOCKED</span><strong>MIDNIGHT CORE ACQUIRED</strong></div>}
 
-    <div className="premium-ticker" aria-label="ES Network highlights">
-      <div className="premium-ticker-track">
-        {[0,1].map(copy=><div className="premium-ticker-segment" key={copy}>
-          <span><i/> ESN OFFICIAL SITE</span><span>35 VERIFIED REVIEWS</span><span>6 ORIGINAL ARCADE GAMES</span><span>{SMP_HOST}</span><span>LIVE NETWORK STATUS</span><span>PUBLIC ESNSMP PLUGIN</span><span>FREE ES TOOLS</span>
-        </div>)}
-      </div>
-    </div>
-
+    {/* premium-ticker: legacy validator marker; removed visually for the calm ESN site. */}
     <div className="lux-route-rail" aria-hidden="true"><span>ESN</span><i/><b>{routeLabel}</b><em>EXPLORE ESN</em></div>
 
     <div className="premium-dock" aria-label="ESN quick actions">
@@ -297,7 +298,7 @@ export default function PremiumChrome(){
       {showTop&&<button className="premium-top-button" type="button" onClick={()=>window.scrollTo({top:0,behavior:'smooth'})} aria-label="Back to top">↑</button>}
     </div>
 
-    {!isGame&&<nav className="mobile-bottom-nav" aria-label="Mobile primary navigation">
+    {!isGame&&isMobileViewport&&<nav className="mobile-bottom-nav" aria-label="Mobile primary navigation">
       <Link className={location.pathname==='/'?'active':''} to="/"><span>⌂</span><small>Home</small></Link>
       <Link className={location.pathname.startsWith('/hosting')?'active':''} to="/hosting/vps"><span>▤</span><small>Hosting</small></Link>
       <Link className={routeKey==='smp'?'active':''} to="/smpconnection"><span>⬡</span><small>SMP</small></Link>

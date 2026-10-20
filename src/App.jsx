@@ -692,6 +692,7 @@ function NetworkDirectory() {
 }
 
 function Home() {
+  const [showInteractive,setShowInteractive] = useState(false)
   return (
     <>
       <section className="hero flagship-hero" id="hero-banner">
@@ -709,9 +710,9 @@ function Home() {
               <span className="hero-version" data-easter="hero-version" title="ES NETWORK // 2026">ES NETWORK // 2026</span>
             </div>
 
-            <span className="eyebrow">ES NETWORK • OFFICIAL SITE</span>
-            <h1><span className="hero-line-small">Made for your projects.</span><br /><span className="hero-line-main">Built around our community.</span></h1>
-            <p>We're a small team working on hosting, websites, creator services, and a Minecraft community. We also make free tools and games. Have a question? Come talk to us on Discord.</p>
+            <span className="eyebrow">HOSTING · WEBSITES · COMMUNITY</span>
+            <h1><span className="hero-line-small">Built for your next idea.</span><br /><span className="hero-line-main">Backed by real people.</span></h1>
+            <p>From hosting your Discord bot to building your website or community, ESN makes it easier to get started. We're here to help you choose what works, not sell you things you don't need.</p>
 
             <div className="hero-actions flagship-actions">
               <Link className="button primary" to="/hosting/vps">Explore hosting <span>↗</span></Link>
@@ -719,20 +720,23 @@ function Home() {
               <a className="button secondary" href={DISCORD_URL} target="_blank" rel="noreferrer">Join Discord</a>
             </div>
 
-            <div className="flagship-metrics">
-              <div><span>01</span><strong>35</strong><small>Verified reviews</small></div>
-              <div><span>02</span><strong>6</strong><small>Original Arcade games</small></div>
-              <div><span>03</span><strong>{SMP_HOST}</strong><small>ESN SMP</small></div>
+            <div className="flagship-metrics esn-trust-line">
+              <div><strong>Hosting</strong><small>Bot hosting & servers</small></div>
+              <div><strong>Hands-on help</strong><small>Real support through Discord</small></div>
+              <div><strong>One community</strong><small>Projects, SMP & Arcade</small></div>
             </div>
           </div>
 
-          <aside className="flagship-core-stage">
-            <div className="flagship-core-top"><span>ESN CORE</span><i /><b>LIVE</b></div>
-            <HeroReactor />
-            <div className="flagship-core-footer">
-              <span>INTERACTIVE NETWORK REACTOR</span>
-              <strong>DRAG • ROTATE • CHARGE • OVERDRIVE</strong>
+          <aside className="flagship-core-stage esn-intro-panel">
+            <div className="esn-intro-panel-top"><span>WHY PEOPLE CHOOSE ESN</span><span className="esn-intro-availability"><i /> Here to help</span></div>
+            <h2>Everything you need to get going.</h2>
+            <p>Less hassle. Straightforward tools and a team you can actually talk to.</p>
+            <div className="esn-intro-features">
+              <Link to="/hosting/vps"><span className="esn-intro-feature-icon" aria-hidden="true">01</span><span><strong>Run your bot</strong><small>Hosting with console and file access</small></span><b aria-hidden="true">↗</b></Link>
+              <Link to="/serviceshowcase"><span className="esn-intro-feature-icon" aria-hidden="true">02</span><span><strong>Build your project</strong><small>Websites, setup, design and more</small></span><b aria-hidden="true">↗</b></Link>
+              <Link to="/support"><span className="esn-intro-feature-icon" aria-hidden="true">03</span><span><strong>Talk with us</strong><small>Questions, support and honest advice</small></span><b aria-hidden="true">↗</b></Link>
             </div>
+            <div className="esn-intro-panel-foot"><span>Part of the ES Network community</span><Link to="/about">Meet ESN →</Link></div>
           </aside>
         </div>
 
@@ -829,6 +833,20 @@ function Home() {
       <WhatsHappeningNow />
 
       <NetworkShowcase />
+
+      <section className="section esn-interactive-extra">
+        <div className="shell">
+          <div className="esn-interactive-extra-head">
+            <div><span className="eyebrow">WANT TO EXPLORE MORE?</span><h2>A little extra from ESN.</h2><p>Our interactive network experience is optional. The rest of the site works without it.</p></div>
+            <button className="button secondary" type="button" onClick={()=>setShowInteractive(value=>!value)} aria-expanded={showInteractive}>{showInteractive?'Hide interactive view':'Open interactive view'}</button>
+          </div>
+          {showInteractive&&<aside className="flagship-core-stage esn-optional-reactor">
+            <div className="flagship-core-top"><span>ESN CORE</span><i /><b>INTERACTIVE</b></div>
+            <HeroReactor />
+            <div className="flagship-core-footer"><span>EXPLORE OUR NETWORK</span><strong>DRAG • ROTATE • CHARGE</strong></div>
+          </aside>}
+        </div>
+      </section>
 
       <NetworkEvolutionSection />
 

@@ -1562,27 +1562,7 @@ export default function NetworkEvolution(){
 
     <div className="ev-season-pill"><i/><span>{season.label}</span><small>{season.copy}</small></div>
 
-    <div className="mobile-network-strip" aria-label="ESN mobile network controls">
-      <div className="mobile-network-strip-top">
-        <div className="mobile-season-chip"><i/><span>{season.label}</span></div>
-        <Link className="mobile-update-chip" to="/whatsnew"><b>NEW</b><span>Website update</span></Link>
-      </div>
-      <div className="mobile-network-strip-actions">
-        <button type="button" onClick={()=>setSearchOpen(true)}><span>⌕</span><small>Search</small></button>
-        <button type="button" onClick={()=>setTerminalOpen(true)}><span>›_</span><small>Terminal</small></button>
-        <button type="button" onClick={()=>setPassportOpen(true)}><span>{passportSnapshot(visited,eggs).level}</span><small>Passport</small></button>
-        <button type="button" onClick={()=>window.dispatchEvent(new Event('esn-open-notifications'))}><span>5</span><small>Alerts</small></button>
-        <button className={soundEnabled?'active':''} type="button" onClick={()=>setSoundEnabled(!soundEnabled)}><span>{soundEnabled?'ON':'OFF'}</span><small>Sound</small></button>
-      </div>
-      <div className="mobile-pinned-deck" aria-label="Pinned ESN shortcuts">
-        {pins.map(id=>{
-          const item=DECK_DESTINATIONS.find(value=>value.id===id)
-          if(!item)return null
-          return <Link key={'mobile-'+id} to={item.path}><span>{item.glyph}</span><small>{item.label}</small></Link>
-        })}
-        <button type="button" onClick={()=>setDeckOpen(true)}><span>+</span><small>Edit</small></button>
-      </div>
-    </div>
+    {/* Mobile shortcuts are available in the More menu instead of stacking above the page. */}
 
     <CommandDeck pins={pins} onEdit={()=>setDeckOpen(true)}/>
 
