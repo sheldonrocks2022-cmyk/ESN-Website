@@ -84,12 +84,13 @@ export function NexusEventLayer(){
     const apply=()=>{
       const next=eventForNow()
       setEvent(next)
-      root.dataset.nexusEvent=next.id
+      if(location.pathname==='/nexus')root.dataset.nexusEvent=next.id
+      else delete root.dataset.nexusEvent
     }
     apply()
     const timer=window.setInterval(apply,60000)
     return()=>{window.clearInterval(timer);delete root.dataset.nexusEvent}
-  },[])
+  },[location.pathname])
   if(event.id==='core'||location.pathname!=='/nexus')return null
   return <div className="nexus-global-event" role="status">
     <i/><span>{event.label}</span><small>{event.copy}</small>
