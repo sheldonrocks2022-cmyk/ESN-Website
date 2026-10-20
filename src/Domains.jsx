@@ -266,6 +266,15 @@ export default function DomainsPage(){
         <button onClick={()=>setShowStaff(true)}>STAFF</button>
       </div>
 
+      <div className="domains-bot-hosting-link">
+        <div>
+          <span>DISCORD BOT HOSTING</span>
+          <strong>11 hosting plans from $0.50/month</strong>
+          <p>Compare RAM, CPU, storage, and monthly prices for ESN Nano through ESN Gift. Order through an official hosting ticket.</p>
+        </div>
+        <Link to="/hosting/vps">VIEW ALL HOSTING PLANS →</Link>
+      </div>
+
       <div className="domains-safety-strip">
         <strong>NO NAMESERVER CHANGE</strong>
         <span>ESN stays on Spaceship DNS. Free subdomains create only their own CNAME record — the main ESN nameservers are never changed.</span>
