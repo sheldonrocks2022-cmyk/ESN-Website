@@ -2,7 +2,7 @@ import './hosting.css'
 
 const HOSTING_DISCORD = 'https://discord.gg/RGPt3zEfGy'
 
-const BOT_PLANS = [
+export const BOT_PLANS = [
   { name: 'Nano', ram: '256 MB', cpu: '25%', storage: '1 GB', price: '$0.50', group: 'budget' },
   { name: 'Starter', ram: '512 MB', cpu: '35%', storage: '2 GB', price: '$0.75', group: 'budget' },
   { name: 'Basic', ram: '1 GB', cpu: '50%', storage: '4 GB', price: '$0.99', group: 'budget' },
@@ -46,6 +46,7 @@ export default function HostingPage() {
                 Buy through Discord <span>→</span>
               </a>
               <a className="button secondary" href="#customer-panel">See the customer panel</a>
+              <a className="button secondary" href="/business">Customer Business Hub</a>
             </div>
             <p className="esn-hosting-purchase-note">
               Open a hosting ticket to order. Payments must be approved by an authorized ESN CEO.

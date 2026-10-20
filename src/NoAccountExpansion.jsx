@@ -4,6 +4,7 @@ import { useArcadeProgress } from './arcade/shared'
 import { SITE_RELEASE, SMP_ADDRESS, SMP_PORT, DISCORD_URL, useLiveNetwork } from './liveNetwork'
 import './noAccountExpansion.css'
 import { StaffOpsExpansion } from './OpsExpansion'
+import { BusinessStaffControls } from './BusinessPlatform'
 
 const NOTICE_KEY='esn_notification_center_v1'
 const ALERT_PREF_KEY='esn_browser_alerts_v1'
@@ -546,7 +547,7 @@ export function StaffDashboardPage(){
   const checklistDone=Object.values(checklist).filter(Boolean).length
 
   return <>
-    <section className="page-hero noacct-hero"><div className="shell page-hero-inner"><div className="page-hero-copy"><span className="eyebrow">STAFF DASHBOARD</span><h1>ESN operator console.</h1><p>Network controls, local incident tracking, release checks, staff notes, announcements, and diagnostics without staff accounts.</p></div><div className="page-hero-mark"><span>STAFF</span><small>SESSION</small></div></div></section>
+    <section className="page-hero noacct-hero"><div className="shell page-hero-inner"><div className="page-hero-copy"><span className="eyebrow">STAFF DASHBOARD</span><h1>ESN operator console.</h1><p>Business platform previews, hosting programs, service notices, incident tracking, release checks and diagnostics. Real billing and server management require secure server authentication.</p></div><div className="page-hero-mark"><span>STAFF</span><small>SESSION</small></div></div></section>
 
     <section className="section"><div className="shell staff-grid">
       <article className="noacct-panel"><span className="noacct-kicker">NETWORK</span><h2>{navigator.onLine?'ONLINE':'OFFLINE'}</h2><p>SMP: <strong>{live.smp.status}</strong> • Plugin: <strong>{live.plugin.version||live.plugin.status}</strong> • Discord: <strong>{live.discord.status}</strong></p><div className="noacct-actions"><button type="button" onClick={live.refresh}>REFRESH TELEMETRY</button><Link to="/status">STATUS CENTER</Link></div></article>
@@ -636,12 +637,13 @@ export function StaffDashboardPage(){
       </article>
     </div></section>
 
+    <BusinessStaffControls />
     <StaffOpsExpansion />
 
     <section className="section dark-section"><div className="shell">
       <div className="section-heading"><div><span className="eyebrow">STAFF ACTIVITY</span><h2>Staff actions on this device.</h2><p>Tracks actions performed from this browser’s Staff Dashboard.</p></div><button className="staff-secondary-action" type="button" onClick={()=>{writeJson(STAFF_ACTIVITY_KEY,[]);setActivity([])}}>CLEAR ACTIVITY</button></div>
       <div className="staff-activity-log">{activity.length?activity.slice(0,25).map(item=><article key={item.id}><span>{new Date(item.at).toLocaleString()}</span><strong>{item.action}</strong><small>{item.copy}</small></article>):<p>No staff activity recorded yet.</p>}</div>
-      <div className="staff-quicklinks"><Link to="/store-ai">Store AI</Link><Link to="/domains">Domains</Link><Link to="/updates">Release Center</Link><Link to="/nexus">Nexus</Link><Link to="/notifications">Notifications</Link><Link to="/rewards">Reward Vault</Link><Link to="/challenges">Challenge Lab</Link><Link to="/storesmp">SMP Store</Link><a href={DISCORD_URL} target="_blank" rel="noreferrer">Discord</a></div>
+      <div className="staff-quicklinks"><Link to="/business">Business Hub</Link><Link to="/store-ai">Store AI</Link><Link to="/domains">Domains</Link><Link to="/updates">Release Center</Link><Link to="/nexus">Nexus</Link><Link to="/notifications">Notifications</Link><Link to="/rewards">Reward Vault</Link><Link to="/challenges">Challenge Lab</Link><Link to="/storesmp">SMP Store</Link><a href={DISCORD_URL} target="_blank" rel="noreferrer">Discord</a></div>
       <button className="staff-lock-button" type="button" onClick={()=>{addStaffActivity('STAFF CONSOLE LOCKED','Operator session ended.');sessionStorage.removeItem(STAFF_SESSION_KEY);setAuthorized(false)}}>LOCK STAFF CONSOLE</button>
     </div></section>
   </>

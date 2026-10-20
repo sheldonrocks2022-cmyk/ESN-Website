@@ -138,6 +138,24 @@ const requiredMigrationFiles = [
 ]
 
 const problems = []
+// Business platform must remain request-only until a secure backend is deployed.
+const businessHub = fs.readFileSync('src/BusinessPlatform.jsx','utf8')
+const businessData = fs.readFileSync('src/businessPlatformData.js','utf8')
+const businessDocs = fs.readFileSync('docs/ESN_BUSINESS_PLATFORM.md','utf8')
+for (const route of ['/business','/business/dashboard','/business/plans','/business/partners','/business/rewards','/business/support','/business/setup']) {
+  if (!app.includes('path="'+route+'"')) problems.push('Business platform route missing: '+route)
+}
+if (!app.includes('BusinessPlatformPage') || !businessHub.includes('BusinessStaffControls') ||
+    !fs.readFileSync('src/NoAccountExpansion.jsx','utf8').includes('<BusinessStaffControls />')) {
+  problems.push('Business platform or staff controls not connected.')
+}
+for (const marker of ['not automatically submitted','not connected','not published globally','not a customer account']) {
+  if (!(businessHub+' '+businessData+' '+businessDocs).toLowerCase().includes(marker)) problems.push('Business preview safety statement missing: '+marker)
+}
+if (businessHub.includes('STRIPE_SECRET_KEY') || businessHub.includes('PTERODACTYL_API_KEY') || businessHub.includes('process.env')) {
+  problems.push('Business client code must not contain payment or Pterodactyl secrets.')
+}
+if (!businessData.includes('STAFF') && !businessHub.includes('STAFF')) problems.push('No documented staff approval workflow.')
 const publicHostingApi = fs.readFileSync('api/hosting/status.js','utf8')
 if (/ESN-US-01|esn-hosting-node-grid|esn-launch-specs|node\.ramGb|node\.cpu|state\.nodes|totalRam/.test(hostingSource)) {
   problems.push('Public hosting page still includes internal node identifiers, specs, or live node inventory.')

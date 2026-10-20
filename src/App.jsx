@@ -17,6 +17,7 @@ import { ChallengeLabPage, NoAccountExperienceLayer, NotificationCenterPage, Rew
 import StoreAIPage from './StoreAI'
 import DomainsPage from './Domains'
 import HostingPage from './Hosting'
+import { BusinessPlatformPage } from './BusinessPlatform'
 import SiteBuilderPage, { HostedSitePage } from './SiteBuilder'
 import { ChangelogTimelinePage, DiagnosticCenterPage, GlobalOpsLayer, OperationsMapPage, PublicIncidentsPage, SessionStatsPage, SMPConnectionTesterPage, SystemBlueprintPage } from './OpsExpansion'
 import { SOCIAL_IMAGE_ALT, SOCIAL_IMAGE_URL, canonicalUrl, getSeo, robotsContent, socialImageFor, structuredDataFor } from './seo'
@@ -406,7 +407,7 @@ function Header() {
   const close = () => setOpen(false)
   const inGroup = (paths) => paths.some((path) => location.pathname === path || location.pathname.startsWith(path + '/'))
   const arcadeActive = location.pathname === '/arcade' || ARCADE_GAMES.some(([, route]) => route === location.pathname)
-  const hostingActive = inGroup(['/hosting', '/domains'])
+  const hostingActive = inGroup(['/hosting', '/domains', '/business'])
   const servicesActive = inGroup(['/serviceshowcase', '/portfolio', '/testimonials', '/store-ai', '/site-builder', '/estools', '/configure', '/estimate', '/showcase', '/fortnite-coaching', '/video-editing', '/discord-server-setup', '/website-builder'])
   const playActive = arcadeActive || inGroup(['/smpconnection', '/smpconsole', '/smpplugin', '/smpguide', '/storesmp', '/smpcheck', '/smp-hub', '/smp-items', '/minecraft-server', '/minecraft-smp', '/smp/realm-ascension'])
   const discoverActive = inGroup(['/status', '/networkstats', '/analytics', '/updates', '/whatsnew', '/timeline', '/explore', '/gallery', '/nexus', '/notifications', '/rewards', '/challenges', '/operations', '/incidents', '/changelog', '/diagnostics', '/blueprint', '/session', '/share', '/launchpad', '/search', '/labs', '/activity', '/share-generator', '/network-map', '/backup', '/guides', '/visibility', '/free-browser-tools'])
@@ -445,6 +446,7 @@ function Header() {
               <div className="dropdown-section">
                 <span className="dropdown-label">SERVER HOSTING</span>
                 <Link onClick={close} to="/hosting/vps">Discord Bot Hosting</Link>
+                <Link onClick={close} to="/business">Customer Business Hub</Link>
                 <Link onClick={close} to="/hosting">Domains & Hosting Requests</Link>
                 <Link onClick={close} to="/status">Service Status</Link>
               </div>
@@ -452,6 +454,7 @@ function Header() {
                 <span className="dropdown-label">NEED A HAND?</span>
                 <Link onClick={close} to="/site-builder">Website Builder</Link>
                 <Link onClick={close} to="/support">Support & Questions</Link>
+                <Link onClick={close} to="/business/setup">Bot Setup Guides</Link>
                 <a onClick={close} href={DISCORD_URL} target="_blank" rel="noreferrer">Ask in Discord ↗</a>
               </div>
             </div>
@@ -576,6 +579,7 @@ function Footer() {
           <div>
             <h3>Hosting</h3>
             <Link to="/hosting/vps">Discord Bot Hosting</Link>
+            <Link to="/business">Customer Business Hub</Link>
             <Link to="/hosting">Hosting & Domains</Link>
             <Link to="/site-builder">Website Builder</Link>
             <Link to="/status">Service Status</Link>
@@ -741,7 +745,7 @@ function Home() {
         </div>
 
         <div className="shell flagship-route-strip">
-          <Link to="/hosting/vps"><span>01</span><b>Hosting</b><small>Bot servers & controls</small><em>↗</em></Link>
+          <Link to="/business"><span>01</span><b>Hosting</b><small>Plans, requests & support</small><em>↗</em></Link>
           <Link to="/serviceshowcase"><span>02</span><b>Services</b><small>Websites & creative work</small><em>↗</em></Link>
           <Link to="/smpconnection"><span>03</span><b>Minecraft</b><small>Connect to ESN SMP</small><em>↗</em></Link>
           <Link to="/arcade"><span>04</span><b>Arcade</b><small>Free browser games</small><em>↗</em></Link>
@@ -1649,6 +1653,13 @@ function App() {
           <Route path="/storeai" element={<Navigate to="/store-ai" replace />} />
           <Route path="/hosting" element={<DomainsPage />} />
           <Route path="/hosting/vps" element={<HostingPage />} />
+          <Route path="/business" element={<BusinessPlatformPage section="overview" />} />
+          <Route path="/business/dashboard" element={<BusinessPlatformPage section="dashboard" />} />
+          <Route path="/business/plans" element={<BusinessPlatformPage section="plans" />} />
+          <Route path="/business/partners" element={<BusinessPlatformPage section="partners" />} />
+          <Route path="/business/rewards" element={<BusinessPlatformPage section="rewards" />} />
+          <Route path="/business/support" element={<BusinessPlatformPage section="support" />} />
+          <Route path="/business/setup" element={<BusinessPlatformPage section="setup" />} />
           <Route path="/domains" element={<Navigate to="/hosting" replace />} />
           <Route path="/site-builder" element={<SiteBuilderPage />} />
           <Route path="/sites/:slug" element={<HostedSitePage />} />
