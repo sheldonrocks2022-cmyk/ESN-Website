@@ -64,8 +64,8 @@ export const SEO_ROUTES={
   '/business/plans':{label:'ESN Hosting Plan Finder',title:'Compare 11 ESN Hosting Plans',description:'Find and compare ESN hosting tiers from $0.50/month. Staff confirms availability and purchases in Discord.',index:true},
   '/business/partners':{label:'ESN Partnerships',title:'ESN Hosting Partnerships & Referrals',description:'Learn about ESN hosting partnership and referral enquiries. Applications require ESN staff review.',index:true},
   '/business/rewards':{label:'ESN Hosting Benefits',title:'ESN Hosting Rewards & Loyalty Information',description:'Review staff-approved customer perks, rewards policies and community milestones.',index:true},
-  '/business/support':{label:'ESN Hosting Support',title:'ESN Hosting Help & Support',description:'Find ESN hosting help, troubleshooting guides and official Discord support.',index:true},
-  '/business/setup':{label:'ESN Bot Setup Guides',title:'Host Python and Node.js Discord Bots | ESN Guides',description:'Follow a basic Python or Node.js deployment checklist for ESN hosting.',index:true},
+  '/business/support':{label:'ESN Hosting Support',title:'ESN Hosting Help & Support',description:'Find ESN hosting help, Discord bot troubleshooting, account and billing guidance, setup resources, and official support channels before opening a ticket.',index:true},
+  '/business/setup':{label:'ESN Bot Setup Guides',title:'Host Python and Node.js Discord Bots | ESN Guides',description:'Follow a practical Python or Node.js Discord bot hosting checklist with startup commands, file uploads, dependencies, secure token management, and troubleshooting tips.',index:true},
   '/hosting/vps':{
     label:'ESN Bot Hosting',
     title:'ESN Discord Bot Hosting | 11 Plans from $0.50/month',
