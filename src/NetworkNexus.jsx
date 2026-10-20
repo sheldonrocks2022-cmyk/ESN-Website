@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useLocation } from 'react-router-dom'
 import ES3DViewer from './ES3DViewer'
 import { useArcadeProgress } from './arcade/shared'
 import { SITE_RELEASE, useLiveNetwork } from './liveNetwork'
@@ -77,6 +77,7 @@ function normalizeRoutes(value){
 function clamp(value,min,max){return Math.max(min,Math.min(max,value))}
 
 export function NexusEventLayer(){
+  const location=useLocation()
   const [event,setEvent]=useState(()=>eventForNow())
   useEffect(()=>{
     const root=document.documentElement
@@ -89,7 +90,7 @@ export function NexusEventLayer(){
     const timer=window.setInterval(apply,60000)
     return()=>{window.clearInterval(timer);delete root.dataset.nexusEvent}
   },[])
-  if(event.id==='core')return null
+  if(event.id==='core'||location.pathname!=='/nexus')return null
   return <div className="nexus-global-event" role="status">
     <i/><span>{event.label}</span><small>{event.copy}</small>
   </div>
