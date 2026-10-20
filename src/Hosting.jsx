@@ -1,14 +1,6 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
 import './hosting.css'
 
 const HOSTING_DISCORD = 'https://discord.gg/RGPt3zEfGy'
-
-const EMPTY_STATE = {
-  connected: false,
-  controller: 'not-configured',
-  nodes: [],
-  updatedAt: null,
-}
 
 const BOT_PLANS = [
   { name: 'Nano', ram: '256 MB', cpu: '25%', storage: '1 GB', price: '$0.50', group: 'budget' },
@@ -37,65 +29,7 @@ const PANEL_FEATURES = [
   ['Startup', 'Manage startup files, Node.js or Python runtime settings, and environment variables.'],
 ]
 
-function formatMemory(value) {
-  const gb = Number(value)
-  return Number.isFinite(gb) && gb > 0 ? `${gb} GB` : 'Pending'
-}
-
-function NodeCard({ node }) {
-  const online = node.status === 'online'
-  return (
-    <article className="esn-hosting-node">
-      <div className="esn-hosting-node-head">
-        <div>
-          <span className="eyebrow">{node.provider || 'ESN NODE'}</span>
-          <h3>{node.name || 'Unnamed node'}</h3>
-        </div>
-        <span className={online ? 'esn-node-status online' : 'esn-node-status'}>
-          <i />
-          {online ? 'ONLINE' : String(node.status || 'UNKNOWN').toUpperCase()}
-        </span>
-      </div>
-      <div className="esn-node-specs">
-        <div><span>RAM</span><strong>{formatMemory(node.ramGb)}</strong></div>
-        <div><span>CPU</span><strong>{node.cpu || 'Pending'}</strong></div>
-        <div><span>REGION</span><strong>{node.region || 'Pending'}</strong></div>
-        <div><span>ROLE</span><strong>{node.role || 'Bot Hosting'}</strong></div>
-      </div>
-    </article>
-  )
-}
-
 export default function HostingPage() {
-  const [state, setState] = useState(EMPTY_STATE)
-  const [loading, setLoading] = useState(true)
-
-  const refresh = useCallback(async () => {
-    setLoading(true)
-    try {
-      const response = await fetch('/api/hosting/status', { cache: 'no-store' })
-      if (!response.ok) throw new Error('hosting controller unavailable')
-      const data = await response.json()
-      setState({
-        connected: Boolean(data.connected),
-        controller: data.controller || 'not-configured',
-        nodes: Array.isArray(data.nodes) ? data.nodes : [],
-        updatedAt: data.updatedAt || null,
-      })
-    } catch {
-      setState(EMPTY_STATE)
-    } finally {
-      setLoading(false)
-    }
-  }, [])
-
-  useEffect(() => { refresh() }, [refresh])
-
-  const totalRam = useMemo(
-    () => state.nodes.reduce((sum, node) => sum + (Number(node.ramGb) || 0), 0),
-    [state.nodes],
-  )
-
   return (
     <div className="esn-hosting-page">
       <section className="esn-hosting-hero">
@@ -118,16 +52,16 @@ export default function HostingPage() {
             </p>
           </div>
 
-          <aside className="esn-hosting-launch-card">
-            <span className="eyebrow">ESN-US-01</span>
-            <strong>24/7 BOT NODE</strong>
-            <div className="esn-launch-specs">
-              <span><b>24 GB</b> RAM</span>
-              <span><b>6</b> CPU cores</span>
-              <span><b>100 GB</b> NVMe</span>
-              <span><b>7 TB</b> transfer</span>
-            </div>
-            <small>Availability depends on current node capacity.</small>
+          <aside className="esn-hosting-launch-card esn-hosting-benefits-card">
+            <span className="eyebrow">HOSTING MADE SIMPLE</span>
+            <strong>More control. Less hassle.</strong>
+            <p>Choose a plan, open a ticket, and let our team help you get your server running.</p>
+            <ul className="esn-hosting-benefits-list">
+              <li><b>Private control panel</b><span>Manage your own server, files, and startup settings.</span></li>
+              <li><b>Python &amp; Node.js</b><span>Pick the runtime that fits your Discord bot.</span></li>
+              <li><b>Help when you need it</b><span>Support and custom requests through Discord tickets.</span></li>
+            </ul>
+            <small>Server availability is confirmed when you order.</small>
           </aside>
         </div>
       </section>
@@ -192,7 +126,7 @@ export default function HostingPage() {
               <span className="eyebrow">CUSTOMER PANEL</span>
               <h2>Every buyer gets their own server control panel.</h2>
             </div>
-            <p>Customers only see servers assigned to their account. They do not get access to ESN-US-01, other customers, or the ESN administrator area.</p>
+            <p>Customers only see servers assigned to their account. Other customers' servers and ESN administrator controls remain private.</p>
           </div>
 
           <div className="esn-customer-panel-shell">
@@ -264,7 +198,7 @@ export default function HostingPage() {
           </div>
           <div className="esn-hosting-roadmap">
             <article><b>01</b><span>PURCHASE</span><h3>Open a Discord ticket</h3><p>Choose a plan in the official ESN Hosting Discord and complete the purchase with staff.</p></article>
-            <article><b>02</b><span>PROVISION</span><h3>ESN creates your server</h3><p>Your RAM, CPU, storage, runtime, and server ownership are provisioned on an ESN node.</p></article>
+            <article><b>02</b><span>PROVISION</span><h3>ESN creates your server</h3><p>The plan resources and your selected runtime are set up for your own private server.</p></article>
             <article><b>03</b><span>ACCESS</span><h3>Receive your panel account</h3><p>You get access to your own customer account and only the servers assigned to you.</p></article>
             <article><b>04</b><span>DEPLOY</span><h3>Upload and run your bot</h3><p>Use files, SFTP, console, environment settings, Node.js or Python, and 24/7 runtime.</p></article>
           </div>
@@ -281,34 +215,14 @@ export default function HostingPage() {
 
       <section className="section compact-section" id="network-status">
         <div className="shell">
-          <div className="section-heading">
+          <div className="esn-hosting-availability">
             <div>
-              <span className="eyebrow">INFRASTRUCTURE STATUS</span>
-              <h2>ESN node connection.</h2>
+              <span className="eyebrow">QUESTIONS ABOUT AVAILABILITY?</span>
+              <h2>Let's find the right setup for you.</h2>
+              <p>We keep our internal infrastructure details private. Open a hosting ticket to check availability, ask about your project, or request a custom plan.</p>
             </div>
-            <button className="esn-status-refresh" type="button" onClick={refresh} disabled={loading}>
-              {loading ? 'Checking…' : 'Refresh'}
-            </button>
+            <a className="button primary" href={HOSTING_DISCORD} target="_blank" rel="noreferrer">Ask ESN Hosting <span>→</span></a>
           </div>
-
-          <div className="esn-hosting-stat-grid">
-            <div><strong>{state.nodes.length}</strong><span>Reported nodes</span></div>
-            <div><strong>{totalRam ? `${totalRam} GB` : '—'}</strong><span>Reported RAM</span></div>
-            <div><strong>{state.connected ? 'ONLINE' : 'PENDING'}</strong><span>Website controller</span></div>
-            <div><strong>24/7</strong><span>Hosting target</span></div>
-          </div>
-
-          {state.nodes.length > 0 && (
-            <div className="esn-hosting-node-grid">
-              {state.nodes.map((node, index) => <NodeCard key={node.id || node.name || index} node={node} />)}
-            </div>
-          )}
-
-          {!state.connected && (
-            <p className="esn-status-note">
-              The public website controller has not been connected to Pelican yet. This status block intentionally does not fabricate live node data.
-            </p>
-          )}
         </div>
       </section>
     </div>
