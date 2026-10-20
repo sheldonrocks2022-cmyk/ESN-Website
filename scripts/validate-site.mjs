@@ -138,6 +138,13 @@ const requiredMigrationFiles = [
 ]
 
 const problems = []
+const publicHostingApi = fs.readFileSync('api/hosting/status.js','utf8')
+if (/ESN-US-01|esn-hosting-node-grid|esn-launch-specs|node\.ramGb|node\.cpu|state\.nodes|totalRam/.test(hostingSource)) {
+  problems.push('Public hosting page still includes internal node identifiers, specs, or live node inventory.')
+}
+if (/ESN_NODE_1_|nodeFromEnvironment|ramGb:|provider:|region:|nodes,|process\.env/.test(publicHostingApi)) {
+  problems.push('Public hosting API must not expose internal infrastructure configuration or hardware fields.')
+}
 const liveNetwork = fs.readFileSync('src/liveNetwork.js','utf8')
 const liveExperience = fs.readFileSync('src/LiveExperience.jsx','utf8')
 const startupIntro = fs.readFileSync('src/StartupIntro.jsx','utf8')
