@@ -46,6 +46,7 @@ export default function HostingPage() {
                 Buy through Discord <span>→</span>
               </a>
               <a className="button secondary" href="#customer-panel">See the customer panel</a>
+              <a className="button secondary" href="/business">Customer Business Hub</a>
             </div>
             <p className="esn-hosting-purchase-note">
               Open a hosting ticket to order. Payments must be approved by an authorized ESN CEO.
