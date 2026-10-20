@@ -4,6 +4,7 @@ import { useArcadeProgress } from './arcade/shared'
 import { SITE_RELEASE, SMP_ADDRESS, SMP_PORT, DISCORD_URL, useLiveNetwork } from './liveNetwork'
 import './noAccountExpansion.css'
 import { StaffOpsExpansion } from './OpsExpansion'
+import { BusinessStaffControls } from './BusinessPlatform'
 
 const NOTICE_KEY='esn_notification_center_v1'
 const ALERT_PREF_KEY='esn_browser_alerts_v1'
@@ -546,7 +547,7 @@ export function StaffDashboardPage(){
   const checklistDone=Object.values(checklist).filter(Boolean).length
 
   return <>
-    <section className="page-hero noacct-hero"><div className="shell page-hero-inner"><div className="page-hero-copy"><span className="eyebrow">STAFF DASHBOARD</span><h1>ESN operator console.</h1><p>Network controls, local incident tracking, release checks, staff notes, announcements, and diagnostics without staff accounts.</p></div><div className="page-hero-mark"><span>STAFF</span><small>SESSION</small></div></div></section>
+    <section className="page-hero noacct-hero"><div className="shell page-hero-inner"><div className="page-hero-copy"><span className="eyebrow">STAFF DASHBOARD</span><h1>ESN operator console.</h1><p>Business platform previews, hosting programs, service notices, incident tracking, release checks and diagnostics. Real billing and server management require secure server authentication.</p></div><div className="page-hero-mark"><span>STAFF</span><small>SESSION</small></div></div></section>
 
     <section className="section"><div className="shell staff-grid">
       <article className="noacct-panel"><span className="noacct-kicker">NETWORK</span><h2>{navigator.onLine?'ONLINE':'OFFLINE'}</h2><p>SMP: <strong>{live.smp.status}</strong> • Plugin: <strong>{live.plugin.version||live.plugin.status}</strong> • Discord: <strong>{live.discord.status}</strong></p><div className="noacct-actions"><button type="button" onClick={live.refresh}>REFRESH TELEMETRY</button><Link to="/status">STATUS CENTER</Link></div></article>
@@ -636,6 +637,7 @@ export function StaffDashboardPage(){
       </article>
     </div></section>
 
+    <BusinessStaffControls />
     <StaffOpsExpansion />
 
     <section className="section dark-section"><div className="shell">
