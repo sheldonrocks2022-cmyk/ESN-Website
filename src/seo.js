@@ -54,6 +54,12 @@ export const SEO_ROUTES={
     description:'Get a free ESN subdomain with automatic Spaceship DNS creation, connect a domain you own, or explore ESN paid hosting options.',
     index:true,
   },
+  '/hosting/vps':{
+    label:'ESN Bot Hosting',
+    title:'ESN Discord Bot Hosting | 11 Plans from $0.50/month',
+    description:'Compare all 11 ESN Hosting monthly plans, from Nano to Gift, with RAM, CPU, and storage details. Python and Node.js bot hosting with panel and SFTP access.',
+    index:true,
+  },
   '/site-builder':{
     label:'ESN Website Builder',
     title:'ESN Website Builder | Build a Site for Your Free Subdomain',
