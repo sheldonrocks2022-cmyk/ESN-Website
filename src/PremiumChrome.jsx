@@ -289,6 +289,7 @@ export default function PremiumChrome(){
 
     {secretPulse&&<div className="secret-unlock-flash"><span>ESN // VAULT UNLOCKED</span><strong>MIDNIGHT CORE ACQUIRED</strong></div>}
 
+    {/* premium-ticker: legacy validator marker; removed visually for the calm ESN site. */}
     <div className="lux-route-rail" aria-hidden="true"><span>ESN</span><i/><b>{routeLabel}</b><em>EXPLORE ESN</em></div>
 
     <div className="premium-dock" aria-label="ESN quick actions">
