@@ -117,7 +117,7 @@ export function LiveBusinessCustomer({section='dashboard'}){
     {identity.loading?<p>Checking your session…</p>:!identity.user?
       <div className="business-live-login"><p>Sign in using Discord to check your ESN orders, submit requests, or start a secure subscription checkout.</p><a href={loginUrl()}>Continue with Discord →</a></div>
       :<>
-        <div className="business-live-profile"><div><strong>Signed in as {identity.user.name}</strong><span>{identity.user.staff?'Verified ESN staff':'Customer account'}</span></div><button type="button" onClick={async()=>{try{await request('/v1/auth/logout','POST');window.location.reload()}catch(e){setMessage(e.message)}}}>Sign out</button></div>
+        <div className="business-live-profile"><div><strong>Signed in as {identity.user.name}</strong><span>{identity.user.staff?'Verified ESN staff':'Customer account'}</span></div>{identity.user.staff&&<a href="/business/admin">Open secure staff dashboard →</a>}<button type="button" onClick={async()=>{try{await request('/v1/auth/logout','POST');window.location.reload()}catch(e){setMessage(e.message)}}}>Sign out</button></div>
         <div className="business-live-columns">
           <article className="business-live-card"><h3>Your verified orders</h3><p>Subscription status comes from signed Stripe events, never a redirect alone.</p>
             {orders.length?orders.map(x=><div className="business-live-record" key={x.id}><strong>ESN {x.plan}</strong><span>{x.status.replaceAll('_',' ')}</span><small>{new Date(x.created).toLocaleDateString()}</small></div>):<p>No verified orders yet.</p>}
