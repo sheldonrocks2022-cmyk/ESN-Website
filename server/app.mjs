@@ -39,6 +39,7 @@ const DEFAULT={
 }
 const TYPES=new Set(['Hosting order','Server upgrade','Free trial','Partner application','Referral enquiry','Customer review','General support'])
 const STATES=new Set(['reviewed','approved','rejected','completed'])
+const RUNTIMES=new Set(['nodejs','python'])
 const sha=v=>createHash('sha256').update(String(v)).digest('hex')
 const random=()=>randomBytes(32).toString('base64url')
 const secureEqual=(a,b)=>{const x=Buffer.from(String(a)),y=Buffer.from(String(b));return x.length===y.length&&timingSafeEqual(x,y)}
@@ -83,6 +84,9 @@ export function initDb(filename=':memory:'){
     'CREATE TABLE IF NOT EXISTS payment_link_orders(checkout_id TEXT PRIMARY KEY,link_id TEXT NOT NULL,subscription_id TEXT UNIQUE,plan TEXT NOT NULL,email TEXT NOT NULL,status TEXT NOT NULL,claimed_uid TEXT,created TEXT NOT NULL,updated TEXT NOT NULL)',
     'CREATE TABLE IF NOT EXISTS audit(id INTEGER PRIMARY KEY AUTOINCREMENT,at TEXT NOT NULL,actor TEXT NOT NULL,event TEXT NOT NULL,target TEXT NOT NULL,details TEXT NOT NULL)',
   ].join(';')+';')
+  // Preserve existing orders; older live SQLite databases lack runtime.
+  if(!db.prepare('PRAGMA table_info(orders)').all().some(col=>col.name==='runtime'))
+    db.exec('ALTER TABLE orders ADD COLUMN runtime TEXT')
   db.prepare('INSERT OR IGNORE INTO settings(id,config,updated) VALUES(1,?,?)').run(JSON.stringify(DEFAULT),iso())
   return db
 }
@@ -98,14 +102,28 @@ function config(e){
     prices:obj(e.STRIPE_PRICE_IDS_JSON||'{}'),
     panel:String(e.PTERODACTYL_URL||'').replace(/\/$/,''),
     panelKey:e.PTERODACTYL_API_KEY||'',
+    node:Number(e.PTERODACTYL_NODE_ID)||0,
     allocation:Number(e.PTERODACTYL_ALLOCATION_ID)||0,
-    egg:Number(e.PTERODACTYL_EGG_ID)||0,
-    image:e.PTERODACTYL_DOCKER_IMAGE||'',startup:e.PTERODACTYL_STARTUP||'',
-    environment:obj(e.PTERODACTYL_ENV_JSON||'{}'),
+    // Staging either egg must NOT turn production provisioning on.
+    manualProvisionEnabled:e.PTERODACTYL_PROVISIONING_ENABLED==='true',
+    runtimes:Object.fromEntries(['nodejs','python'].map(runtime=>{
+      const pre='PTERODACTYL_'+runtime.toUpperCase()+'_'
+      return [runtime,{
+        egg:Number(e[pre+'EGG_ID'])||0,
+        image:e[pre+'DOCKER_IMAGE']||'',
+        startup:e[pre+'STARTUP']||'',
+        environment:obj(e[pre+'ENV_JSON']||'{}')
+      }]
+    })),
   }
 }
 const stripeReady=c=>Boolean(c.stripeKey&&c.stripeWebhook&&Object.keys(PLANS).every(k=>/^price_/.test(c.prices[k]||'')))
-const pteroReady=c=>Boolean(c.panel.startsWith('https://')&&c.panelKey&&c.allocation>0&&c.egg>0&&c.image&&c.startup)
+const pteroReady=c=>Boolean(c.manualProvisionEnabled&&c.panel.startsWith('https://')&&
+  c.panelKey&&c.node===3&&c.allocation===337&&
+  ['nodejs','python'].every(runtime=>{
+    const v=c.runtimes[runtime]
+    return v.egg===(runtime==='nodejs'?16:15)&&v.image&&v.startup&&v.environment
+  }))
 function audit(db,uid,event,target,details=''){
   db.prepare('INSERT INTO audit(at,actor,event,target,details) VALUES(?,?,?,?,?)').run(iso(),uid,event,target,trim(details,500))
 }
@@ -170,12 +188,18 @@ async function provision(db,c,id,actor){
   if(!order)throw error(404,'order_not_found')
   if(order.server_id)return {status:'active'}
   if(!['paid','provision_error'].includes(order.status))throw error(409,'verified_payment_required')
+  if(!RUNTIMES.has(order.runtime))throw error(409,'staff_must_choose_runtime')
+  const runtime=c.runtimes[order.runtime]
+  // One configured allocation only: recheck Pterodactyl's ownership at creation time.
+  const allocRes=await panel(c,'/nodes/'+c.node+'/allocations?per_page=100')
+  const chosen=allocRes?.data?.map(item=>item.attributes).find(item=>Number(item?.id)===c.allocation)
+  if(!chosen||chosen.assigned!==false)throw error(409,'configured_allocation_not_available')
   // One configured allocation: fail closed instead of overselling server capacity.
   if(db.prepare("SELECT count(*) count FROM orders WHERE (server_id IS NOT NULL OR status='provisioning') AND id<>?").get(id).count>0)
     throw error(409,'allocation_requires_staff_review')
   const user=db.prepare('SELECT * FROM users WHERE id=?').get(order.uid)
   if(!user?.email)throw error(409,'verified_discord_email_required')
-  const claimed=db.prepare("UPDATE orders SET status='provisioning',updated=? WHERE id=? AND status IN ('paid','provision_error') AND server_id IS NULL").run(iso(),id)
+  const claimed=db.prepare("UPDATE orders SET status='provisioning',updated=? WHERE id=? AND status IN ('paid','provision_error') AND server_id IS NULL AND runtime IN ('nodejs','python') AND NOT EXISTS (SELECT 1 FROM orders AS other WHERE other.id<>? AND (other.server_id IS NOT NULL OR other.status='provisioning'))").run(iso(),id,id)
   if(!claimed.changes)throw error(409,'provision_in_progress')
   const existing=await panel(c,'/servers/external/'+encodeURIComponent(order.id))
   if(existing?.attributes?.id){
@@ -192,8 +216,8 @@ async function provision(db,c,id,actor){
   const p=PLANS[order.plan]
   const server=await panel(c,'/servers','POST',{
     external_id:order.id,name:'ESN '+order.plan+' '+user.id,
-    user:puser.attributes.id,egg:c.egg,docker_image:c.image,
-    startup:c.startup,environment:c.environment,
+    user:puser.attributes.id,egg:runtime.egg,docker_image:runtime.image,
+    startup:runtime.startup,environment:runtime.environment,
     limits:{memory:p.ram,swap:0,disk:p.disk,io:500,cpu:p.cpu},
     feature_limits:{databases:0,allocations:1,backups:1},
     allocation:{default:c.allocation}
@@ -388,7 +412,7 @@ export function handler(db,env=process.env){
       }
       if(path==='/v1/orders'&&req.method==='GET'){
         const user=auth(db,req);return send(res,200,{orders:db.prepare(
-          'SELECT id,plan,status,created,updated FROM orders WHERE uid=? ORDER BY created DESC LIMIT 100'
+          'SELECT id,plan,runtime,status,created,updated FROM orders WHERE uid=? ORDER BY created DESC LIMIT 100'
         ).all(user.id)})
       }
       if(path==='/v1/checkout'&&req.method==='POST'){
@@ -443,7 +467,7 @@ export function handler(db,env=process.env){
         const user=staff(db,req,c)
         return send(res,200,{user:{id:user.id,name:user.name,staff:true},settings:settings(db),
           requests:db.prepare('SELECT r.*,u.name username FROM requests r JOIN users u ON u.id=r.uid ORDER BY r.created DESC LIMIT 150').all(),
-          orders:db.prepare('SELECT o.id,o.uid,o.plan,o.status,o.created,o.updated,u.name username FROM orders o JOIN users u ON u.id=o.uid ORDER BY o.created DESC LIMIT 150').all(),
+          orders:db.prepare('SELECT o.id,o.uid,o.plan,o.runtime,o.status,o.created,o.updated,u.name username FROM orders o JOIN users u ON u.id=o.uid ORDER BY o.created DESC LIMIT 150').all(),
           paymentLinks:db.prepare("SELECT checkout_id,plan,email,status,claimed_uid,created,updated FROM payment_link_orders ORDER BY created DESC LIMIT 150").all(),
           audit:db.prepare('SELECT at,actor,event,target,details FROM audit ORDER BY id DESC LIMIT 100').all(),
           integrations:{discord:!!c.discordSecret,stripe:stripeReady(c),provisioning:pteroReady(c)}})
@@ -466,13 +490,26 @@ export function handler(db,env=process.env){
         audit(db,user.id,'request.'+status,matchRequest[1])
         return send(res,200,{status})
       }
+      // Staff explicitly selects the runtime for each VERIFIED paid order.
+      // Existing and Payment Link orders are initially null and can never be guessed.
+      const matchRuntime=path.match(/^\/v1\/staff\/orders\/([a-f0-9-]{36})\/runtime$/)
+      if(matchRuntime&&req.method==='PATCH'){
+        const user=staff(db,req,c);csrf(req,user)
+        const runtime=trim((await body(req)).runtime,20)
+        if(!RUNTIMES.has(runtime))throw error(400,'invalid_hosting_runtime')
+        const saved=db.prepare("UPDATE orders SET runtime=?,updated=? WHERE id=? AND status IN ('paid','provision_error') AND server_id IS NULL").run(runtime,iso(),matchRuntime[1])
+        if(!saved.changes)throw error(409,'runtime_selection_requires_unprovisioned_paid_order')
+        audit(db,user.id,'order.runtime_selected',matchRuntime[1],runtime)
+        return send(res,200,{runtime})
+      }
       const matchOrder=path.match(/^\/v1\/staff\/orders\/([a-f0-9-]{36})\/provision$/)
       if(matchOrder&&req.method==='POST'){
         const user=staff(db,req,c);csrf(req,user)
         try{return send(res,200,await provision(db,c,matchOrder[1],user.id))}
         catch(e){
           const order=db.prepare('SELECT status FROM orders WHERE id=?').get(matchOrder[1])
-          if(order&&['paid','provision_error','provisioning'].includes(order.status))
+          // Preflight failures must not turn a good paid order into a failed order.
+          if(order?.status==='provisioning')
             db.prepare("UPDATE orders SET status='provision_error',error=?,updated=? WHERE id=?").run(trim(e.message,160),iso(),matchOrder[1])
           throw e
         }
