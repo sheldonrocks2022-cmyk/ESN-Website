@@ -74,6 +74,21 @@ This is a PUBLIC endpoint origin and is safe to include in the site build. Run t
 
 No route returns node hardware specifications or provider credentials. Do not expose the \`server/.env\` file through a web server.
 
+## Secure customer billing portal
+
+Authenticated customers can open the Stripe-hosted subscription-management portal using POST /v1/billing/portal. The server verifies that the Checkout Session belongs to the signed-in customer and obtains the Stripe customer reference privately. The customer portal must be enabled in Stripe Dashboard before this works.
+
+## Manual API VPS deployment from GitHub Actions
+
+After preparing the private API VPS, its environment file, systemd service, nginx, and HTTPS, open GitHub repository Settings → Environments → esn-business-production and configure these secrets:
+
+- ESN_API_SSH_HOST: SSH hostname of the API VPS.
+- ESN_API_SSH_USER: restricted deployment account with write access to /opt/esn-website/server and narrowly scoped service restart permission.
+- ESN_API_SSH_PRIVATE_KEY: private SSH deployment key; only its public key belongs on the VPS.
+- ESN_API_SSH_KNOWN_HOSTS: verified pinned SSH host key (compare to the VPS console fingerprint).
+
+Use GitHub Actions → Deploy ESN Business API → Run workflow on main. It tests Node 24, uploads server code excluding private environment/database files, restarts the systemd service, and verifies HTTPS health. It refuses to run without all four configured secrets.
+
 ## Current limits before full automation
 
-The integration still requires VPS deployment, your private provider connection data, webhook testing, database backups, a scalable allocation pool, recurring subscription customer portal, and proper operational monitoring. It is **not** a claim that Stripe or Pterodactyl has been connected just because the code has been merged. The previous browser-only staff editor remains a clearly labeled local preview; real controls are in the separate "Authenticated ESN staff dashboard" section.
+The integration still requires VPS deployment, your private provider connection data, webhook testing, database backups, a scalable allocation pool, Stripe customer portal activation, and proper operational monitoring. It is **not** a claim that Stripe or Pterodactyl has been connected just because the code has been merged. The previous browser-only staff editor remains a clearly labeled local preview; real controls are in the separate "Authenticated ESN staff dashboard" section.
