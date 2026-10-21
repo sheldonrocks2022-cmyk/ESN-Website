@@ -1,0 +1,71 @@
+name: Deploy ESN Business API
+
+# Manual-only after an administrator configures the API VPS and its secrets.
+# Never run on untrusted pull request code. Never upload the API .env.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: esn-business-production
+  cancel-in-progress: false
+
+jobs:
+  deploy-api:
+    runs-on: ubuntu-latest
+    environment: esn-business-production
+    steps:
+      - name: Checkout trusted main
+        uses: actions/checkout@v7
+        with:
+          ref: main
+
+      - name: Setup Node 24
+        uses: actions/setup-node@v7
+        with:
+          node-version: 24
+
+      - name: Test secure API
+        run: cd server && npm run check
+
+      - name: Check private deployment secrets exist
+        env:
+          HOST: ${{ secrets.ESN_API_SSH_HOST }}
+          USER: ${{ secrets.ESN_API_SSH_USER }}
+          PRIVATE_KEY: ${{ secrets.ESN_API_SSH_PRIVATE_KEY }}
+          KNOWN_HOSTS: ${{ secrets.ESN_API_SSH_KNOWN_HOSTS }}
+        run: |
+          test -n "$HOST" && test -n "$USER" && test -n "$PRIVATE_KEY" && test -n "$KNOWN_HOSTS" || {
+            echo "::error::Configure all four ESN_API_SSH_* secrets first."
+            exit 1
+          }
+
+      - name: Configure pinned SSH host key
+        env:
+          PRIVATE_KEY: ${{ secrets.ESN_API_SSH_PRIVATE_KEY }}
+          KNOWN_HOSTS: ${{ secrets.ESN_API_SSH_KNOWN_HOSTS }}
+        run: |
+          umask 077
+          mkdir -p ~/.ssh
+          printf '%s\n' "$PRIVATE_KEY" > ~/.ssh/esn-business
+          printf '%s\n' "$KNOWN_HOSTS" > ~/.ssh/known_hosts
+
+      - name: Deploy code without environment file or database
+        env:
+          HOST: ${{ secrets.ESN_API_SSH_HOST }}
+          USER: ${{ secrets.ESN_API_SSH_USER }}
+        run: |
+          rsync -az --delete \
+            --exclude='.env' --exclude='*.sqlite' --exclude='*.sqlite-wal' \
+            --exclude='*.sqlite-shm' --exclude='data/' \
+            -e 'ssh -o StrictHostKeyChecking=yes -i ~/.ssh/esn-business' \
+            server/ "$USER@$HOST:/opt/esn-website/server/"
+          ssh -o StrictHostKeyChecking=yes -i ~/.ssh/esn-business "$USER@$HOST" \
+            'sudo /bin/systemctl restart esn-business.service && sudo /bin/systemctl is-active --quiet esn-business.service'
+
+      - name: Check HTTPS API health
+        run: |
+          curl --fail --silent --show-error --max-time 20 \
+            https://api.esnoffical.com/health | grep -q '"ok":true'
