@@ -47,8 +47,8 @@ jobs:
       - name: Build site
         run: npm run build
         env:
-          # A PUBLIC origin, not a secret. Empty until the ESN API VPS is live.
-          VITE_ESN_API_BASE_URL: ${{ vars.ESN_BUSINESS_API_URL }}
+          # Public HTTPS API origin (no credentials). Override via Actions variable if needed.
+          VITE_ESN_API_BASE_URL: ${{ vars.ESN_BUSINESS_API_URL || 'https://api.esnoffical.com' }}
 
       - name: Validate built routes
         run: npm run validate:dist
