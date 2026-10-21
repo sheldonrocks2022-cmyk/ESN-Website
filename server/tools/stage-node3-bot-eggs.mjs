@@ -69,17 +69,27 @@ async function run(){
       const images=Object.values(egg.docker_images||{}).filter(singleLine)
       const image=images.find(x=>s.preference.test(x))||images.find(x=>s.fallback.test(x))
       if(!image)throw Error('No approved container image found for egg '+s.id)
-      const variables=result.relationships?.variables?.data
-      if(!Array.isArray(variables))throw Error('Egg '+s.id+' did not provide a variable list')
-      const required=variables.filter(x=>{
-        const a=x.attributes||{}
-        return String(a.rules||'').split('|').includes('required')&&!String(a.default_value||'').trim()
-      })
-      if(required.length)throw Error('Egg '+s.id+' has required variables with no default; manual review needed')
+      // Pterodactyl 1.x Fractal API nests included relationships under attributes.
+      const variables=result.attributes?.relationships?.variables?.data ?? result.relationships?.variables?.data
+      if(!Array.isArray(variables))throw Error('Egg '+s.id+' did not return an accessible variable list')
+      const defaults={}
+      for(const item of variables){
+        const variable=item.attributes||{}
+        const key=String(variable.env_variable||'')
+        if(!/^[A-Z][A-Z0-9_]*$/.test(key))throw Error('Egg '+s.id+' has a malformed environment variable')
+        const value=variable.default_value===null||variable.default_value===undefined?'':String(variable.default_value)
+        if(String(variable.rules||'').split('|').includes('required')&&!value.trim()){
+          throw Error('Egg '+s.id+' has required variables with no default; manual review needed')
+        }
+        if(value){
+          if(value.includes(String.fromCharCode(0)))throw Error('Egg '+s.id+' has an invalid variable default')
+          defaults[key]=value
+        }
+      }
       stage['PTERODACTYL_'+s.type+'_EGG_ID']=String(s.id)
       stage['PTERODACTYL_'+s.type+'_DOCKER_IMAGE']=image
       stage['PTERODACTYL_'+s.type+'_STARTUP']=egg.startup
-      stage['PTERODACTYL_'+s.type+'_ENV_JSON']='{}'
+      stage['PTERODACTYL_'+s.type+'_ENV_JSON']=JSON.stringify(defaults)
     }
   }catch(e){fail(String(e?.message||'Panel read-only check failed').slice(0,120));return}
   const lines=data.split(/\r?\n/)

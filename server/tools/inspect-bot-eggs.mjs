@@ -64,9 +64,9 @@ if(env){
       const images=Object.values(e.docker_images||{})
       console.log('Available images: '+(images.length?images.slice(0,5).map(clean).join(', '):'not reported'))
       console.log('Startup template available: '+(typeof e.startup==='string'&&e.startup.length>0?'YES':'NO'))
-      const vars=detail.relationships?.variables?.data||[]
+      const vars=detail.attributes?.relationships?.variables?.data ?? detail.relationships?.variables?.data ?? []
       console.log('Egg environment variables ('+vars.length+'):')
-      if(!vars.length)console.log(' - No variables returned by API')
+      if(!vars.length)console.log(' - No variables defined or returned by the panel')
       for(const item of vars){
         const v=item.attributes||{}
         const rules=String(v.rules||'').split('|')
