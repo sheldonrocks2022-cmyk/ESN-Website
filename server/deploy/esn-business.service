@@ -1,0 +1,23 @@
+[Unit]
+Description=ESN Business API
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=esnbusiness
+Group=esnbusiness
+WorkingDirectory=/opt/esn-website/server
+ExecStart=/usr/bin/node /opt/esn-website/server/app.mjs
+Restart=on-failure
+RestartSec=5
+Environment=NODE_ENV=production
+NoNewPrivileges=yes
+PrivateTmp=yes
+ProtectSystem=strict
+ProtectHome=yes
+ReadWritePaths=/var/lib/esn-business
+UMask=0077
+
+[Install]
+WantedBy=multi-user.target

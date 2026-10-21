@@ -108,3 +108,38 @@
 @media(max-width:980px){.business-feature-grid,.business-panel-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.business-staff-grid{grid-template-columns:1fr}}
 @media(max-width:760px){.business-feature-grid,.business-panel-grid,.business-plan-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.business-promo,.business-recommendation{align-items:flex-start;flex-direction:column}.business-form-grid{grid-template-columns:1fr}.business-form-grid .wide{grid-column:auto}}
 @media(max-width:530px){.business-feature-grid,.business-panel-grid,.business-plan-grid,.business-switch-grid{grid-template-columns:1fr}.business-request-panel,.business-finder{padding:18px}.business-drafts>article{flex-direction:column;align-items:flex-start}.business-audit>div{flex-direction:column;align-items:flex-start}.business-hero{padding-top:58px}.business-shell{padding-bottom:85px}}
+
+
+/* Authenticated business records and server-side staff controls. */
+.business-live{background:#152339;border:1px solid rgba(170,199,232,.18);border-radius:16px;padding:22px;margin:25px 0}
+.business-live .business-section-heading{margin-top:0}
+.business-live-login{padding:18px;background:#1b2d43;border-radius:12px;display:grid;gap:12px}
+.business-live-login p{margin:0;line-height:1.6;color:#bdd0e5}
+.business-live-login a,.business-live-profile button,.business-live-table button{
+  display:inline-flex;align-items:center;justify-content:center;min-height:43px;padding:10px 14px;border:1px solid rgba(172,200,234,.21);
+  border-radius:9px;background:#2b5078;color:#f0f6fd;cursor:pointer;font-weight:700;font-size:.86rem}
+.business-live-columns{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px;margin-bottom:15px}
+.business-live-card{padding:23px;margin:14px 0;border:1px solid rgba(172,200,234,.16);border-radius:13px;background:#192b41;min-width:0}
+.business-live-card h3{font-size:1.35rem;margin:0 0 8px}
+.business-live-card p{color:#a9bfd4;font-size:.89rem;line-height:1.6}
+.business-live-profile{display:flex;gap:15px;align-items:center;justify-content:space-between;margin:15px 0 23px}
+.business-live-profile>div{display:grid;gap:4px}
+.business-live-profile span{font-size:.78rem;color:#adc0d5}
+.business-live-record{display:grid;grid-template-columns:1fr auto;gap:8px;padding:13px 0;border-bottom:1px solid rgba(174,200,233,.13)}
+.business-live-record strong{font-size:.9rem}
+.business-live-record span{font-size:.78rem;color:#bbd1e5}
+.business-live-record small{grid-column:1/-1;color:#9bafc6}
+.business-live .business-form-grid{margin:17px 0}
+.esn-business-staff .business-live-card{background:#16283e}
+.business-live-status{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}
+.business-live-status>div{flex-direction:column;align-items:flex-start}
+.business-live-table{display:grid;gap:8px;max-height:650px;overflow:auto}
+.business-live-table article{display:flex;align-items:center;justify-content:space-between;gap:15px;padding:13px;border:1px solid rgba(174,200,233,.13);border-radius:9px;background:#1a2e45;min-width:0}
+.business-live-table article>div{display:grid;gap:4px;min-width:0}
+.business-live-table span,.business-live-table small{color:#b4c5d9;font-size:.78rem;overflow-wrap:anywhere}
+.business-live-table button:disabled,.business-action-row button:disabled{opacity:.5;cursor:not-allowed}
+.business-live-switches{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin:14px 0}
+.business-live-switches label{display:flex;align-items:center;gap:8px;font-size:.79rem;color:#c4d3e5;background:#1c3048;padding:11px;border-radius:9px}
+.business-live-switches input{width:17px;height:17px;accent-color:#7eabdc}
+@media(max-width:800px){.business-live-columns,.business-live-status{grid-template-columns:1fr}.business-live-switches{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:530px){.business-live{padding:15px}.business-live-card{padding:17px}.business-live-table article{align-items:flex-start;flex-direction:column}.business-live-switches{grid-template-columns:1fr}}

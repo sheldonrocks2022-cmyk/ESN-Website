@@ -1,6 +1,7 @@
 import {useEffect,useMemo,useState} from 'react'
 import {Link} from 'react-router-dom'
 import {BOT_PLANS} from './Hosting'
+import { LiveBusinessCustomer,getPublicBusiness,businessApiEnabled } from './BusinessLive'
 import {
   CAPABILITIES,DEFAULT_BUSINESS_SETTINGS,DISCORD_HOSTING,SETUP_GUIDES,
   BUSINESS_AUDIT_KEY,addBusinessAudit,createLocalDraft,readBusinessDrafts,
@@ -24,7 +25,8 @@ const REQUEST_TYPES=['Hosting order','Server upgrade','Free trial','Partner appl
 function useBusinessSettings(){
   const [settings,setSettings]=useState(readBusinessSettings)
   useEffect(()=>{
-    const sync=()=>setSettings(readBusinessSettings())
+    if(businessApiEnabled())getPublicBusiness().then(data=>{if(data?.settings)setSettings(old=>({...old,...data.settings}))}).catch(()=>{})
+    const sync=()=>{if(!businessApiEnabled())setSettings(readBusinessSettings())}
     window.addEventListener('esn-business-change',sync)
     window.addEventListener('storage',sync)
     return()=>{window.removeEventListener('esn-business-change',sync);window.removeEventListener('storage',sync)}
@@ -184,6 +186,7 @@ export function BusinessPlatformPage({section='overview'}){
   return <div className="esn-business-page">
     <header className="business-hero"><div className="shell"><span className="eyebrow">ESN HOSTING · CUSTOMER SERVICES</span><h1>{section==='overview'?settings.headline:current.label}</h1><p>{section==='overview'?settings.introduction:'Hosting plans, support and requests, all in one place.'}</p><div className="business-hero-actions"><Link to="/business/plans">Find hosting</Link><Link to="/business/support">Talk to our team</Link></div></div></header>
     <div className="shell business-shell"><nav className="business-nav" aria-label="Business platform">{SECTIONS.map(s=><Link className={s.id===section?'active':''} key={s.id} to={s.url}>{s.label}</Link>)}</nav>{settings.maintenanceNotice&&<p className="business-warning" role="status">ESN notice: {settings.maintenanceNotice}</p>}<LocalMode/>
+      {(section==='dashboard'||section==='plans'||section==='partners'||section==='support')&&<LiveBusinessCustomer section={section}/>}
       {section==='overview'&&<Overview settings={settings}/>}
       {section==='dashboard'&&(settings.customerWorkspaceEnabled?<Dashboard settings={settings}/>:<section className="business-empty"><h2>Customer workspace preview is unavailable.</h2><p>Ask ESN Hosting staff about orders and subscriptions through Discord.</p><a href={DISCORD_HOSTING} target="_blank" rel="noreferrer">Open hosting Discord →</a></section>)}
       {section==='plans'&&<Plans settings={settings}/>}
