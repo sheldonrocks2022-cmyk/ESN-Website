@@ -73,7 +73,7 @@ test('staff records require signed session AND backend allowlist',async()=>{
 test('CSRF and trusted Origin are enforced on all state mutations',async()=>{
   await fixture(async({request})=>{
     const path='/v1/staff/settings'
-    assert.equal((await request(path,{method:'PATCH',actor:'owner',json:{headline:'New'}})).status,403)
+    assert.equal((await request(path,{method:'PATCH',actor:'owner',json:{headline:'New'},headers:{Origin:'https://untrusted.example'}})).status,403)
     const noCsrf=await request(path,{method:'PATCH',actor:'owner',json:{headline:'New'},headers:{'X-ESN-CSRF':'fake'}})
     assert.equal(noCsrf.status,403)
     const good=await request(path,{method:'PATCH',actor:'owner',json:{headline:'ESN New','staffPrivileges':true}})
