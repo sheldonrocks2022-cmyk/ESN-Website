@@ -5,6 +5,7 @@ import { SITE_RELEASE, SMP_ADDRESS, SMP_PORT, DISCORD_URL, useLiveNetwork } from
 import './noAccountExpansion.css'
 import { StaffOpsExpansion } from './OpsExpansion'
 import { BusinessStaffControls } from './BusinessPlatform'
+import { LiveBusinessStaff } from './BusinessLive'
 
 const NOTICE_KEY='esn_notification_center_v1'
 const ALERT_PREF_KEY='esn_browser_alerts_v1'
@@ -637,6 +638,7 @@ export function StaffDashboardPage(){
       </article>
     </div></section>
 
+    <LiveBusinessStaff />
     <BusinessStaffControls />
     <StaffOpsExpansion />
 
