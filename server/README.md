@@ -89,6 +89,26 @@ After preparing the private API VPS, its environment file, systemd service, ngin
 
 Use GitHub Actions → Deploy ESN Business API → Run workflow on main. It tests Node 24, uploads server code excluding private environment/database files, restarts the systemd service, and verifies HTTPS health. It refuses to run without all four configured secrets.
 
+## Node 3: Stripe Payment Links -> verified order queue
+
+**Deployment target:** existing ESN Node 3 (`node3.esnoffical.com`). Keep the existing Pterodactyl Wings service and ports unchanged. Do not deploy the Business API using the Pterodactyl Wings port; it binds to `127.0.0.1:8787` behind a dedicated TLS reverse proxy on `api.esnoffical.com`. DNS is managed through Spaceship, not the Pterodactyl panel.
+
+The 11 active, live recurring Payment Links are identified in `server/stripe-payment-links.json`; their immutable expected plan Price IDs are in `server/stripe-live-price-ids.json`. These files contain only public Stripe identifiers.
+
+Unlike website-created Checkout Sessions, Stripe Payment Links do not contain an ESN Discord account or an ESN-created order ID. With the API deployed, the signed Stripe webhook receives `checkout.session.completed` (or `checkout.session.async_payment_succeeded`) and checks the Payment Link ID **and** queries Stripe's actual Checkout line items with the server-side secret key to confirm the exact monthly price, currency and quantity.
+
+- Verified purchases are saved once in `payment_link_orders` and shown in **Staff Dashboard -> Stripe Payment Link receipts**. A payment success screenshot or the hosted return page is not verification.
+- On the Business Hub, signed-in customers can click **Find my verified Stripe Payment Link purchases**. The server matches the purchase's payment email to the **verified Discord OAuth email**, then creates their order record. Mismatched emails require a staff support ticket and manual Stripe identity verification; there is no unsecured 'claim with receipt ID' endpoint.
+- Staff can provision only **claimed, webhook-verified paid orders**, using separately authorized Pterodactyl API access. A payment or claim alone never triggers automatic provisioning.
+- Cancellation/payment-failure changes are tracked; the system does **not** erase customer's files automatically.
+- Stripe webhook configuration should include `checkout.session.completed`, `checkout.session.async_payment_succeeded`, `invoice.paid`, `invoice.payment_failed`, and `customer.subscription.deleted`.
+
+**Important deployment requirement:** Stripe Payment Links that were purchased *before* the webhook was configured do not get imported automatically. Check those old purchases in Stripe Dashboard and reconcile them manually before providing service. New purchases will enter the queue only after the HTTPS endpoint is reachable and Stripe confirms signed delivery.
+
+**Capacity safeguard:** the starter provisioning adapter manages one explicitly configured, free allocation and refuses additional reservations. Do not offer unlimited automatic activations until an authenticated multi-allocation reservation service is implemented and tested.
+
+**Node 3 launch order:** (1) privately prepare SSH/systemd service and Node 24 runtime; (2) add Spaceship DNS for `api.esnoffical.com` to Node 3 and obtain HTTPS certificate, taking care not to replace the existing Wings vhost; (3) create restricted `.env` with Stripe secret, signing secret, verified Price IDs, Discord OAuth and staff allowlist; (4) deploy API and verify `/health`; (5) configure live Stripe webhook; (6) verify an actual signed test event and customer email match; (7) connect the GitHub Pages `ESN_BUSINESS_API_URL` public variable. Never publish passwords, SSH private keys, Pterodactyl application API keys or Stripe signing secrets in GitHub source or chat.
+
 ## Current limits before full automation
 
 The integration still requires VPS deployment, your private provider connection data, webhook testing, database backups, a scalable allocation pool, Stripe customer portal activation, and proper operational monitoring. It is **not** a claim that Stripe or Pterodactyl has been connected just because the code has been merged. The previous browser-only staff editor remains a clearly labeled local preview; real controls are in the separate "Authenticated ESN staff dashboard" section.

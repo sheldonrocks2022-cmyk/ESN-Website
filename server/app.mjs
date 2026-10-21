@@ -8,6 +8,9 @@ import {fileURLToPath} from 'node:url'
 // ESN Business API: Node 24+, self-hosted behind TLS on an ESN-owned VPS.
 // No API secrets, infrastructure inventory, or staff permissions are sent to the browser.
 const HERE=dirname(fileURLToPath(import.meta.url))
+const PAYMENT_LINKS=Object.freeze(JSON.parse(readFileSync(resolve(HERE,'stripe-payment-links.json'),'utf8')))
+const VERIFIED_PRICES=Object.freeze(JSON.parse(readFileSync(resolve(HERE,'stripe-live-price-ids.json'),'utf8')))
+const LINK_PLAN=Object.freeze(Object.fromEntries(Object.entries(PAYMENT_LINKS).map(([name,id])=>[id,name])))
 const envPath=resolve(HERE,'.env')
 if(existsSync(envPath))for(const line of readFileSync(envPath,'utf8').split(/\r?\n/)){
   const found=line.match(/^\s*([A-Z][A-Z0-9_]*)\s*=\s*(.*)$/)
@@ -77,6 +80,7 @@ export function initDb(filename=':memory:'){
     'CREATE TABLE IF NOT EXISTS requests(id TEXT PRIMARY KEY,uid TEXT NOT NULL,kind TEXT NOT NULL,plan TEXT,notes TEXT NOT NULL,status TEXT NOT NULL,created TEXT NOT NULL,updated TEXT NOT NULL)',
     'CREATE TABLE IF NOT EXISTS orders(id TEXT PRIMARY KEY,uid TEXT NOT NULL,plan TEXT NOT NULL,status TEXT NOT NULL,checkout_id TEXT UNIQUE,subscription_id TEXT UNIQUE,server_id TEXT,error TEXT,created TEXT NOT NULL,updated TEXT NOT NULL)',
     'CREATE TABLE IF NOT EXISTS stripe_events(id TEXT PRIMARY KEY,kind TEXT NOT NULL,at TEXT NOT NULL)',
+    'CREATE TABLE IF NOT EXISTS payment_link_orders(checkout_id TEXT PRIMARY KEY,link_id TEXT NOT NULL,subscription_id TEXT UNIQUE,plan TEXT NOT NULL,email TEXT NOT NULL,status TEXT NOT NULL,claimed_uid TEXT,created TEXT NOT NULL,updated TEXT NOT NULL)',
     'CREATE TABLE IF NOT EXISTS audit(id INTEGER PRIMARY KEY AUTOINCREMENT,at TEXT NOT NULL,actor TEXT NOT NULL,event TEXT NOT NULL,target TEXT NOT NULL,details TEXT NOT NULL)',
   ].join(';')+';')
   db.prepare('INSERT OR IGNORE INTO settings(id,config,updated) VALUES(1,?,?)').run(JSON.stringify(DEFAULT),iso())
@@ -199,16 +203,50 @@ async function provision(db,c,id,actor){
   audit(db,actor,'server.provisioned',id)
   return {status:'active'}
 }
-function applyStripe(db,event){
+/**
+ * Payment Links do not send our own customer order ID. Before accepting a
+ * signed checkout event, cross-check the actual purchased recurring price
+ * directly with Stripe. Payment Link metadata by itself is not proof of plan.
+ */
+async function verifyPaymentLinkPurchase(c,checkout){
+  const plan=LINK_PLAN[checkout.payment_link]
+  if(!plan||checkout.mode!=='subscription'||checkout.payment_status!=='paid'||!checkout.id||!checkout.subscription)return null
+  const email=trim(checkout.customer_details?.email||checkout.customer_email,254).toLowerCase()
+  if(!email||!email.includes('@'))throw error(422,'stripe_checkout_email_required')
+  if(!c.stripeKey)throw error(503,'stripe_api_required_to_verify_link')
+  const url='https://api.stripe.com/v1/checkout/sessions/'+encodeURIComponent(checkout.id)+'/line_items?limit=10'
+  const response=await fetch(url,{headers:{Authorization:'Bearer '+c.stripeKey}})
+  if(!response.ok)throw error(502,'stripe_line_item_verification_failed')
+  const data=await response.json()
+  const lines=data?.data
+  if(data?.has_more||!Array.isArray(lines)||lines.length!==1||
+     lines[0]?.price?.id!==VERIFIED_PRICES[plan]||
+     lines[0]?.quantity!==1||
+     lines[0]?.price?.currency!=='usd'||
+     lines[0]?.price?.recurring?.interval!=='month'||
+     lines[0]?.price?.recurring?.interval_count!==1)
+    throw error(422,'stripe_link_plan_mismatch')
+  return {checkout:checkout.id,link:checkout.payment_link,subscription:checkout.subscription,plan,email}
+}
+function applyStripe(db,event,verifiedLink=null){
   if(db.prepare('SELECT id FROM stripe_events WHERE id=?').get(event.id))return
   const o=event.data?.object||{}
-  if(event.type==='checkout.session.completed'&&o.mode==='subscription'&&o.payment_status==='paid'&&o.subscription){
+  if(['checkout.session.completed','checkout.session.async_payment_succeeded'].includes(event.type)&&verifiedLink){
+    const payment=verifiedLink
+    db.prepare("INSERT OR IGNORE INTO payment_link_orders(checkout_id,link_id,subscription_id,plan,email,status,claimed_uid,created,updated) VALUES(?,?,?,?,?,'paid',NULL,?,?)").run(
+      payment.checkout,payment.link,payment.subscription,payment.plan,payment.email,iso(),iso())
+    audit(db,'stripe','payment_link.verified',payment.checkout,payment.plan)
+  }
+  if(event.type==='checkout.session.completed'&&o.client_reference_id&&o.mode==='subscription'&&o.payment_status==='paid'&&o.subscription){
     db.prepare("UPDATE orders SET status='paid',subscription_id=?,updated=? WHERE id=? AND checkout_id=? AND status IN ('checkout_pending','paid','provision_error')").run(o.subscription,iso(),o.client_reference_id,o.id)
   }else if(event.type==='invoice.paid'&&o.subscription){
+    db.prepare("UPDATE payment_link_orders SET status='paid',updated=? WHERE subscription_id=? AND status!='canceled'").run(iso(),o.subscription)
     db.prepare("UPDATE orders SET status=CASE WHEN server_id IS NOT NULL THEN 'active' ELSE 'paid' END,updated=? WHERE subscription_id=? AND status!='canceled'").run(iso(),o.subscription)
   }else if(event.type==='invoice.payment_failed'&&o.subscription){
+    db.prepare("UPDATE payment_link_orders SET status='past_due',updated=? WHERE subscription_id=?").run(iso(),o.subscription)
     db.prepare("UPDATE orders SET status='past_due',updated=? WHERE subscription_id=?").run(iso(),o.subscription)
   }else if(event.type==='customer.subscription.deleted'&&o.id){
+    db.prepare("UPDATE payment_link_orders SET status='canceled',updated=? WHERE subscription_id=?").run(iso(),o.id)
     db.prepare("UPDATE orders SET status='canceled',updated=? WHERE subscription_id=?").run(iso(),o.id)
     // Staff must review paid access; never delete customer files automatically.
   }
@@ -252,8 +290,10 @@ export function handler(db,env=process.env){
         if(!verifyStripe(data,req.headers['stripe-signature'],c.stripeWebhook))throw error(400,'invalid_stripe_signature')
         const event=obj(data.toString('utf8'),null)
         if(!event?.id||!event.type)throw error(400,'invalid_stripe_event')
+        const checkout=['checkout.session.completed','checkout.session.async_payment_succeeded'].includes(event.type)?event.data?.object:null
+        const verifiedLink=checkout?.payment_link?await verifyPaymentLinkPurchase(c,checkout):null
         db.exec('BEGIN IMMEDIATE')
-        try{applyStripe(db,event);db.exec('COMMIT')}catch(e){db.exec('ROLLBACK');throw e}
+        try{applyStripe(db,event,verifiedLink);db.exec('COMMIT')}catch(e){db.exec('ROLLBACK');throw e}
         return send(res,200,{received:true})
       }
       if(path==='/v1/auth/discord/start'&&req.method==='GET'){
@@ -325,6 +365,26 @@ export function handler(db,env=process.env){
         audit(db,user.id,'request.created',id,kind)
         return send(res,201,{id,status:'pending'})
       }
+      if(path==='/v1/payment-links/claim'&&req.method==='POST'){
+        const user=auth(db,req);csrf(req,user)
+        const email=trim(user.email,254).toLowerCase()
+        if(!email)throw error(409,'verified_discord_email_required')
+        const matches=db.prepare("SELECT checkout_id,subscription_id,plan FROM payment_link_orders WHERE email=? AND status='paid' AND claimed_uid IS NULL LIMIT 50").all(email)
+        const at=iso();let count=0
+        db.exec('BEGIN IMMEDIATE')
+        try{
+          for(const pay of matches){
+            const claimed=db.prepare("UPDATE payment_link_orders SET claimed_uid=?,updated=? WHERE checkout_id=? AND claimed_uid IS NULL AND status='paid'").run(user.id,at,pay.checkout_id)
+            if(!claimed.changes)continue
+            db.prepare("INSERT INTO orders(id,uid,plan,status,checkout_id,subscription_id,created,updated) VALUES(?,?,?,?,?,?,?,?)").run(
+              randomUUID(),user.id,pay.plan,'paid',pay.checkout_id,pay.subscription_id,at,at)
+            audit(db,user.id,'payment_link.claimed',pay.checkout_id,pay.plan)
+            count++
+          }
+          db.exec('COMMIT')
+        }catch(e){db.exec('ROLLBACK');throw e}
+        return send(res,200,{claimed:count,message:'Only webhook-verified payments matching your Discord-verified email can be linked.'})
+      }
       if(path==='/v1/orders'&&req.method==='GET'){
         const user=auth(db,req);return send(res,200,{orders:db.prepare(
           'SELECT id,plan,status,created,updated FROM orders WHERE uid=? ORDER BY created DESC LIMIT 100'
@@ -383,6 +443,7 @@ export function handler(db,env=process.env){
         return send(res,200,{user:{id:user.id,name:user.name,staff:true},settings:settings(db),
           requests:db.prepare('SELECT r.*,u.name username FROM requests r JOIN users u ON u.id=r.uid ORDER BY r.created DESC LIMIT 150').all(),
           orders:db.prepare('SELECT o.id,o.uid,o.plan,o.status,o.created,o.updated,u.name username FROM orders o JOIN users u ON u.id=o.uid ORDER BY o.created DESC LIMIT 150').all(),
+          paymentLinks:db.prepare("SELECT checkout_id,plan,email,status,claimed_uid,created,updated FROM payment_link_orders ORDER BY created DESC LIMIT 150").all(),
           audit:db.prepare('SELECT at,actor,event,target,details FROM audit ORDER BY id DESC LIMIT 100').all(),
           integrations:{discord:!!c.discordSecret,stripe:stripeReady(c),provisioning:pteroReady(c)}})
       }

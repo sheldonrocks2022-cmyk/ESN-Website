@@ -94,6 +94,14 @@ export function LiveBusinessCustomer({section='dashboard'}){
       window.location.assign(r.checkoutUrl)
     }catch(e){setMessage(e.message);setBusy(false)}
   }
+  const claimVerifiedPayments=async()=>{
+    setBusy(true);setMessage('')
+    try{
+      const result=await request('/v1/payment-links/claim','POST',{})
+      await refresh()
+      setMessage(result.claimed>0?result.claimed+' verified payment-link subscription(s) matched your Discord email and added to your ESN account. Staff will review provisioning.':'No unclaimed, verified Stripe Payment Link purchases matched your Discord-verified email. If you paid with another email, open an ESN staff ticket.')
+    }catch(e){setMessage(e.message)}finally{setBusy(false)}
+  }
   const portal=async()=>{
     setBusy(true);setMessage('')
     try{
@@ -113,6 +121,8 @@ export function LiveBusinessCustomer({section='dashboard'}){
         <div className="business-live-columns">
           <article className="business-live-card"><h3>Your verified orders</h3><p>Subscription status comes from signed Stripe events, never a redirect alone.</p>
             {orders.length?orders.map(x=><div className="business-live-record" key={x.id}><strong>ESN {x.plan}</strong><span>{x.status.replaceAll('_',' ')}</span><small>{new Date(x.created).toLocaleDateString()}</small></div>):<p>No verified orders yet.</p>}
+            <button type="button" disabled={busy} onClick={claimVerifiedPayments}>Find my verified Stripe Payment Link purchases</button>
+            <p>After buying via an ESN Payment Link, sign in with Discord and match purchases made with the same verified email. Payment alone does not automatically create a hosting server.</p>
             {orders.some(x=>['paid','active','past_due','canceled'].includes(x.status))&&publicData?.integrations?.stripe&&
               <button type="button" disabled={busy} onClick={portal}>Manage billing securely with Stripe →</button>}
           </article>
@@ -195,6 +205,7 @@ export function LiveBusinessStaff(){
           </>}
         </div>
         <div className="business-live-card"><h3>Customer requests ({data.requests.length})</h3><div className="business-live-table">{data.requests.map(item=><article key={item.id}><div><strong>{item.kind}</strong><span>{item.username} · ESN {item.plan||'general'} · {item.status}</span><small>{item.notes||'No notes'}</small></div><div className="business-draft-actions">{item.status==='pending'&&<><button disabled={busy} onClick={()=>decision(item.id,'approved')}>Approve</button><button disabled={busy} onClick={()=>decision(item.id,'rejected')}>Reject</button></>}{item.status==='approved'&&<button disabled={busy} onClick={()=>decision(item.id,'completed')}>Complete</button>}</div></article>)}</div></div>
+        <div className="business-live-card"><h3>Stripe Payment Link receipts ({(data.paymentLinks||[]).length})</h3><p>Payment Link purchases are verified by signed Stripe webhook and a live Stripe price check. Customers must match a verified Discord email before provisioning. Never accept screenshots as proof of payment.</p><div className="business-live-table">{(data.paymentLinks||[]).map(item=><article key={item.checkout_id}><div><strong>ESN {item.plan} — {item.status}</strong><span>{item.email} · {item.claimed_uid?'Linked to Discord':'Awaiting verified Discord email match'}</span><small>Stripe Checkout {item.checkout_id}</small></div></article>)}</div></div>
         <div className="business-live-card"><h3>Stripe-verified orders ({data.orders.length})</h3><p>Orders only become paid after a signed Stripe webhook. Server provisioning is a separate staff-confirmed action.</p><div className="business-live-table">{data.orders.map(item=><article key={item.id}><div><strong>ESN {item.plan} — {item.status}</strong><span>{item.username} · {item.id.slice(0,8)}</span></div>{['paid','provision_error'].includes(item.status)&&<button type="button" disabled={busy||!data.integrations.provisioning} onClick={()=>provision(item.id)}>Provision verified order</button>}</article>)}</div></div>
         <div className="business-live-card"><h3>Server-side staff audit</h3><div className="business-live-table">{data.audit.slice(0,30).map((a,i)=><article key={i}><div><strong>{a.event}</strong><span>{a.actor} · {a.at}</span><small>{a.target}</small></div></article>)}</div></div>
       </>}
