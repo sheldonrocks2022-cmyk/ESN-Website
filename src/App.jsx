@@ -18,6 +18,7 @@ import StoreAIPage from './StoreAI'
 import DomainsPage from './Domains'
 import HostingPage from './Hosting'
 import { BusinessPlatformPage } from './BusinessPlatform'
+import { LiveBusinessStaff } from './BusinessLive'
 import SiteBuilderPage, { HostedSitePage } from './SiteBuilder'
 import { ChangelogTimelinePage, DiagnosticCenterPage, GlobalOpsLayer, OperationsMapPage, PublicIncidentsPage, SessionStatsPage, SMPConnectionTesterPage, SystemBlueprintPage } from './OpsExpansion'
 import { SOCIAL_IMAGE_ALT, SOCIAL_IMAGE_URL, canonicalUrl, getSeo, robotsContent, socialImageFor, structuredDataFor } from './seo'
@@ -1655,6 +1656,7 @@ function App() {
           <Route path="/hosting/vps" element={<HostingPage />} />
           <Route path="/business" element={<BusinessPlatformPage section="overview" />} />
           <Route path="/business/dashboard" element={<BusinessPlatformPage section="dashboard" />} />
+          <Route path="/business/admin" element={<LiveBusinessStaff />} />
           <Route path="/business/plans" element={<BusinessPlatformPage section="plans" />} />
           <Route path="/business/partners" element={<BusinessPlatformPage section="partners" />} />
           <Route path="/business/rewards" element={<BusinessPlatformPage section="rewards" />} />
