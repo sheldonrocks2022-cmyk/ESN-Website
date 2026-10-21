@@ -94,6 +94,15 @@ export function LiveBusinessCustomer({section='dashboard'}){
       window.location.assign(r.checkoutUrl)
     }catch(e){setMessage(e.message);setBusy(false)}
   }
+  const portal=async()=>{
+    setBusy(true);setMessage('')
+    try{
+      const r=await request('/v1/billing/portal','POST',{})
+      const redirect=new URL(r.portalUrl)
+      if(redirect.origin!=='https://billing.stripe.com')throw Error('Unrecognized billing destination')
+      window.location.assign(r.portalUrl)
+    }catch(e){setMessage(e.message);setBusy(false)}
+  }
   if(!ENABLED)return <section className="business-live"><div><span>SECURE ACCOUNTS</span><h2>Account connections are not enabled yet.</h2><p>Our customer services are available through the official Discord ticket system. No billing or server information is simulated.</p><a href={DISCORD_HOSTING} target="_blank" rel="noreferrer">Contact ESN staff ↗</a></div></section>
   return <section className="business-live" aria-labelledby="business-account-heading">
     <div className="business-section-heading"><div><span>SECURE ESN ACCOUNT</span><h2 id="business-account-heading">Your hosting account</h2><p>Only verified Discord sessions can see real orders and saved requests.</p></div></div>
@@ -104,6 +113,8 @@ export function LiveBusinessCustomer({section='dashboard'}){
         <div className="business-live-columns">
           <article className="business-live-card"><h3>Your verified orders</h3><p>Subscription status comes from signed Stripe events, never a redirect alone.</p>
             {orders.length?orders.map(x=><div className="business-live-record" key={x.id}><strong>ESN {x.plan}</strong><span>{x.status.replaceAll('_',' ')}</span><small>{new Date(x.created).toLocaleDateString()}</small></div>):<p>No verified orders yet.</p>}
+            {orders.some(x=>['paid','active','past_due','canceled'].includes(x.status))&&publicData?.integrations?.stripe&&
+              <button type="button" disabled={busy} onClick={portal}>Manage billing securely with Stripe →</button>}
           </article>
           <article className="business-live-card"><h3>Your staff requests</h3><p>Requests here are saved securely for ESN staff review.</p>
             {requests.length?requests.map(x=><div className="business-live-record" key={x.id}><strong>{x.kind}</strong><span>{x.status}</span><small>{x.plan||'General'}</small></div>):<p>No submitted staff requests yet.</p>}
