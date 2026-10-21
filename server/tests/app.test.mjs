@@ -101,6 +101,8 @@ test('checkout and provisioning fail closed without payment/provider setup',asyn
   await fixture(async({request,db})=>{
     const checkout=await request('/v1/checkout',{method:'POST',actor:'customer',json:{plan:'Pro'}})
     assert.equal(checkout.status,503)
+    const portal=await request('/v1/billing/portal',{method:'POST',actor:'customer',json:{}})
+    assert.equal(portal.status,503)
     const id='00000000-0000-4000-8000-000000000000'
     db.prepare('INSERT INTO orders(id,uid,plan,status,created,updated) VALUES(?,?,?,?,?,?)').run(id,CUSTOMER,'Pro','paid',new Date().toISOString(),new Date().toISOString())
     const provision=await request('/v1/staff/orders/'+id+'/provision',{method:'POST',actor:'owner',json:{}})
