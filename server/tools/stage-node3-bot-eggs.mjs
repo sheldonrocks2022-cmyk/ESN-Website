@@ -82,7 +82,7 @@ async function run(){
           throw Error('Egg '+s.id+' has required variables with no default; manual review needed')
         }
         if(value){
-          if(value.includes('\\0'))throw Error('Egg '+s.id+' has an invalid variable default')
+          if(value.includes(String.fromCharCode(0)))throw Error('Egg '+s.id+' has an invalid variable default')
           defaults[key]=value
         }
       }
