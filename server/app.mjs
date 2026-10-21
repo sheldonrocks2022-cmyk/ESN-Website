@@ -304,7 +304,8 @@ export function handler(db,env=process.env){
           client_id:c.discordId,redirect_uri:c.callback,response_type:'code',
           scope:'identify email',state,code_challenge:createHash('sha256').update(verifier).digest('base64url'),code_challenge_method:'S256'
         })
-        return redirect(res,'https://discord.com/oauth2/authorize?'+q)
+        // Encode the OAuth scope separator as %20; Discord may reject '+' as an invalid scope.
+        return redirect(res,'https://discord.com/oauth2/authorize?'+q.toString().replace('scope=identify+email','scope=identify%20email'))
       }
       if(path==='/v1/auth/discord/callback'&&req.method==='GET'){
         const url=new URL(req.url,c.api),o=cookieJar(req)['__Host-esn_oauth']||''
