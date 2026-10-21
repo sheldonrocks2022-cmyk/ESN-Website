@@ -12,12 +12,13 @@ const TEST_ENV={
   STAFF_DISCORD_IDS:OWNER,STRIPE_WEBHOOK_SECRET:'whsec_test_signature_only',
 }
 const digest=s=>createHash('sha256').update(s).digest('hex')
+const CSRF={owner:'owner-csrf-token-secret-with-32-plus-characters',customer:'customer-csrf-token-secret-with-32-plus-characters'}
 async function fixture(fn){
   const db=initDb()
   for(const id of [OWNER,CUSTOMER])
     db.prepare('INSERT INTO users(id,name,email,avatar,created) VALUES(?,?,?,?,?)').run(id,'Tester '+id,'tester@example.invalid',null,new Date().toISOString())
-  db.prepare('INSERT INTO sessions(token,uid,csrf,expires) VALUES(?,?,?,?)').run(digest('owner-session'),OWNER,digest('owner-csrf'),Date.now()+120000)
-  db.prepare('INSERT INTO sessions(token,uid,csrf,expires) VALUES(?,?,?,?)').run(digest('customer-session'),CUSTOMER,digest('customer-csrf'),Date.now()+120000)
+  db.prepare('INSERT INTO sessions(token,uid,csrf,expires) VALUES(?,?,?,?)').run(digest('owner-session'),OWNER,digest(CSRF.owner),Date.now()+120000)
+  db.prepare('INSERT INTO sessions(token,uid,csrf,expires) VALUES(?,?,?,?)').run(digest('customer-session'),CUSTOMER,digest(CSRF.customer),Date.now()+120000)
   const server=createServer(handler(db,TEST_ENV))
   await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve))
   const base='http://127.0.0.1:'+server.address().port
@@ -25,7 +26,7 @@ async function fixture(fn){
     const response=await fetch(base+path,{
       method,headers:{
         ...(actor?{Cookie:'__Host-esn_session='+actor+'-session'}:{}),
-        ...(method==='GET'?{}:{Origin:SOURCE,'Content-Type':'application/json','X-ESN-CSRF':actor+'-csrf'}),
+        ...(method==='GET'?{}:{Origin:SOURCE,'Content-Type':'application/json','X-ESN-CSRF':CSRF[actor]}),
         ...headers
       },
       ...(json!==null?{body:JSON.stringify(json)}:{})
