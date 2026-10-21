@@ -237,7 +237,7 @@ function applyStripe(db,event,verifiedLink=null){
       payment.checkout,payment.link,payment.subscription,payment.plan,payment.email,iso(),iso())
     audit(db,'stripe','payment_link.verified',payment.checkout,payment.plan)
   }
-  if(event.type==='checkout.session.completed'&&o.mode==='subscription'&&o.payment_status==='paid'&&o.subscription){
+  if(event.type==='checkout.session.completed'&&o.client_reference_id&&o.mode==='subscription'&&o.payment_status==='paid'&&o.subscription){
     db.prepare("UPDATE orders SET status='paid',subscription_id=?,updated=? WHERE id=? AND checkout_id=? AND status IN ('checkout_pending','paid','provision_error')").run(o.subscription,iso(),o.client_reference_id,o.id)
   }else if(event.type==='invoice.paid'&&o.subscription){
     db.prepare("UPDATE payment_link_orders SET status='paid',updated=? WHERE subscription_id=? AND status!='canceled'").run(iso(),o.subscription)
