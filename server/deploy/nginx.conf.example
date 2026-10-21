@@ -1,0 +1,24 @@
+# Nginx reverse-proxy fragment, for inclusion in your existing HTTPS
+# api.esnoffical.com server block after certbot provisions the certificate.
+# Keep node bound to 127.0.0.1:8787, do not expose the port publicly.
+server {
+    listen 80;
+    server_name api.esnoffical.com;
+    return 301 https://$host$request_uri;
+}
+server {
+    listen 443 ssl http2;
+    server_name api.esnoffical.com;
+    ssl_certificate /etc/letsencrypt/live/api.esnoffical.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/api.esnoffical.com/privkey.pem;
+    add_header Strict-Transport-Security "max-age=31536000" always;
+    client_max_body_size 1m;
+    location / {
+        proxy_pass http://127.0.0.1:8787;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-Proto https;
+        proxy_read_timeout 30s;
+    }
+}
