@@ -173,6 +173,14 @@ export function LiveBusinessStaff(){
     try{await request('/v1/staff/requests/'+id,'PATCH',{status});await reload();setMessage('Request updated on secure server.')}
     catch(e){setMessage(e.message)}finally{setBusy(false)}
   }
+  const chooseRuntime=async(id,runtime)=>{
+    setBusy(true);setMessage('')
+    try{
+      await request('/v1/staff/orders/'+id+'/runtime','PATCH',{runtime})
+      await reload()
+      setMessage('Saved hosting runtime for this verified paid order. No server created.')
+    }catch(e){setMessage(e.message)}finally{setBusy(false)}
+  }
   const provision=async(id)=>{
     if(!window.confirm('Provision this VERIFIED paid order on ESN Pterodactyl? This creates a real server and uses a configured allocation.'))return
     setBusy(true);setMessage('')
@@ -206,7 +214,7 @@ export function LiveBusinessStaff(){
         </div>
         <div className="business-live-card"><h3>Customer requests ({data.requests.length})</h3><div className="business-live-table">{data.requests.map(item=><article key={item.id}><div><strong>{item.kind}</strong><span>{item.username} · ESN {item.plan||'general'} · {item.status}</span><small>{item.notes||'No notes'}</small></div><div className="business-draft-actions">{item.status==='pending'&&<><button disabled={busy} onClick={()=>decision(item.id,'approved')}>Approve</button><button disabled={busy} onClick={()=>decision(item.id,'rejected')}>Reject</button></>}{item.status==='approved'&&<button disabled={busy} onClick={()=>decision(item.id,'completed')}>Complete</button>}</div></article>)}</div></div>
         <div className="business-live-card"><h3>Stripe Payment Link receipts ({(data.paymentLinks||[]).length})</h3><p>Payment Link purchases are verified by signed Stripe webhook and a live Stripe price check. Customers must match a verified Discord email before provisioning. Never accept screenshots as proof of payment.</p><div className="business-live-table">{(data.paymentLinks||[]).map(item=><article key={item.checkout_id}><div><strong>ESN {item.plan} — {item.status}</strong><span>{item.email} · {item.claimed_uid?'Linked to Discord':'Awaiting verified Discord email match'}</span><small>Stripe Checkout {item.checkout_id}</small></div></article>)}</div></div>
-        <div className="business-live-card"><h3>Stripe-verified orders ({data.orders.length})</h3><p>Orders only become paid after a signed Stripe webhook. Server provisioning is a separate staff-confirmed action.</p><div className="business-live-table">{data.orders.map(item=><article key={item.id}><div><strong>ESN {item.plan} — {item.status}</strong><span>{item.username} · {item.id.slice(0,8)}</span></div>{['paid','provision_error'].includes(item.status)&&<button type="button" disabled={busy||!data.integrations.provisioning} onClick={()=>provision(item.id)}>Provision verified order</button>}</article>)}</div></div>
+        <div className="business-live-card"><h3>Stripe-verified orders ({data.orders.length})</h3><p>Staff must select Node.js or Python for each verified paid order. Choosing a runtime does not create a server. Provisioning stays locked until production safety checks are explicitly enabled.</p><div className="business-live-table">{data.orders.map(item=><article key={item.id}><div><strong>ESN {item.plan} — {item.status}</strong><span>{item.username} · {item.id.slice(0,8)} · {item.runtime==='nodejs'?'Node.js':item.runtime==='python'?'Python':'Runtime not selected'}</span></div>{['paid','provision_error'].includes(item.status)&&<div className="business-draft-actions"><label>Bot runtime <select value={item.runtime||''} disabled={busy} onChange={e=>chooseRuntime(item.id,e.target.value)}><option value="" disabled>Select runtime</option><option value="nodejs">Node.js</option><option value="python">Python</option></select></label><button type="button" disabled={busy||!item.runtime||!data.integrations.provisioning} onClick={()=>provision(item.id)}>Provision verified order</button></div>}</article>)}</div></div>
         <div className="business-live-card"><h3>Server-side staff audit</h3><div className="business-live-table">{data.audit.slice(0,30).map((a,i)=><article key={i}><div><strong>{a.event}</strong><span>{a.actor} · {a.at}</span><small>{a.target}</small></div></article>)}</div></div>
       </>}
     {message&&<p className="business-info" role="status">{message}</p>}
