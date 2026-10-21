@@ -190,6 +190,13 @@ async function provision(db,c,id,actor){
   if(!['paid','provision_error'].includes(order.status))throw error(409,'verified_payment_required')
   if(!RUNTIMES.has(order.runtime))throw error(409,'staff_must_choose_runtime')
   const runtime=c.runtimes[order.runtime]
+  // Recover a server successfully created before a response/DB write failed.
+  // Such a server may already occupy the allocation; do not reject recovery.
+  const existing=await panel(c,'/servers/external/'+encodeURIComponent(order.id))
+  if(existing?.attributes?.id){
+    db.prepare("UPDATE orders SET status='active',server_id=?,updated=? WHERE id=?").run(String(existing.attributes.id),iso(),id)
+    return {status:'active'}
+  }
   // One configured allocation only: recheck Pterodactyl's ownership at creation time.
   const allocRes=await panel(c,'/nodes/'+c.node+'/allocations?per_page=100')
   const chosen=allocRes?.data?.map(item=>item.attributes).find(item=>Number(item?.id)===c.allocation)
@@ -201,11 +208,6 @@ async function provision(db,c,id,actor){
   if(!user?.email)throw error(409,'verified_discord_email_required')
   const claimed=db.prepare("UPDATE orders SET status='provisioning',updated=? WHERE id=? AND status IN ('paid','provision_error') AND server_id IS NULL AND runtime IN ('nodejs','python') AND NOT EXISTS (SELECT 1 FROM orders AS other WHERE other.id<>? AND (other.server_id IS NOT NULL OR other.status='provisioning'))").run(iso(),id,id)
   if(!claimed.changes)throw error(409,'provision_in_progress')
-  const existing=await panel(c,'/servers/external/'+encodeURIComponent(order.id))
-  if(existing?.attributes?.id){
-    db.prepare("UPDATE orders SET status='active',server_id=?,updated=? WHERE id=?").run(String(existing.attributes.id),iso(),id)
-    return {status:'active'}
-  }
   const external='esn-'+user.id
   let puser=await panel(c,'/users/external/'+external)
   if(!puser)puser=await panel(c,'/users','POST',{
