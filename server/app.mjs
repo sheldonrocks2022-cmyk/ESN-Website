@@ -167,10 +167,12 @@ async function provision(db,c,id,actor){
   if(order.server_id)return {status:'active'}
   if(!['paid','provision_error'].includes(order.status))throw error(409,'verified_payment_required')
   // One configured allocation: fail closed instead of overselling server capacity.
-  if(db.prepare('SELECT count(*) count FROM orders WHERE server_id IS NOT NULL AND id<>?').get(id).count>0)
+  if(db.prepare("SELECT count(*) count FROM orders WHERE (server_id IS NOT NULL OR status='provisioning') AND id<>?").get(id).count>0)
     throw error(409,'allocation_requires_staff_review')
   const user=db.prepare('SELECT * FROM users WHERE id=?').get(order.uid)
   if(!user?.email)throw error(409,'verified_discord_email_required')
+  const claimed=db.prepare("UPDATE orders SET status='provisioning',updated=? WHERE id=? AND status IN ('paid','provision_error') AND server_id IS NULL").run(iso(),id)
+  if(!claimed.changes)throw error(409,'provision_in_progress')
   const existing=await panel(c,'/servers/external/'+encodeURIComponent(order.id))
   if(existing?.attributes?.id){
     db.prepare("UPDATE orders SET status='active',server_id=?,updated=? WHERE id=?").run(String(existing.attributes.id),iso(),id)
@@ -234,7 +236,10 @@ export function handler(db,env=process.env){
       }
       if(req.method==='OPTIONS'){if(origin!==c.site)throw error(403,'origin_forbidden');res.writeHead(204);return res.end()}
       const path=new URL(req.url||'/',c.api).pathname
-      rate((req.socket.remoteAddress||'local')+path,path.includes('/auth')?12:60)
+      const remote=req.socket.remoteAddress||'local'
+      const realIp=(remote==='127.0.0.1'||remote==='::1'||remote==='::ffff:127.0.0.1')?
+        trim(req.headers['x-real-ip'],65)||remote:remote
+      rate(realIp+path,path.includes('/auth')?12:60)
       if(path==='/health'&&req.method==='GET')return send(res,200,{ok:true,service:'esn-business'})
       if(path==='/v1/public'&&req.method==='GET')return send(res,200,{
         settings:settings(db),plans:Object.fromEntries(Object.entries(PLANS).map(([name,p])=>[name,{
@@ -351,6 +356,28 @@ export function handler(db,env=process.env){
           throw e
         }
       }
+      if(path==='/v1/billing/portal'&&req.method==='POST'){
+        const user=auth(db,req);csrf(req,user)
+        if(!stripeReady(c))throw error(503,'billing_not_configured')
+        const owned=db.prepare("SELECT checkout_id FROM orders WHERE uid=? AND checkout_id IS NOT NULL AND subscription_id IS NOT NULL ORDER BY created DESC LIMIT 1").get(user.id)
+        if(!owned)throw error(404,'no_subscription_available')
+        const sessionRes=await fetch('https://api.stripe.com/v1/checkout/sessions/'+encodeURIComponent(owned.checkout_id),{
+          headers:{Authorization:'Bearer '+c.stripeKey}
+        })
+        if(!sessionRes.ok)throw error(502,'stripe_session_lookup_failed')
+        const checkout=await sessionRes.json()
+        if(checkout.mode!=='subscription'||!checkout.customer)throw error(409,'subscription_customer_unavailable')
+        const portalRes=await fetch('https://api.stripe.com/v1/billing_portal/sessions',{
+          method:'POST',
+          headers:{Authorization:'Bearer '+c.stripeKey,'Content-Type':'application/x-www-form-urlencoded'},
+          body:new URLSearchParams({customer:checkout.customer,return_url:c.site+'/business/dashboard'})
+        })
+        if(!portalRes.ok)throw error(502,'stripe_portal_not_available')
+        const portal=await portalRes.json()
+        if(!portal.url||!portal.url.startsWith('https://billing.stripe.com/'))throw error(502,'invalid_portal_url')
+        audit(db,user.id,'billing.portal_opened',owned.checkout_id)
+        return send(res,200,{portalUrl:portal.url})
+      }
       if(path==='/v1/staff/overview'&&req.method==='GET'){
         const user=staff(db,req,c)
         return send(res,200,{user:{id:user.id,name:user.name,staff:true},settings:settings(db),
@@ -383,7 +410,7 @@ export function handler(db,env=process.env){
         try{return send(res,200,await provision(db,c,matchOrder[1],user.id))}
         catch(e){
           const order=db.prepare('SELECT status FROM orders WHERE id=?').get(matchOrder[1])
-          if(order&&['paid','provision_error'].includes(order.status))
+          if(order&&['paid','provision_error','provisioning'].includes(order.status))
             db.prepare("UPDATE orders SET status='provision_error',error=?,updated=? WHERE id=?").run(trim(e.message,160),iso(),matchOrder[1])
           throw e
         }
@@ -399,6 +426,10 @@ export function handler(db,env=process.env){
 }
 export function start(){
   const db=initDb(process.env.DATABASE_FILE||resolve(HERE,'data/business.sqlite'))
+  // Recover interrupted provision requests for staff reconciliation. The
+  // Pterodactyl external ID check prevents recreating an existing server.
+  db.prepare("UPDATE orders SET status='provision_error',error='interrupted_provision',updated=? WHERE status='provisioning'").run(iso())
+  db.prepare('DELETE FROM sessions WHERE expires < ?').run(Date.now())
   const server=http.createServer(handler(db))
   const port=Number(process.env.PORT||8787),host=process.env.HOST||'127.0.0.1'
   server.listen(port,host,()=>console.log('ESN Business API on '+host+':'+port))
