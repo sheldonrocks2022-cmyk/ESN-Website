@@ -231,7 +231,7 @@ async function verifyPaymentLinkPurchase(c,checkout){
 function applyStripe(db,event,verifiedLink=null){
   if(db.prepare('SELECT id FROM stripe_events WHERE id=?').get(event.id))return
   const o=event.data?.object||{}
-  if(event.type==='checkout.session.completed'&&verifiedLink){
+  if(['checkout.session.completed','checkout.session.async_payment_succeeded'].includes(event.type)&&verifiedLink){
     const payment=verifiedLink
     db.prepare("INSERT OR IGNORE INTO payment_link_orders(checkout_id,link_id,subscription_id,plan,email,status,claimed_uid,created,updated) VALUES(?,?,?,?,?,'paid',NULL,?,?)").run(
       payment.checkout,payment.link,payment.subscription,payment.plan,payment.email,iso(),iso())
@@ -240,6 +240,7 @@ function applyStripe(db,event,verifiedLink=null){
   if(event.type==='checkout.session.completed'&&o.mode==='subscription'&&o.payment_status==='paid'&&o.subscription){
     db.prepare("UPDATE orders SET status='paid',subscription_id=?,updated=? WHERE id=? AND checkout_id=? AND status IN ('checkout_pending','paid','provision_error')").run(o.subscription,iso(),o.client_reference_id,o.id)
   }else if(event.type==='invoice.paid'&&o.subscription){
+    db.prepare("UPDATE payment_link_orders SET status='paid',updated=? WHERE subscription_id=? AND status!='canceled'").run(iso(),o.subscription)
     db.prepare("UPDATE orders SET status=CASE WHEN server_id IS NOT NULL THEN 'active' ELSE 'paid' END,updated=? WHERE subscription_id=? AND status!='canceled'").run(iso(),o.subscription)
   }else if(event.type==='invoice.payment_failed'&&o.subscription){
     db.prepare("UPDATE payment_link_orders SET status='past_due',updated=? WHERE subscription_id=?").run(iso(),o.subscription)
@@ -289,7 +290,7 @@ export function handler(db,env=process.env){
         if(!verifyStripe(data,req.headers['stripe-signature'],c.stripeWebhook))throw error(400,'invalid_stripe_signature')
         const event=obj(data.toString('utf8'),null)
         if(!event?.id||!event.type)throw error(400,'invalid_stripe_event')
-        const checkout=event.type==='checkout.session.completed'?event.data?.object:null
+        const checkout=['checkout.session.completed','checkout.session.async_payment_succeeded'].includes(event.type)?event.data?.object:null
         const verifiedLink=checkout?.payment_link?await verifyPaymentLinkPurchase(c,checkout):null
         db.exec('BEGIN IMMEDIATE')
         try{applyStripe(db,event,verifiedLink);db.exec('COMMIT')}catch(e){db.exec('ROLLBACK');throw e}
