@@ -39,9 +39,33 @@
     <link rel="alternate" hreflang="x-default" href="https://esnoffical.com/" />
     <title>ES Network (ESN) | Minecraft SMP, Gaming & Creator Services</title>
       <script id="esn-route-schema" type="application/ld+json">{}</script>
+    <style id="esn-first-paint">
+      /* A visible HTML fallback when a browser cannot load the React bundle. */
+      html, body { min-height: 100%; background: #050711; color: #f3f7ff; }
+      #esn-boot-fallback { box-sizing: border-box; min-height: 100svh; display: flex;
+        align-items: center; justify-content: center; padding: 24px; text-align: center;
+        font-family: system-ui, -apple-system, sans-serif; }
+      #esn-boot-fallback .esn-boot-panel { max-width: 480px; }
+      #esn-boot-fallback .esn-boot-mark { color: #62f1ff; font-size: 1rem; font-weight: 900;
+        letter-spacing: .24em; }
+      #esn-boot-fallback h1 { margin: 20px 0 10px; font-size: clamp(1.6rem, 6vw, 2.5rem); }
+      #esn-boot-fallback p { color: #a8bad5; line-height: 1.6; }
+      #esn-boot-fallback a { display: inline-block; margin-top: 16px; padding: 13px 22px;
+        border-radius: 12px; background: #1687fa; color: white; font-weight: 750;
+        text-decoration: none; }
+    </style>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <div id="esn-boot-fallback" role="status" aria-live="polite">
+        <div class="esn-boot-panel">
+          <div class="esn-boot-mark">ESN OFFICIAL</div>
+          <h1>Loading ES Network</h1>
+          <p>If the website doesn't open, the browser may be using an old cached page or may not have loaded the site's scripts.</p>
+          <a href="/?esn_reload=1">Reload website</a>
+        </div>
+      </div>
+    </div>
     <noscript>ES Network requires JavaScript for interactive navigation and website features.</noscript>
     <script type="module" src="/src/main.jsx"></script>
   </body>
