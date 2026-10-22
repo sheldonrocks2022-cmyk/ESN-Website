@@ -1,5 +1,5 @@
-const CACHE='esn-pwa-v6'
-const CORE=['/','/offline.html','/esn-mark.svg','/esn-social-card.png','/favicon-32.png']
+const CACHE='esn-pwa-v7'
+const CORE=['/offline.html','/esn-mark.svg']
 
 self.addEventListener('install',event=>{
   event.waitUntil(
@@ -39,8 +39,10 @@ self.addEventListener('fetch',event=>{
         }
         return response
       }catch{
-        const shell=await caches.match('/')
-        return shell||caches.match('/offline.html')
+        // Never serve stale app HTML with missing versioned JS/CSS: that produces
+        // a completely blank page on phones. Show the offline page instead.
+        const offline=await caches.match('/offline.html')
+        return offline||new Response('<!doctype html><html><head><meta name="viewport" content="width=device-width,initial-scale=1"></head><body style="background:#050711;color:white;font-family:system-ui;padding:24px"><h1>ESN is offline</h1><p>Check your connection and reload the website.</p></body></html>',{headers:{'Content-Type':'text/html; charset=utf-8'},status:503})
       }
     })())
     return
