@@ -41,7 +41,8 @@
       <script id="esn-route-schema" type="application/ld+json">{}</script>
     <style id="esn-first-paint">
       /* A visible HTML fallback when a browser cannot load the React bundle. */
-      html, body { min-height: 100%; background: #050711; color: #f3f7ff; }
+      html, body { min-height: 100%; }
+      body:has(#esn-boot-fallback) { background: #050711; color: #f3f7ff; }
       #esn-boot-fallback { box-sizing: border-box; min-height: 100svh; display: flex;
         align-items: center; justify-content: center; padding: 24px; text-align: center;
         font-family: system-ui, -apple-system, sans-serif; }
