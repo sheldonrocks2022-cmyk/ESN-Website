@@ -69,6 +69,7 @@ async function inspect(route,viewport,label){
       const style=main?getComputedStyle(main):null
       return {
         title:document.title,
+        appMounted:Boolean(document.querySelector('#root .site main#main-content')),
         rootTextLength:rootText.length,
         mainTextLength:mainText.length,
         rootHeight:rootRect?.height||0,
@@ -95,7 +96,7 @@ async function inspect(route,viewport,label){
       }
     })
     const status=response?.status()||0
-    const blank=state.rootTextLength<20||state.rootHeight<40||state.mainDisplay==='none'||state.mainVisibility==='hidden'
+    const blank=!state.appMounted||state.rootTextLength<20||state.mainTextLength<20||state.rootHeight<40||state.mainDisplay==='none'||state.mainVisibility==='hidden'
     const fatal=pageErrors.length>0
     const ok=status>=200&&status<400&&!state.notFound&&!blank&&!fatal
     const result={route,label,status,ok,blank,pageErrors,state}
@@ -153,6 +154,7 @@ async function inspectInternalMobile(route){
       const center=document.elementFromPoint(Math.floor(innerWidth/2),Math.floor(innerHeight/2))
       return {
         path:location.pathname,
+        appMounted:Boolean(document.querySelector('#root .site main#main-content')),
         rootTextLength:rootText.length,
         mainTextLength:mainText.length,
         rootHeight:rootRect?.height||0,
@@ -166,7 +168,7 @@ async function inspectInternalMobile(route){
         centerClass:center?.className||'',
       }
     })
-    const blank=state.rootTextLength<20||state.rootHeight<40||state.mainDisplay==='none'||state.mainVisibility==='hidden'
+    const blank=!state.appMounted||state.rootTextLength<20||state.mainTextLength<20||state.rootHeight<40||state.mainDisplay==='none'||state.mainVisibility==='hidden'
     const stuck=state.transitionLocked||(state.transitionPresent&&state.transitionPointerEvents!=='none')
     const expected=expectedPath(route)
     const ok=!blank&&!stuck&&pageErrors.length===0&&state.path===expected
@@ -206,7 +208,20 @@ async function inspectCoreOverlays(){
     await page.goto(BASE_URL+'/',{waitUntil:'domcontentloaded',timeout:30000})
     // Wait for the real mobile controls. The one-time Network Takeover is pre-acknowledged
     // in this smoke test so it cannot intentionally cover the controls being tested.
-    await page.waitForSelector('.mobile-network-strip-actions',{state:'visible',timeout:8000})
+    // Modern ESN calm-theme intentionally hides its legacy mobile command strip.
+    // When those controls are hidden, exercise the real mobile header instead.
+    const legacyControlsVisible=await page.locator('.mobile-network-strip-actions').isVisible()
+    if(!legacyControlsVisible){
+      await page.waitForSelector('#main-content h1',{state:'visible',timeout:10000})
+      const toggle=page.locator('.site-header .menu-toggle')
+      await toggle.click({timeout:5000})
+      await page.waitForSelector('.site-header .nav.open',{state:'visible',timeout:5000})
+      const linkVisible=await page.locator('.site-header .nav.open a.nav-direct').first().isVisible()
+      const result={route:'/',label:'mobile-menu-smoke',status:200,ok:linkVisible&&pageErrors.length===0,blank:false,stuck:false,pageErrors:[...pageErrors],state:{menuOpened:true,linkVisible}}
+      results.push(result)
+      if(!result.ok)failures.push(result)
+      return
+    }
     await page.waitForSelector('.mobile-bottom-nav',{state:'visible',timeout:8000})
 
     // Test the actual mobile controls instead of only dispatching synthetic events.
