@@ -1528,7 +1528,9 @@ export default function NetworkEvolution(){
 
   useEffect(()=>{
     const ack=localStorage.getItem('esn_takeover_seen')
-    if(NETWORK_TAKEOVER.active&&ack!==NETWORK_TAKEOVER.id){
+    // Buyers who land straight on a hosting, checkout or store page skip the full-screen update overlay.
+    const shopping=/^\/(hosting|business|storesmp|store|faq|status)(\/|$)/.test(window.location.pathname)
+    if(NETWORK_TAKEOVER.active&&ack!==NETWORK_TAKEOVER.id&&!shopping){
       const timer=window.setTimeout(()=>setTakeover(true),2350)
       return()=>window.clearTimeout(timer)
     }

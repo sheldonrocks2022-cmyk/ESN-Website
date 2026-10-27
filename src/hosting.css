@@ -34,7 +34,7 @@
 .esn-panel-server-head{display:flex;align-items:center;justify-content:space-between;gap:18px}.esn-panel-server-head h3{margin:.3rem 0;font-size:2.3rem}.esn-panel-online{display:flex;align-items:center;gap:7px;color:#71eaa6;font-size:.7rem;font-weight:900;letter-spacing:.08em}.esn-panel-online i{width:8px;height:8px;border-radius:50%;background:#64e89b}
 .esn-panel-metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:20px}.esn-panel-metrics>div{padding:15px;border-radius:13px;background:#091529}.esn-panel-metrics span,.esn-panel-metrics strong,.esn-panel-metrics small{display:block}.esn-panel-metrics span{color:#657a9d;font-size:.6rem;font-weight:900;letter-spacing:.1em}.esn-panel-metrics strong{margin-top:7px;font-size:1.28rem}.esn-panel-metrics small{margin-top:3px;color:#667a98}
 .esn-panel-console{min-height:170px;margin-top:13px;padding:18px;border:1px solid rgba(255,255,255,.05);border-radius:14px;background:#020710;color:#6f8daf;font:500 .78rem/1.8 ui-monospace,SFMono-Regular,Menlo,monospace}.esn-panel-console span,.esn-panel-console b{display:block}.esn-panel-console b{color:#74e7a7}
-.esn-panel-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:13px}.esn-panel-actions button{padding:10px 15px;border:1px solid rgba(255,255,255,.09);border-radius:10px;background:#0c1930;color:#c8d8ef;font-weight:800}
+.esn-panel-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:13px}.esn-panel-actions span,.esn-panel-actions button{padding:10px 15px;border:1px solid rgba(255,255,255,.09);border-radius:10px;background:#0c1930;color:#c8d8ef;font-weight:800}
 .esn-panel-feature-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:18px}.esn-panel-feature-grid article{padding:18px;border:1px solid rgba(117,155,217,.13);border-radius:16px;background:rgba(7,16,31,.75)}.esn-panel-feature-grid strong{font-size:1rem}.esn-panel-feature-grid p{margin:.5rem 0 0;color:#8397b4;line-height:1.55;font-size:.82rem}
 .esn-panel-access,.esn-hosting-discord-cta{display:flex;align-items:center;justify-content:space-between;gap:28px;margin-top:20px;padding:24px;border:1px solid rgba(118,159,224,.16);border-radius:20px;background:rgba(9,19,37,.78)}
 .esn-panel-access h3,.esn-hosting-discord-cta h3{margin:.45rem 0 .55rem;font-size:1.35rem}.esn-panel-access p,.esn-hosting-discord-cta p{margin:0;max-width:780px;color:#8498b5;line-height:1.6}
@@ -284,4 +284,38 @@
     padding:24px;
   }
   .esn-hosting-page .esn-hosting-availability .button {width:100%}
+}
+
+/* W2 Oct 27: plan finder, billing toggle, jump nav, compare table, FAQ, sticky CTA */
+.esn-hosting-quicklinks{display:flex;flex-wrap:wrap;gap:8px 16px;margin-top:10px;font-size:.88rem}.esn-hosting-quicklinks a{color:#8fd8ff;font-weight:700}
+.esn-plan-finder{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:center;margin:6px 0 18px;padding:20px 22px;border:1px solid rgba(118,159,224,.18);border-radius:18px;background:rgba(9,19,37,.8)}
+.esn-plan-finder h3{margin:.4rem 0 .7rem;font-size:1.2rem}.esn-plan-finder label{display:block;margin-bottom:6px;color:#9fb2cf;font-size:.8rem;font-weight:800}
+.esn-plan-finder select{width:100%;padding:11px 12px;border:1px solid rgba(143,216,255,.35);border-radius:10px;background:#0c1930;color:#eef5ff;font:inherit}
+.esn-plan-finder-result strong{display:block;font-size:1.05rem}.esn-plan-finder-result p{margin:.45rem 0 .8rem;color:#9fb2cf;line-height:1.55}
+.esn-plan-toolbar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;margin:0 0 16px}
+.esn-billing-toggle{display:inline-flex;padding:4px;border:1px solid rgba(118,159,224,.25);border-radius:999px;background:#0a1629}
+.esn-billing-toggle button{padding:8px 16px;border:0;border-radius:999px;background:transparent;color:#b9c9e2;font:inherit;font-weight:800;cursor:pointer}
+.esn-billing-toggle button[aria-pressed="true"]{background:#1687fa;color:#fff}.esn-billing-toggle small{margin-left:4px;font-size:.7rem;opacity:.85}
+.esn-plan-jump{display:flex;flex-wrap:wrap;gap:6px}.esn-plan-jump a{padding:6px 11px;border:1px solid rgba(118,159,224,.22);border-radius:999px;color:#cfe0f7;font-size:.8rem;font-weight:700;text-decoration:none}
+.esn-plan-jump a span{margin-left:4px;color:#7fa3d6}.esn-plan-jump a:hover{border-color:#8fd8ff}
+.esn-hosting-plan-group,.esn-hosting-plan,#plan-finder,#hosting-faq{scroll-margin-top:96px}
+.esn-plan-save{display:block;margin:-4px 0 8px;color:#7ee2a8;font-size:.78rem;font-weight:800}
+.esn-plan-compare{margin-top:18px;border:1px solid rgba(118,159,224,.18);border-radius:16px;background:rgba(7,16,31,.78)}
+.esn-plan-compare summary{padding:15px 18px;cursor:pointer;font-weight:800}
+.esn-plan-compare-scroll{overflow-x:auto;padding:0 12px 14px}
+.esn-plan-compare table{width:100%;min-width:640px;border-collapse:collapse;font-size:.86rem}
+.esn-plan-compare caption{text-align:left;padding:4px 6px 8px;color:#8ea2c0;font-size:.78rem}
+.esn-plan-compare th,.esn-plan-compare td{padding:8px 10px;border-top:1px solid rgba(118,159,224,.12);text-align:left;white-space:nowrap}
+.esn-plan-compare thead th{color:#9fb2cf;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase}
+.esn-plan-compare tbody th a{color:#8fd8ff;font-weight:800}
+.esn-hosting-faq{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.esn-hosting-faq details{padding:14px 16px;border:1px solid rgba(118,159,224,.16);border-radius:14px;background:rgba(9,19,37,.78)}
+.esn-hosting-faq summary{cursor:pointer;font-weight:800}.esn-hosting-faq p{margin:.6rem 0 0;color:#9fb2cf;line-height:1.6}
+.esn-hosting-help-actions{display:flex;flex-wrap:wrap;gap:10px}
+.esn-hosting-sticky-cta{display:none}
+@media (max-width:760px){
+  .esn-plan-finder,.esn-hosting-faq{grid-template-columns:1fr}
+  .esn-hosting-sticky-cta{position:fixed;left:12px;right:84px;bottom:12px;z-index:40;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 12px 10px 16px;border:1px solid rgba(143,216,255,.3);border-radius:14px;background:rgba(6,14,28,.94);box-shadow:0 10px 30px rgba(0,0,0,.45);font-size:.85rem}
+  .esn-hosting-sticky-cta a{padding:8px 14px;border-radius:10px;background:#1687fa;color:#fff;font-weight:800;text-decoration:none}
+  .esn-hosting-page{padding-bottom:70px}
 }

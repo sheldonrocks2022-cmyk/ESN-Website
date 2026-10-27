@@ -1,8 +1,13 @@
+import { useState } from 'react'
 import './hosting.css'
 import { CreatorSection, FreeTrialSection } from './GrowthSections'
 
 const HOSTING_DISCORD = 'https://discord.gg/RGPt3zEfGy'
 const HOSTING_CHECKOUT = 'https://panel.esnoffical.com/plans'
+const BILLING_PORTAL = 'https://billing.stripe.com/p/login/4gM14o5pxgaP9Nl2dNdnW00'
+const HOSTING_DOCS = 'https://docs.esnoffical.com'
+const HOSTING_STATUS = 'https://status.esnoffical.com'
+const planId = (name) => 'plan-' + name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')
 
 export const BOT_PLANS = [
   { name: 'Nano', ram: '256 MB', cpu: '25%', storage: '1 GB', price: '$0.50', yearly: '$5.00', group: 'budget' },
@@ -48,10 +53,11 @@ const MORE_PLAN_GROUPS = [
   { id: 'vps', label: 'VPS-lite (Linux container)', copy: 'Your own Linux container with a shell in the panel console. It is a container, not a full VPS: no root, apt, systemd, or Docker inside.', features: ['Linux shell in the panel console', 'SFTP + file manager', 'Node.js 22, Python 3, git, gcc', 'One public port + autostart.sh', 'No root, apt, systemd or Docker'] },
 ]
 
-function PlanGroup({ group, plans, features }) {
+function PlanGroup({ group, plans, features, billing }) {
   const groupPlans = plans.filter((plan) => plan.group === group.id)
+  const yearly = billing === 'yearly'
   return (
-    <section className="esn-hosting-plan-group" aria-labelledby={`esn-plan-${group.id}`}>
+    <section className="esn-hosting-plan-group" id={`group-${group.id}`} aria-labelledby={`esn-plan-${group.id}`}>
       <div className="esn-hosting-group-head">
         <div>
           <h3 id={`esn-plan-${group.id}`}>{group.label}</h3>
@@ -61,25 +67,128 @@ function PlanGroup({ group, plans, features }) {
       </div>
       <div className="esn-hosting-plan-grid">
         {groupPlans.map((plan) => (
-          <article className={plan.featured ? 'esn-hosting-plan featured' : 'esn-hosting-plan'} key={plan.name}>
+          <article className={plan.featured ? 'esn-hosting-plan featured' : 'esn-hosting-plan'} key={plan.name} id={planId(plan.name)}>
             {plan.label && <span className={plan.featured ? 'esn-plan-badge' : 'esn-plan-badge subtle'}>{plan.label}</span>}
             <span className="eyebrow">ESN {plan.name.toUpperCase()}</span>
-            <div className="esn-plan-price"><strong>{plan.price}</strong><span>/ month</span></div>
+            <div className="esn-plan-price">
+              <strong>{yearly && plan.yearly ? plan.yearly : plan.price}</strong><span>{yearly && plan.yearly ? '/ year' : '/ month'}</span>
+            </div>
+            {yearly && plan.yearly && <small className="esn-plan-save">2 months free vs {plan.price}/month</small>}
             <div className="esn-plan-resources">
               <div><span>RAM</span><b>{plan.ram}</b></div>
               <div><span>CPU</span><b>{plan.cpu}</b></div>
               <div><span>STORAGE</span><b>{plan.storage}</b></div>
             </div>
             <ul>
-              {plan.yearly && <li>Yearly: {plan.yearly} (12 months for the price of 10)</li>}
+              {plan.yearly && <li>{yearly ? `Monthly: ${plan.price}/month` : `Yearly: ${plan.yearly} (12 months for the price of 10)`}</li>}
               {features.map((feature) => <li key={feature}>{feature}</li>)}
             </ul>
-            <a href={HOSTING_CHECKOUT}>Order ESN {plan.name} <span>→</span></a>
+            <a href={HOSTING_CHECKOUT} aria-label={`Order ESN ${plan.name}, ${yearly && plan.yearly ? plan.yearly + ' per year' : plan.price + ' per month'}`}>Order ESN {plan.name} <span aria-hidden="true">→</span></a>
           </article>
         ))}
       </div>
     </section>
   )
+}
+
+const ALL_PLANS = [...BOT_PLANS, ...MORE_PLANS]
+const ALL_GROUPS = [...PLAN_GROUPS, ...MORE_PLAN_GROUPS]
+
+// Plan finder: suggests a starting plan from the use case. These are starting points, not guarantees.
+const FINDER = [
+  { id: 'small-bot', label: 'Small Discord or Telegram bot', plan: 'Nano', why: 'A simple command or moderation bot for one server usually fits in 256 MB.' },
+  { id: 'busy-bot', label: 'Busy bot (many servers, music, databases)', plan: 'Basic', why: '1 GB gives room for caches, audio and more servers. Move up if your panel graphs show RAM near the limit.' },
+  { id: 'big-bot', label: 'Several bots or a heavy bot', plan: 'Pro', why: '3 GB and 125% CPU, our most popular plan for bigger projects.' },
+  { id: 'minecraft', label: 'Small Minecraft server', plan: 'Core', why: 'Bigger Bot Plans can run a Minecraft server; pick the type at checkout. More players or mods need more RAM.' },
+  { id: 'terraria', label: 'Terraria / Factorio / Valheim / Palworld', plan: 'Terraria', why: 'Game Server plans install the game for you after payment. Pick the plan named after your game.' },
+  { id: 'website', label: 'Website, WordPress or web app', plan: 'Web', why: 'Web Hosting runs a website, WordPress, Node.js or Python app.' },
+  { id: 'linux', label: 'Linux shell for scripts and tools', plan: 'VPS-lite 1GB', why: 'A Linux container with a shell in the panel console (no root, apt, systemd or Docker).' },
+]
+
+function PlanFinder() {
+  const [pick, setPick] = useState(FINDER[0].id)
+  const choice = FINDER.find((item) => item.id === pick) || FINDER[0]
+  const plan = ALL_PLANS.find((item) => item.name === choice.plan)
+  return (
+    <div className="esn-plan-finder" id="plan-finder">
+      <div>
+        <span className="eyebrow">PLAN FINDER</span>
+        <h3>Not sure which plan? Tell us what you're hosting.</h3>
+        <label htmlFor="esn-finder-select">I want to host</label>
+        <select id="esn-finder-select" value={pick} onChange={(event) => setPick(event.target.value)}>
+          {FINDER.map((item) => <option key={item.id} value={item.id}>{item.label}</option>)}
+        </select>
+      </div>
+      {plan && (
+        <div className="esn-plan-finder-result" aria-live="polite">
+          <strong>Start with ESN {plan.name}: {plan.price}/month</strong>
+          <p>{plan.ram} RAM · {plan.cpu} CPU · {plan.storage} storage. {choice.why}</p>
+          <a className="button secondary" href={`#${planId(plan.name)}`}>See the {plan.name} plan</a>
+        </div>
+      )}
+    </div>
+  )
+}
+
+function PlanCompare() {
+  return (
+    <details className="esn-plan-compare" id="compare-plans">
+      <summary>Compare all {ALL_PLANS.length} plans side by side</summary>
+      <div className="esn-plan-compare-scroll" tabIndex={0} role="region" aria-label="All hosting plans compared">
+        <table>
+          <caption>ESN Hosting plans: resources and prices</caption>
+          <thead><tr><th scope="col">Plan</th><th scope="col">Type</th><th scope="col">RAM</th><th scope="col">CPU</th><th scope="col">Storage</th><th scope="col">Monthly</th><th scope="col">Yearly</th></tr></thead>
+          <tbody>
+            {ALL_PLANS.map((plan) => (
+              <tr key={plan.name}>
+                <th scope="row"><a href={`#${planId(plan.name)}`}>{plan.name}</a></th>
+                <td>{ALL_GROUPS.find((group) => group.id === plan.group)?.label}</td>
+                <td>{plan.ram}</td><td>{plan.cpu}</td><td>{plan.storage}</td><td>{plan.price}</td><td>{plan.yearly}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </details>
+  )
+}
+
+const HOSTING_FAQ = [
+  ['How fast is my server ready?', 'Your server is set up automatically after payment, and your panel login is sent to you. Log in at panel.esnoffical.com.'],
+  ['Can I cancel?', 'Yes. Use the Stripe billing portal to cancel at the end of your billing period, update your card, or download invoices.'],
+  ['Which languages can my bot use?', 'Bot plans support Python and Node.js. You choose the runtime at checkout and can change startup settings in the panel.'],
+  ['Is there a free trial?', 'Yes. Nano, Starter and Basic have a free 3-day trial. Stripe asks for a card and you are only charged if you keep the server.'],
+  ['Is VPS-lite a full VPS?', 'No. It is a Linux container with a shell in the panel console, SFTP and one public port. There is no root, apt, systemd or Docker inside.'],
+  ['Where do I get help?', 'Open a ticket in our Discord, read the Hosting Docs, or check Live Uptime for service status.'],
+]
+
+function HostingFAQ() {
+  return (
+    <section className="section compact-section" id="hosting-faq">
+      <div className="shell">
+        <div className="section-heading">
+          <div>
+            <span className="eyebrow">HOSTING FAQ</span>
+            <h2>Quick answers before you order.</h2>
+          </div>
+          <p>More guides live in the <a href={HOSTING_DOCS}>Hosting Docs</a>.</p>
+        </div>
+        <div className="esn-hosting-faq">
+          {HOSTING_FAQ.map(([q, a]) => (
+            <details key={q}><summary>{q}</summary><p>{a}</p></details>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+function CopyInvite() {
+  const [copied, setCopied] = useState(false)
+  const copy = async () => {
+    try { await navigator.clipboard.writeText(HOSTING_DISCORD); setCopied(true); setTimeout(() => setCopied(false), 2000) } catch { window.open(HOSTING_DISCORD, '_blank', 'noopener') }
+  }
+  return <button type="button" className="button secondary" onClick={copy}>{copied ? 'Invite link copied' : 'Copy Discord invite'}</button>
 }
 
 const PANEL_FEATURES = [
@@ -90,6 +199,7 @@ const PANEL_FEATURES = [
 ]
 
 export default function HostingPage() {
+  const [billing, setBilling] = useState('monthly')
   return (
     <div className="esn-hosting-page">
       <section className="esn-hosting-hero">
@@ -111,6 +221,12 @@ export default function HostingPage() {
             <p className="esn-hosting-purchase-note">
               Pick a plan and check out — your server is set up automatically after payment.{' '}
               <a href={HOSTING_DISCORD} target="_blank" rel="noreferrer">Need help? Join our Discord</a>
+            </p>
+            <p className="esn-hosting-quicklinks">
+              <a href="#free-trial">Free 3-day trial</a>
+              <a href={HOSTING_DOCS}>Hosting Docs</a>
+              <a href={HOSTING_STATUS}>Live Uptime</a>
+              <a href={BILLING_PORTAL}>Manage billing</a>
             </p>
           </div>
 
@@ -138,14 +254,30 @@ export default function HostingPage() {
             <p>Every plan includes a private Pterodactyl panel, console, file manager, SFTP, resource monitoring, and Discord ticket support. Bot plans add Python and Node.js support, startup and environment settings, and crash restarting.</p>
           </div>
 
+          <PlanFinder />
+
+          <div className="esn-plan-toolbar">
+            <div className="esn-billing-toggle" role="group" aria-label="Show prices">
+              <button type="button" aria-pressed={billing === 'monthly'} onClick={() => setBilling('monthly')}>Monthly</button>
+              <button type="button" aria-pressed={billing === 'yearly'} onClick={() => setBilling('yearly')}>Yearly <small>2 months free</small></button>
+            </div>
+            <nav className="esn-plan-jump" aria-label="Jump to plan type">
+              {ALL_GROUPS.map((group) => (
+                <a key={group.id} href={`#group-${group.id}`}>{group.label} <span>{ALL_PLANS.filter((plan) => plan.group === group.id).length}</span></a>
+              ))}
+            </nav>
+          </div>
+
           <div className="esn-hosting-plan-groups">
             {PLAN_GROUPS.map((group) => (
-              <PlanGroup key={group.id} group={group} plans={BOT_PLANS} features={BOT_FEATURES} />
+              <PlanGroup key={group.id} group={group} plans={BOT_PLANS} features={BOT_FEATURES} billing={billing} />
             ))}
             {MORE_PLAN_GROUPS.map((group) => (
-              <PlanGroup key={group.id} group={group} plans={MORE_PLANS} features={group.features} />
+              <PlanGroup key={group.id} group={group} plans={MORE_PLANS} features={group.features} billing={billing} />
             ))}
           </div>
+
+          <PlanCompare />
 
           <div className="esn-hosting-payment-safety">
             <strong>VPS-lite rules</strong>
@@ -155,6 +287,11 @@ export default function HostingPage() {
           <div className="esn-hosting-payment-safety">
             <strong>Payment safety</strong>
             <p>Pay only through the official checkout at panel.esnoffical.com/plans or the free-trial buttons on this page (Stripe, buy.stripe.com). Your server is set up automatically after payment. Never send money to anyone in Discord DMs.</p>
+          </div>
+
+          <div className="esn-hosting-payment-safety">
+            <strong>Already a customer?</strong>
+            <p>Cancel, update your card, or download invoices in the <a href={BILLING_PORTAL}>Stripe billing portal</a>. Manage your server at <a href="https://panel.esnoffical.com">panel.esnoffical.com</a>.</p>
           </div>
         </div>
       </section>
@@ -203,11 +340,11 @@ export default function HostingPage() {
                   <span>[BOT] Ready and listening for events</span>
                   <b>Server marked as running.</b>
                 </div>
-                <div className="esn-panel-actions">
-                  <button type="button">Start</button>
-                  <button type="button">Restart</button>
-                  <button type="button">Stop</button>
-                  <button type="button">Files</button>
+                <div className="esn-panel-actions" aria-hidden="true">
+                  <span>Start</span>
+                  <span>Restart</span>
+                  <span>Stop</span>
+                  <span>Files</span>
                 </div>
               </main>
             </div>
@@ -255,6 +392,8 @@ export default function HostingPage() {
         </div>
       </section>
 
+      <HostingFAQ />
+
       <CreatorSection />
 
       <section className="section compact-section" id="network-status">
@@ -265,10 +404,18 @@ export default function HostingPage() {
               <h2>Let's find the right setup for you.</h2>
               <p>We keep our internal infrastructure details private. Join our Discord to ask about your project or request a custom plan.</p>
             </div>
-            <a className="button primary" href={HOSTING_DISCORD} target="_blank" rel="noreferrer">Need help? Join our Discord <span>→</span></a>
+            <div className="esn-hosting-help-actions">
+              <a className="button primary" href={HOSTING_DISCORD} target="_blank" rel="noreferrer">Need help? Join our Discord <span>→</span></a>
+              <CopyInvite />
+            </div>
           </div>
         </div>
       </section>
+
+      <div className="esn-hosting-sticky-cta">
+        <span>Hosting from <b>$0.50/month</b></span>
+        <a href="#plans">See plans</a>
+      </div>
     </div>
   )
 }
