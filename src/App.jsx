@@ -17,6 +17,7 @@ import { ChallengeLabPage, NoAccountExperienceLayer, NotificationCenterPage, Rew
 import StoreAIPage from './StoreAI'
 import DomainsPage from './Domains'
 import HostingPage from './Hosting'
+import ServicesPage from './Services'
 import { BusinessPlatformPage } from './BusinessPlatform'
 import { LiveBusinessStaff } from './BusinessLive'
 import SiteBuilderPage, { HostedSitePage } from './SiteBuilder'
@@ -412,7 +413,7 @@ function Header() {
   const inGroup = (paths) => paths.some((path) => location.pathname === path || location.pathname.startsWith(path + '/'))
   const arcadeActive = location.pathname === '/arcade' || ARCADE_GAMES.some(([, route]) => route === location.pathname)
   const hostingActive = inGroup(['/hosting', '/domains', '/business'])
-  const servicesActive = inGroup(['/serviceshowcase', '/portfolio', '/testimonials', '/store-ai', '/site-builder', '/estools', '/configure', '/estimate', '/showcase', '/fortnite-coaching', '/video-editing', '/discord-server-setup', '/website-builder'])
+  const servicesActive = inGroup(['/services', '/serviceshowcase', '/portfolio', '/testimonials', '/store-ai', '/site-builder', '/estools', '/configure', '/estimate', '/showcase', '/fortnite-coaching', '/video-editing', '/discord-server-setup', '/website-builder'])
   const playActive = arcadeActive || inGroup(['/smpconnection', '/smpconsole', '/smpplugin', '/smpguide', '/storesmp', '/smpcheck', '/smp-hub', '/smp-items', '/minecraft-server', '/minecraft-smp', '/smp/realm-ascension'])
   const discoverActive = inGroup(['/status', '/networkstats', '/analytics', '/updates', '/whatsnew', '/timeline', '/explore', '/gallery', '/nexus', '/notifications', '/rewards', '/challenges', '/operations', '/incidents', '/changelog', '/diagnostics', '/blueprint', '/session', '/share', '/launchpad', '/search', '/labs', '/activity', '/share-generator', '/network-map', '/backup', '/guides', '/visibility', '/free-browser-tools'])
   const aboutActive = inGroup(['/about', '/leadership', '/faq', '/settings', '/support', '/staff', '/trust', '/es-network'])
@@ -469,6 +470,7 @@ function Header() {
             <div className="dropdown organized-dropdown">
               <div className="dropdown-section">
                 <span className="dropdown-label">WORK WITH US</span>
+                <Link onClick={close} to="/services">Professional Services</Link>
                 <Link onClick={close} to="/serviceshowcase">All Services</Link>
                 <Link onClick={close} to="/portfolio">Our Portfolio</Link>
                 <Link onClick={close} to="/testimonials">Customer Reviews</Link>
@@ -595,6 +597,7 @@ function Footer() {
           </div>
           <div>
             <h3>Services & Tools</h3>
+            <Link to="/services">Professional Services</Link>
             <Link to="/serviceshowcase">All Services</Link>
             <Link to="/portfolio">Our Portfolio</Link>
             <Link to="/testimonials">Customer Reviews</Link>
@@ -1662,6 +1665,7 @@ function App() {
           <Route path="/faq" element={<FAQ />} />
           <Route path="/testimonials" element={<Testimonials />} />
           <Route path="/serviceshowcase" element={<ServicesShowcase />} />
+          <Route path="/services" element={<ServicesPage />} />
           <Route path="/store-ai" element={<StoreAIPage />} />
           <Route path="/storeai" element={<Navigate to="/store-ai" replace />} />
           <Route path="/hosting" element={<DomainsPage />} />
