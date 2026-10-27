@@ -319,3 +319,8 @@
   .esn-hosting-sticky-cta a{padding:8px 14px;border-radius:10px;background:#1687fa;color:#fff;font-weight:800;text-decoration:none}
   .esn-hosting-page{padding-bottom:70px}
 }
+
+/* W2-3: trial badge on cards, back to top */
+.esn-plan-trial{display:inline-block;margin:6px 0 2px;padding:3px 9px;border:1px solid rgba(126,226,168,.45);border-radius:999px;color:#7ee2a8;font-size:.72rem;font-weight:800;text-decoration:none}
+.esn-hosting-top{position:fixed;right:20px;bottom:96px;z-index:41;width:44px;height:44px;border:1px solid rgba(143,216,255,.35);border-radius:50%;background:rgba(6,14,28,.94);color:#eaf4ff;font-size:1.2rem;font-weight:900;cursor:pointer}
+@media (max-width:760px){.esn-hosting-top{right:16px;bottom:150px}}
