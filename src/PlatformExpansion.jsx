@@ -6,7 +6,7 @@ import './platformExpansion.css'
 const ITEMS=[
   {product:'20 Realm 100 Keys',price:'$1.25',summary:'Twenty Realm 100 keys delivered through the ESN SMP purchase system.',items:['20 × Realm 100 Keys']},
   {product:'ESN Season Pass Relic Bundle',price:'$0.50',summary:'A six-item Season Pass relic bundle built from existing ESN SMP items.',items:['Angel Wings','Inferno Scepter','Storm Crystal','Tideheart','Void Relic','Celestial Star']},
-  {product:'ESN Riftwalker Bundle',price:'$0.50',summary:'A six-item mobility and utility bundle centered around rift abilities.',items:['Riftblade — Rift Dash + bonus strike','Rift Wings — unbreakable Elytra + flight boost','Phase Boots — Speed I + Phase Step','Rift Bow — Slowness II arrows + Rift Burst','Rift Core — Resistance II + Absorption','Void Compass — tracks last death']},
+  {product:'ESN Riftwalker Bundle',price:'$1.00',summary:'A six-item mobility and utility bundle centered around rift abilities.',items:['Riftblade — Rift Dash + bonus strike','Rift Wings — unbreakable Elytra + flight boost','Phase Boots — Speed I + Phase Step','Rift Bow — Slowness II arrows + Rift Burst','Rift Core — Resistance II + Absorption','Void Compass — tracks last death']},
   {product:'ESN Immortal Warden Bundle',price:'$1.30',summary:'A full eight-item Warden-themed combat bundle.',items:['Immortal Warden Helmet','Immortal Warden Chestplate','Immortal Warden Leggings','Immortal Warden Boots','Warden Blade','Warden Longbow','Immortal Core','Warden Totem']},
   {product:'Void Warrior Bundle',price:'$0.50',summary:'A high-end Void set with mobility, durability, combat bonuses, and full-set effects.',items:['Void Blade','Void Crown','Void Chestplate','Void Leggings','Void Boots']},
 ]

@@ -27,7 +27,7 @@ const CATALOG=[
     tags:['relic','season pass','angel wings','scepter','crystal','tideheart','void relic','celestial star'],
   },
   {
-    id:'riftwalker',kind:'SMP',name:'ESN Riftwalker Bundle',price:.50,priceLabel:'$0.50',
+    id:'riftwalker',kind:'SMP',name:'ESN Riftwalker Bundle',price:1.00,priceLabel:'$1.00',
     checkout:'https://buy.stripe.com/00w3cw6tB7Ej9Nl19JdnW02',status:'AVAILABLE',
     summary:'A six-item mobility and utility bundle centered around rift abilities.',
     items:['Riftblade — Rift Dash + bonus strike','Rift Wings — unbreakable Elytra + flight boost','Phase Boots — Speed I + Phase Step','Rift Bow — Slowness II arrows + Rift Burst','Rift Core — Resistance II + Absorption','Void Compass — tracks last death'],

@@ -10,7 +10,7 @@ const templates=[
   {id:'release',type:'ESN UPDATE',title:'WHAT CHANGED?',subtitle:SITE_RELEASE,body:'See what changed on the website, SMP, and Arcade.',link:'/updates',accent:'#70d8ff'},
   {id:'realm',type:'ESN SMP STORE',title:'20 REALM 100 KEYS',subtitle:'$1.25',body:'Twenty Realm 100 keys through the official ESN SMP store.',link:'/storesmp#product-20-realm-100-keys',accent:'#f4c35e'},
   {id:'relic',type:'ESN SMP STORE',title:'SEASON PASS RELIC BUNDLE',subtitle:'$0.50',body:'Angel Wings • Inferno Scepter • Storm Crystal • Tideheart • Void Relic • Celestial Star',link:'/storesmp#product-esn-season-pass-relic-bundle',accent:'#77f3ff'},
-  {id:'riftwalker',type:'ESN SMP STORE',title:'RIFTWALKER BUNDLE',subtitle:'$0.50',body:'Riftblade • Rift Wings • Phase Boots • Rift Bow • Rift Core • Void Compass',link:'/storesmp#product-esn-riftwalker-bundle',accent:'#925cff'},
+  {id:'riftwalker',type:'ESN SMP STORE',title:'RIFTWALKER BUNDLE',subtitle:'$1.00',body:'Riftblade • Rift Wings • Phase Boots • Rift Bow • Rift Core • Void Compass',link:'/storesmp#product-esn-riftwalker-bundle',accent:'#925cff'},
   {id:'warden',type:'ESN SMP STORE',title:'IMMORTAL WARDEN BUNDLE',subtitle:'$1.30',body:'Full Warden-themed armor, weapons, core, and totem bundle.',link:'/storesmp#product-esn-immortal-warden-bundle',accent:'#30d5c8'},
   {id:'void',type:'ESN SMP STORE',title:'VOID WARRIOR BUNDLE',subtitle:'$0.50',body:'Void Blade and full Void armor set. Checkout link currently pending.',link:'/storesmp#product-void-warrior-bundle',accent:'#7c48ff'},
 ]
