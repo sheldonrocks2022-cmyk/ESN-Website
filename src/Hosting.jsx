@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import './hosting.css'
 import { CreatorSection, FreeTrialSection } from './GrowthSections'
 
@@ -7,6 +7,7 @@ const HOSTING_CHECKOUT = 'https://panel.esnoffical.com/plans'
 const BILLING_PORTAL = 'https://billing.stripe.com/p/login/4gM14o5pxgaP9Nl2dNdnW00'
 const HOSTING_DOCS = 'https://docs.esnoffical.com'
 const HOSTING_STATUS = 'https://status.esnoffical.com'
+const TRIAL_PLANS = ['Nano', 'Starter', 'Basic']
 const planId = (name) => 'plan-' + name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')
 
 export const BOT_PLANS = [
@@ -70,6 +71,7 @@ function PlanGroup({ group, plans, features, billing }) {
           <article className={plan.featured ? 'esn-hosting-plan featured' : 'esn-hosting-plan'} key={plan.name} id={planId(plan.name)}>
             {plan.label && <span className={plan.featured ? 'esn-plan-badge' : 'esn-plan-badge subtle'}>{plan.label}</span>}
             <span className="eyebrow">ESN {plan.name.toUpperCase()}</span>
+            {TRIAL_PLANS.includes(plan.name) && <a className="esn-plan-trial" href="#free-trial">Free 3-day trial</a>}
             <div className="esn-plan-price">
               <strong>{yearly && plan.yearly ? plan.yearly : plan.price}</strong><span>{yearly && plan.yearly ? '/ year' : '/ month'}</span>
             </div>
@@ -199,7 +201,20 @@ const PANEL_FEATURES = [
 ]
 
 export default function HostingPage() {
-  const [billing, setBilling] = useState('monthly')
+  const [billing, setBillingState] = useState(() => {
+    try {
+      const fromUrl = new URLSearchParams(window.location.search).get('billing')
+      if (fromUrl === 'yearly' || fromUrl === 'monthly') return fromUrl
+      return localStorage.getItem('esn_hosting_billing') === 'yearly' ? 'yearly' : 'monthly'
+    } catch { return 'monthly' }
+  })
+  const setBilling = (value) => { setBillingState(value); try { localStorage.setItem('esn_hosting_billing', value) } catch {} }
+  const [showTop, setShowTop] = useState(false)
+  useEffect(() => {
+    const onScroll = () => setShowTop(window.scrollY > 1400)
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
   return (
     <div className="esn-hosting-page">
       <section className="esn-hosting-hero">
@@ -411,6 +426,8 @@ export default function HostingPage() {
           </div>
         </div>
       </section>
+
+      {showTop && <button type="button" className="esn-hosting-top" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} aria-label="Back to top">↑</button>}
 
       <div className="esn-hosting-sticky-cta">
         <span>Hosting from <b>$0.50/month</b></span>
