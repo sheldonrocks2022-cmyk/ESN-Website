@@ -65,7 +65,7 @@ export function StatusCenter(){
         <div className="page-hero-copy">
           <span className="eyebrow">ESN LIVE NETWORK</span>
           <h1>ESN status</h1>
-          <p>Check the Minecraft server, Discord connection, plugin release, and website from here.</p>
+          <p>Check the Minecraft server, Discord connection, plugin release, and website from here. For ESN Hosting uptime (panel and nodes, checked every minute), see <a href="https://status.esnoffical.com" target="_blank" rel="noreferrer">status.esnoffical.com</a>.</p>
         </div>
         <div className="page-hero-mark" aria-hidden="true"><span>LIVE</span><small>STATUS</small></div>
       </div>
