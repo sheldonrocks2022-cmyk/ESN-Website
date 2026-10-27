@@ -5,7 +5,6 @@ import './services.css'
 // PRICES: set a service's `price` to a string like 'From $X' to show it on its card.
 // Leave it null to show "Get a quote". Only confirmed prices belong here.
 const DISCORD_TICKET = 'https://discord.gg/RGPt3zEfGy'
-const SUPPORT_EMAIL = 'support@esnoffical.com'
 
 export const SERVICES = [
   {
@@ -21,7 +20,7 @@ export const SERVICES = [
     icon: '🎥',
     title: 'Streamer & Creator Servers',
     blurb: 'A community home for your audience that tells them the moment you go live.',
-    points: ['Automatic live alerts for Twitch, TikTok and YouTube', 'Socials and links channels', 'Platform roles (Xbox, PC, PlayStation and more)', 'Media channels with slowmode for reacting', 'Game suggestions, clips and fan art'],
+    points: ['Twitch & YouTube live alerts (TikTok on request)', 'Socials and links channels', 'Platform roles (Xbox, PC, PlayStation and more)', 'Media channels with slowmode for reacting', 'Game suggestions, clips and fan art'],
     price: null,
   },
   {
@@ -90,7 +89,7 @@ export default function ServicesPage() {
           </p>
           <QuoteButtons />
           <p className="esn-services-note">
-            Quotes are given in a Discord ticket. Prefer email? <a href={'mailto:' + SUPPORT_EMAIL}>{SUPPORT_EMAIL}</a>
+            Quotes are given in a Discord ticket.
           </p>
         </div>
       </section>
@@ -160,7 +159,7 @@ export default function ServicesPage() {
             <div>
               <span className="eyebrow">READY WHEN YOU ARE</span>
               <h2>Get a quote for your project</h2>
-              <p>Open a ticket in the ESN Discord and tell us what you want built. Or email <a href={'mailto:' + SUPPORT_EMAIL}>{SUPPORT_EMAIL}</a>.</p>
+              <p>Open a ticket in the ESN Discord and tell us what you want built.</p>
             </div>
             <QuoteButtons secondary={false} />
           </div>
