@@ -1488,6 +1488,7 @@ function ProductCard({ product }) {
 }
 
 function SMPStore() {
+  const liveProducts = STORE_PRODUCTS.filter((product) => product.stripe)
   return (
     <>
       <PageHero
@@ -1498,7 +1499,7 @@ function SMPStore() {
 
       <section className="section compact-section">
         <div className="shell network-stat-grid store-stat-grid">
-          <div><strong>{STORE_PRODUCTS.length}</strong><span>Current products</span></div>
+          <div><strong>{liveProducts.length}</strong><span>Current products</span></div>
           <div><strong>Stripe</strong><span>Secure checkout</span></div>
           <div><strong>Exact name</strong><span>Required for delivery</span></div>
           <div><strong>.</strong><span>Include the prefix if your username uses it</span></div>
@@ -1516,7 +1517,7 @@ function SMPStore() {
           </div>
 
           <div className="card-grid two store-grid">
-            {STORE_PRODUCTS.map((product) => <ProductCard key={product.name} product={product} />)}
+            {liveProducts.map((product) => <ProductCard key={product.name} product={product} />)}
           </div>
 
           <div className="store-security">
