@@ -732,8 +732,8 @@ function Home() {
             </div>
 
             <div className="flagship-metrics esn-trust-line">
-              <div><strong>Hosting</strong><small>Bot hosting & servers</small></div>
-              <div><strong>Hands-on help</strong><small>Real support through Discord</small></div>
+              <div><strong>From $0.50/mo</strong><small>Bot hosting & servers</small></div>
+              <div><strong>Hands-on help</strong><small>Live chat and Discord support</small></div>
               <div><strong>One community</strong><small>Projects, SMP & Arcade</small></div>
             </div>
           </div>
@@ -1612,9 +1612,11 @@ function NotFound() {
       <div className="shell narrow">
         <span className="eyebrow">404</span>
         <h1>That page isn't here.</h1>
-        <p>The rebuilt ESN site uses explicit routes so broken links are easier to detect and fix before launch.</p>
+        <p>The link may be old or mistyped. These are the pages most people are looking for:</p>
         <div className="hero-actions page-actions">
           <Link className="button primary" to="/">Return home</Link>
+          <Link className="button secondary" to="/hosting/vps">Hosting plans</Link>
+          <Link className="button secondary" to="/storesmp">SMP Store</Link>
           <Link className="button secondary" to="/faq">Get help</Link>
         </div>
       </div>
