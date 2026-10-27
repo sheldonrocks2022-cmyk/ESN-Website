@@ -68,8 +68,8 @@ export const SEO_ROUTES={
   '/business/setup':{label:'ESN Bot Setup Guides',title:'Host Python and Node.js Discord Bots | ESN Guides',description:'Follow a practical Python or Node.js Discord bot hosting checklist with startup commands, file uploads, dependencies, secure token management, and troubleshooting tips.',index:true},
   '/hosting/vps':{
     label:'ESN Bot Hosting',
-    title:'ESN Discord Bot Hosting | 11 Plans from $0.50/month',
-    description:'Compare all 11 ESN Hosting monthly plans, from Nano to Gift, with RAM, CPU, and storage details. Python and Node.js bot hosting with panel and SFTP access.',
+    title:'ESN Hosting | 22 Plans from $0.50/month: Bots, Game Servers, Web & VPS-lite',
+    description:'Compare all 22 ESN Hosting plans with RAM, CPU, and storage: Discord bots from Nano to Gift, Terraria, Factorio, Valheim and Palworld servers, web hosting, and VPS-lite.',
     index:true,
   },
   '/site-builder':{
