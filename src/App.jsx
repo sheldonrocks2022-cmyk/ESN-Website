@@ -153,16 +153,14 @@ const STORE_PRODUCTS = [
     ],
   },
   {
-    name: 'Void Warrior Bundle',
-    price: '$0.50',
-    stripe: null,
-    summary: 'A high-end Void set with mobility, durability, combat bonuses, and full-set effects.',
+    name: 'ESN Exclusives Mega Bundle',
+    price: '$1.99',
+    stripe: 'https://buy.stripe.com/eVq3cw9FN3o35x57y7dnW0N',
+    summary: 'All three exclusive sets in one checkout: Lightning King, Immortal Warden and Void Warrior. 20 items, delivered together.',
     items: [
-      'Void Blade',
-      'Void Crown',
-      'Void Chestplate',
-      'Void Leggings',
-      'Void Boots',
+      'Lightning King set: crown, chestplate, leggings, boots, blade, bow, core (7 items)',
+      'Immortal Warden set: helmet, chestplate, leggings, boots, blade, longbow, Immortal Core, Warden Totem (8 items)',
+      'Void Warrior set: crown, chestplate, leggings, boots, blade (5 items)',
     ],
   },
 ]
@@ -178,8 +176,13 @@ const ARCADE_GAMES = [
 
 const FAQ_ITEMS = [
   ['What is ES Network?', 'ES Network (ESN) is the current brand. EP1C Services was the former name and is not a separate current organization or division.'],
-  ['What services does ESN offer?', 'The current public service focus includes Fortnite coaching, editing services, Discord server setups, and selected digital or website projects handled through ESN.'],
+  ['What services does ESN offer?', 'ESN Hosting (Discord bot, game server, web and VPS-lite hosting), Fortnite coaching, editing services, Discord server setups, and selected digital or website projects handled through ESN.'],
   ['How do I order a service?', 'Service ordering and support are handled through the official ESN Discord. Open a ticket and provide the details of what you need.'],
+  ['How much does ESN Hosting cost?', 'Discord bot hosting starts at $0.50/month (Nano). There are 22 plans in all: 11 bot plans up to Gift at $16.99/month, plus game server, web and VPS-lite plans. Every plan can also be paid yearly: 12 months for the price of 10. See all plans on the Bot Hosting page.'],
+  ['How do I buy hosting and how fast is setup?', 'Go to panel.esnoffical.com/plans, sign in (or create a free account), pick a plan and pay on Stripe’s secure checkout. Your server is set up automatically after you pay and shows up on your panel dashboard within a minute or two.'],
+  ['Do I need an account to buy hosting?', 'Yes, a free ESN panel account. You can create one yourself on the panel sign-in page with New here? Create an account. Your server is tied to that account.'],
+  ['Where can I check if ESN Hosting is up?', 'The live status page at status.esnoffical.com shows the panel, the hosting nodes, the website and the SMP, checked every minute.'],
+  ['Where can I get help with my server?', 'Start with the hosting docs at docs.esnoffical.com. You can also use the chat bubble on this website or the panel, or open a ticket in the ESN Hosting Discord.'],
   ['How do SMP purchases get delivered?', 'Enter your exact in-game Minecraft username at Stripe checkout. The buyer should be online on the SMP for automatic delivery. If your server username starts with a period, include the period at the beginning.'],
   ['Are ES Tools paid?', 'ES Tools are intended to be free browser-based utilities. They do not require an account and are not supposed to save your personal data.'],
   ['Can console players join the ESN SMP?', 'Yes. Xbox, PlayStation, and Nintendo Switch generally need a third-party-server workaround because Minecraft console editions do not expose a normal Add Server field. Use the Console Connection page for ESN server details and guidance.'],
@@ -584,6 +587,7 @@ function Footer() {
             <Link to="/hosting">Hosting & Domains</Link>
             <Link to="/site-builder">Website Builder</Link>
             <Link to="/status">Service Status</Link>
+            <a href="https://status.esnoffical.com" target="_blank" rel="noreferrer">Live Uptime ↗</a>
             <Link to="/support">Hosting Support</Link>
           </div>
           <div>
@@ -609,6 +613,8 @@ function Footer() {
             <Link to="/whatsnew">What's New</Link>
             <Link to="/updates">Updates & Releases</Link>
             <Link to="/guides">Guides & News</Link>
+            <a href="https://docs.esnoffical.com" target="_blank" rel="noreferrer">Hosting Docs ↗</a>
+            <a href="https://www.trustpilot.com/review/esnoffical.com" target="_blank" rel="noreferrer">Review us on Trustpilot ↗</a>
             <Link to="/explore">Explore ESN</Link>
             <Link to="/about">About the Team</Link>
             <Link to="/faq">FAQ</Link>
@@ -1087,7 +1093,7 @@ function Leadership() {
 function FAQ() {
   return (
     <>
-      <PageHero eyebrow="Support" title="Frequently asked questions" text="Answers about ES Network, ordering, support, community access, tools, and the SMP." />
+      <PageHero eyebrow="Support" title="Frequently asked questions" text="Answers about ES Network, hosting, ordering, support, community access, tools, and the SMP." />
       <section className="section">
         <div className="shell narrow faq-list">
           {FAQ_ITEMS.map(([q, a]) => <details key={q}><summary>{q}</summary><p>{a}</p></details>)}

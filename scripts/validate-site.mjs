@@ -60,6 +60,7 @@ const requiredPaymentLinks = [
   'https://buy.stripe.com/bJe14o8BJbUz4t1dWvdnW01',
   'https://buy.stripe.com/00w3cw6tB7Ej9Nl19JdnW02',
   'https://buy.stripe.com/bJefZi9FN9Mr6B905FdnW03',
+  'https://buy.stripe.com/eVq3cw9FN3o35x57y7dnW0N',
 ]
 
 const missingRoutes = requiredRoutes.filter((route) => {
@@ -367,7 +368,7 @@ if (!indexHtml.includes('name="robots" content="index, follow, max-image-preview
 if (!seo.includes("'@type':'FAQPage'") || !seo.includes("'@type':'Service'") || !seo.includes("'@type':'VideoGame'")) problems.push('SEO structured-data coverage is incomplete.')
 if (!seo.includes("max-image-preview:large") || !seo.includes("max-snippet:-1")) problems.push('Production crawler directives are incomplete.')
 if (!seo.includes("'/vault':") || !seo.includes("nofollow:true")) problems.push('Secret Vault must remain excluded from search indexing.')
-for (const requiredCard of ['JOIN ESN SMP','PLAY THE ESN ARCADE','BUILD WITH ESN','20 REALM 100 KEYS','RIFTWALKER BUNDLE','IMMORTAL WARDEN BUNDLE','VOID WARRIOR BUNDLE']) {
+for (const requiredCard of ['JOIN ESN SMP','PLAY THE ESN ARCADE','BUILD WITH ESN','20 REALM 100 KEYS','RIFTWALKER BUNDLE','IMMORTAL WARDEN BUNDLE','ESN EXCLUSIVES MEGA BUNDLE']) {
   if (!shareCenter.includes(requiredCard)) problems.push(`Share Deck template missing: ${requiredCard}.`)
 }
 if (immersiveLayer.includes('ESN Profiles') || shareCenter.includes('ESN Profiles') || app.includes('ESN Profiles')) problems.push('ESN Profiles were explicitly excluded from this upgrade.')

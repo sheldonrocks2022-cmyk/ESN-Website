@@ -4,17 +4,17 @@ const HOSTING_DISCORD = 'https://discord.gg/RGPt3zEfGy'
 const HOSTING_CHECKOUT = 'https://panel.esnoffical.com/plans'
 
 export const BOT_PLANS = [
-  { name: 'Nano', ram: '256 MB', cpu: '25%', storage: '1 GB', price: '$0.50', group: 'budget' },
-  { name: 'Starter', ram: '512 MB', cpu: '35%', storage: '2 GB', price: '$0.75', group: 'budget' },
-  { name: 'Basic', ram: '1 GB', cpu: '50%', storage: '4 GB', price: '$0.99', group: 'budget' },
-  { name: 'Plus', ram: '1.5 GB', cpu: '75%', storage: '6 GB', price: '$1.49', group: 'budget' },
-  { name: 'Advanced', ram: '2 GB', cpu: '100%', storage: '8 GB', price: '$1.99', group: 'performance' },
-  { name: 'Pro', ram: '3 GB', cpu: '125%', storage: '12 GB', price: '$2.99', group: 'performance', featured: true, label: 'MOST POPULAR' },
-  { name: 'Elite', ram: '4 GB', cpu: '150%', storage: '15 GB', price: '$4.99', group: 'performance' },
-  { name: 'Ultra', ram: '6 GB', cpu: '200%', storage: '20 GB', price: '$7.99', group: 'performance' },
-  { name: 'Extreme', ram: '8 GB', cpu: '250%', storage: '30 GB', price: '$8.99', group: 'premium' },
-  { name: 'Titan', ram: '10 GB', cpu: '300%', storage: '40 GB', price: '$12.99', group: 'premium', label: 'BEST VALUE' },
-  { name: 'Gift', ram: '15 GB', cpu: '450%', storage: '60 GB', price: '$16.99', group: 'premium', label: 'MAX RESOURCES' },
+  { name: 'Nano', ram: '256 MB', cpu: '25%', storage: '1 GB', price: '$0.50', yearly: '$5.00', group: 'budget' },
+  { name: 'Starter', ram: '512 MB', cpu: '35%', storage: '2 GB', price: '$0.75', yearly: '$7.50', group: 'budget' },
+  { name: 'Basic', ram: '1 GB', cpu: '50%', storage: '4 GB', price: '$0.99', yearly: '$9.90', group: 'budget' },
+  { name: 'Plus', ram: '1.5 GB', cpu: '75%', storage: '6 GB', price: '$1.49', yearly: '$14.90', group: 'budget' },
+  { name: 'Advanced', ram: '2 GB', cpu: '100%', storage: '8 GB', price: '$1.99', yearly: '$19.90', group: 'performance' },
+  { name: 'Pro', ram: '3 GB', cpu: '125%', storage: '12 GB', price: '$2.99', yearly: '$29.90', group: 'performance', featured: true, label: 'MOST POPULAR' },
+  { name: 'Elite', ram: '4 GB', cpu: '150%', storage: '15 GB', price: '$4.99', yearly: '$49.90', group: 'performance' },
+  { name: 'Ultra', ram: '6 GB', cpu: '200%', storage: '20 GB', price: '$7.99', yearly: '$79.90', group: 'performance' },
+  { name: 'Extreme', ram: '8 GB', cpu: '250%', storage: '30 GB', price: '$8.99', yearly: '$89.90', group: 'premium' },
+  { name: 'Titan', ram: '10 GB', cpu: '300%', storage: '40 GB', price: '$12.99', yearly: '$129.90', group: 'premium', label: 'BEST VALUE' },
+  { name: 'Gift', ram: '15 GB', cpu: '450%', storage: '60 GB', price: '$16.99', yearly: '$169.90', group: 'premium', label: 'MAX RESOURCES' },
 ]
 
 const PLAN_GROUPS = [

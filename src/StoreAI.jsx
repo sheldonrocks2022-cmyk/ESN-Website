@@ -43,12 +43,12 @@ const CATALOG=[
     tags:['warden','immortal','combat','armor','blade','longbow','totem'],
   },
   {
-    id:'void-warrior',kind:'SMP',name:'Void Warrior Bundle',price:.50,priceLabel:'$0.50',
-    checkout:null,status:'CHECKOUT NOT CONNECTED',
-    summary:'A high-end Void set with mobility, durability, combat bonuses, and full-set effects.',
-    items:['Void Blade','Void Crown','Void Chestplate','Void Leggings','Void Boots'],
-    delivery:'Checkout is not connected on the current website catalog, so Store AI will not invent a purchase link.',
-    tags:['void','warrior','armor','blade','combat'],
+    id:'mega-bundle',kind:'SMP',name:'ESN Exclusives Mega Bundle',price:1.99,priceLabel:'$1.99',
+    checkout:'https://buy.stripe.com/eVq3cw9FN3o35x57y7dnW0N',status:'AVAILABLE',
+    summary:'All three exclusive sets in one checkout: Lightning King, Immortal Warden and Void Warrior. 20 items, delivered together.',
+    items:['Lightning King set (7 items)','Immortal Warden set (8 items)','Void Warrior set (5 items)'],
+    delivery:'Enter the exact Minecraft Username at checkout, include the leading "." if your server username uses it, and be online on the SMP when possible for automatic delivery.',
+    tags:['mega','bundle','exclusives','void','warrior','lightning','king','warden','armor','blade','combat'],
   },
   {
     id:'fortnite-coaching',kind:'SERVICE',name:'Fortnite Coaching',price:null,priceLabel:'QUOTE THROUGH ESN',
