@@ -622,7 +622,7 @@ export const GAME_SCHEMA_DETAILS={
 export const STORE_SCHEMA=[
   {name:'20 Realm 100 Keys',price:'1.25',description:'Twenty Realm 100 keys for the ESN SMP.',path:'/storesmp#product-20-realm-100-keys',available:true},
   {name:'ESN Season Pass Relic Bundle',price:'0.50',description:'Six ESN SMP Season Pass relics: Angel Wings, Inferno Scepter, Storm Crystal, Tideheart, Void Relic, and Celestial Star.',path:'/storesmp#product-esn-season-pass-relic-bundle',available:true},
-  {name:'ESN Riftwalker Bundle',price:'0.50',description:'An ESN SMP mobility and utility bundle with Riftblade, Rift Wings, Phase Boots, Rift Bow, Rift Core, and Void Compass.',path:'/storesmp#product-esn-riftwalker-bundle',available:true},
+  {name:'ESN Riftwalker Bundle',price:'1.00',description:'An ESN SMP mobility and utility bundle with Riftblade, Rift Wings, Phase Boots, Rift Bow, Rift Core, and Void Compass.',path:'/storesmp#product-esn-riftwalker-bundle',available:true},
   {name:'ESN Immortal Warden Bundle',price:'1.30',description:'An eight-item Warden-themed ESN SMP combat bundle.',path:'/storesmp#product-esn-immortal-warden-bundle',available:true},
   {name:'Void Warrior Bundle',price:'0.50',description:'A Void-themed ESN SMP armor and weapon bundle. Checkout is not currently enabled.',path:'/storesmp#product-void-warrior-bundle',available:false},
 ]
