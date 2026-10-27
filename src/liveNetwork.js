@@ -1,12 +1,12 @@
 import { useCallback, useEffect, useState } from 'react'
 
 export const SITE_RELEASE='ESN Website • 2026.09.30'
-export const SMP_ADDRESS='esn.ggwp.cc'
-export const SMP_JAVA_PORT='17769'
-export const SMP_BEDROCK_PORT='17429'
+export const SMP_ADDRESS='play.esnoffical.com'
+export const SMP_JAVA_PORT='25565'
+export const SMP_BEDROCK_PORT='19132'
 export const SMP_PORT=SMP_JAVA_PORT
-export const DISCORD_INVITE='3gxA66KZ8'
-export const DISCORD_URL='https://discord.gg/3gxA66KZ8'
+export const DISCORD_INVITE='RGPt3zEfGy'
+export const DISCORD_URL='https://discord.gg/RGPt3zEfGy'
 export const PLUGIN_REPO='sheldonrocks2022-cmyk/ESNSMP'
 
 // ESN owner-confirmed operational state.
