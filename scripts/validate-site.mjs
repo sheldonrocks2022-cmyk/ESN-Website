@@ -186,7 +186,7 @@ if (missingPayments.length) problems.push(`Missing payment links: ${missingPayme
 if (sitemapRoutes.length) problems.push(`Missing sitemap routes: ${sitemapRoutes.join(', ')}`)
 if (app.includes('mobile-coaching')) problems.push('Removed Mobile Coaching content was reintroduced.')
 if (app.includes('example.com')) problems.push('Placeholder example.com URL found.')
-if (!app.includes("name: 'ESN Riftwalker Bundle'") || !app.includes("price: '$0.50'")) problems.push('Riftwalker price is not restored to $0.50.')
+if (!app.includes("name: 'ESN Riftwalker Bundle',\n    price: '$1.00'")) problems.push('Riftwalker price must match its Stripe link ($1.00).')
 const reviews = fs.readFileSync('src/reviews.js','utf8')
 const reviewCount = (reviews.match(/category:'/g) || []).length
 if (reviewCount !== 35) problems.push(`Expected 35 verified reviews, found ${reviewCount}.`)

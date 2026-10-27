@@ -1,6 +1,7 @@
 import './hosting.css'
 
 const HOSTING_DISCORD = 'https://discord.gg/RGPt3zEfGy'
+const HOSTING_CHECKOUT = 'https://panel.esnoffical.com/plans'
 
 export const BOT_PLANS = [
   { name: 'Nano', ram: '256 MB', cpu: '25%', storage: '1 GB', price: '$0.50', group: 'budget' },
@@ -42,27 +43,28 @@ export default function HostingPage() {
               Get your own panel with console, files, startup settings, and resource graphs.
             </p>
             <div className="hero-actions page-actions">
-              <a className="button primary" href={HOSTING_DISCORD} target="_blank" rel="noreferrer">
-                Buy through Discord <span>→</span>
+              <a className="button primary" href={HOSTING_CHECKOUT}>
+                Pick a plan &amp; check out <span>→</span>
               </a>
               <a className="button secondary" href="#customer-panel">See the customer panel</a>
               <a className="button secondary" href="/business">Customer Business Hub</a>
             </div>
             <p className="esn-hosting-purchase-note">
-              Open a hosting ticket to order. Payments must be approved by an authorized ESN CEO.
+              Pick a plan and check out — your server is set up automatically after payment.{' '}
+              <a href={HOSTING_DISCORD} target="_blank" rel="noreferrer">Need help? Join our Discord</a>
             </p>
           </div>
 
           <aside className="esn-hosting-launch-card esn-hosting-benefits-card">
             <span className="eyebrow">HOSTING MADE SIMPLE</span>
             <strong>More control. Less hassle.</strong>
-            <p>Choose a plan, open a ticket, and let our team help you get your server running.</p>
+            <p>Choose a plan, check out, and your server is set up automatically after payment.</p>
             <ul className="esn-hosting-benefits-list">
               <li><b>Private control panel</b><span>Manage your own server, files, and startup settings.</span></li>
               <li><b>Python &amp; Node.js</b><span>Pick the runtime that fits your Discord bot.</span></li>
               <li><b>Help when you need it</b><span>Support and custom requests through Discord tickets.</span></li>
             </ul>
-            <small>Server availability is confirmed when you order.</small>
+            <small>Server availability is checked automatically at checkout.</small>
           </aside>
         </div>
       </section>
@@ -105,7 +107,7 @@ export default function HostingPage() {
                         <li>Console, files + SFTP</li>
                         <li>Resource monitoring + auto restart</li>
                       </ul>
-                      <a href={HOSTING_DISCORD} target="_blank" rel="noreferrer">Order ESN {plan.name} <span>→</span></a>
+                      <a href={HOSTING_CHECKOUT}>Order ESN {plan.name} <span>→</span></a>
                     </article>
                   ))}
                 </div>
@@ -115,7 +117,7 @@ export default function HostingPage() {
 
           <div className="esn-hosting-payment-safety">
             <strong>Payment safety</strong>
-            <p>Open a hosting ticket first. Payments are handled only by authorized ESN CEOs (Discord IDs 811100216052547594 and 1515077206886453469). Never send money to unauthorized staff members.</p>
+            <p>Pay only through the official checkout at panel.esnoffical.com/plans. Your server is set up automatically after payment. Never send money to anyone in Discord DMs.</p>
           </div>
         </div>
       </section>
@@ -181,10 +183,10 @@ export default function HostingPage() {
           <div className="esn-panel-access">
             <div>
               <span className="eyebrow">SECURE PANEL ACCESS</span>
-              <h3>Customer login link is being secured before public launch.</h3>
-              <p>We will publish the customer login only after the panel is behind an ESN domain with HTTPS. Until then, customers should purchase or request support through Discord.</p>
+              <h3>Log in at panel.esnoffical.com.</h3>
+              <p>The customer panel runs on an ESN domain with HTTPS. After checkout, your panel login is sent to you automatically. Need help? Join our Discord.</p>
             </div>
-            <a className="button primary" href={HOSTING_DISCORD} target="_blank" rel="noreferrer">Open ESN Hosting Discord</a>
+            <a className="button primary" href="https://panel.esnoffical.com">Open the customer panel</a>
           </div>
         </div>
       </section>
@@ -194,22 +196,22 @@ export default function HostingPage() {
           <div className="section-heading">
             <div>
               <span className="eyebrow">HOW ORDERS WORK</span>
-              <h2>Discord purchase to private panel.</h2>
+              <h2>Checkout to private panel.</h2>
             </div>
           </div>
           <div className="esn-hosting-roadmap">
-            <article><b>01</b><span>PURCHASE</span><h3>Open a Discord ticket</h3><p>Choose a plan in the official ESN Hosting Discord and complete the purchase with staff.</p></article>
-            <article><b>02</b><span>PROVISION</span><h3>ESN creates your server</h3><p>The plan resources and your selected runtime are set up for your own private server.</p></article>
+            <article><b>01</b><span>PURCHASE</span><h3>Pick a plan and check out</h3><p>Choose a plan on panel.esnoffical.com/plans and pay through the secure checkout.</p></article>
+            <article><b>02</b><span>PROVISION</span><h3>Your server is created automatically</h3><p>The plan resources and your selected runtime are set up for your own private server after payment.</p></article>
             <article><b>03</b><span>ACCESS</span><h3>Receive your panel account</h3><p>You get access to your own customer account and only the servers assigned to you.</p></article>
             <article><b>04</b><span>DEPLOY</span><h3>Upload and run your bot</h3><p>Use files, SFTP, console, environment settings, Node.js or Python, and 24/7 runtime.</p></article>
           </div>
           <div className="esn-hosting-discord-cta">
             <div>
-              <span className="eyebrow">OFFICIAL HOSTING DISCORD</span>
-              <h3>Ready to order?</h3>
-              <p>Choose one of our 11 plans, starting at $0.50/month, then open a hosting ticket. Our team can discuss custom requirements too.</p>
+              <span className="eyebrow">READY TO ORDER?</span>
+              <h3>Pick a plan and check out.</h3>
+              <p>Choose one of our 11 plans, starting at $0.50/month. Your server is set up automatically after payment. Need help or a custom plan? <a href={HOSTING_DISCORD} target="_blank" rel="noreferrer">Join our Discord</a>.</p>
             </div>
-            <a className="button primary" href={HOSTING_DISCORD} target="_blank" rel="noreferrer">Join & buy hosting <span>→</span></a>
+            <a className="button primary" href={HOSTING_CHECKOUT}>See plans &amp; check out <span>→</span></a>
           </div>
         </div>
       </section>
@@ -220,9 +222,9 @@ export default function HostingPage() {
             <div>
               <span className="eyebrow">QUESTIONS ABOUT AVAILABILITY?</span>
               <h2>Let's find the right setup for you.</h2>
-              <p>We keep our internal infrastructure details private. Open a hosting ticket to check availability, ask about your project, or request a custom plan.</p>
+              <p>We keep our internal infrastructure details private. Join our Discord to ask about your project or request a custom plan.</p>
             </div>
-            <a className="button primary" href={HOSTING_DISCORD} target="_blank" rel="noreferrer">Ask ESN Hosting <span>→</span></a>
+            <a className="button primary" href={HOSTING_DISCORD} target="_blank" rel="noreferrer">Need help? Join our Discord <span>→</span></a>
           </div>
         </div>
       </section>

@@ -270,7 +270,7 @@ export default function DomainsPage(){
         <div>
           <span>DISCORD BOT HOSTING</span>
           <strong>11 hosting plans from $0.50/month</strong>
-          <p>Compare RAM, CPU, storage, and monthly prices for ESN Nano through ESN Gift. Order through an official hosting ticket.</p>
+          <p>Compare RAM, CPU, storage, and monthly prices for ESN Nano through ESN Gift. Pick a plan and check out — your server is set up automatically after payment.</p>
         </div>
         <Link to="/hosting/vps">VIEW ALL HOSTING PLANS →</Link>
       </div>

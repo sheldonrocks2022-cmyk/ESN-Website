@@ -124,7 +124,7 @@ const STORE_PRODUCTS = [
   },
   {
     name: 'ESN Riftwalker Bundle',
-    price: '$0.50',
+    price: '$1.00',
     stripe: 'https://buy.stripe.com/00w3cw6tB7Ej9Nl19JdnW02',
     summary: 'A six-item mobility and utility bundle centered around rift abilities.',
     items: [
