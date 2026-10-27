@@ -589,7 +589,16 @@ export const FAQ_SCHEMA=[
 ]
 
 // Monthly prices of the 22 plans on /hosting/vps (keep in sync with src/Hosting.jsx BOT_PLANS + MORE_PLANS).
-export const HOSTING_OFFER_SCHEMA=[
+export const HOSTING_FAQ_SCHEMA=[
+  ['How fast is my server ready?','Your server is set up automatically after payment, and your panel login is sent to you. Log in at panel.esnoffical.com.'],
+  ['Can I cancel?','Yes. Use the Stripe billing portal to cancel at the end of your billing period, update your card, or download invoices.'],
+  ['Which languages can my bot use?','Bot plans support Python and Node.js. You choose the runtime at checkout and can change startup settings in the panel.'],
+  ['Is there a free trial?','Yes. Nano, Starter and Basic have a free 3-day trial. Stripe asks for a card and you are only charged if you keep the server.'],
+  ['Is VPS-lite a full VPS?','No. It is a Linux container with a shell in the panel console, SFTP and one public port. There is no root, apt, systemd or Docker inside.'],
+  ['Where do I get help?','Open a ticket in our Discord, read the Hosting Docs, or check Live Uptime for service status.'],
+]
+
+const HOSTING_OFFER_SCHEMA=[
   ['ESN Nano','0.50'],
   ['ESN Starter','0.75'],
   ['ESN Basic','0.99'],
@@ -783,6 +792,18 @@ export function structuredDataFor(pathname){
       '@type':'FAQPage',
       '@id':url+'#faq',
       mainEntity:FAQ_SCHEMA.map(([question,answer])=>({
+        '@type':'Question',
+        name:question,
+        acceptedAnswer:{'@type':'Answer',text:answer},
+      })),
+    })
+  }
+
+  if(canonicalPath(pathname)==='/hosting/vps'){
+    graph.push({
+      '@type':'FAQPage',
+      '@id':url+'#hosting-faq',
+      mainEntity:HOSTING_FAQ_SCHEMA.map(([question,answer])=>({
         '@type':'Question',
         name:question,
         acceptedAnswer:{'@type':'Answer',text:answer},
