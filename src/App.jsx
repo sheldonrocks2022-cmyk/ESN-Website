@@ -588,6 +588,9 @@ function Footer() {
             <Link to="/site-builder">Website Builder</Link>
             <Link to="/status">Service Status</Link>
             <a href="https://status.esnoffical.com" target="_blank" rel="noreferrer">Live Uptime ↗</a>
+            <a href="/hosting/vps#free-trial">Free 3-Day Trial</a>
+            <a href="https://panel.esnoffical.com">Customer Panel Login ↗</a>
+            <a href="https://billing.stripe.com/p/login/4gM14o5pxgaP9Nl2dNdnW00">Manage Billing ↗</a>
             <Link to="/support">Hosting Support</Link>
           </div>
           <div>
