@@ -1,4 +1,5 @@
 import './hosting.css'
+import { CreatorSection, FreeTrialSection } from './GrowthSections'
 
 const HOSTING_DISCORD = 'https://discord.gg/RGPt3zEfGy'
 const HOSTING_CHECKOUT = 'https://panel.esnoffical.com/plans'
@@ -153,10 +154,12 @@ export default function HostingPage() {
 
           <div className="esn-hosting-payment-safety">
             <strong>Payment safety</strong>
-            <p>Pay only through the official checkout at panel.esnoffical.com/plans. Your server is set up automatically after payment. Never send money to anyone in Discord DMs.</p>
+            <p>Pay only through the official checkout at panel.esnoffical.com/plans or the free-trial buttons on this page (Stripe, buy.stripe.com). Your server is set up automatically after payment. Never send money to anyone in Discord DMs.</p>
           </div>
         </div>
       </section>
+
+      <FreeTrialSection />
 
       <section className="section dark-section" id="customer-panel">
         <div className="shell">
@@ -251,6 +254,8 @@ export default function HostingPage() {
           </div>
         </div>
       </section>
+
+      <CreatorSection />
 
       <section className="section compact-section" id="network-status">
         <div className="shell">
