@@ -269,8 +269,8 @@ export default function DomainsPage(){
       <div className="domains-bot-hosting-link">
         <div>
           <span>DISCORD BOT HOSTING</span>
-          <strong>11 hosting plans from $0.50/month</strong>
-          <p>Compare RAM, CPU, storage, and monthly prices for ESN Nano through ESN Gift. Pick a plan and check out — your server is set up automatically after payment.</p>
+          <strong>22 hosting plans from $0.50/month</strong>
+          <p>Compare RAM, CPU, storage, and monthly prices for bot hosting, game servers, web hosting, and VPS-lite. Pick a plan and check out — your server is set up automatically after payment.</p>
         </div>
         <Link to="/hosting/vps">VIEW ALL HOSTING PLANS →</Link>
       </div>

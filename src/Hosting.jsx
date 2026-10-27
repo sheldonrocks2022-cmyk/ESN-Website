@@ -23,6 +23,64 @@ const PLAN_GROUPS = [
   { id: 'premium', label: 'Premium Plans', copy: 'Higher resources for demanding projects. Ask us about game compatibility.' },
 ]
 
+const BOT_FEATURES = ['24/7 hosting availability', 'Python + Node.js support', 'Private Pterodactyl panel', 'Console, files + SFTP', 'Resource monitoring + auto restart']
+
+// Plans added Oct 27, 2026. Prices match their Stripe prices; yearly is 12 months for the price of 10.
+export const MORE_PLANS = [
+  { name: 'Core', ram: '2.5 GB', cpu: '110%', storage: '10 GB', price: '$2.49', yearly: '$24.90', group: 'bigger' },
+  { name: 'Turbo', ram: '3.5 GB', cpu: '140%', storage: '14 GB', price: '$3.99', yearly: '$39.90', group: 'bigger' },
+  { name: 'Power', ram: '5 GB', cpu: '175%', storage: '18 GB', price: '$5.99', yearly: '$59.90', group: 'bigger' },
+  { name: 'Terraria', ram: '1.5 GB', cpu: '75%', storage: '6 GB', price: '$1.49', yearly: '$14.90', group: 'game' },
+  { name: 'Factorio', ram: '2 GB', cpu: '100%', storage: '8 GB', price: '$1.99', yearly: '$19.90', group: 'game' },
+  { name: 'Valheim', ram: '4 GB', cpu: '150%', storage: '15 GB', price: '$4.99', yearly: '$49.90', group: 'game' },
+  { name: 'Palworld', ram: '8 GB', cpu: '300%', storage: '30 GB', price: '$9.99', yearly: '$99.90', group: 'game' },
+  { name: 'Web', ram: '1 GB', cpu: '50%', storage: '8 GB', price: '$1.29', yearly: '$12.90', group: 'web' },
+  { name: 'VPS-lite 1GB', ram: '1 GB', cpu: '40%', storage: '8 GB', price: '$2.49', yearly: '$24.90', group: 'vps' },
+  { name: 'VPS-lite 2GB', ram: '2 GB', cpu: '60%', storage: '12 GB', price: '$4.49', yearly: '$44.90', group: 'vps' },
+  { name: 'VPS-lite 4GB', ram: '4 GB', cpu: '100%', storage: '20 GB', price: '$7.99', yearly: '$79.90', group: 'vps' },
+]
+
+const MORE_PLAN_GROUPS = [
+  { id: 'bigger', label: 'Bigger Bot Plans', copy: 'More room for Discord bots, Telegram bots, or a Minecraft server. You pick the type at checkout.', features: ['24/7 hosting availability', 'Discord, Telegram or Minecraft', 'Private Pterodactyl panel', 'Console, files + SFTP', 'Resource monitoring + auto restart'] },
+  { id: 'game', label: 'Game Servers', copy: 'Plans for Terraria, Factorio, Valheim, and Palworld. The game server is installed for you after payment.', features: ['24/7 hosting availability', 'Game server installed for you', 'Private Pterodactyl panel', 'Console, files + SFTP', 'Resource monitoring'] },
+  { id: 'web', label: 'Web Hosting', copy: 'Host a website, WordPress, a Node.js app, or a Python app.', features: ['24/7 hosting availability', 'Website, WordPress, Node.js or Python app', 'Private Pterodactyl panel', 'Console, files + SFTP', 'Resource monitoring'] },
+  { id: 'vps', label: 'VPS-lite (Linux container)', copy: 'Your own Linux container with a shell in the panel console. It is a container, not a full VPS: no root, apt, systemd, or Docker inside.', features: ['Linux shell in the panel console', 'SFTP + file manager', 'Node.js 22, Python 3, git, gcc', 'One public port + autostart.sh', 'No root, apt, systemd or Docker'] },
+]
+
+function PlanGroup({ group, plans, features }) {
+  const groupPlans = plans.filter((plan) => plan.group === group.id)
+  return (
+    <section className="esn-hosting-plan-group" aria-labelledby={`esn-plan-${group.id}`}>
+      <div className="esn-hosting-group-head">
+        <div>
+          <h3 id={`esn-plan-${group.id}`}>{group.label}</h3>
+          <p>{group.copy}</p>
+        </div>
+        <span>{groupPlans.length} {groupPlans.length === 1 ? 'plan' : 'plans'}</span>
+      </div>
+      <div className="esn-hosting-plan-grid">
+        {groupPlans.map((plan) => (
+          <article className={plan.featured ? 'esn-hosting-plan featured' : 'esn-hosting-plan'} key={plan.name}>
+            {plan.label && <span className={plan.featured ? 'esn-plan-badge' : 'esn-plan-badge subtle'}>{plan.label}</span>}
+            <span className="eyebrow">ESN {plan.name.toUpperCase()}</span>
+            <div className="esn-plan-price"><strong>{plan.price}</strong><span>/ month</span></div>
+            <div className="esn-plan-resources">
+              <div><span>RAM</span><b>{plan.ram}</b></div>
+              <div><span>CPU</span><b>{plan.cpu}</b></div>
+              <div><span>STORAGE</span><b>{plan.storage}</b></div>
+            </div>
+            <ul>
+              {plan.yearly && <li>Yearly: {plan.yearly} (12 months for the price of 10)</li>}
+              {features.map((feature) => <li key={feature}>{feature}</li>)}
+            </ul>
+            <a href={HOSTING_CHECKOUT}>Order ESN {plan.name} <span>→</span></a>
+          </article>
+        ))}
+      </div>
+    </section>
+  )
+}
+
 const PANEL_FEATURES = [
   ['Console', 'Live output plus start, stop, restart, and kill controls.'],
   ['Files + SFTP', 'Upload, edit, organize, and manage bot files from your own server panel.'],
@@ -39,7 +97,7 @@ export default function HostingPage() {
             <span className="eyebrow">ESN BOT HOSTING // 24/7</span>
             <h1>Your bot. Your files. <em>Your controls.</em></h1>
             <p>
-              Start from $0.50/month with 11 plans for Discord bots and larger projects.
+              Start from $0.50/month with 22 plans for Discord bots, game servers, websites, and VPS-lite.
               Get your own panel with console, files, startup settings, and resource graphs.
             </p>
             <div className="hero-actions page-actions">
@@ -73,46 +131,24 @@ export default function HostingPage() {
         <div className="shell">
           <div className="section-heading">
             <div>
-              <span className="eyebrow">BOT HOSTING PLANS</span>
-              <h2>11 plans. Starting at $0.50/month.</h2>
+              <span className="eyebrow">HOSTING PLANS</span>
+              <h2>22 plans. Starting at $0.50/month.</h2>
             </div>
-            <p>Every plan includes a private Pterodactyl panel, Python and Node.js support, console, file manager, SFTP, resource monitoring, startup and environment settings, crash restarting, and Discord ticket support.</p>
+            <p>Every plan includes a private Pterodactyl panel, console, file manager, SFTP, resource monitoring, and Discord ticket support. Bot plans add Python and Node.js support, startup and environment settings, and crash restarting.</p>
           </div>
 
           <div className="esn-hosting-plan-groups">
             {PLAN_GROUPS.map((group) => (
-              <section className="esn-hosting-plan-group" key={group.id} aria-labelledby={`esn-plan-${group.id}`}>
-                <div className="esn-hosting-group-head">
-                  <div>
-                    <h3 id={`esn-plan-${group.id}`}>{group.label}</h3>
-                    <p>{group.copy}</p>
-                  </div>
-                  <span>{BOT_PLANS.filter((plan) => plan.group === group.id).length} plans</span>
-                </div>
-                <div className="esn-hosting-plan-grid">
-                  {BOT_PLANS.filter((plan) => plan.group === group.id).map((plan) => (
-                    <article className={plan.featured ? 'esn-hosting-plan featured' : 'esn-hosting-plan'} key={plan.name}>
-                      {plan.label && <span className={plan.featured ? 'esn-plan-badge' : 'esn-plan-badge subtle'}>{plan.label}</span>}
-                      <span className="eyebrow">ESN {plan.name.toUpperCase()}</span>
-                      <div className="esn-plan-price"><strong>{plan.price}</strong><span>/ month</span></div>
-                      <div className="esn-plan-resources">
-                        <div><span>RAM</span><b>{plan.ram}</b></div>
-                        <div><span>CPU</span><b>{plan.cpu}</b></div>
-                        <div><span>STORAGE</span><b>{plan.storage}</b></div>
-                      </div>
-                      <ul>
-                        <li>24/7 hosting availability</li>
-                        <li>Python + Node.js support</li>
-                        <li>Private Pterodactyl panel</li>
-                        <li>Console, files + SFTP</li>
-                        <li>Resource monitoring + auto restart</li>
-                      </ul>
-                      <a href={HOSTING_CHECKOUT}>Order ESN {plan.name} <span>→</span></a>
-                    </article>
-                  ))}
-                </div>
-              </section>
+              <PlanGroup key={group.id} group={group} plans={BOT_PLANS} features={BOT_FEATURES} />
             ))}
+            {MORE_PLAN_GROUPS.map((group) => (
+              <PlanGroup key={group.id} group={group} plans={MORE_PLANS} features={group.features} />
+            ))}
+          </div>
+
+          <div className="esn-hosting-payment-safety">
+            <strong>VPS-lite rules</strong>
+            <p>No crypto mining, DDoS or flooding, port scanning, or brute forcing. A VPS-lite server that breaks these rules is stopped.</p>
           </div>
 
           <div className="esn-hosting-payment-safety">
@@ -209,7 +245,7 @@ export default function HostingPage() {
             <div>
               <span className="eyebrow">READY TO ORDER?</span>
               <h3>Pick a plan and check out.</h3>
-              <p>Choose one of our 11 plans, starting at $0.50/month. Your server is set up automatically after payment. Need help or a custom plan? <a href={HOSTING_DISCORD} target="_blank" rel="noreferrer">Join our Discord</a>.</p>
+              <p>Choose one of our 22 plans, starting at $0.50/month. Your server is set up automatically after payment. Need help or a custom plan? <a href={HOSTING_DISCORD} target="_blank" rel="noreferrer">Join our Discord</a>.</p>
             </div>
             <a className="button primary" href={HOSTING_CHECKOUT}>See plans &amp; check out <span>→</span></a>
           </div>
