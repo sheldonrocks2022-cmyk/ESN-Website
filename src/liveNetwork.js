@@ -23,6 +23,26 @@ const initial={
   discord:{status:'checking',members:null,onlineMembers:null,url:DISCORD_URL},
 }
 
+// Session cache for third-party, rate-limited APIs. A good answer is reused for
+// ttlMs; a failure is remembered for failTtlMs so a blocked API isn't hammered.
+// Many widgets use this hook at once, so one in-flight request is shared per key.
+const inflight=new Map()
+function cachedFetch(key,ttlMs,load,fallback,failTtlMs){
+  try{
+    const hit=JSON.parse(sessionStorage.getItem(key)||'null')
+    if(hit&&Date.now()-hit.at<(hit.ok?ttlMs:failTtlMs))return Promise.resolve(hit.value)
+  }catch{}
+  if(inflight.has(key))return inflight.get(key)
+  const run=(async()=>{
+    let value=fallback,ok=false
+    try{value=await load();ok=true}catch{}
+    try{sessionStorage.setItem(key,JSON.stringify({at:Date.now(),ok,value}))}catch{}
+    return value
+  })().finally(()=>inflight.delete(key))
+  inflight.set(key,run)
+  return run
+}
+
 export function useLiveNetwork(){
   const [data,setData]=useState(initial)
 
@@ -215,9 +235,10 @@ export function useLiveNetwork(){
       }
     })
 
-    const pluginPromise=fetch(`https://api.github.com/repos/${PLUGIN_REPO}/releases/latest`,{
+    // GitHub (60 requests/hour per visitor) and Discord rate-limit unauthenticated
+    // calls, so their answers are cached per tab instead of re-fetched every minute.
+    const pluginPromise=cachedFetch('esn_plugin_release_v1',30*60*1000,()=>fetch(`https://api.github.com/repos/${PLUGIN_REPO}/releases/latest`,{
       headers:{Accept:'application/vnd.github+json'},
-      cache:'no-store',
     }).then(async response=>{
       if(!response.ok)throw new Error('Plugin release unavailable')
       const value=await response.json()
@@ -227,9 +248,9 @@ export function useLiveNetwork(){
         publishedAt:value.published_at||null,
         url:value.html_url||null,
       }
-    }).catch(()=>({status:'unavailable',version:null,publishedAt:null,url:null}))
+    }),{status:'unavailable',version:null,publishedAt:null,url:null},10*60*1000)
 
-    const discordPromise=fetch(`https://discord.com/api/v10/invites/${DISCORD_INVITE}?with_counts=true&with_expiration=true`,{cache:'no-store'})
+    const discordPromise=cachedFetch('esn_discord_invite_v1',5*60*1000,()=>fetch(`https://discord.com/api/v10/invites/${DISCORD_INVITE}?with_counts=true&with_expiration=true`)
       .then(async response=>{
         if(!response.ok)throw new Error('Discord invite API unavailable')
         const value=await response.json()
@@ -239,8 +260,7 @@ export function useLiveNetwork(){
           onlineMembers:value.approximate_presence_count??null,
           url:DISCORD_URL,
         }
-      })
-      .catch(()=>({status:'configured',members:null,onlineMembers:null,url:DISCORD_URL}))
+      }),{status:'configured',members:null,onlineMembers:null,url:DISCORD_URL},2*60*1000)
 
     const [smp,plugin,discord]=await Promise.all([smpPromise,pluginPromise,discordPromise])
     setData({...next,smp,plugin,discord})
