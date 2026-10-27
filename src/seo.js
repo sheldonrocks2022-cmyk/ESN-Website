@@ -57,11 +57,11 @@ export const SEO_ROUTES={
   '/business':{
     label:'ESN Business Hub',
     title:'ESN Hosting Business Hub | Plans, Help & Partnerships',
-    description:'Explore ESN hosting plans, customer request drafts, partnership information, support and setup guides. Checkout and account automation are not connected.',
+    description:'Explore ESN hosting plans, setup guides, support and partnership information. Buy plans on the ESN panel, where servers are set up automatically after Stripe checkout.',
     index:true,
   },
   '/business/dashboard':{label:'ESN Workspace',title:'My ESN Hosting Workspace | Local Drafts',description:'Create local ESN hosting request drafts and open official support tickets. This is not a live customer account.',index:false},
-  '/business/plans':{label:'ESN Hosting Plan Finder',title:'Compare 11 ESN Hosting Plans',description:'Find and compare ESN hosting tiers from $0.50/month. Staff confirms availability and purchases in Discord.',index:true},
+  '/business/plans':{label:'ESN Hosting Plan Finder',title:'Compare ESN Bot Hosting Plans from $0.50/month',description:'Find and compare ESN bot hosting tiers from $0.50/month, then buy on the ESN panel. Servers are set up automatically after checkout.',index:true},
   '/business/partners':{label:'ESN Partnerships',title:'ESN Hosting Partnerships & Referrals',description:'Learn about ESN hosting partnership and referral enquiries. Applications require ESN staff review.',index:true},
   '/business/rewards':{label:'ESN Hosting Benefits',title:'ESN Hosting Rewards & Loyalty Information',description:'Review staff-approved customer perks, rewards policies and community milestones.',index:true},
   '/business/support':{label:'ESN Hosting Support',title:'ESN Hosting Help & Support',description:'Find ESN hosting help, Discord bot troubleshooting, account and billing guidance, setup resources, and official support channels before opening a ticket.',index:true},
@@ -588,6 +588,32 @@ export const FAQ_SCHEMA=[
   ['Where can I join the ESN community?','Use the official Discord link anywhere on this website to join the ES Network community.'],
 ]
 
+// Monthly prices of the 22 plans on /hosting/vps (keep in sync with src/Hosting.jsx BOT_PLANS + MORE_PLANS).
+export const HOSTING_OFFER_SCHEMA=[
+  ['ESN Nano','0.50'],
+  ['ESN Starter','0.75'],
+  ['ESN Basic','0.99'],
+  ['ESN Plus','1.49'],
+  ['ESN Advanced','1.99'],
+  ['ESN Pro','2.99'],
+  ['ESN Elite','4.99'],
+  ['ESN Ultra','7.99'],
+  ['ESN Extreme','8.99'],
+  ['ESN Titan','12.99'],
+  ['ESN Gift','16.99'],
+  ['ESN Core','2.49'],
+  ['ESN Turbo','3.99'],
+  ['ESN Power','5.99'],
+  ['ESN Terraria','1.49'],
+  ['ESN Factorio','1.99'],
+  ['ESN Valheim','4.99'],
+  ['ESN Palworld','9.99'],
+  ['ESN Web','1.29'],
+  ['ESN VPS-lite 1GB','2.49'],
+  ['ESN VPS-lite 2GB','4.49'],
+  ['ESN VPS-lite 4GB','7.99'],
+]
+
 export const SERVICE_SCHEMA=[
   ['Fortnite Coaching','Focused coaching built around practical improvement, stronger decision-making, and better in-game consistency.','/serviceshowcase#fortnite-coaching'],
   ['Editing Services','Editing support for creators who want sharper, cleaner content built for their platform and audience.','/serviceshowcase#editing-services'],
@@ -760,6 +786,23 @@ export function structuredDataFor(pathname){
         '@type':'Question',
         name:question,
         acceptedAnswer:{'@type':'Answer',text:answer},
+      })),
+    })
+  }
+
+  if(canonicalPath(pathname)==='/hosting/vps'){
+    graph.push({
+      '@type':'OfferCatalog',
+      '@id':url+'#hosting-plans',
+      name:'ESN Hosting plans',
+      itemListElement:HOSTING_OFFER_SCHEMA.map(([name,price])=>({
+        '@type':'Offer',
+        name,
+        price,
+        priceCurrency:'USD',
+        url:'https://panel.esnoffical.com/plans',
+        availability:'https://schema.org/InStock',
+        seller:{'@id':SITE_URL+'/#organization'},
       })),
     })
   }

@@ -51,6 +51,30 @@ const CATALOG=[
     tags:['mega','bundle','exclusives','void','warrior','lightning','king','warden','armor','blade','combat'],
   },
   {
+    id:'bot-hosting',kind:'HOSTING',name:'ESN Discord Bot Hosting',price:.50,priceLabel:'FROM $0.50/MO',
+    checkout:'https://panel.esnoffical.com/plans',status:'AVAILABLE',
+    summary:'14 bot plans from Nano (256 MB RAM, $0.50/month) to Gift (15 GB RAM, $16.99/month). Every plan can be paid yearly: 12 months for the price of 10.',
+    items:['Nano $0.50/mo','Starter $0.75/mo','Basic $0.99/mo','Plus $1.49/mo','Advanced $1.99/mo','Pro $2.99/mo','Elite $4.99/mo','Ultra $7.99/mo','Extreme $8.99/mo','Titan $12.99/mo','Gift $16.99/mo','Core $2.49/mo','Turbo $3.99/mo','Power $5.99/mo'],
+    delivery:'Buy on the ESN panel Plans page and pay on Stripe. Your server is set up automatically and shows on your panel dashboard within a minute or two.',
+    tags:['hosting','bot','discord bot','python','node','nodejs','server','plan','cheap','panel','yearly'],
+  },
+  {
+    id:'game-hosting',kind:'HOSTING',name:'ESN Game Server Hosting',price:1.49,priceLabel:'FROM $1.49/MO',
+    checkout:'https://panel.esnoffical.com/plans',status:'AVAILABLE',
+    summary:'Game server plans for Terraria, Factorio, Valheim and Palworld. The game server is installed for you after payment.',
+    items:['Terraria $1.49/mo','Factorio $1.99/mo','Valheim $4.99/mo','Palworld $9.99/mo'],
+    delivery:'Buy on the ESN panel Plans page and pay on Stripe. The server is installed automatically after payment.',
+    tags:['hosting','game','game server','terraria','factorio','valheim','palworld','server'],
+  },
+  {
+    id:'web-vps-hosting',kind:'HOSTING',name:'ESN Web & VPS-lite Hosting',price:1.29,priceLabel:'FROM $1.29/MO',
+    checkout:'https://panel.esnoffical.com/plans',status:'AVAILABLE',
+    summary:'Web hosting (website, WordPress, Node.js or Python app) from $1.29/month, and VPS-lite Linux containers from $2.49/month (a container with a shell, not a full VPS).',
+    items:['Web $1.29/mo','VPS-lite 1GB $2.49/mo','VPS-lite 2GB $4.49/mo','VPS-lite 4GB $7.99/mo'],
+    delivery:'Buy on the ESN panel Plans page and pay on Stripe. Your server is set up automatically after payment.',
+    tags:['hosting','web','website','wordpress','vps','vps-lite','linux','container'],
+  },
+  {
     id:'fortnite-coaching',kind:'SERVICE',name:'Fortnite Coaching',price:null,priceLabel:'QUOTE THROUGH ESN',
     checkout:null,status:'DISCORD ORDER',
     summary:'Focused coaching built around practical improvement, stronger decision-making, and better in-game consistency.',
@@ -159,7 +183,7 @@ function visitorAnswer(query){
 
   if(!q)return {text:'Ask me about ESN products, services, prices, bundles, delivery, or checkout.',items:[]}
   if(/what.*sell|what.*store|show.*everything|catalog|all products|all services/.test(q)){
-    return {text:'ESN currently has SMP products plus creator and digital services. I only show verified catalog details and I mark missing prices or checkout links instead of inventing them.',items:CATALOG}
+    return {text:'ESN currently has hosting plans, SMP products, and creator and digital services. I only show verified catalog details and I mark missing prices or checkout links instead of inventing them.',items:CATALOG}
   }
   if(/cheapest|lowest price|least expensive/.test(q)){
     const min=Math.min(...priced.map(x=>x.price))
@@ -181,9 +205,14 @@ function visitorAnswer(query){
   }
   if(/checkout|buy|purchase|order|link/.test(q)&&matches.length){
     const item=matches[0]
+    if(item.kind==='HOSTING')return {text:item.name+' ('+item.priceLabel+') is bought on the ESN panel Plans page with Stripe checkout. Your server is set up automatically after you pay.',items:[item]}
     if(item.checkout)return {text:item.name+' has a verified direct Stripe checkout at '+item.priceLabel+'.',items:[item]}
     if(item.kind==='SERVICE')return {text:item.name+' is ordered through ESN Discord. The current catalog does not have a direct checkout link for it.',items:[item]}
     return {text:item.name+' is listed, but its checkout is not connected. I will not invent a payment link.',items:[item]}
+  }
+  if(/hosting|host my|host a|bot host|vps|game server|terraria|factorio|valheim|palworld/.test(q)){
+    const items=CATALOG.filter(x=>x.kind==='HOSTING')
+    return {text:'ESN Hosting plans start at $0.50/month. Buy on the ESN panel Plans page with Stripe checkout; servers are set up automatically after payment. Yearly billing is 12 months for the price of 10.',items}
   }
   if(/website|web site|web project/.test(q)){
     const item=CATALOG.find(x=>x.id==='website')
@@ -335,7 +364,7 @@ export default function StoreAIPage(){
     </div></section>}
 
     <section className="section"><div className="shell">
-      <div className="section-heading"><div><span className="eyebrow">FULL STORE CATALOG</span><h2>Everything Store AI currently knows.</h2></div><div className="store-ai-filters">{['ALL','SMP','SERVICE'].map(value=><button className={filter===value?'active':''} onClick={()=>setFilter(value)} key={value}>{value}</button>)}</div></div>
+      <div className="section-heading"><div><span className="eyebrow">FULL STORE CATALOG</span><h2>Everything Store AI currently knows.</h2></div><div className="store-ai-filters">{['ALL','HOSTING','SMP','SERVICE'].map(value=><button className={filter===value?'active':''} onClick={()=>setFilter(value)} key={value}>{value}</button>)}</div></div>
       <div className="store-ai-catalog">{visibleCatalog.map(item=><ProductCard item={item} key={item.id}/>)}</div>
     </div></section>
 
