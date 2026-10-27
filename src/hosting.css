@@ -324,3 +324,7 @@
 .esn-plan-trial{display:inline-block;margin:6px 0 2px;padding:3px 9px;border:1px solid rgba(126,226,168,.45);border-radius:999px;color:#7ee2a8;font-size:.72rem;font-weight:800;text-decoration:none}
 .esn-hosting-top{position:fixed;right:20px;bottom:96px;z-index:41;width:44px;height:44px;border:1px solid rgba(143,216,255,.35);border-radius:50%;background:rgba(6,14,28,.94);color:#eaf4ff;font-size:1.2rem;font-weight:900;cursor:pointer}
 @media (max-width:760px){.esn-hosting-top{right:16px;bottom:150px}}
+
+/* W2-4: copy plan link, compare order column */
+.esn-plan-copy{align-self:flex-start;margin:0 0 8px;padding:0;border:0;background:none;color:#8fd8ff;font:inherit;font-size:.78rem;font-weight:700;text-decoration:underline;cursor:pointer}
+.esn-plan-compare td a{color:#8fd8ff;font-weight:800}
