@@ -5,7 +5,7 @@ export const SEO_LAUNCH_MODE='production'
 export const SOCIAL_IMAGE_URL=SITE_URL+'/esn-social-card.png'
 export const SOCIAL_IMAGE_ALT='ES Network — Build, Play, Create'
 export function socialImageFor(pathname=''){
-  const path=pathname||'/'
+  const path=normalizePath(pathname)
   if(path.startsWith('/guides')||['/minecraft-server','/minecraft-smp'].includes(path))return SITE_URL+'/social/esn-guides.png'
   if(path.startsWith('/smp/')||path.startsWith('/smp-')||['/storesmp','/smpguide','/smpconnection'].includes(path))return SITE_URL+'/social/esn-smp.png'
   if(['/fortnite-coaching','/video-editing','/discord-server-setup','/serviceshowcase','/configure','/estimate','/portfolio','/testimonials'].includes(path))return SITE_URL+'/social/esn-services.png'
@@ -697,19 +697,29 @@ export const CONSOLE_HOWTO_STEPS=[
   ['Finish on your console','Open Minecraft on Xbox, PlayStation, or Nintendo Switch and complete the connection flow.'],
 ]
 
+// GitHub Pages serves each prerendered route as /route/index.html and redirects
+// /route to /route/, so the trailing slash is dropped before the route lookup.
+// Without this, every page opened from a link or search fell back to the generic
+// "ES Network" title with a noindex robots tag once the app loaded.
+export function normalizePath(pathname){
+  const path=(pathname||'/').replace(/\/+$/,'')
+  return path||'/'
+}
+
 export function getSeo(pathname){
-  return SEO_ROUTES[pathname]||{
+  const path=normalizePath(pathname)
+  return SEO_ROUTES[path]||{
     label:'ES Network',
     title:'ES Network',
     description:'Official ES Network website.',
-    canonical:pathname||'/',
+    canonical:path,
     index:false,
   }
 }
 
 export function canonicalPath(pathname){
   const meta=getSeo(pathname)
-  return meta.canonical??pathname??'/'
+  return meta.canonical??normalizePath(pathname)
 }
 
 export function canonicalUrl(pathname){
