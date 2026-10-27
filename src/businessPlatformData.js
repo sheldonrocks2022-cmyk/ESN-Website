@@ -7,7 +7,7 @@ export const DISCORD_HOSTING = 'https://discord.gg/RGPt3zEfGy'
 
 export const CAPABILITIES = [
   {id:'dashboard',title:'Customer workspace',copy:'Keep a local copy of your plan choices, requests, and setup checklist.',path:'/business/dashboard'},
-  {id:'orders',title:'Hosting order requests',copy:'Prepare a ticket with the plan you want and send it to ESN staff.',path:'/business/plans'},
+  {id:'orders',title:'Buy hosting',copy:'Pick a plan and pay on the ESN panel. Your server is set up automatically after checkout.',path:'/hosting/vps'},
   {id:'status',title:'Service status',copy:'Find public uptime information, incidents, and maintenance notices.',path:'/status'},
   {id:'planfinder',title:'Plan finder',copy:'Get an indicative recommendation by project workload.',path:'/business/plans'},
   {id:'rewards',title:'Customer rewards',copy:'Review benefit rules; staff must confirm rewards and credits.',path:'/business/rewards'},
@@ -41,7 +41,7 @@ export const DEFAULT_BUSINESS_SETTINGS = {
   milestoneMembers:'',
   milestoneCustomers:'',
   featuredPlan:'Pro',
-  supportMessage:'Our team handles orders, billing questions, and technical support through official Discord tickets.',
+  supportMessage:'Buy plans on the ESN panel. For billing questions and technical support, use the hosting docs, the live chat bubble, or an official Discord ticket.',
   maintenanceNotice:'',
   rewardPolicy:'Credits and benefits require staff approval after a qualifying purchase or referral. No rewards are automatically granted.',
   loyaltyPolicy:'Long-term customer perks are reviewed manually. The website does not currently track verified renewal history.',

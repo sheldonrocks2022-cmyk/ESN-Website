@@ -47,13 +47,14 @@ async function copyText(text){
   try{await navigator.clipboard.writeText(text);return true}catch{return false}
 }
 function LocalMode(){
-  return <p className="business-mode"><strong>Request & preview mode</strong> — This website does not yet have secure customer accounts or a live billing backend. No online orders, payments, referrals, credits, or server changes happen here. Contact ESN staff to complete requests.</p>
+  return <p className="business-mode"><strong>Buy hosting on the ESN panel</strong> — Plans are bought at <a href="https://panel.esnoffical.com/plans" target="_blank" rel="noreferrer">panel.esnoffical.com/plans</a>: pay on Stripe and your server is set up automatically. This page is a planning and request tool: drafts stay in your browser and no orders, payments, referrals, credits, or server changes happen here.</p>
 }
 function PlanCard({plan,featured,onAsk}){
   return <article className={featured?'business-plan highlighted':'business-plan'}>
     <div className="business-plan-head"><strong>ESN {plan.name}</strong>{featured&&<span>RECOMMENDED</span>}</div>
     <div className="business-plan-price">{plan.price}<small>/ month</small></div>
     <div className="business-resource"><span>{plan.ram} RAM</span><span>{plan.cpu} CPU</span><span>{plan.storage} storage</span></div>
+    <a className="business-plan-buy" href="https://panel.esnoffical.com/plans" target="_blank" rel="noreferrer">Buy on the panel <span>↗</span></a>
     <button type="button" onClick={()=>onAsk(plan.name)}>Prepare a ticket <span>↗</span></button>
   </article>
 }
@@ -138,7 +139,7 @@ function Plans({settings}){
       <div className="business-recommendation"><div><span>START BY COMPARING</span><strong>ESN {recommended.name}</strong><p>{recommended.ram} RAM · {recommended.cpu} CPU · {recommended.storage} storage · {recommended.price}/month</p></div><button type="button" onClick={()=>setChosen(recommended.name)}>Use this in request</button></div>
     </section>}
     {settings.compareEnabled&&<section>
-      <div className="business-section-heading"><div><span>HOSTING COMPARISON</span><h2>11 plans. No confusing extras.</h2></div><label>Sort by<select value={sort} onChange={e=>setSort(e.target.value)}><option value="price">Lowest price</option><option value="memory">Most RAM</option></select></label></div>
+      <div className="business-section-heading"><div><span>HOSTING COMPARISON</span><h2>11 bot plans. No confusing extras.</h2></div><label>Sort by<select value={sort} onChange={e=>setSort(e.target.value)}><option value="price">Lowest price</option><option value="memory">Most RAM</option></select></label></div>
       <div className="business-plan-grid">{plans.map(p=><PlanCard key={p.name} plan={p} featured={p.name===settings.featuredPlan} onAsk={setChosen}/>)}</div>
     </section>}
     <ContactRequest key={chosen} presetPlan={chosen} settings={settings}/>
@@ -170,7 +171,7 @@ function Rewards({settings}){
   </>
 }
 function Support({settings}){
-  const topics=[['Getting started','/business/setup','Bot setup and startup settings'],['Hosting plans','/business/plans','Compare all 11 available tiers'],['Server problems','/diagnostics','Check your browser before support'],['Service status','/status','Check public service notices'],['Account & billing','/trust','Official payments and trust guidance'],['Customer feedback','/testimonials','Read ESN reviews']]
+  const topics=[['Getting started','/business/setup','Bot setup and startup settings'],['Hosting plans','/hosting/vps','Compare all 22 plans and buy on the panel'],['Server problems','/diagnostics','Check your browser before support'],['Service status','/status','Check public service notices'],['Account & billing','/trust','Official payments and trust guidance'],['Customer feedback','/testimonials','Read ESN reviews']]
   return <><div className="business-section-heading"><div><span>ESN SUPPORT</span><h2>Support that makes sense.</h2><p>{settings.supportMessage}</p></div></div><div className="business-feature-grid">{topics.map(([title,to,copy])=><Link key={to} className="business-feature" to={to}><strong>{title}</strong><p>{copy}</p><b>Open guide →</b></Link>)}</div><ContactRequest presetType="General support" settings={settings}/></>
 }
 function Setup(){

@@ -143,3 +143,9 @@
 .business-live-switches input{width:17px;height:17px;accent-color:#7eabdc}
 @media(max-width:800px){.business-live-columns,.business-live-status{grid-template-columns:1fr}.business-live-switches{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:530px){.business-live{padding:15px}.business-live-card{padding:17px}.business-live-table article{align-items:flex-start;flex-direction:column}.business-live-switches{grid-template-columns:1fr}}
+
+/* Lane A: real checkout lives on the ESN panel */
+.business-plan .business-plan-buy{margin-top:auto;border:1px solid rgba(98,241,255,.35);border-radius:9px;background:#1687fa;color:#fff;padding:12px;text-decoration:none;font:700 .84rem inherit;display:flex;justify-content:space-between;gap:8px}
+.business-plan .business-plan-buy:hover,.business-plan .business-plan-buy:focus-visible{background:#2a95ff}
+.business-plan .business-plan-buy + button{margin-top:8px}
+.business-mode a{color:#62f1ff;font-weight:700}
