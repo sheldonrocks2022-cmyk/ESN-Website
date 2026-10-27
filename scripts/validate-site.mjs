@@ -44,6 +44,7 @@ const requiredRoutes = [
   '/store-ai',
   '/hosting',
   '/hosting/vps',
+  '/services',
   '/domains',
   '/site-builder',
   '/operations',

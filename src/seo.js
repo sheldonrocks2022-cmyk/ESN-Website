@@ -8,7 +8,7 @@ export function socialImageFor(pathname=''){
   const path=normalizePath(pathname)
   if(path.startsWith('/guides')||['/minecraft-server','/minecraft-smp'].includes(path))return SITE_URL+'/social/esn-guides.png'
   if(path.startsWith('/smp/')||path.startsWith('/smp-')||['/storesmp','/smpguide','/smpconnection'].includes(path))return SITE_URL+'/social/esn-smp.png'
-  if(['/fortnite-coaching','/video-editing','/discord-server-setup','/serviceshowcase','/configure','/estimate','/portfolio','/testimonials'].includes(path))return SITE_URL+'/social/esn-services.png'
+  if(['/services','/fortnite-coaching','/video-editing','/discord-server-setup','/serviceshowcase','/configure','/estimate','/portfolio','/testimonials'].includes(path))return SITE_URL+'/social/esn-services.png'
   if(['/website-builder','/site-builder','/showcase','/hosting'].includes(path))return SITE_URL+'/social/esn-builder.png'
   if(['/free-browser-tools','/estools'].includes(path))return SITE_URL+'/social/esn-tools.png'
   if(path==='/hosting/vps'||path==='/business'||path.startsWith('/business/'))return SITE_URL+'/social/esn-hosting.png'
@@ -470,6 +470,12 @@ export const SEO_ROUTES={
     description:'Explore ES Network creator video editing support for gaming and digital content, with clear project scoping and official Discord-based ordering.',
     index:true,
   },
+  '/services':{
+    label:'Professional Services',
+    title:'Discord Server Setup, Custom Bots & Game Servers | ESN',
+    description:'Custom Discord servers, bots and Minecraft or game servers built for you by the ESN team. Streamer servers with live alerts, bot hosting from $0.50/mo.',
+    index:true,
+  },
   '/discord-server-setup':{
     label:'Discord Server Setup',
     title:'Discord Server Setup for Gaming Communities | ES Network',
@@ -631,6 +637,7 @@ export const SERVICE_SCHEMA=[
 ]
 
 export const SERVICE_PAGE_SCHEMA={
+  '/services':{name:'ESN Professional Services',serviceType:'Discord server setup, custom Discord bot development and game server setup'},
   '/fortnite-coaching':{name:'Fortnite Coaching',serviceType:'Fortnite coaching and gameplay improvement'},
   '/video-editing':{name:'Video Editing Services',serviceType:'Creator video editing'},
   '/discord-server-setup':{name:'Discord Server Setup',serviceType:'Discord community setup and organization'},
