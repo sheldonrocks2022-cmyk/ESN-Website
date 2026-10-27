@@ -28,3 +28,21 @@ for (const [source, destination, width, height] of assets) {
   fs.writeFileSync(destination, png)
   console.log('Rendered ' + destination + ' (' + width + 'x' + height + ')')
 }
+
+// Browsers and crawlers request /favicon.ico by default. Wrap the rendered
+// 32x32 PNG in a one-image ICO container (PNG-in-ICO is supported everywhere).
+const faviconPng = fs.readFileSync('public/favicon-32.png')
+const icoHeader = Buffer.alloc(22)
+icoHeader.writeUInt16LE(0, 0)
+icoHeader.writeUInt16LE(1, 2)
+icoHeader.writeUInt16LE(1, 4)
+icoHeader.writeUInt8(32, 6)
+icoHeader.writeUInt8(32, 7)
+icoHeader.writeUInt8(0, 8)
+icoHeader.writeUInt8(0, 9)
+icoHeader.writeUInt16LE(1, 10)
+icoHeader.writeUInt16LE(32, 12)
+icoHeader.writeUInt32LE(faviconPng.length, 14)
+icoHeader.writeUInt32LE(22, 18)
+fs.writeFileSync('public/favicon.ico', Buffer.concat([icoHeader, faviconPng]))
+console.log('Rendered public/favicon.ico (32x32 PNG-in-ICO)')

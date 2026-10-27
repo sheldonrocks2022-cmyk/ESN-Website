@@ -88,7 +88,7 @@ export const SEO_ROUTES={
   '/storesmp':{
     label:'SMP Store',
     title:'ESN SMP Store | Minecraft Keys, Relics & Bundles',
-    description:'Browse official ESN SMP digital items and bundles, including Realm 100 Keys, Season Pass relics, Riftwalker, Immortal Warden, and Void Warrior gear.',
+    description:'Browse official ESN SMP digital items and bundles, including Realm 100 Keys, Season Pass relics, Riftwalker, Immortal Warden, and the Exclusives Mega Bundle.',
     index:true,
   },
   '/store':{
@@ -542,9 +542,9 @@ export const SEO_ROUTES={
     index:true,
   },
   '/smp/void-warrior':{
-    label:'Void Warrior Bundle',
-    title:'ESN Void Warrior Bundle | Void Armor & Blade',
-    description:'Explore the published Void Warrior gear list and use the official ESN SMP Store as the source of truth for current checkout availability.',
+    label:'Void Warrior Set',
+    title:'ESN Void Warrior Set | In the $1.99 Exclusives Mega Bundle',
+    description:'The ESN SMP Void Warrior set (crown, chestplate, leggings, boots and blade) is sold in the ESN Exclusives Mega Bundle with the Lightning King and Immortal Warden sets.',
     index:true,
   },
   '/smp/realm-100':{
@@ -575,8 +575,13 @@ export const SEO_ROUTES={
 
 export const FAQ_SCHEMA=[
   ['What is ES Network?','ES Network (ESN) is the current brand. EP1C Services was the former name and is not a separate current organization or division.'],
-  ['What services does ESN offer?','The current public service focus includes Fortnite coaching, editing services, Discord server setups, and selected digital or website projects handled through ESN.'],
+  ['What services does ESN offer?','ESN Hosting (Discord bot, game server, web and VPS-lite hosting), Fortnite coaching, editing services, Discord server setups, and selected digital or website projects handled through ESN.'],
   ['How do I order a service?','Service ordering and support are handled through the official ESN Discord. Open a ticket and provide the details of what you need.'],
+  ['How much does ESN Hosting cost?','Discord bot hosting starts at $0.50/month (Nano). There are 22 plans in all: 11 bot plans up to Gift at $16.99/month, plus game server, web and VPS-lite plans. Every plan can also be paid yearly: 12 months for the price of 10. See all plans on the Bot Hosting page.'],
+  ['How do I buy hosting and how fast is setup?','Go to panel.esnoffical.com/plans, sign in (or create a free account), pick a plan and pay on Stripe’s secure checkout. Your server is set up automatically after you pay and shows up on your panel dashboard within a minute or two.'],
+  ['Do I need an account to buy hosting?','Yes, a free ESN panel account. You can create one yourself on the panel sign-in page with New here? Create an account. Your server is tied to that account.'],
+  ['Where can I check if ESN Hosting is up?','The live status page at status.esnoffical.com shows the panel, the hosting nodes, the website and the SMP, checked every minute.'],
+  ['Where can I get help with my server?','Start with the hosting docs at docs.esnoffical.com. You can also use the chat bubble on this website or the panel, or open a ticket in the ESN Hosting Discord.'],
   ['How do SMP purchases get delivered?','Enter your exact in-game Minecraft username at Stripe checkout. The buyer should be online on the SMP for automatic delivery. If your server username starts with a period, include the period at the beginning.'],
   ['Are ES Tools paid?','ES Tools are intended to be free browser-based utilities. They do not require an account and are not supposed to save your personal data.'],
   ['Can console players join the ESN SMP?','Yes. Xbox, PlayStation, and Nintendo Switch generally need a third-party-server workaround because Minecraft console editions do not expose a normal Add Server field. Use the Console Connection page for ESN server details and guidance.'],
@@ -624,7 +629,7 @@ export const STORE_SCHEMA=[
   {name:'ESN Season Pass Relic Bundle',price:'0.50',description:'Six ESN SMP Season Pass relics: Angel Wings, Inferno Scepter, Storm Crystal, Tideheart, Void Relic, and Celestial Star.',path:'/storesmp#product-esn-season-pass-relic-bundle',available:true},
   {name:'ESN Riftwalker Bundle',price:'1.00',description:'An ESN SMP mobility and utility bundle with Riftblade, Rift Wings, Phase Boots, Rift Bow, Rift Core, and Void Compass.',path:'/storesmp#product-esn-riftwalker-bundle',available:true},
   {name:'ESN Immortal Warden Bundle',price:'1.30',description:'An eight-item Warden-themed ESN SMP combat bundle.',path:'/storesmp#product-esn-immortal-warden-bundle',available:true},
-  {name:'Void Warrior Bundle',price:'0.50',description:'A Void-themed ESN SMP armor and weapon bundle. Checkout is not currently enabled.',path:'/storesmp#product-void-warrior-bundle',available:false},
+  {name:'ESN Exclusives Mega Bundle',price:'1.99',description:'All three ESN SMP exclusive sets in one checkout: Lightning King, Immortal Warden and Void Warrior. 20 items.',path:'/storesmp#product-esn-exclusives-mega-bundle',available:true},
 ]
 
 export const TOOL_SCHEMA=[
@@ -695,9 +700,9 @@ export function structuredDataFor(pathname){
       url:SITE_URL+'/',
       logo:{'@type':'ImageObject',url:SITE_URL+'/esn-mark.svg'},
       description:'ES Network provides creator and gaming services and operates the ESN SMP, ESN Arcade, ES Tools, website projects, and community experiences.',
-      sameAs:['https://github.com/sheldonrocks2022-cmyk','https://github.com/sheldonrocks2022-cmyk/ESN-Website'],
+      sameAs:['https://github.com/sheldonrocks2022-cmyk','https://github.com/sheldonrocks2022-cmyk/ESN-Website','https://www.trustpilot.com/review/esnoffical.com','https://discord.gg/RGPt3zEfGy'],
       brand:{'@type':'Brand',name:'ES Network',alternateName:'ESN'},
-      knowsAbout:['Minecraft SMP','Fortnite coaching','Video editing','Discord server setup','Website creation','Browser games','Creator tools'],
+      knowsAbout:['Discord bot hosting','Game server hosting','Minecraft SMP','Fortnite coaching','Video editing','Discord server setup','Website creation','Browser games','Creator tools'],
     },
     {
       '@type':'WebSite',

@@ -235,7 +235,7 @@ const KNOWN_ITEMS=[
   ['Season Pass Relics','Angel Wings • Inferno Scepter • Storm Crystal • Tideheart • Void Relic • Celestial Star'],
   ['Riftwalker Bundle','Riftblade • Rift Wings • Phase Boots • Rift Bow • Rift Core • Void Compass'],
   ['Immortal Warden Bundle','Immortal Warden Helmet • Chestplate • Leggings • Boots • Warden Blade • Warden Longbow • Immortal Core • Warden Totem'],
-  ['Void Warrior Bundle','Void Blade • Void Crown • Void Chestplate • Void Leggings • Void Boots'],
+  ['Exclusives Mega Bundle','Lightning King set • Immortal Warden set • Void Warrior set (Void Crown, Chestplate, Leggings, Boots, Blade) • 20 items'],
   ['Realm Progression','Realm 100 keys and Realm-scaled rewards are part of the current public store/progression surface.'],
 ]
 
