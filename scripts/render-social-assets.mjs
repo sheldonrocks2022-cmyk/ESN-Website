@@ -16,6 +16,8 @@ const assets = [
     ]),
   ['public/esn-mark.svg', 'public/favicon-32.png', 32, 32],
   ['public/esn-mark.svg', 'public/apple-touch-icon.png', 180, 180],
+  ['public/esn-mark.svg', 'public/icon-192.png', 192, 192],
+  ['public/esn-mark.svg', 'public/icon-512.png', 512, 512],
 ]
 
 for (const [source, destination, width, height] of assets) {
