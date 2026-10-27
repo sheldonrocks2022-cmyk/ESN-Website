@@ -54,6 +54,15 @@ const MORE_PLAN_GROUPS = [
   { id: 'vps', label: 'VPS-lite (Linux container)', copy: 'Your own Linux container with a shell in the panel console. It is a container, not a full VPS: no root, apt, systemd, or Docker inside.', features: ['Linux shell in the panel console', 'SFTP + file manager', 'Node.js 22, Python 3, git, gcc', 'One public port + autostart.sh', 'No root, apt, systemd or Docker'] },
 ]
 
+function CopyPlanLink({ name }) {
+  const [copied, setCopied] = useState(false)
+  const copy = async () => {
+    const link = `https://esnoffical.com/hosting/vps#${planId(name)}`
+    try { await navigator.clipboard.writeText(link); setCopied(true); setTimeout(() => setCopied(false), 2000) } catch { window.location.hash = planId(name) }
+  }
+  return <button type="button" className="esn-plan-copy" onClick={copy} aria-label={`Copy a link to the ESN ${name} plan`}>{copied ? 'Link copied' : 'Copy plan link'}</button>
+}
+
 function PlanGroup({ group, plans, features, billing }) {
   const groupPlans = plans.filter((plan) => plan.group === group.id)
   const yearly = billing === 'yearly'
@@ -85,6 +94,7 @@ function PlanGroup({ group, plans, features, billing }) {
               {plan.yearly && <li>{yearly ? `Monthly: ${plan.price}/month` : `Yearly: ${plan.yearly} (12 months for the price of 10)`}</li>}
               {features.map((feature) => <li key={feature}>{feature}</li>)}
             </ul>
+            <CopyPlanLink name={plan.name} />
             <a href={HOSTING_CHECKOUT} aria-label={`Order ESN ${plan.name}, ${yearly && plan.yearly ? plan.yearly + ' per year' : plan.price + ' per month'}`}>Order ESN {plan.name} <span aria-hidden="true">→</span></a>
           </article>
         ))}
@@ -108,7 +118,12 @@ const FINDER = [
 ]
 
 function PlanFinder() {
-  const [pick, setPick] = useState(FINDER[0].id)
+  const [pick, setPick] = useState(() => {
+    try {
+      const host = new URLSearchParams(window.location.search).get('host')
+      return FINDER.some((item) => item.id === host) ? host : FINDER[0].id
+    } catch { return FINDER[0].id }
+  })
   const choice = FINDER.find((item) => item.id === pick) || FINDER[0]
   const plan = ALL_PLANS.find((item) => item.name === choice.plan)
   return (
@@ -139,13 +154,14 @@ function PlanCompare() {
       <div className="esn-plan-compare-scroll" tabIndex={0} role="region" aria-label="All hosting plans compared">
         <table>
           <caption>ESN Hosting plans: resources and prices</caption>
-          <thead><tr><th scope="col">Plan</th><th scope="col">Type</th><th scope="col">RAM</th><th scope="col">CPU</th><th scope="col">Storage</th><th scope="col">Monthly</th><th scope="col">Yearly</th></tr></thead>
+          <thead><tr><th scope="col">Plan</th><th scope="col">Type</th><th scope="col">RAM</th><th scope="col">CPU</th><th scope="col">Storage</th><th scope="col">Monthly</th><th scope="col">Yearly</th><th scope="col">Order</th></tr></thead>
           <tbody>
             {ALL_PLANS.map((plan) => (
               <tr key={plan.name}>
                 <th scope="row"><a href={`#${planId(plan.name)}`}>{plan.name}</a></th>
                 <td>{ALL_GROUPS.find((group) => group.id === plan.group)?.label}</td>
                 <td>{plan.ram}</td><td>{plan.cpu}</td><td>{plan.storage}</td><td>{plan.price}</td><td>{plan.yearly}</td>
+                <td><a href={HOSTING_CHECKOUT} aria-label={`Order ESN ${plan.name}`}>Order</a></td>
               </tr>
             ))}
           </tbody>
