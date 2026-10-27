@@ -1,61 +1,16 @@
+import { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { SERVICE_CATEGORIES, SERVICE_LISTINGS } from './servicesCatalog'
 import './services.css'
 
 // Professional Services page (/services).
-// PRICES: set a service's `price` to a string like 'From $X' to show it on its card.
-// Leave it null to show "Get a quote". Only confirmed prices belong here.
+// Every fixed-price listing, its price and its checkout link live in src/servicesCatalog.js.
 const DISCORD_TICKET = 'https://discord.gg/RGPt3zEfGy'
 
-export const SERVICES = [
-  {
-    id: 'discord-server-setup',
-    icon: '🛠️',
-    title: 'Discord Server Setup',
-    blurb: 'A clean, professional server built from scratch or rebuilt from a messy one.',
-    points: ['Channels and categories laid out for your community', 'Roles and permissions that make sense', 'Verification so only real members can chat', 'Reaction roles and onboarding', 'Welcome messages, logs and ticket support'],
-    price: null,
-  },
-  {
-    id: 'streamer-servers',
-    icon: '🎥',
-    title: 'Streamer & Creator Servers',
-    blurb: 'A community home for your audience that tells them the moment you go live.',
-    points: ['Twitch & YouTube live alerts (TikTok on request)', 'Socials and links channels', 'Platform roles (Xbox, PC, PlayStation and more)', 'Media channels with slowmode for reacting', 'Game suggestions, clips and fan art'],
-    price: null,
-  },
-  {
-    id: 'custom-bots',
-    icon: '🤖',
-    title: 'Custom Discord Bot Development',
-    blurb: 'A bot built around what your server actually needs.',
-    points: ['Slash commands and custom features', 'Moderation, tickets, roles and utility tools', 'Python or Node.js', 'Set up and hosted for you if you want'],
-    price: null,
-  },
-  {
-    id: 'bot-hosting',
-    icon: '⚡',
-    title: 'Discord Bot Hosting 24/7',
-    blurb: 'Keep your bot online around the clock without managing a server yourself.',
-    points: ['Python and Node.js bots', 'Automatic restart if your bot crashes', 'Your own panel with console and file access', 'Help getting your bot running'],
-    price: 'From $0.50/mo',
-    link: { to: '/hosting/vps', label: 'See hosting plans' },
-  },
-  {
-    id: 'game-servers',
-    icon: '⛏️',
-    title: 'Minecraft & Game Server Setup',
-    blurb: 'A game server that is ready for your friends or community to join.',
-    points: ['Minecraft server setup and configuration', 'Plugins and permissions', 'Geyser so Bedrock players can join Java servers', 'Other game servers on request'],
-    price: null,
-  },
-]
-
-const STEPS = [
-  ['Open a ticket', 'Join our Discord and open a ticket. Tell us what you want built.'],
-  ['We scope and quote', 'We go over what you need and give you a clear quote before any work starts.'],
-  ['We build', 'The ESN team builds your server, bot or game server.'],
-  ['You review', 'You look it over and tell us what to change.'],
-  ['Handover', 'We hand everything over to you, with ownership and access set up.'],
+const BUY_STEPS = [
+  ['Buy', 'Pick a service and pay with the Buy now button. Add your Discord username at checkout.'],
+  ['Open a ticket', 'Join the ESN Discord, open a ticket, choose Services and paste your receipt or order number as proof of purchase.'],
+  ['We deliver', 'We start within 24 hours and deliver in the time shown on the listing.'],
 ]
 
 const SHOWCASE = [
@@ -67,16 +22,40 @@ const SHOWCASE = [
   'Custom emojis and soundboard',
 ]
 
-function QuoteButtons({ secondary = true }) {
+function money(value) {
+  return '$' + value
+}
+
+function ListingCard({ item }) {
+  const href = item.url || DISCORD_TICKET
   return (
-    <div className="esn-services-actions">
-      <a className="button primary" href={DISCORD_TICKET} target="_blank" rel="noreferrer">Get a quote <span>↗</span></a>
-      {secondary ? <a className="button secondary" href="#services">See services</a> : null}
-    </div>
+    <article className="esn-listing" id={item.id}>
+      <div className="esn-listing-top">
+        <h3>{item.name}</h3>
+        <strong className="esn-listing-price">{money(item.price)}</strong>
+      </div>
+      <span className="esn-listing-time">Delivery: {item.days}</span>
+      <ul>{item.includes.map((point) => <li key={point}>{point}</li>)}</ul>
+      <a className="button primary esn-buy" href={href} target="_blank" rel="noreferrer">Buy now · {money(item.price)}</a>
+      <ol className="esn-buy-mini">
+        <li>Buy</li>
+        <li>Open a <a href={DISCORD_TICKET} target="_blank" rel="noreferrer">Discord ticket</a> with your receipt as proof of purchase</li>
+        <li>We deliver</li>
+      </ol>
+    </article>
   )
 }
 
 export default function ServicesPage() {
+  const [category, setCategory] = useState('All')
+  const [query, setQuery] = useState('')
+  const shown = useMemo(() => {
+    const q = query.trim().toLowerCase()
+    return SERVICE_LISTINGS.filter((item) => (category === 'All' || item.category === category) &&
+      (!q || (item.name + ' ' + item.includes.join(' ') + ' ' + item.category).toLowerCase().includes(q)))
+  }, [category, query])
+  const groups = SERVICE_CATEGORIES.map((name) => [name, shown.filter((item) => item.category === name)]).filter(([, items]) => items.length)
+
   return (
     <div className="esn-services-page">
       <section className="esn-services-hero">
@@ -84,37 +63,87 @@ export default function ServicesPage() {
           <span className="eyebrow">ESN PROFESSIONAL SERVICES</span>
           <h1>Custom Discord servers, bots and game servers, <em>built for you.</em></h1>
           <p>
-            The ESN team designs and builds Discord servers, custom bots and game servers for communities,
-            creators and streamers. Tell us what you need and we will build it.
+            Pick a fixed-price package, check out in a minute, and the ESN team builds it. Discord servers,
+            live alerts, bots, bot hosting and Minecraft servers, from {money(Math.min(...SERVICE_LISTINGS.map((item) => item.price)))}.
           </p>
-          <QuoteButtons />
-          <p className="esn-services-note">
-            Quotes are given in a Discord ticket.
-          </p>
+          <div className="esn-services-actions">
+            <a className="button primary" href="#services">Browse {SERVICE_LISTINGS.length} services</a>
+            <a className="button secondary" href={DISCORD_TICKET} target="_blank" rel="noreferrer">Get a quote <span>↗</span></a>
+          </div>
+          <p className="esn-services-note">Need something custom? Open a Discord ticket for a quote.</p>
+        </div>
+      </section>
+
+      <section className="esn-services-section esn-buy-how" id="how-it-works">
+        <div className="shell">
+          <div className="esn-services-head">
+            <span className="eyebrow">HOW IT WORKS</span>
+            <h2>Buy, open a ticket, we deliver</h2>
+          </div>
+          <ol className="esn-services-steps esn-steps-3">
+            {BUY_STEPS.map(([title, copy], index) => (
+              <li key={title}>
+                <b>{String(index + 1).padStart(2, '0')}</b>
+                <h3>{title}</h3>
+                <p>{copy}</p>
+              </li>
+            ))}
+          </ol>
         </div>
       </section>
 
       <section className="esn-services-section" id="services">
         <div className="shell">
           <div className="esn-services-head">
-            <span className="eyebrow">WHAT WE BUILD</span>
+            <span className="eyebrow">FIXED-PRICE SERVICES</span>
             <h2>Services</h2>
           </div>
+          <div className="esn-svc-filters">
+            <input type="search" value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search services (e.g. tickets, Geyser, alerts)" aria-label="Search services" />
+            <div className="esn-svc-chips" role="tablist" aria-label="Service categories">
+              {['All', ...SERVICE_CATEGORIES].map((name) => (
+                <button type="button" key={name} className={name === category ? 'active' : ''} onClick={() => setCategory(name)}>{name}</button>
+              ))}
+            </div>
+            <p className="esn-svc-count">{shown.length} of {SERVICE_LISTINGS.length} services</p>
+          </div>
+          {groups.map(([name, items]) => (
+            <div className="esn-svc-group" key={name}>
+              <h3 className="esn-svc-group-title">{name}</h3>
+              <div className="esn-listings">
+                {items.map((item) => <ListingCard item={item} key={item.id} />)}
+              </div>
+            </div>
+          ))}
+          {!shown.length ? <p className="esn-svc-empty">No service matches that search. Open a <a href={DISCORD_TICKET} target="_blank" rel="noreferrer">Discord ticket</a> and we will quote it.</p> : null}
+        </div>
+      </section>
+
+      <section className="esn-services-section" id="custom">
+        <div className="shell">
+          <div className="esn-services-head">
+            <span className="eyebrow">CUSTOM WORK</span>
+            <h2>Bigger or custom projects</h2>
+          </div>
           <div className="esn-services-grid">
-            {SERVICES.map((service) => (
-              <article className="esn-service-card" id={service.id} key={service.id}>
-                <div className="esn-service-icon" aria-hidden="true">{service.icon}</div>
-                <h3>{service.title}</h3>
-                <p>{service.blurb}</p>
-                <ul>{service.points.map((point) => <li key={point}>{point}</li>)}</ul>
-                <div className="esn-service-foot">
-                  <strong>{service.price || 'Custom quote'}</strong>
-                  {service.link
-                    ? <Link to={service.link.to}>{service.link.label} →</Link>
-                    : <a href={DISCORD_TICKET} target="_blank" rel="noreferrer">Get a quote ↗</a>}
-                </div>
-              </article>
-            ))}
+            <article className="esn-service-card">
+              <div className="esn-service-icon" aria-hidden="true">🤖</div>
+              <h3>Custom Discord Bot Development</h3>
+              <p>A bot built around what your server actually needs: slash commands, moderation, tickets, roles and utility tools, in Python or Node.js.</p>
+              <div className="esn-service-foot"><strong>Custom quote</strong><a href={DISCORD_TICKET} target="_blank" rel="noreferrer">Get a quote ↗</a></div>
+            </article>
+            <article className="esn-service-card">
+              <div className="esn-service-icon" aria-hidden="true">⚡</div>
+              <h3>Self-Serve Bot Hosting 24/7</h3>
+              <p>Host your own Python or Node.js bot on the ESN panel with console, file access and automatic restarts.</p>
+              <div className="esn-service-foot"><strong>From $0.50/mo</strong><Link to="/hosting/vps">See hosting plans →</Link></div>
+            </article>
+            <article className="esn-service-card">
+              <div className="esn-service-icon" aria-hidden="true">🛠️</div>
+              <h3>Anything else</h3>
+              <p>Game servers, bigger builds or a mix of services. Tell us what you want and we will scope it and quote it before any work starts.</p>
+              <div className="esn-service-foot"><strong>Custom quote</strong><a href={DISCORD_TICKET} target="_blank" rel="noreferrer">Get a quote ↗</a></div>
+            </article>
           </div>
         </div>
       </section>
@@ -135,33 +164,17 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      <section className="esn-services-section" id="how-it-works">
-        <div className="shell">
-          <div className="esn-services-head">
-            <span className="eyebrow">HOW IT WORKS</span>
-            <h2>From ticket to handover</h2>
-          </div>
-          <ol className="esn-services-steps">
-            {STEPS.map(([title, copy], index) => (
-              <li key={title}>
-                <b>{String(index + 1).padStart(2, '0')}</b>
-                <h3>{title}</h3>
-                <p>{copy}</p>
-              </li>
-            ))}
-          </ol>
-        </div>
-      </section>
-
       <section className="esn-services-section">
         <div className="shell">
           <div className="esn-services-cta">
             <div>
-              <span className="eyebrow">READY WHEN YOU ARE</span>
-              <h2>Get a quote for your project</h2>
-              <p>Open a ticket in the ESN Discord and tell us what you want built.</p>
+              <span className="eyebrow">QUESTIONS?</span>
+              <h2>Not sure which one fits?</h2>
+              <p>Open a ticket in the ESN Discord and tell us what you want built. We will point you to the right package or quote custom work.</p>
             </div>
-            <QuoteButtons secondary={false} />
+            <div className="esn-services-actions">
+              <a className="button primary" href={DISCORD_TICKET} target="_blank" rel="noreferrer">Open a ticket <span>↗</span></a>
+            </div>
           </div>
         </div>
       </section>

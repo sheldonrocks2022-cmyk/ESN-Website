@@ -473,7 +473,7 @@ export const SEO_ROUTES={
   '/services':{
     label:'Professional Services',
     title:'Discord Server Setup, Custom Bots & Game Servers | ESN',
-    description:'Custom Discord servers, bots and Minecraft or game servers built for you by the ESN team. Streamer servers with live alerts, bot hosting from $0.50/mo.',
+    description:'Fixed-price Discord server setup from $25, a two-server package for $50, live alerts, bots and Minecraft server setup by the ESN team. Buy online, open a ticket, we deliver.',
     index:true,
   },
   '/discord-server-setup':{
