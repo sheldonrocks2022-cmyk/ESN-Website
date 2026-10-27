@@ -435,13 +435,13 @@ function Header() {
         </div>
         <span className="mobile-current-section" aria-label="Current section">{mobileSection}</span>
 
-        <button className="menu-toggle" type="button" onClick={() => setOpen((v) => !v)} aria-expanded={open} aria-label="Toggle navigation">
+        <button className="menu-toggle" type="button" onClick={() => setOpen((v) => !v)} aria-expanded={open} aria-controls="esn-main-nav" aria-label={open ? 'Close navigation menu' : 'Open navigation menu'}>
           <span />
           <span />
           <span />
         </button>
 
-        <nav className={open ? 'nav open organized-nav' : 'nav organized-nav'} aria-label="Main navigation">
+        <nav id="esn-main-nav" className={open ? 'nav open organized-nav' : 'nav organized-nav'} aria-label="Main navigation">
           <Link className={location.pathname === '/' || location.pathname === '/home' ? 'nav-direct active' : 'nav-direct'} onClick={close} to="/">Home</Link>
 
           <div className={hostingActive ? 'nav-group active' : 'nav-group'}>
@@ -449,7 +449,7 @@ function Header() {
             <div className="dropdown organized-dropdown">
               <div className="dropdown-section">
                 <span className="dropdown-label">SERVER HOSTING</span>
-                <Link onClick={close} to="/hosting/vps">Discord Bot Hosting</Link>
+                <Link onClick={close} to="/hosting/vps">Discord Bot Hosting · from $0.50/mo</Link>
                 <Link onClick={close} to="/business">Customer Business Hub</Link>
                 <Link onClick={close} to="/hosting">Domains & Hosting Requests</Link>
                 <Link onClick={close} to="/status">Service Status</Link>
@@ -729,7 +729,7 @@ function Home() {
             <p>From hosting your Discord bot to building your website or community, ESN makes it easier to get started. We're here to help you choose what works, not sell you things you don't need.</p>
 
             <div className="hero-actions flagship-actions">
-              <Link className="button primary" to="/hosting/vps">Explore hosting <span>↗</span></Link>
+              <Link className="button primary" to="/hosting/vps">Bot hosting from $0.50/mo <span>↗</span></Link>
               <Link className="button secondary" to="/serviceshowcase">Our services</Link>
               <a className="button secondary" href={DISCORD_URL} target="_blank" rel="noreferrer">Join Discord</a>
             </div>

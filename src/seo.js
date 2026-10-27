@@ -11,6 +11,7 @@ export function socialImageFor(pathname=''){
   if(['/fortnite-coaching','/video-editing','/discord-server-setup','/serviceshowcase','/configure','/estimate','/portfolio','/testimonials'].includes(path))return SITE_URL+'/social/esn-services.png'
   if(['/website-builder','/site-builder','/showcase','/hosting'].includes(path))return SITE_URL+'/social/esn-builder.png'
   if(['/free-browser-tools','/estools'].includes(path))return SITE_URL+'/social/esn-tools.png'
+  if(path==='/hosting/vps'||path==='/business'||path.startsWith('/business/'))return SITE_URL+'/social/esn-hosting.png'
   return SITE_URL+'/social/esn-network.png'
 }
 
@@ -18,14 +19,14 @@ export const SEO_ROUTES={
   '/':{
     label:'Home',
     title:'ES Network (ESN) | Minecraft SMP, Gaming & Creator Services',
-    description:'ES Network (ESN): Discord bot hosting from $0.50/month, game server, web and VPS-lite hosting, the ESN SMP Minecraft server, creator services, free browser games and tools.',
+    description:'ES Network (ESN): Discord bot hosting from $0.50/month, plus game, web and VPS-lite servers, the ESN SMP Minecraft server, creator services and free tools.',
     canonical:'/',
     index:true,
   },
   '/home':{
     label:'Home',
     title:'ES Network (ESN) | Minecraft SMP, Gaming & Creator Services',
-    description:'ES Network (ESN): Discord bot hosting from $0.50/month, game server, web and VPS-lite hosting, the ESN SMP Minecraft server, creator services, free browser games and tools.',
+    description:'ES Network (ESN): Discord bot hosting from $0.50/month, plus game, web and VPS-lite servers, the ESN SMP Minecraft server, creator services and free tools.',
     canonical:'/',
     index:false,
   },
@@ -68,7 +69,7 @@ export const SEO_ROUTES={
   '/business/setup':{label:'ESN Bot Setup Guides',title:'Host Python and Node.js Discord Bots | ESN Guides',description:'Follow a practical Python or Node.js Discord bot hosting checklist with startup commands, file uploads, dependencies, secure token management, and troubleshooting tips.',index:true},
   '/hosting/vps':{
     label:'ESN Bot Hosting',
-    title:'ESN Hosting | 22 Plans from $0.50/month: Bots, Game Servers, Web & VPS-lite',
+    title:'ESN Hosting: 22 Plans from $0.50/mo | Bots, Games & Web',
     description:'Compare all 22 ESN Hosting plans with RAM, CPU, and storage: Discord bots from Nano to Gift, Terraria, Factorio, Valheim and Palworld servers, web hosting, and VPS-lite.',
     index:true,
   },

@@ -2,7 +2,10 @@ import { useEffect, useMemo, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import './analytics.css'
 
-const API=(import.meta.env.VITE_ESN_ANALYTICS_API||'https://analytics-api.esnoffical.com').replace(/\/$/,'')
+// Collection only runs when an analytics endpoint is configured at build time.
+// The old default host (analytics-api.esnoffical.com) has no DNS record, so every
+// page view logged a failed request in the console.
+const API=(import.meta.env.VITE_ESN_ANALYTICS_API||'').replace(/\/$/,'')
 const VISITOR_KEY='esn_analytics_visitor_v1'
 const SESSION_KEY='esn_analytics_session_v1'
 const TOKEN_KEY='esn_analytics_admin_token_v1'
@@ -33,6 +36,7 @@ function payload(type,extra={}){
   }
 }
 async function send(type,extra={}){
+  if(!API)return
   const body=JSON.stringify(payload(type,extra))
   try{
     await fetch(API+'/api/collect',{method:'POST',headers:{'content-type':'application/json'},body,keepalive:true,mode:'cors'})
@@ -45,6 +49,7 @@ async function send(type,extra={}){
   }
 }
 async function flush(){
+  if(!API)return
   let q=[]
   try{q=JSON.parse(localStorage.getItem('esn_analytics_queue_v1')||'[]')}catch{}
   if(!q.length)return
@@ -120,7 +125,9 @@ export function AnalyticsDashboard(){
 
   const headers=useMemo(()=>token?{authorization:`Bearer ${token}`}:{},[token])
   const login=async e=>{
-    e.preventDefault();setError('');setLoading(true)
+    e.preventDefault();setError('')
+    if(!API){setError('Site analytics is not connected yet.');return}
+    setLoading(true)
     try{
       const res=await fetch(API+'/api/admin/login',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({code})})
       const json=await res.json()
@@ -129,7 +136,7 @@ export function AnalyticsDashboard(){
     }catch(err){setError(err.message)}finally{setLoading(false)}
   }
   const load=async()=>{
-    if(!token)return
+    if(!token||!API)return
     setLoading(true);setError('')
     try{
       const [s,l]=await Promise.all([
@@ -144,7 +151,7 @@ export function AnalyticsDashboard(){
   }
   useEffect(()=>{load()},[token,days])
   useEffect(()=>{
-    if(!token)return
+    if(!token||!API)return
     const t=setInterval(()=>fetch(API+'/api/admin/realtime',{headers}).then(r=>r.json()).then(setLive).catch(()=>{}),20000)
     return()=>clearInterval(t)
   },[token,headers])
