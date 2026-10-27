@@ -18,14 +18,14 @@ export const SEO_ROUTES={
   '/':{
     label:'Home',
     title:'ES Network (ESN) | Minecraft SMP, Gaming & Creator Services',
-    description:'Join ES Network for ESN SMP Minecraft, Fortnite coaching, creator editing, Discord server setup, website projects, free browser games, tools, and community.',
+    description:'ES Network (ESN): Discord bot hosting from $0.50/month, game server, web and VPS-lite hosting, the ESN SMP Minecraft server, creator services, free browser games and tools.',
     canonical:'/',
     index:true,
   },
   '/home':{
     label:'Home',
     title:'ES Network (ESN) | Minecraft SMP, Gaming & Creator Services',
-    description:'Join ES Network for ESN SMP Minecraft, Fortnite coaching, creator editing, Discord server setup, website projects, free browser games, tools, and community.',
+    description:'ES Network (ESN): Discord bot hosting from $0.50/month, game server, web and VPS-lite hosting, the ESN SMP Minecraft server, creator services, free browser games and tools.',
     canonical:'/',
     index:false,
   },
