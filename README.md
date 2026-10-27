@@ -8,7 +8,7 @@ Official source for the live **ES Network (ESN)** website.
 **ESN SMP:** https://esnoffical.com/minecraft-smp  
 **Website Builder:** https://esnoffical.com/website-builder  
 **Free ES Tools:** https://esnoffical.com/free-browser-tools  
-**Official Discord:** https://discord.gg/3gxA66KZ8
+**Official Discord:** https://discord.gg/RGPt3zEfGy
 
 ES Network brings together creator services, the ESN SMP, six original browser games, free tools, website creation, community resources, and other ESN projects in one connected platform.
 

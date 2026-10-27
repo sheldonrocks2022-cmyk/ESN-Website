@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import './storeAi.css'
 
-const DISCORD_URL='https://discord.gg/3gxA66KZ8'
+const DISCORD_URL='https://discord.gg/RGPt3zEfGy'
 const STAFF_CODE_HASH='645569b472b3670b547fd45aa2a626177a8fb71f722bb7c3dc07d0d670311cab'
 const STAFF_SESSION_KEY='esn_staff_session_v1'
 const STORE_AI_STAFF_KEY='esn_store_ai_staff_v1'

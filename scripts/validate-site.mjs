@@ -294,9 +294,9 @@ if (!fs.existsSync(esnsmpJarPath) || !fs.existsSync(esnsmpMetaPath)) {
   }
 }
 if (!app.includes('Add & Start') || !app.includes('Open Bedrock Connect on your phone') || !app.includes('Same Wi-Fi / internet required')) problems.push('Official ESN console connection flow missing.')
-if (!app.includes("SMP_BEDROCK_PORT = '17429'") || !app.includes("SMP_JAVA_PORT = '17769'")) problems.push('Verified ESN Java/Bedrock port split missing from App.')
-if (!liveNetwork.includes("SMP_BEDROCK_PORT='17429'") || !liveNetwork.includes("SMP_JAVA_PORT='17769'")) problems.push('Live Network must monitor verified Java and Bedrock ports separately.')
-if (!seo.includes('Bedrock port 17429')) problems.push('Console SEO must publish the verified Bedrock port 17429.')
+if (!app.includes("SMP_BEDROCK_PORT = '19132'") || !app.includes("SMP_JAVA_PORT = '25565'")) problems.push('Verified ESN Java/Bedrock port split missing from App.')
+if (!liveNetwork.includes("SMP_BEDROCK_PORT='19132'") || !liveNetwork.includes("SMP_JAVA_PORT='25565'")) problems.push('Live Network must monitor verified Java and Bedrock ports separately.')
+if (!seo.includes('Bedrock port 19132')) problems.push('Console SEO must publish the verified Bedrock port 19132.')
 if (!app.includes('<ExperienceEffects />')) problems.push('Premium interaction effects are not mounted.')
 if (!app.includes("import PremiumChrome from './PremiumChrome'")) problems.push('Premium command center import missing.')
 if (!app.includes('<PremiumChrome />')) problems.push('Premium command center is not mounted.')

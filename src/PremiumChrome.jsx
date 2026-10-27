@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 
-const DISCORD_URL='https://discord.gg/3gxA66KZ8'
-const SMP_HOST='esn.ggwp.cc'
+const DISCORD_URL='https://discord.gg/RGPt3zEfGy'
+const SMP_HOST='play.esnoffical.com'
 const PLUGIN_DOWNLOAD_URL='https://github.com/sheldonrocks2022-cmyk/ESNSMP/releases/download/v2.9.8/ESNSMP.jar'
 
 const compactRouteLabels={

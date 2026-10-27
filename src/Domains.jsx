@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import './domains.css'
 
 const ROOT_DOMAIN='esnoffical.com'
-const DISCORD_URL='https://discord.gg/3gxA66KZ8'
+const DISCORD_URL='https://discord.gg/RGPt3zEfGy'
 const FREE_ISSUE_BASE='https://github.com/sheldonrocks2022-cmyk/ESN-Website/issues/new'
 const STAFF_HASH='645569b472b3670b547fd45aa2a626177a8fb71f722bb7c3dc07d0d670311cab'
 const REQUEST_KEY='esn_hosting_requests_v1'

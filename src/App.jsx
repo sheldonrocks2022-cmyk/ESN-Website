@@ -37,11 +37,11 @@ import { useArcadeProgress } from './arcade/shared'
 import { AnalyticsDashboard, AnalyticsTracker } from './Analytics'
 import SMPAscensionPage from './SMPAscension'
 
-const DISCORD_URL = 'https://discord.gg/3gxA66KZ8'
+const DISCORD_URL = 'https://discord.gg/RGPt3zEfGy'
 const GUARDIAN_INVITE_URL = 'https://discord.com/oauth2/authorize?client_id=1544503232674664573'
-const SMP_HOST = 'esn.ggwp.cc'
-const SMP_JAVA_PORT = '17769'
-const SMP_BEDROCK_PORT = '17429'
+const SMP_HOST = 'play.esnoffical.com'
+const SMP_JAVA_PORT = '25565'
+const SMP_BEDROCK_PORT = '19132'
 const SMP_PORT = SMP_JAVA_PORT
 const PLUGIN_VERSION = 'v2.15.0'
 const PLUGIN_DOWNLOAD_URL = '/downloads/ESNSMP.jar'
@@ -1250,7 +1250,7 @@ function SMPConnection() {
       <PageHero
         eyebrow="ESN SMP"
         title="Join ESN SMP on Java or Bedrock."
-        text="Use the official connection details below. Java uses port 17769; Bedrock and console players use port 17429."
+        text="Use the official connection details below. Java uses port 25565; Bedrock and console players use port 19132."
         actions={<Link className="button secondary" to="/smpconsole">Console connection guide</Link>}
       />
 
