@@ -3,7 +3,7 @@ import { TIP_URL } from './servicesCatalog'
 import './thanks.css'
 
 // After-payment page (/thanks). Every Stripe Payment Link redirects here:
-// /thanks?item=<slug>&type=<service|smp>  (the tip link uses ?item=tip).
+// /thanks?item=<slug>&type=<service|smp|hosting|trial>  (the tip link uses ?item=tip).
 const DISCORD_TICKET = 'https://discord.gg/RGPt3zEfGy'
 
 function itemLabel(slug) {
@@ -40,6 +40,42 @@ export default function ThanksPage() {
             <Link className="button secondary" to="/storesmp">SMP Store</Link>
             <Link className="button secondary" to="/services">Services</Link>
             <a className="button secondary" href={DISCORD_TICKET} target="_blank" rel="noreferrer">Join our Discord <span>↗</span></a>
+          </div>
+        </section>
+      </main>
+    )
+  }
+
+  if (type === 'hosting' || type === 'trial') {
+    const isTrial = type === 'trial'
+    return (
+      <main className="esn-thanks-page">
+        <section className="shell esn-thanks-card">
+          <span className="eyebrow">{isTrial ? 'Trial started' : 'Payment received'}</span>
+          <h1>{isTrial ? 'Your free trial has started!' : 'Thanks for your order!'}</h1>
+          {label ? <p className="esn-thanks-item">Your plan: <strong>{label}</strong></p> : null}
+          <p className="esn-thanks-lead">Stripe has emailed your receipt. Your server is set up automatically.</p>
+          <div className="esn-thanks-steps">
+            <h2>Next steps</h2>
+            <ol>
+              <li><b>Open the panel</b> at <code>panel.esnoffical.com</code>. Your server appears there within a few minutes.</li>
+              <li><b>Sign in with the same email</b> you used at checkout. No panel account yet? Create one with that email and your server shows up shortly after.</li>
+              {isTrial ? <li><b>No charge during the trial.</b> Cancel before it ends and you pay nothing.</li> : null}
+              <li><b>Need help?</b> Open a Discord ticket and paste your receipt.</li>
+            </ol>
+            <div className="esn-thanks-links">
+              <a className="button primary" href="https://panel.esnoffical.com" target="_blank" rel="noreferrer">Open the panel <span>↗</span></a>
+              <a className="button secondary" href={DISCORD_TICKET} target="_blank" rel="noreferrer">Open a ticket <span>↗</span></a>
+            </div>
+          </div>
+          <div className="esn-thanks-tipbox">
+            <p>Enjoying ESN? Tips keep everything running.</p>
+            <TipButton />
+          </div>
+          <div className="esn-thanks-links esn-thanks-back">
+            <Link to="/pricing">Plans</Link>
+            <Link to="/services">Browse services</Link>
+            <Link to="/">Home</Link>
           </div>
         </section>
       </main>
