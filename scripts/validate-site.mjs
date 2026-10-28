@@ -45,6 +45,7 @@ const requiredRoutes = [
   '/hosting',
   '/hosting/vps',
   '/services',
+  '/guardian',
   '/domains',
   '/site-builder',
   '/operations',

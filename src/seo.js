@@ -476,6 +476,12 @@ export const SEO_ROUTES={
     description:'Fixed-price Discord server setup from $25, a two-server package for $50, live alerts, bots and Minecraft server setup by the ESN team. Buy online, open a ticket, we deliver.',
     index:true,
   },
+  '/guardian':{
+    label:'ESN Guardian',
+    title:'ESN Guardian Discord Bot: Setup Dashboard & Commands | ESN',
+    description:'ESN Guardian is the all-in-one security, verification and community Discord bot. Add it free, follow the setup checklist and search every public command.',
+    index:true,
+  },
   '/thanks':{
     label:'Thank You',
     title:'Thanks for Your Purchase | ESN',

@@ -19,6 +19,7 @@ import DomainsPage from './Domains'
 import HostingPage from './Hosting'
 import ServicesPage from './Services'
 import ThanksPage from './Thanks'
+import GuardianPage from './Guardian'
 import { TIP_URL } from './servicesCatalog'
 import { EXCLUSIVES20 } from './exclusives20'
 import { BusinessPlatformPage } from './BusinessPlatform'
@@ -1692,6 +1693,7 @@ function App() {
           <Route path="/serviceshowcase" element={<ServicesShowcase />} />
           <Route path="/services" element={<ServicesPage />} />
           <Route path="/thanks" element={<ThanksPage />} />
+          <Route path="/guardian" element={<GuardianPage />} />
           <Route path="/store-ai" element={<StoreAIPage />} />
           <Route path="/storeai" element={<Navigate to="/store-ai" replace />} />
           <Route path="/hosting" element={<DomainsPage />} />
