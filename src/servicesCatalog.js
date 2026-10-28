@@ -1,6 +1,9 @@
 // ESN Professional Services: every fixed-price listing in one place.
 // To change a price: edit `price` here AND create a new Stripe Payment Link with the new price, then paste its URL in `url`.
+// TIP_URL is the pay-what-you-want tip link (any amount).
 // `url` is the Stripe Payment Link (checkout). If it is empty, the Buy button opens the Discord ticket instead.
+export const TIP_URL = 'https://buy.stripe.com/fZudRa7xFbUzcZxaKjdnW1m'
+
 export const SERVICE_CATEGORIES = ['Server Packages', 'Discord Add-ons', 'Streamer & Live Alerts', 'Bots & Hosting', 'Minecraft']
 
 export const SERVICE_LISTINGS = [
@@ -42,12 +45,7 @@ export const SERVICE_LISTINGS = [
   { id: 'temp-voice', category: 'Discord Add-ons', name: 'Join-to-Create Voice Rooms', price: 10, days: '1 day', includes: ['Join a channel to get your own voice room', 'Rooms delete when empty', 'Owner controls for name and limit'], url: 'https://buy.stripe.com/8x2eVeg4be2HgbJg4DdnW1W' },
   { id: 'fun-channels', category: 'Discord Add-ons', name: 'Fun & Games Channels', price: 5, days: '1 day', includes: ['Counting channel', 'Word or trivia game channel', 'Rules set by a bot'], url: 'https://buy.stripe.com/dRm28scRZ0bR9NldWvdnW1X' },
   { id: 'extra-bot', category: 'Discord Add-ons', name: 'Extra Bot Configured', price: 5, days: '1 day', includes: ['One more trusted bot added', 'Set up for your server', 'Permissions checked'], url: 'https://buy.stripe.com/6oU6oIg4bf6L4t1cSrdnW1Y' },
-  { id: 'streamer-server', category: 'Streamer & Live Alerts', name: 'Streamer Server', price: 25, days: '2 days', includes: ['Verification and platform roles', 'Twitch & YouTube live alerts with an opt-in ping role', 'Socials, schedule, clips and media channels'], url: 'https://buy.stripe.com/6oU00kf070bRf7FaKjdnW2m' },
-  { id: 'twitch-alerts', category: 'Streamer & Live Alerts', name: 'Twitch Live Alerts', price: 25, days: '1 day', includes: ['Alert when you go live on Twitch', 'Opt-in ping role', 'Custom alert message'], url: 'https://buy.stripe.com/6oUdRaaJRcYDbVt05FdnW2n' },
-  { id: 'youtube-alerts', category: 'Streamer & Live Alerts', name: 'YouTube Alerts', price: 25, days: '1 day', includes: ['Alerts for new uploads and live streams', 'Opt-in ping role', 'Custom alert message'], url: 'https://buy.stripe.com/cNi00kg4b3o3e3B9GfdnW2o' },
-  { id: 'kick-alerts', category: 'Streamer & Live Alerts', name: 'Kick Live Alerts', price: 25, days: '1 day', includes: ['Alert when you go live on Kick', 'Opt-in ping role', 'Custom alert message'], url: 'https://buy.stripe.com/28E9AUcRZgaPaRp6u3dnW2p' },
-  { id: 'alerts-bundle', category: 'Streamer & Live Alerts', name: 'Live Alerts Bundle', price: 25, days: '1 day', includes: ['Twitch, YouTube and Kick alerts', 'One alerts channel with a ping role', 'Custom message per platform'], url: 'https://buy.stripe.com/bJe28s3hpbUzcZx2dNdnW23' },
-  { id: 'socials-hub', category: 'Streamer & Live Alerts', name: 'Socials & Schedule Channels', price: 25, days: '1 day', includes: ['Socials and links channel', 'Stream schedule channel', 'Clips and highlights channel'], url: 'https://buy.stripe.com/9B69AU05d4s72kT8CbdnW2q' },
+  { id: 'streamer-package', category: 'Streamer & Live Alerts', name: 'Streamer Package (everything streamer)', price: 25, days: '2 days', includes: ['Streamer server setup: verification, platform roles and a ping role', 'Twitch, YouTube and Kick live alerts', 'Socials and stream schedule channels'], url: 'https://buy.stripe.com/4gM7sM19haQvaRpf0zdnW2r' },
   { id: 'hosting-starter', category: 'Bots & Hosting', name: 'Managed Bot Hosting: Starter (1 month)', price: 10, days: '1 day', includes: ['1 small bot hosted 24/7 for 1 month', 'Auto-restart if it crashes', 'Console and file access'], url: 'https://buy.stripe.com/14A6oI2dl0bR1gP7y7dnW25' },
   { id: 'hosting-always-on', category: 'Bots & Hosting', name: 'Managed Bot Hosting: Always On (3 months)', price: 25, days: '1 day', includes: ['1 bot hosted 24/7 for 3 months', 'Setup help and priority support', 'Console and file access'], url: 'https://buy.stripe.com/eVq8wQ7xF1fVgbJf0zdnW26' },
   { id: 'hosting-multi-bot', category: 'Bots & Hosting', name: 'Managed Bot Hosting: Multi-Bot (3 months)', price: 45, days: '2 days', includes: ['Up to 3 bots, or 1 large bot, for 3 months', 'Database setup', 'Priority support'], url: 'https://buy.stripe.com/14AfZi5pxe2H1gP19JdnW27' },
