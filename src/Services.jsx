@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { SERVICE_CATEGORIES, SERVICE_LISTINGS } from './servicesCatalog'
+import { SERVICE_CATEGORIES, SERVICE_LISTINGS, TIP_URL } from './servicesCatalog'
 import './services.css'
 
 // Professional Services page (/services).
@@ -69,6 +69,7 @@ export default function ServicesPage() {
           <div className="esn-services-actions">
             <a className="button primary" href="#services">Browse {SERVICE_LISTINGS.length} services</a>
             <a className="button secondary" href={DISCORD_TICKET} target="_blank" rel="noreferrer">Get a quote <span>↗</span></a>
+            <a className="button secondary esn-tip-button" href={TIP_URL} target="_blank" rel="noreferrer">Tip any amount <span>♥</span></a>
           </div>
           <p className="esn-services-note">Need something custom? Open a Discord ticket for a quote.</p>
         </div>
@@ -174,6 +175,7 @@ export default function ServicesPage() {
             </div>
             <div className="esn-services-actions">
               <a className="button primary" href={DISCORD_TICKET} target="_blank" rel="noreferrer">Open a ticket <span>↗</span></a>
+              <a className="button secondary esn-tip-button" href={TIP_URL} target="_blank" rel="noreferrer">Tip any amount <span>♥</span></a>
             </div>
           </div>
         </div>
