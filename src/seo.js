@@ -58,7 +58,7 @@ export const SEO_ROUTES={
   '/business':{
     label:'ESN Business Hub',
     title:'ESN Hosting Business Hub | Plans, Help & Partnerships',
-    description:'Explore ESN hosting plans, setup guides, support and partnership information. Buy plans on the ESN panel, where servers are set up automatically after Stripe checkout.',
+    description:'ESN hosting plans, setup guides, support and partnerships. Buy on the ESN panel and your server is set up automatically after Stripe checkout.',
     index:true,
   },
   '/business/dashboard':{label:'ESN Workspace',title:'My ESN Hosting Workspace | Local Drafts',description:'Create local ESN hosting request drafts and open official support tickets. This is not a live customer account.',index:false},
@@ -66,11 +66,11 @@ export const SEO_ROUTES={
   '/business/partners':{label:'ESN Partnerships',title:'ESN Hosting Partnerships & Referrals',description:'Learn about ESN hosting partnership and referral enquiries. Applications require ESN staff review.',index:true},
   '/business/rewards':{label:'ESN Hosting Benefits',title:'ESN Hosting Rewards & Loyalty Information',description:'Review staff-approved customer perks, rewards policies and community milestones.',index:true},
   '/business/support':{label:'ESN Hosting Support',title:'ESN Hosting Help & Support',description:'Find ESN hosting help, Discord bot troubleshooting, account and billing guidance, setup resources, and official support channels before opening a ticket.',index:true},
-  '/business/setup':{label:'ESN Bot Setup Guides',title:'Host Python and Node.js Discord Bots | ESN Guides',description:'Follow a practical Python or Node.js Discord bot hosting checklist with startup commands, file uploads, dependencies, secure token management, and troubleshooting tips.',index:true},
+  '/business/setup':{label:'ESN Bot Setup Guides',title:'Host Python and Node.js Discord Bots | ESN Guides',description:'A practical checklist for hosting Python or Node.js Discord bots: startup commands, file uploads, dependencies, token safety and troubleshooting.',index:true},
   '/hosting/vps':{
     label:'ESN Bot Hosting',
     title:'ESN Hosting: 22 Plans from $0.50/mo | Bots, Games & Web',
-    description:'Compare all 22 ESN Hosting plans with RAM, CPU, and storage: Discord bots from Nano to Gift, Terraria, Factorio, Valheim and Palworld servers, web hosting, and VPS-lite.',
+    description:'Compare all 22 ESN Hosting plans by RAM, CPU and storage: Discord bots, Terraria, Factorio, Valheim and Palworld servers, web hosting and VPS-lite.',
     index:true,
   },
   '/site-builder':{
@@ -121,13 +121,13 @@ export const SEO_ROUTES={
   '/smpplugin':{
     label:'ESNSMP Plugin',
     title:'ESNSMP Plugin Download | ES Network Minecraft Plugin',
-    description:'Download ESNSMP v2.15.0 Realm Ascension with automated realm worlds, mobs, quests, mastery, factions, dungeons, raids, events, pets, mounts, PvP and endgame progression.',
+    description:'Download ESNSMP v2.15.0 Realm Ascension: realm worlds, quests, mastery, factions, dungeons, raids, events, pets, mounts, PvP and endgame progression.',
     index:true,
   },
   '/smp/realm-ascension':{
     label:'Realm Ascension',
     title:'ESN SMP Realm Ascension | Realms, Quests, Raids & Mastery',
-    description:'Explore ESN SMP Realm Ascension v2.15.0 with eight realm worlds, story quests, mastery, factions, dungeons, raids, bosses, pets, mounts, PvP and Shattered Realm.',
+    description:'ESN SMP Realm Ascension v2.15.0: eight realm worlds, story quests, mastery, factions, dungeons, raids, bosses, pets, mounts, PvP and Shattered Realm.',
     index:true,
   },
   '/analytics':{
@@ -473,7 +473,7 @@ export const SEO_ROUTES={
   '/services':{
     label:'Professional Services',
     title:'Discord Server Setup, Custom Bots & Game Servers | ESN',
-    description:'Fixed-price Discord server setup from $25, a two-server package for $50, live alerts, bots and Minecraft server setup by the ESN team. Buy online, open a ticket, we deliver.',
+    description:'Fixed-price Discord server setup from $25, a two-server package for $50, plus bots, live alerts and Minecraft server setup by the ESN team.',
     index:true,
   },
   '/guardian':{
@@ -563,7 +563,7 @@ export const SEO_ROUTES={
   '/smp/void-warrior':{
     label:'Void Warrior Set',
     title:'ESN Void Warrior Set | In the $1.99 Exclusives Mega Bundle',
-    description:'The ESN SMP Void Warrior set (crown, chestplate, leggings, boots and blade) is sold in the ESN Exclusives Mega Bundle with the Lightning King and Immortal Warden sets.',
+    description:'The ESN SMP Void Warrior set (crown, chestplate, leggings, boots, blade) comes in the ESN Exclusives Mega Bundle with Lightning King and Immortal Warden.',
     index:true,
   },
   '/smp/realm-100':{
