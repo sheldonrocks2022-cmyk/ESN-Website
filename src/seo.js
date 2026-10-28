@@ -476,6 +476,12 @@ export const SEO_ROUTES={
     description:'Fixed-price Discord server setup from $25, a two-server package for $50, live alerts, bots and Minecraft server setup by the ESN team. Buy online, open a ticket, we deliver.',
     index:true,
   },
+  '/thanks':{
+    label:'Thank You',
+    title:'Thanks for Your Purchase | ESN',
+    description:'Your ESN payment went through. Next steps for services and SMP store items, how to get help in Discord, and an optional tip of any amount.',
+    index:false,
+  },
   '/discord-server-setup':{
     label:'Discord Server Setup',
     title:'Discord Server Setup for Gaming Communities | ES Network',

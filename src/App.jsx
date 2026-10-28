@@ -18,6 +18,9 @@ import StoreAIPage from './StoreAI'
 import DomainsPage from './Domains'
 import HostingPage from './Hosting'
 import ServicesPage from './Services'
+import ThanksPage from './Thanks'
+import { TIP_URL } from './servicesCatalog'
+import { EXCLUSIVES20 } from './exclusives20'
 import { BusinessPlatformPage } from './BusinessPlatform'
 import { LiveBusinessStaff } from './BusinessLive'
 import SiteBuilderPage, { HostedSitePage } from './SiteBuilder'
@@ -1507,11 +1510,12 @@ function SMPStore() {
         eyebrow="ESN SMP Store"
         title="Official SMP store."
         text="Verified ESN SMP digital products with Stripe checkout and username-based delivery."
+        actions={<a className="esn-tip-big" href={TIP_URL} target="_blank" rel="noreferrer"><span aria-hidden="true">♥</span> Leave a tip — any amount</a>}
       />
 
       <section className="section compact-section">
         <div className="shell network-stat-grid store-stat-grid">
-          <div><strong>{liveProducts.length}</strong><span>Current products</span></div>
+          <div><strong>{liveProducts.length + EXCLUSIVES20.length}</strong><span>Current products</span></div>
           <div><strong>Stripe</strong><span>Secure checkout</span></div>
           <div><strong>Exact name</strong><span>Required for delivery</span></div>
           <div><strong>.</strong><span>Include the prefix if your username uses it</span></div>
@@ -1530,6 +1534,27 @@ function SMPStore() {
 
           <div className="card-grid two store-grid">
             {liveProducts.map((product) => <ProductCard key={product.name} product={product} />)}
+          </div>
+
+          <div className="store-x20-head" id="exclusives-20">
+            <span className="eyebrow">New · Exclusives 20</span>
+            <h2>20 new exclusives.</h2>
+            <p>Armor sets, tools, trails, kill effects, pets and two bundles. Same Stripe checkout and username delivery as the items above. Brand-new items arrive in-game with the next server update, so if you buy now they are delivered automatically the first time you join after it.</p>
+          </div>
+          <div className="store-x20-grid">
+            {EXCLUSIVES20.map((product) => (
+              <article className={'store-x20-card' + (product.bundle ? ' is-bundle' : '')} key={product.name} id={'product-' + product.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')}>
+                <div className="store-x20-top"><span className="store-x20-icon" aria-hidden="true">{product.icon}</span><span className="store-x20-price">{product.price}</span></div>
+                <h3>{product.name}</h3>
+                <ul>{product.items.map((item) => <li key={item}>{item}</li>)}</ul>
+                <a className="button primary" href={product.stripe} target="_blank" rel="noreferrer">Buy with Stripe</a>
+              </article>
+            ))}
+          </div>
+
+          <div className="store-tip-row">
+            <p>Want to support the SMP? Leave a tip of any amount.</p>
+            <a className="esn-tip-big" href={TIP_URL} target="_blank" rel="noreferrer"><span aria-hidden="true">♥</span> Leave a tip — any amount</a>
           </div>
 
           <div className="store-security">
@@ -1666,6 +1691,7 @@ function App() {
           <Route path="/testimonials" element={<Testimonials />} />
           <Route path="/serviceshowcase" element={<ServicesShowcase />} />
           <Route path="/services" element={<ServicesPage />} />
+          <Route path="/thanks" element={<ThanksPage />} />
           <Route path="/store-ai" element={<StoreAIPage />} />
           <Route path="/storeai" element={<Navigate to="/store-ai" replace />} />
           <Route path="/hosting" element={<DomainsPage />} />
