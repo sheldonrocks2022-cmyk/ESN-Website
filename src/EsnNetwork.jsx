@@ -78,9 +78,9 @@ export function NetworkFooterRow(){
 
 export function HeroNetworkActions(){
   return <div className="esn-net-hero-actions">
-    <a className="button secondary esn-net-cta" href={ESN_PANEL_URL} target="_blank" rel="noreferrer"><span className="esn-net-long">Open the </span>Panel <span aria-hidden="true">↗</span></a>
+    <a className="button secondary esn-net-cta" href={ESN_PANEL_URL} target="_blank" rel="noreferrer"><span><span className="esn-net-long">Open the </span>Panel</span> <span aria-hidden="true">↗</span></a>
     <a className="button secondary esn-net-cta" href={ESN_SMP_STORE_URL} target="_blank" rel="noreferrer">SMP Store <span aria-hidden="true">↗</span></a>
-    <a className="button secondary esn-net-cta" href={ESN_DISCORD_URL} target="_blank" rel="noreferrer"><span className="esn-net-long">Join </span>Discord <span aria-hidden="true">↗</span></a>
+    <a className="button secondary esn-net-cta" href={ESN_DISCORD_URL} target="_blank" rel="noreferrer"><span><span className="esn-net-long">Join </span>Discord</span> <span aria-hidden="true">↗</span></a>
   </div>
 }
 
