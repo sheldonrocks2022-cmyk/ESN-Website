@@ -141,6 +141,11 @@ h3 { font-size: 1.45rem; }
 .faq-list details { border: 1px solid var(--line); border-radius: 16px; background: rgba(255,255,255,.025); padding: 4px 18px; }
 .faq-list summary { cursor: pointer; font-weight: 850; padding: 17px 4px; }
 .faq-list p { padding: 0 4px 8px; margin-top: 0; }
+.rules-page { margin: 30px auto 10px; line-height: 1.7; }
+.rules-page h2 { margin: 34px 0 10px; font-size: 1.35rem; }
+.rules-page ul { padding-left: 22px; }
+.rules-page li { margin: 8px 0; }
+.rules-page .rules-box { border: 1px solid var(--line); border-radius: 16px; background: rgba(255,255,255,.035); padding: 6px 20px; margin: 18px 0; }
 
 .page-hero { padding: 140px 0 90px; border-bottom: 1px solid rgba(255,255,255,.05); background: radial-gradient(circle at 80% 20%, rgba(65,105,255,.12), transparent 35rem); }
 .page-hero h1 { font-size: clamp(3.3rem, 8vw, 6.8rem); }

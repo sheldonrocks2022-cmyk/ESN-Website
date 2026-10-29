@@ -628,6 +628,7 @@ function Footer() {
             <Link to="/explore">Explore ESN</Link>
             <Link to="/about">About the Team</Link>
             <Link to="/faq">FAQ</Link>
+            <Link to="/rules">Rules</Link>
             <Link to="/support">Contact Support</Link>
             <Link to="/settings">Settings</Link>
           </div>
@@ -1100,6 +1101,44 @@ function Leadership() {
     </>
   )
 }
+function RulesPage() {
+  return (
+    <>
+      <PageHero eyebrow="ESN Hosting" title="Rules & Acceptable Use" text="ESN Hosting (ES Network) · Last updated October 29, 2026" />
+      <section className="section">
+        <div className="shell narrow rules-page">
+          <p>These rules apply to everyone who uses ESN Hosting: game servers, Discord bots, websites and anything else running on our servers. By creating an account or buying a plan, you agree to them. We keep them short and plain so they are easy to follow.</p>
+
+          <h2>What is not allowed</h2>
+          <ul>
+            <li><strong>No crypto mining.</strong> No Bitcoin, Ethereum, Monero or any other mining, plotting or similar workloads.</li>
+            <li><strong>No attacks.</strong> No DDoS or DoS tools, booters, stressers or network floods, against anyone.</li>
+            <li><strong>No port scanning or hacking.</strong> No scanning, brute forcing, exploits, malware or attempts to break into any system.</li>
+            <li><strong>No open proxies or VPN exits.</strong> Don't run public proxies, VPN exit nodes, Tor exit relays or anything that lets strangers route traffic through our network.</li>
+            <li><strong>No spam or bulk mail.</strong> No unsolicited mass email, mass DMs or other spam.</li>
+            <li><strong>No pirated software.</strong> Only run software, plugins and files you have the right to use.</li>
+            <li><strong>No illegal content.</strong> Nothing that is illegal, and nothing that harms or exploits others.</li>
+            <li><strong>No resource abuse.</strong> Don't run anything built to keep CPU, disk or network maxed out around the clock (for example traffic exchangers or card sharing). Normal game servers and bots are fine.</li>
+          </ul>
+
+          <h2>What happens if the rules are broken</h2>
+          <div className="rules-box">
+            <p>If a service breaks these rules, we may suspend it right away, without warning, to protect our network and other customers. Serious or repeated abuse can lead to the account being closed.</p>
+            <p><strong>Services suspended for abuse are not refunded.</strong></p>
+          </div>
+          <p>You are responsible for what runs on your server, including anything your players, users or bot code do. If your server has been compromised, tell us quickly and we'll help you sort it out.</p>
+
+          <h2>Reporting abuse</h2>
+          <p>If you see something on ESN that breaks these rules, open a ticket in our <a href="https://discord.gg/RGPt3zEfGy" target="_blank" rel="noreferrer">Discord</a> or email <a href="mailto:esnhosting@gmail.com">esnhosting@gmail.com</a>.</p>
+
+          <h2>Changes</h2>
+          <p>We may update these rules as ESN grows. The date at the top shows the latest version.</p>
+        </div>
+      </section>
+    </>
+  )
+}
+
 function FAQ() {
   return (
     <>
@@ -1689,6 +1728,8 @@ function App() {
           <Route path="/about" element={<About />} />
           <Route path="/leadership" element={<Leadership />} />
           <Route path="/faq" element={<FAQ />} />
+          <Route path="/rules" element={<RulesPage />} />
+          <Route path="/terms" element={<Navigate to="/rules" replace />} />
           <Route path="/testimonials" element={<Testimonials />} />
           <Route path="/serviceshowcase" element={<ServicesShowcase />} />
           <Route path="/services" element={<ServicesPage />} />

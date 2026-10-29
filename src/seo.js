@@ -362,6 +362,12 @@ export const SEO_ROUTES={
     description:'Read 35 verified-on-Discord ES Network reviews covering Fortnite coaching, creator editing, and Discord server setup services.',
     index:true,
   },
+  '/rules':{
+    label:'Rules',
+    title:'Rules & Acceptable Use | ESN Hosting',
+    description:'The rules for using ESN Hosting: what is not allowed on our servers and what happens if the rules are broken.',
+    index:true,
+  },
   '/faq':{
     label:'FAQ',
     title:'ES Network FAQ | Services, SMP, Ordering & Support',
