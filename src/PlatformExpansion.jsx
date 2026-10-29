@@ -78,6 +78,7 @@ export function PlatformHomeSection(){
 }
 
 const INTENTS=[
+  ['▲','Host a bot or server','Discord bot and game hosting from $0.50/mo, set up automatically.','/hosting/vps'],
   ['◇','Create something','Services, website projects, Store AI, and portfolio.','/serviceshowcase'],
   ['⬡','Join the SMP','Server details, live world hub, store, plugin, and guide.','/smp-hub'],
   ['⌕','Find something','Search pages, commands, products, FAQs, tools, and SMP items.','/search'],
