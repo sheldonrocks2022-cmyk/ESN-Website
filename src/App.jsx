@@ -29,6 +29,8 @@ import { ChangelogTimelinePage, DiagnosticCenterPage, GlobalOpsLayer, Operations
 import { SOCIAL_IMAGE_ALT, SOCIAL_IMAGE_URL, canonicalUrl, getSeo, robotsContent, socialImageFor, structuredDataFor } from './seo'
 import { PortfolioPage, StatusCenter, TimelinePage, UpdatesPage, VaultPage, WhatsHappeningNow } from './LiveExperience'
 import { VERIFIED_REVIEWS } from './reviews'
+import { HeroNetworkActions, HomeNetworkSection, NetworkBar, NetworkFooterRow, StatusPill } from './EsnNetwork'
+import { ESN_PLANS_URL, HOME_FAQ } from './esnNetwork'
 import HomeControlCenter from './HomeControlCenter'
 import { ActivityTimelinePage, BuilderShowcasePage, DataBackupPage, GlobalSearchPage, LabsPage, LaunchpadPage, NetworkMapPage, PlatformHomeSection, PlatformLayer, ProjectEstimatePage, ServiceConfiguratorPage, ShareGeneratorV2Page, SMPItemsPage, SMPWorldHubPage, TrustCenterPage } from './PlatformExpansion'
 import { BrandAuthorityPage, GuideArticlePage, GuidesHubPage, RelatedVisibilityLinks, SearchLandingPage, SMPFeaturePage, VisibilityInsightsPage, VisibilityLayer } from './VisibilityExpansion'
@@ -635,6 +637,8 @@ function Footer() {
         </div>
       </div>
 
+      <NetworkFooterRow />
+
       <div className="shell"><FooterCommandDeck /></div>
 
       <div className="shell footer-bottom">
@@ -726,21 +730,23 @@ function Home() {
         <div className="flagship-lines" aria-hidden="true" />
 
         <div className="shell flagship-hero-layout">
-          <div className="flagship-hero-copy">
+          <div className="flagship-hero-copy esn-net-rise">
             <div className="hero-badge-row">
               <span className="signal-badge"><i /> WELCOME TO ESN</span>
               <span className="hero-version" data-easter="hero-version" title="ES NETWORK // 2026">ES NETWORK // 2026</span>
+              <StatusPill className="esn-net-hero-status" />
             </div>
 
             <span className="eyebrow">HOSTING · WEBSITES · COMMUNITY</span>
-            <h1><span className="hero-line-small">Built for your next idea.</span><br /><span className="hero-line-main">Backed by real people.</span></h1>
+            <h1><span className="hero-line-small">Built for your next idea.</span><br /><span className="hero-line-main esn-net-shine">Backed by real people.</span></h1>
             <p>From hosting your Discord bot to building your website or community, ESN makes it easier to get started. We're here to help you choose what works, not sell you things you don't need.</p>
 
             <div className="hero-actions flagship-actions">
               <Link className="button primary" to="/hosting/vps">Bot hosting from $0.50/mo <span>↗</span></Link>
               <Link className="button secondary" to="/serviceshowcase">Our services</Link>
-              <a className="button secondary" href={DISCORD_URL} target="_blank" rel="noreferrer">Join Discord</a>
             </div>
+            <HeroNetworkActions />
+            <a className="esn-net-hero-plans" href={ESN_PLANS_URL} target="_blank" rel="noreferrer">Compare every plan on the panel ↗</a>
 
             <div className="flagship-metrics esn-trust-line">
               <div><strong>From $0.50/mo</strong><small>Bot hosting & servers</small></div>
@@ -769,6 +775,8 @@ function Home() {
           <Link to="/arcade"><span>04</span><b>Arcade</b><small>Free browser games</small><em>↗</em></Link>
         </div>
       </section>
+
+      <HomeNetworkSection />
 
       <NetworkDirectory />
 
@@ -974,9 +982,9 @@ function Home() {
 
       <section className="section flagship-faq-section" id="faq">
         <div className="shell flagship-faq-layout">
-          <div><span className="eyebrow">FAQ</span><h2>Quick answers.</h2><p>Everything important without digging through the site.</p><Link className="text-link" to="/faq">Full FAQ →</Link></div>
+          <div><span className="eyebrow">FAQ</span><h2>Quick answers.</h2><p>Hosting, the panel, the SMP Store and support, answered before you ask.</p><Link className="text-link" to="/faq">Full FAQ →</Link></div>
           <div className="faq-list">
-            {FAQ_ITEMS.slice(0,4).map(([q,a])=><details key={q}><summary>{q}</summary><p>{a}</p></details>)}
+            {HOME_FAQ.map(([q,a],index)=><details key={q} open={index===0}><summary>{q}</summary><p>{a}</p></details>)}
           </div>
         </div>
       </section>
@@ -1712,6 +1720,7 @@ function App() {
       {!standaloneSite&&<ExperienceCoreV2 />}
       {!standaloneSite&&<PlatformLayer />}
       {!standaloneSite&&<VisibilityLayer />}
+      {!standaloneSite&&<NetworkBar />}
       {!standaloneSite&&<Header />}
       {!standaloneSite&&<PremiumChrome />}
       {!standaloneSite&&<ExperienceLayer />}

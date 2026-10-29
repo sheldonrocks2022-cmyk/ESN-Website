@@ -1,3 +1,4 @@
+import { HOME_FAQ } from './esnNetwork.js'
 export const SITE_URL='https://esnoffical.com'
 export const SITE_NAME='ES Network'
 export const SITE_LANGUAGE='en-US'
@@ -820,6 +821,18 @@ export function structuredDataFor(pathname){
       publisher:{'@id':SITE_URL+'/#organization'},
       mainEntityOfPage:{'@id':url+'#webpage'},
       image:socialImageFor(pathname),
+    })
+  }
+
+  if(canonicalPath(pathname)==='/'){
+    graph.push({
+      '@type':'FAQPage',
+      '@id':url+'#home-faq',
+      mainEntity:HOME_FAQ.map(([question,answer])=>({
+        '@type':'Question',
+        name:question,
+        acceptedAnswer:{'@type':'Answer',text:answer},
+      })),
     })
   }
 

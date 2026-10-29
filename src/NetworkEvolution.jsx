@@ -323,6 +323,7 @@ function Takeover({soundEnabled,onDone}) {
       <h2>{NETWORK_TAKEOVER.title}</h2>
       <p>{NETWORK_TAKEOVER.copy}</p>
       <button type="button" onClick={()=>{tone(soundEnabled,'unlock');onDone()}}>{NETWORK_TAKEOVER.actionLabel} →</button>
+      <Link className="ev-takeover-hosting" to="/hosting/vps" onClick={()=>onDone()}>Here for hosting? Plans from $0.50/mo →</Link>
     </div>
   </div>
 }
