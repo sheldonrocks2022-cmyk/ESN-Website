@@ -41,6 +41,7 @@ const requiredRoutes = [
   '/leadership',
   '/testimonials',
   '/faq',
+  '/rules',
   '/store-ai',
   '/hosting',
   '/hosting/vps',
