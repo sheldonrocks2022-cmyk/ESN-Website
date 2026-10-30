@@ -1,6 +1,6 @@
 import {useEffect,useMemo,useState} from 'react'
 import {Link} from 'react-router-dom'
-import {BOT_PLANS} from './Hosting'
+import {BOT_PLANS,planCheckoutUrl} from './Hosting'
 import { LiveBusinessCustomer,getPublicBusiness,businessApiEnabled } from './BusinessLive'
 import {
   CAPABILITIES,DEFAULT_BUSINESS_SETTINGS,DISCORD_HOSTING,SETUP_GUIDES,
@@ -54,7 +54,7 @@ function PlanCard({plan,featured,onAsk}){
     <div className="business-plan-head"><strong>ESN {plan.name}</strong>{featured&&<span>RECOMMENDED</span>}</div>
     <div className="business-plan-price">{plan.price}<small>/ month</small></div>
     <div className="business-resource"><span>{plan.ram} RAM</span><span>{plan.cpu} CPU</span><span>{plan.storage} storage</span></div>
-    <a className="business-plan-buy" href="https://panel.esnoffical.com/plans" target="_blank" rel="noreferrer">Buy on the panel <span>↗</span></a>
+    <a className="business-plan-buy" href={planCheckoutUrl(plan)} target="_blank" rel="noreferrer">Buy on the panel <span>↗</span></a>
     <button type="button" onClick={()=>onAsk(plan.name)}>Prepare a ticket <span>↗</span></button>
   </article>
 }
@@ -143,7 +143,7 @@ function Plans({settings}){
       <div className="business-plan-grid">{plans.map(p=><PlanCard key={p.name} plan={p} featured={p.name===settings.featuredPlan} onAsk={setChosen}/>)}</div>
     </section>}
     <ContactRequest key={chosen} presetPlan={chosen} settings={settings}/>
-    <section className="business-promo"><div><span>FREE ESN NANO</span><h2>Free ESN Nano included with every account — 256 MB bot server, no card, no expiry.</h2><p>Create an account and your free bot server is set up automatically.</p></div><a href="https://panel.esnoffical.com/auth/register" target="_blank" rel="noreferrer">Create your free account ↗</a></section>
+    <section className="business-promo"><div><span>FREE ESN NANO</span><h2>Every new account gets a FREE ESN Nano — 256 MB bot server, no card needed, no expiry.</h2><p>Create an account and your free bot server is set up automatically.</p></div><a href="https://panel.esnoffical.com/auth/register" target="_blank" rel="noreferrer">Create your free account ↗</a></section>
   </>
 }
 function Partners({settings}){
@@ -171,7 +171,7 @@ function Rewards({settings}){
   </>
 }
 function Support({settings}){
-  const topics=[['Getting started','/business/setup','Bot setup and startup settings'],['Hosting plans','/hosting/vps','Compare all 22 plans and buy on the panel'],['Server problems','/diagnostics','Check your browser before support'],['Service status','/status','Check public service notices'],['Account & billing','/trust','Official payments and trust guidance'],['Customer feedback','/testimonials','Read ESN reviews']]
+  const topics=[['Getting started','/business/setup','Bot setup and startup settings'],['Hosting plans','/hosting/vps','Compare every plan and buy on the panel'],['Server problems','/diagnostics','Check your browser before support'],['Service status','/status','Check public service notices'],['Account & billing','/trust','Official payments and trust guidance'],['Customer feedback','/testimonials','Read ESN reviews']]
   return <><div className="business-section-heading"><div><span>ESN SUPPORT</span><h2>Support that makes sense.</h2><p>{settings.supportMessage}</p></div></div><div className="business-feature-grid">{topics.map(([title,to,copy])=><Link key={to} className="business-feature" to={to}><strong>{title}</strong><p>{copy}</p><b>Open guide →</b></Link>)}</div><ContactRequest presetType="General support" settings={settings}/></>
 }
 function Setup(){

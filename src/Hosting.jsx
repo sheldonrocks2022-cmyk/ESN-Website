@@ -4,6 +4,7 @@ import { CreatorSection, FreeNanoSection } from './GrowthSections'
 
 const HOSTING_DISCORD = 'https://discord.gg/RGPt3zEfGy'
 const HOSTING_CHECKOUT = 'https://panel.esnoffical.com/plans'
+export const planCheckoutUrl = (plan, yearly = false) => (!yearly && plan && plan.slug ? `${HOSTING_CHECKOUT}?buy=${plan.slug}` : HOSTING_CHECKOUT)
 const BILLING_PORTAL = 'https://billing.stripe.com/p/login/4gM14o5pxgaP9Nl2dNdnW00'
 const HOSTING_DOCS = 'https://docs.esnoffical.com'
 const HOSTING_STATUS = 'https://status.esnoffical.com'
@@ -11,40 +12,52 @@ const PANEL_REGISTER = 'https://panel.esnoffical.com/auth/register'
 const planId = (name) => 'plan-' + name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')
 
 export const BOT_PLANS = [
-  { name: 'Nano', ram: '256 MB', cpu: '25%', storage: '1 GB', price: '$0.50', yearly: '$5.00', group: 'budget' },
-  { name: 'Starter', ram: '512 MB', cpu: '35%', storage: '2 GB', price: '$0.75', yearly: '$7.50', group: 'budget' },
-  { name: 'Basic', ram: '1 GB', cpu: '50%', storage: '4 GB', price: '$0.99', yearly: '$9.90', group: 'budget' },
-  { name: 'Plus', ram: '1.5 GB', cpu: '75%', storage: '6 GB', price: '$1.49', yearly: '$14.90', group: 'budget' },
-  { name: 'Advanced', ram: '2 GB', cpu: '100%', storage: '8 GB', price: '$1.99', yearly: '$19.90', group: 'performance' },
-  { name: 'Pro', ram: '3 GB', cpu: '125%', storage: '12 GB', price: '$2.99', yearly: '$29.90', group: 'performance', featured: true, label: 'MOST POPULAR' },
-  { name: 'Elite', ram: '4 GB', cpu: '150%', storage: '15 GB', price: '$4.99', yearly: '$49.90', group: 'performance' },
-  { name: 'Ultra', ram: '6 GB', cpu: '200%', storage: '20 GB', price: '$7.99', yearly: '$79.90', group: 'performance' },
-  { name: 'Extreme', ram: '8 GB', cpu: '250%', storage: '30 GB', price: '$8.99', yearly: '$89.90', group: 'premium' },
-  { name: 'Titan', ram: '10 GB', cpu: '300%', storage: '40 GB', price: '$12.99', yearly: '$129.90', group: 'premium', label: 'BEST VALUE' },
-  { name: 'Gift', ram: '15 GB', cpu: '450%', storage: '60 GB', price: '$16.99', yearly: '$169.90', group: 'premium', label: 'MAX RESOURCES' },
+  { name: 'Nano', slug: 'esn-nano', ram: '256 MB', cpu: '25%', storage: '1 GB', price: '$0.50', yearly: '$5.00', group: 'budget' },
+  { name: 'Micro', slug: 'esn-micro', ram: '384 MB', cpu: '30%', storage: '1.5 GB', price: '$0.65', yearly: '', group: 'budget' },
+  { name: 'Starter', slug: 'esn-starter', ram: '512 MB', cpu: '35%', storage: '2 GB', price: '$0.75', yearly: '$7.50', group: 'budget' },
+  { name: 'Basic', slug: 'esn-basic', ram: '1 GB', cpu: '50%', storage: '4 GB', price: '$0.99', yearly: '$9.90', group: 'budget' },
+  { name: 'Plus', slug: 'esn-plus', ram: '1.5 GB', cpu: '75%', storage: '6 GB', price: '$1.29', yearly: '$14.90', group: 'budget' },
+  { name: 'Advanced', slug: 'esn-advanced', ram: '2 GB', cpu: '100%', storage: '8 GB', price: '$1.79', yearly: '$19.90', group: 'performance' },
+  { name: 'Pro', slug: 'esn-pro', ram: '3 GB', cpu: '125%', storage: '12 GB', price: '$2.49', yearly: '$29.90', group: 'performance', featured: true, label: 'MOST POPULAR' },
+  { name: 'Elite', slug: 'esn-elite', ram: '4 GB', cpu: '150%', storage: '15 GB', price: '$4.49', yearly: '$49.90', group: 'performance' },
+  { name: 'Ultra', slug: 'esn-ultra', ram: '6 GB', cpu: '200%', storage: '20 GB', price: '$6.99', yearly: '$79.90', group: 'performance' },
+  { name: 'Boost', slug: 'esn-boost', ram: '7 GB', cpu: '225%', storage: '25 GB', price: '$7.99', yearly: '', group: 'performance' },
+  { name: 'Extreme', slug: 'esn-extreme', ram: '8 GB', cpu: '250%', storage: '30 GB', price: '$7.99', yearly: '$89.90', group: 'premium' },
+  { name: 'Titan', slug: 'esn-titan', ram: '10 GB', cpu: '300%', storage: '40 GB', price: '$10.99', yearly: '$129.90', group: 'premium', label: 'BEST VALUE' },
+  { name: 'Max', slug: 'esn-max', ram: '12 GB', cpu: '350%', storage: '50 GB', price: '$13.49', yearly: '', group: 'premium' },
+  { name: 'Gift', slug: 'esn-gift', ram: '15 GB', cpu: '450%', storage: '60 GB', price: '$14.99', yearly: '$169.90', group: 'premium', label: 'MAX RESOURCES' },
+  { name: 'Pro 8GB', slug: 'esn-pro-8gb', ram: '8 GB', cpu: '400%', storage: '30 GB', price: '$9.99', yearly: '', group: 'pro', label: 'NEW' },
+  { name: 'Pro 12GB', slug: 'esn-pro-12gb', ram: '12 GB', cpu: '500%', storage: '40 GB', price: '$14.99', yearly: '', group: 'pro', label: 'NEW' },
+  { name: 'Pro 16GB', slug: 'esn-pro-16gb', ram: '16 GB', cpu: '600%', storage: '50 GB', price: '$19.99', yearly: '', group: 'pro', label: 'NEW' },
 ]
 
 const PLAN_GROUPS = [
   { id: 'budget', label: 'Budget Plans', copy: 'Affordable options for smaller bots and projects.' },
   { id: 'performance', label: 'Performance Plans', copy: 'More room for active communities and heavier workloads.' },
   { id: 'premium', label: 'Premium Plans', copy: 'Higher resources for demanding projects. Ask us about game compatibility.' },
+  { id: 'pro', label: 'Pro Plans', copy: 'Big Minecraft servers with boosted CPU and disk.' },
 ]
 
 const BOT_FEATURES = ['24/7 hosting availability', 'Python + Node.js support', 'Private Pterodactyl panel', 'Console, files + SFTP', 'Resource monitoring + auto restart']
 
-// Plans added Oct 27, 2026. Prices match their Stripe prices; yearly is 12 months for the price of 10.
+// Plans added Oct 27, 2026; prices updated Oct 30, 2026 to match the live checkout prices. Empty yearly = no yearly option.
 export const MORE_PLANS = [
-  { name: 'Core', ram: '2.5 GB', cpu: '110%', storage: '10 GB', price: '$2.49', yearly: '$24.90', group: 'bigger' },
-  { name: 'Turbo', ram: '3.5 GB', cpu: '140%', storage: '14 GB', price: '$3.99', yearly: '$39.90', group: 'bigger' },
-  { name: 'Power', ram: '5 GB', cpu: '175%', storage: '18 GB', price: '$5.99', yearly: '$59.90', group: 'bigger' },
-  { name: 'Terraria', ram: '1.5 GB', cpu: '75%', storage: '6 GB', price: '$1.49', yearly: '$14.90', group: 'game' },
-  { name: 'Factorio', ram: '2 GB', cpu: '100%', storage: '8 GB', price: '$1.99', yearly: '$19.90', group: 'game' },
-  { name: 'Valheim', ram: '4 GB', cpu: '150%', storage: '15 GB', price: '$4.99', yearly: '$49.90', group: 'game' },
-  { name: 'Palworld', ram: '8 GB', cpu: '300%', storage: '30 GB', price: '$9.99', yearly: '$99.90', group: 'game' },
-  { name: 'Web', ram: '1 GB', cpu: '50%', storage: '8 GB', price: '$1.29', yearly: '$12.90', group: 'web' },
-  { name: 'VPS-lite 1GB', ram: '1 GB', cpu: '40%', storage: '8 GB', price: '$2.49', yearly: '$24.90', group: 'vps' },
-  { name: 'VPS-lite 2GB', ram: '2 GB', cpu: '60%', storage: '12 GB', price: '$4.49', yearly: '$44.90', group: 'vps' },
-  { name: 'VPS-lite 4GB', ram: '4 GB', cpu: '100%', storage: '20 GB', price: '$7.99', yearly: '$79.90', group: 'vps' },
+  { name: 'Core', slug: 'esn-core', ram: '2.5 GB', cpu: '110%', storage: '10 GB', price: '$2.19', yearly: '$24.90', group: 'bigger' },
+  { name: 'Turbo', slug: 'esn-turbo', ram: '3.5 GB', cpu: '140%', storage: '14 GB', price: '$3.49', yearly: '$39.90', group: 'bigger' },
+  { name: 'Power', slug: 'esn-power', ram: '5 GB', cpu: '175%', storage: '18 GB', price: '$5.49', yearly: '$59.90', group: 'bigger' },
+  { name: 'Terraria', slug: 'esn-terraria', ram: '1.5 GB', cpu: '75%', storage: '6 GB', price: '$1.29', yearly: '$14.90', group: 'game' },
+  { name: 'Factorio', slug: 'esn-factorio', ram: '2 GB', cpu: '100%', storage: '8 GB', price: '$1.79', yearly: '$19.90', group: 'game' },
+  { name: 'Valheim', slug: 'esn-valheim', ram: '4 GB', cpu: '150%', storage: '15 GB', price: '$4.49', yearly: '$49.90', group: 'game' },
+  { name: 'Palworld', slug: 'esn-palworld', ram: '8 GB', cpu: '300%', storage: '30 GB', price: '$8.99', yearly: '$99.90', group: 'game' },
+  { name: 'Unturned', slug: 'esn-unturned', ram: '2 GB', cpu: '100%', storage: '8 GB', price: '$1.99', yearly: '', group: 'game' },
+  { name: 'Zomboid', slug: 'esn-zomboid', ram: '4 GB', cpu: '150%', storage: '15 GB', price: '$4.99', yearly: '', group: 'game' },
+  { name: 'FiveM', slug: 'esn-fivem', ram: '4 GB', cpu: '200%', storage: '25 GB', price: '$5.99', yearly: '', group: 'game' },
+  { name: 'Web', slug: 'esn-web-1gb', ram: '1 GB', cpu: '50%', storage: '8 GB', price: '$1.19', yearly: '$12.90', group: 'web' },
+  { name: 'VPS-lite 512MB', slug: 'esn-vps-512mb', ram: '512 MB', cpu: '25%', storage: '5 GB', price: '$1.49', yearly: '', group: 'vps' },
+  { name: 'VPS-lite 1GB', slug: 'esn-vps-1gb', ram: '1 GB', cpu: '40%', storage: '8 GB', price: '$1.99', yearly: '$24.90', group: 'vps' },
+  { name: 'VPS-lite 2GB', slug: 'esn-vps-2gb', ram: '2 GB', cpu: '60%', storage: '12 GB', price: '$3.99', yearly: '$44.90', group: 'vps' },
+  { name: 'VPS-lite 4GB', slug: 'esn-vps-4gb', ram: '4 GB', cpu: '100%', storage: '20 GB', price: '$6.99', yearly: '$79.90', group: 'vps' },
+  { name: 'VPS-lite 8GB', slug: 'esn-vps-8gb', ram: '8 GB', cpu: '200%', storage: '40 GB', price: '$14.99', yearly: '', group: 'vps' },
 ]
 
 const MORE_PLAN_GROUPS = [
@@ -84,18 +97,17 @@ function PlanGroup({ group, plans, features, billing }) {
               <strong>{yearly && plan.yearly ? plan.yearly : plan.price}</strong><span>{yearly && plan.yearly ? '/ year' : '/ month'}</span>
               {plan.name === 'Nano' && <a className="esn-plan-trial" href="#free-nano">Free with every account</a>}
             </div>
-            {yearly && plan.yearly && <small className="esn-plan-save">2 months free vs {plan.price}/month</small>}
             <div className="esn-plan-resources">
               <div><span>RAM</span><b>{plan.ram}</b></div>
               <div><span>CPU</span><b>{plan.cpu}</b></div>
               <div><span>STORAGE</span><b>{plan.storage}</b></div>
             </div>
             <ul>
-              {plan.yearly && <li>{yearly ? `Monthly: ${plan.price}/month` : `Yearly: ${plan.yearly} (12 months for the price of 10)`}</li>}
+              {plan.yearly && <li>{yearly ? `Monthly: ${plan.price}/month` : `Yearly: ${plan.yearly}/year`}</li>}
               {features.map((feature) => <li key={feature}>{feature}</li>)}
             </ul>
             <CopyPlanLink name={plan.name} />
-            <a href={HOSTING_CHECKOUT} aria-label={`Order ESN ${plan.name}, ${yearly && plan.yearly ? plan.yearly + ' per year' : plan.price + ' per month'}`}>Order ESN {plan.name} <span aria-hidden="true">→</span></a>
+            <a href={planCheckoutUrl(plan, yearly && Boolean(plan.yearly))} aria-label={`Order ESN ${plan.name}, ${yearly && plan.yearly ? plan.yearly + ' per year' : plan.price + ' per month'}`}>Order ESN {plan.name} <span aria-hidden="true">→</span></a>
           </article>
         ))}
       </div>
@@ -112,6 +124,7 @@ const FINDER = [
   { id: 'busy-bot', label: 'Busy bot (many servers, music, databases)', plan: 'Basic', why: '1 GB gives room for caches, audio and more servers. Move up if your panel graphs show RAM near the limit.' },
   { id: 'big-bot', label: 'Several bots or a heavy bot', plan: 'Pro', why: '3 GB and 125% CPU, our most popular plan for bigger projects.' },
   { id: 'minecraft', label: 'Small Minecraft server', plan: 'Core', why: 'Bigger Bot Plans can run a Minecraft server; pick the type at checkout. More players or mods need more RAM.' },
+  { id: 'big-minecraft', label: 'Big Minecraft server (mods, many players)', plan: 'Pro 8GB', why: 'Pro Plans give 8 to 16 GB RAM with boosted CPU for modpacks and busy servers.' },
   { id: 'terraria', label: 'Terraria / Factorio / Valheim / Palworld', plan: 'Terraria', why: 'Game Server plans install the game for you after payment. Pick the plan named after your game.' },
   { id: 'website', label: 'Website, WordPress or web app', plan: 'Web', why: 'Web Hosting runs a website, WordPress, Node.js or Python app.' },
   { id: 'linux', label: 'Linux shell for scripts and tools', plan: 'VPS-lite 1GB', why: 'A Linux container with a shell in the panel console (no root, apt, systemd or Docker).' },
@@ -161,7 +174,7 @@ function PlanCompare() {
                 <th scope="row"><a href={`#${planId(plan.name)}`}>{plan.name}</a></th>
                 <td>{ALL_GROUPS.find((group) => group.id === plan.group)?.label}</td>
                 <td>{plan.ram}</td><td>{plan.cpu}</td><td>{plan.storage}</td><td>{plan.price}</td><td>{plan.yearly}</td>
-                <td><a href={HOSTING_CHECKOUT} aria-label={`Order ESN ${plan.name}`}>Order</a></td>
+                <td><a href={planCheckoutUrl(plan)} aria-label={`Order ESN ${plan.name}`}>Order</a></td>
               </tr>
             ))}
           </tbody>
@@ -175,7 +188,7 @@ const HOSTING_FAQ = [
   ['How fast is my server ready?', 'Your server is set up automatically after payment, and your panel login is sent to you. Log in at panel.esnoffical.com.'],
   ['Can I cancel?', 'Yes. Use the Stripe billing portal to cancel at the end of your billing period, update your card, or download invoices.'],
   ['Which languages can my bot use?', 'Bot plans support Python and Node.js. You choose the runtime at checkout and can change startup settings in the panel.'],
-  ['Is there a free plan?', 'Yes. Free ESN Nano included with every account — 256 MB bot server, no card, no expiry. Create an account and your free bot server is set up automatically.'],
+  ['Is there a free plan?', 'Yes. Every new account gets a FREE ESN Nano — 256 MB bot server, no card needed, no expiry. Create an account and your free bot server is set up automatically.'],
   ['Is VPS-lite a full VPS?', 'No. It is a Linux container with a shell in the panel console, SFTP and one public port. There is no root, apt, systemd or Docker inside.'],
   ['Where do I get help?', 'Open a ticket in our Discord, read the Hosting Docs, or check Live Uptime for service status.'],
 ]
@@ -239,7 +252,7 @@ export default function HostingPage() {
             <span className="eyebrow">ESN BOT HOSTING // 24/7</span>
             <h1>Your bot. Your files. <em>Your controls.</em></h1>
             <p>
-              Start free — plans from $0.50/month. 22 plans for Discord bots, game servers, websites, and VPS-lite.
+              Start free — plans from $0.50/month. {ALL_PLANS.length} plans for Discord bots, Minecraft, game servers, websites, and VPS-lite.
               Get your own panel with console, files, startup settings, and resource graphs.
             </p>
             <div className="hero-actions page-actions">
@@ -254,7 +267,7 @@ export default function HostingPage() {
               <a href={HOSTING_DISCORD} target="_blank" rel="noreferrer">Need help? Join our Discord</a>
             </p>
             <p className="esn-hosting-quicklinks">
-              <a href="#free-nano">Free ESN Nano with every account</a>
+              <a href="#free-nano">Every new account gets a FREE ESN Nano</a>
               <a href={HOSTING_DOCS}>Hosting Docs</a>
               <a href={HOSTING_STATUS}>Live Uptime</a>
               <a href={BILLING_PORTAL}>Manage billing</a>
@@ -280,7 +293,7 @@ export default function HostingPage() {
           <div className="section-heading">
             <div>
               <span className="eyebrow">HOSTING PLANS</span>
-              <h2>22 plans. Start free — plans from $0.50/month.</h2>
+              <h2>{ALL_PLANS.length} plans. Start free — plans from $0.50/month.</h2>
             </div>
             <p>Every plan includes a private Pterodactyl panel, console, file manager, SFTP, resource monitoring, and Discord ticket support. Bot plans add Python and Node.js support, startup and environment settings, and crash restarting.</p>
           </div>
@@ -290,7 +303,7 @@ export default function HostingPage() {
           <div className="esn-plan-toolbar">
             <div className="esn-billing-toggle" role="group" aria-label="Show prices">
               <button type="button" aria-pressed={billing === 'monthly'} onClick={() => setBilling('monthly')}>Monthly</button>
-              <button type="button" aria-pressed={billing === 'yearly'} onClick={() => setBilling('yearly')}>Yearly <small>2 months free</small></button>
+              <button type="button" aria-pressed={billing === 'yearly'} onClick={() => setBilling('yearly')}>Yearly</button>
             </div>
             <nav className="esn-plan-jump" aria-label="Jump to plan type">
               {ALL_GROUPS.map((group) => (
@@ -307,6 +320,8 @@ export default function HostingPage() {
               <PlanGroup key={group.id} group={group} plans={MORE_PLANS} features={group.features} billing={billing} />
             ))}
           </div>
+
+          <p className="esn-plan-soldout-note">If a plan says Sold out at checkout, our nodes are full right now. You won't be charged. Ask in <a href={HOSTING_DISCORD}>Discord</a> and we'll tell you when it's back.</p>
 
           <PlanCompare />
 

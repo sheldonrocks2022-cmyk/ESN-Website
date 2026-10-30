@@ -31,6 +31,12 @@ function injectSeo(html, route) {
   const schema = JSON.stringify(structuredDataFor(route)).replaceAll('<', '\\u003c')
 
   html = html.replace(/<title>.*?<\/title>/s, `<title>${escapeHtml(meta.title)}</title>`)
+  // Give crawlers without JavaScript a real heading and summary for every route (React replaces #root on load).
+  const heading = route === '/' ? 'ESN Hosting & ES Network' : (meta.label || meta.title)
+  html = html.replace(
+    '<p class="esn-boot-title">Loading ES Network</p>',
+    `<h1 class="esn-boot-title">${escapeHtml(heading)}</h1>\n          <p>${escapeHtml(meta.description)}</p>`,
+  )
   html = replaceMeta(
     html,
     /<meta name="description" content="[^"]*"\s*\/?>/,
@@ -291,6 +297,23 @@ for (const route of Object.keys(SEO_ROUTES)) {
 
 const publishedSiteRouteCount = generatePublishedSiteRoutes()
 
+// /terms only redirected client-side, so a direct visit hit GitHub Pages' 404. Ship a static redirect to /rules.
+fs.mkdirSync(path.join('dist', 'terms'), { recursive: true })
+fs.writeFileSync(path.join('dist', 'terms', 'index.html'), [
+  '<!doctype html>',
+  '<html lang="en">',
+  '<head>',
+  '  <meta charset="UTF-8" />',
+  '  <title>Rules &amp; Terms | ES Network</title>',
+  '  <meta http-equiv="refresh" content="0; url=/rules" />',
+  '  <link rel="canonical" href="https://esnoffical.com/rules" />',
+  '  <meta name="robots" content="noindex, follow" />',
+  '</head>',
+  '<body><p>Our terms are on the <a href="/rules">Rules page</a>.</p></body>',
+  '</html>',
+  '',
+].join('\n'))
+
 let notFoundHtml = source
   .replace(/<title>.*?<\/title>/s, '<title>Page Not Found | ES Network</title>')
   .replace(
@@ -324,10 +347,11 @@ const sitemapUrls = [...new Set(
     .filter(([, meta]) => meta.index !== false)
     .map(([route]) => canonicalUrl(route))
 )]
+const SITEMAP_LASTMOD = Object.fromEntries(['/', '/hosting', '/hosting/vps', '/business/plans'].map((route) => [canonicalUrl(route), '2026-10-30']))
 const sitemap = [
   '<?xml version="1.0" encoding="UTF-8"?>',
   '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
-  ...sitemapUrls.map((url) => `  <url><loc>${url}</loc></url>`),
+  ...sitemapUrls.map((url) => SITEMAP_LASTMOD[url] ? `  <url><loc>${url}</loc><lastmod>${SITEMAP_LASTMOD[url]}</lastmod></url>` : `  <url><loc>${url}</loc></url>`),
   '</urlset>',
   '',
 ].join('\n')

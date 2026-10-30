@@ -15,7 +15,7 @@ export function FreeNanoSection() {
         <div className="section-heading">
           <div>
             <span className="eyebrow">FREE ESN NANO</span>
-            <h2>Free ESN Nano included with every account — 256 MB bot server, no card, no expiry.</h2>
+            <h2>Every new account gets a FREE ESN Nano — 256 MB bot server, no card needed, no expiry.</h2>
           </div>
           <p>Create an account and your free bot server is set up automatically. No card, no trial clock, no expiry. Need more power later? Pick any paid plan from $0.50/month.</p>
         </div>
