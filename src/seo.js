@@ -603,7 +603,7 @@ export const FAQ_SCHEMA=[
   ['What is ES Network?','ES Network (ESN) is the current brand. EP1C Services was the former name and is not a separate current organization or division.'],
   ['What services does ESN offer?','ESN Hosting (Discord bot, game server, web and VPS-lite hosting), Fortnite coaching, editing services, Discord server setups, and selected digital or website projects handled through ESN.'],
   ['How do I order a service?','Service ordering and support are handled through the official ESN Discord. Open a ticket and provide the details of what you need.'],
-  ['How much does ESN Hosting cost?','Discord bot hosting starts at $0.50/month (Nano). There are 22 plans in all: 11 bot plans up to Gift at $16.99/month, plus game server, web and VPS-lite plans. Every plan can also be paid yearly: 12 months for the price of 10. See all plans on the Bot Hosting page.'],
+  ['How much does ESN Hosting cost?','Every account includes a free ESN Nano bot server (256 MB, no card, no expiry). Paid Discord bot hosting starts at $0.50/month (Nano). There are 22 plans in all: 11 bot plans up to Gift at $16.99/month, plus game server, web and VPS-lite plans. Every plan can also be paid yearly: 12 months for the price of 10. See all plans on the Bot Hosting page.'],
   ['How do I buy hosting and how fast is setup?','Go to panel.esnoffical.com/plans, sign in (or create a free account), pick a plan and pay on Stripe’s secure checkout. Your server is set up automatically after you pay and shows up on your panel dashboard within a minute or two.'],
   ['Do I need an account to buy hosting?','Yes, a free ESN panel account. You can create one yourself on the panel sign-in page with New here? Create an account. Your server is tied to that account.'],
   ['Where can I check if ESN Hosting is up?','The live status page at status.esnoffical.com shows the panel, the hosting nodes, the website and the SMP, checked every minute.'],
@@ -619,7 +619,7 @@ export const HOSTING_FAQ_SCHEMA=[
   ['How fast is my server ready?','Your server is set up automatically after payment, and your panel login is sent to you. Log in at panel.esnoffical.com.'],
   ['Can I cancel?','Yes. Use the Stripe billing portal to cancel at the end of your billing period, update your card, or download invoices.'],
   ['Which languages can my bot use?','Bot plans support Python and Node.js. You choose the runtime at checkout and can change startup settings in the panel.'],
-  ['Is there a free trial?','Yes. Nano, Starter and Basic have a free 3-day trial. Stripe asks for a card and you are only charged if you keep the server.'],
+  ['Is there a free plan?','Yes. Free ESN Nano included with every account — 256 MB bot server, no card, no expiry. Create an account and your free bot server is set up automatically.'],
   ['Is VPS-lite a full VPS?','No. It is a Linux container with a shell in the panel console, SFTP and one public port. There is no root, apt, systemd or Docker inside.'],
   ['Where do I get help?','Open a ticket in our Discord, read the Hosting Docs, or check Live Uptime for service status.'],
 ]

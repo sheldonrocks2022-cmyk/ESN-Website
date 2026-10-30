@@ -12,7 +12,7 @@ export const CAPABILITIES = [
   {id:'planfinder',title:'Plan finder',copy:'Get an indicative recommendation by project workload.',path:'/business/plans'},
   {id:'rewards',title:'Customer rewards',copy:'Review benefit rules; staff must confirm rewards and credits.',path:'/business/rewards'},
   {id:'partners',title:'Partner applications',copy:'Apply for partnerships and prepare a referral request.',path:'/business/partners'},
-  {id:'trials',title:'Hosting trial requests',copy:'Ask staff about an available limited-time trial.',path:'/business/plans'},
+  {id:'trials',title:'Free ESN Nano',copy:'Every account includes a free 256 MB bot server, no card, no expiry.',path:'/business/plans'},
   {id:'upgrades',title:'Server upgrades',copy:'Plan an upgrade and request a confirmed quote.',path:'/business/dashboard'},
   {id:'support',title:'Support center',copy:'Find the right route for billing, setup, and troubleshooting.',path:'/business/support'},
   {id:'compare',title:'Compare hosting plans',copy:'Compare monthly prices, CPU, RAM, and storage side by side.',path:'/business/plans'},

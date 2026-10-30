@@ -143,7 +143,7 @@ function Plans({settings}){
       <div className="business-plan-grid">{plans.map(p=><PlanCard key={p.name} plan={p} featured={p.name===settings.featuredPlan} onAsk={setChosen}/>)}</div>
     </section>}
     <ContactRequest key={chosen} presetPlan={chosen} settings={settings}/>
-    <section className="business-promo"><div><span>FREE TRIAL PROGRAM</span><h2>{settings.trialsEnabled?'Trial requests are open.':'Trial requests are currently closed.'}</h2><p>{settings.trialsEnabled?'Ask ESN staff about a possible '+settings.trialDays+'-day '+settings.trialPlan+' trial. Approval and server creation are manual.':'Check Discord for future trial opportunities. Trials are never created automatically from this page.'}</p></div><a href={DISCORD_HOSTING} target="_blank" rel="noreferrer">Ask about trials ↗</a></section>
+    <section className="business-promo"><div><span>FREE ESN NANO</span><h2>Free ESN Nano included with every account — 256 MB bot server, no card, no expiry.</h2><p>Create an account and your free bot server is set up automatically.</p></div><a href="https://panel.esnoffical.com/auth/register" target="_blank" rel="noreferrer">Create your free account ↗</a></section>
   </>
 }
 function Partners({settings}){

@@ -185,7 +185,7 @@ const FAQ_ITEMS = [
   ['What is ES Network?', 'ES Network (ESN) is the current brand. EP1C Services was the former name and is not a separate current organization or division.'],
   ['What services does ESN offer?', 'ESN Hosting (Discord bot, game server, web and VPS-lite hosting), Fortnite coaching, editing services, Discord server setups, and selected digital or website projects handled through ESN.'],
   ['How do I order a service?', 'Service ordering and support are handled through the official ESN Discord. Open a ticket and provide the details of what you need.'],
-  ['How much does ESN Hosting cost?', 'Discord bot hosting starts at $0.50/month (Nano). There are 22 plans in all: 11 bot plans up to Gift at $16.99/month, plus game server, web and VPS-lite plans. Every plan can also be paid yearly: 12 months for the price of 10. See all plans on the Bot Hosting page.'],
+  ['How much does ESN Hosting cost?', 'Every account includes a free ESN Nano bot server (256 MB, no card, no expiry). Paid Discord bot hosting starts at $0.50/month (Nano). There are 22 plans in all: 11 bot plans up to Gift at $16.99/month, plus game server, web and VPS-lite plans. Every plan can also be paid yearly: 12 months for the price of 10. See all plans on the Bot Hosting page.'],
   ['How do I buy hosting and how fast is setup?', 'Go to panel.esnoffical.com/plans, sign in (or create a free account), pick a plan and pay on Stripe’s secure checkout. Your server is set up automatically after you pay and shows up on your panel dashboard within a minute or two.'],
   ['Do I need an account to buy hosting?', 'Yes, a free ESN panel account. You can create one yourself on the panel sign-in page with New here? Create an account. Your server is tied to that account.'],
   ['Where can I check if ESN Hosting is up?', 'The live status page at status.esnoffical.com shows the panel, the hosting nodes, the website and the SMP, checked every minute.'],
@@ -596,7 +596,7 @@ function Footer() {
             <Link to="/site-builder">Website Builder</Link>
             <Link to="/status">Service Status</Link>
             <a href="https://status.esnoffical.com" target="_blank" rel="noreferrer">Live Uptime ↗</a>
-            <a href="/hosting/vps#free-trial">Free 3-Day Trial</a>
+            <a href="https://panel.esnoffical.com/auth/register">Free ESN Nano with every account ↗</a>
             <a href="https://panel.esnoffical.com">Customer Panel Login ↗</a>
             <a href="https://billing.stripe.com/p/login/4gM14o5pxgaP9Nl2dNdnW00">Manage Billing ↗</a>
             <Link to="/support">Hosting Support</Link>
@@ -742,14 +742,14 @@ function Home() {
             <p>From hosting your Discord bot to building your website or community, ESN makes it easier to get started. We're here to help you choose what works, not sell you things you don't need.</p>
 
             <div className="hero-actions flagship-actions">
-              <Link className="button primary" to="/hosting/vps">Bot hosting from $0.50/mo <span>↗</span></Link>
+              <Link className="button primary" to="/hosting/vps">Start free — plans from $0.50/mo <span>↗</span></Link>
               <Link className="button secondary" to="/serviceshowcase">Our services</Link>
             </div>
             <HeroNetworkActions />
             <a className="esn-net-hero-plans" href={ESN_PLANS_URL} target="_blank" rel="noreferrer">Compare every plan on the panel ↗</a>
 
             <div className="flagship-metrics esn-trust-line">
-              <div><strong>From $0.50/mo</strong><small>Bot hosting & servers</small></div>
+              <div><strong>Start free</strong><small>Plans from $0.50/mo</small></div>
               <div><strong>Hands-on help</strong><small>Live chat and Discord support</small></div>
               <div><strong>One community</strong><small>Projects, SMP & Arcade</small></div>
             </div>
