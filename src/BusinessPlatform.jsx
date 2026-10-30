@@ -76,7 +76,7 @@ function ContactRequest({presetType='Hosting order',presetPlan='Pro',settings}){
   return <section className="business-request-panel">
     <div className="business-section-heading"><div><span>REQUEST CENTER</span><h2>Tell us what you need.</h2><p>Prepare a message for a real ESN staff member. Requests are not automatically submitted.</p></div></div>
     <div className="business-form-grid">
-      <label>Request type<select value={type} onChange={e=>{setType(e.target.value);setResult('')}}>{REQUEST_TYPES.map(k=><option key={k}>{k}</option>)}</select></label>
+      <label>Request type<select value={type} onChange={e=>{setType(e.target.value);setResult('')}}>{REQUEST_TYPES.filter(k=>k!=='Free trial'||settings.trialsEnabled).map(k=><option key={k}>{k}</option>)}</select></label>
       <label>Plan<select value={plan} onChange={e=>setPlan(e.target.value)}>{BOT_PLANS.map(p=><option key={p.name}>{p.name}</option>)}</select></label>
       <label className="wide">Details (optional; don't include passwords or payment data)<textarea maxLength="240" value={notes} onChange={e=>setNotes(e.target.value)} placeholder="Example: I run a Python moderation bot and would like to upgrade."/></label>
     </div>
