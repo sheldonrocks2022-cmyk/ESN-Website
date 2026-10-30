@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react'
 import './hosting.css'
-import { CreatorSection, FreeTrialSection } from './GrowthSections'
+import { CreatorSection, FreeNanoSection } from './GrowthSections'
 
 const HOSTING_DISCORD = 'https://discord.gg/RGPt3zEfGy'
 const HOSTING_CHECKOUT = 'https://panel.esnoffical.com/plans'
 const BILLING_PORTAL = 'https://billing.stripe.com/p/login/4gM14o5pxgaP9Nl2dNdnW00'
 const HOSTING_DOCS = 'https://docs.esnoffical.com'
 const HOSTING_STATUS = 'https://status.esnoffical.com'
-const TRIAL_PLANS = ['Nano', 'Starter', 'Basic']
+const PANEL_REGISTER = 'https://panel.esnoffical.com/auth/register'
 const planId = (name) => 'plan-' + name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')
 
 export const BOT_PLANS = [
@@ -80,9 +80,9 @@ function PlanGroup({ group, plans, features, billing }) {
           <article className={plan.featured ? 'esn-hosting-plan featured' : 'esn-hosting-plan'} key={plan.name} id={planId(plan.name)}>
             {plan.label && <span className={plan.featured ? 'esn-plan-badge' : 'esn-plan-badge subtle'}>{plan.label}</span>}
             <span className="eyebrow">ESN {plan.name.toUpperCase()}</span>
-            {TRIAL_PLANS.includes(plan.name) && <a className="esn-plan-trial" href="#free-trial">Free 3-day trial</a>}
             <div className="esn-plan-price">
               <strong>{yearly && plan.yearly ? plan.yearly : plan.price}</strong><span>{yearly && plan.yearly ? '/ year' : '/ month'}</span>
+              {plan.name === 'Nano' && <a className="esn-plan-trial" href="#free-nano">Free with every account</a>}
             </div>
             {yearly && plan.yearly && <small className="esn-plan-save">2 months free vs {plan.price}/month</small>}
             <div className="esn-plan-resources">
@@ -175,7 +175,7 @@ const HOSTING_FAQ = [
   ['How fast is my server ready?', 'Your server is set up automatically after payment, and your panel login is sent to you. Log in at panel.esnoffical.com.'],
   ['Can I cancel?', 'Yes. Use the Stripe billing portal to cancel at the end of your billing period, update your card, or download invoices.'],
   ['Which languages can my bot use?', 'Bot plans support Python and Node.js. You choose the runtime at checkout and can change startup settings in the panel.'],
-  ['Is there a free trial?', 'Yes. Nano, Starter and Basic have a free 3-day trial. Stripe asks for a card and you are only charged if you keep the server.'],
+  ['Is there a free plan?', 'Yes. Free ESN Nano included with every account — 256 MB bot server, no card, no expiry. Create an account and your free bot server is set up automatically.'],
   ['Is VPS-lite a full VPS?', 'No. It is a Linux container with a shell in the panel console, SFTP and one public port. There is no root, apt, systemd or Docker inside.'],
   ['Where do I get help?', 'Open a ticket in our Discord, read the Hosting Docs, or check Live Uptime for service status.'],
 ]
@@ -239,7 +239,7 @@ export default function HostingPage() {
             <span className="eyebrow">ESN BOT HOSTING // 24/7</span>
             <h1>Your bot. Your files. <em>Your controls.</em></h1>
             <p>
-              Start from $0.50/month with 22 plans for Discord bots, game servers, websites, and VPS-lite.
+              Start free — plans from $0.50/month. 22 plans for Discord bots, game servers, websites, and VPS-lite.
               Get your own panel with console, files, startup settings, and resource graphs.
             </p>
             <div className="hero-actions page-actions">
@@ -254,7 +254,7 @@ export default function HostingPage() {
               <a href={HOSTING_DISCORD} target="_blank" rel="noreferrer">Need help? Join our Discord</a>
             </p>
             <p className="esn-hosting-quicklinks">
-              <a href="#free-trial">Free 3-day trial</a>
+              <a href="#free-nano">Free ESN Nano with every account</a>
               <a href={HOSTING_DOCS}>Hosting Docs</a>
               <a href={HOSTING_STATUS}>Live Uptime</a>
               <a href={BILLING_PORTAL}>Manage billing</a>
@@ -280,7 +280,7 @@ export default function HostingPage() {
           <div className="section-heading">
             <div>
               <span className="eyebrow">HOSTING PLANS</span>
-              <h2>22 plans. Starting at $0.50/month.</h2>
+              <h2>22 plans. Start free — plans from $0.50/month.</h2>
             </div>
             <p>Every plan includes a private Pterodactyl panel, console, file manager, SFTP, resource monitoring, and Discord ticket support. Bot plans add Python and Node.js support, startup and environment settings, and crash restarting.</p>
           </div>
@@ -317,7 +317,7 @@ export default function HostingPage() {
 
           <div className="esn-hosting-payment-safety">
             <strong>Payment safety</strong>
-            <p>Pay only through the official checkout at panel.esnoffical.com/plans or the free-trial buttons on this page (Stripe, buy.stripe.com). Your server is set up automatically after payment. Never send money to anyone in Discord DMs.</p>
+            <p>Pay only through the official checkout at panel.esnoffical.com/plans (Stripe checkout). Your server is set up automatically after payment. Never send money to anyone in Discord DMs.</p>
           </div>
 
           <div className="esn-hosting-payment-safety">
@@ -327,7 +327,7 @@ export default function HostingPage() {
         </div>
       </section>
 
-      <FreeTrialSection />
+      <FreeNanoSection />
 
       <section className="section dark-section" id="customer-panel">
         <div className="shell">
@@ -416,7 +416,7 @@ export default function HostingPage() {
             <div>
               <span className="eyebrow">READY TO ORDER?</span>
               <h3>Pick a plan and check out.</h3>
-              <p>Choose one of our 22 plans, starting at $0.50/month. Your server is set up automatically after payment. Need help or a custom plan? <a href={HOSTING_DISCORD} target="_blank" rel="noreferrer">Join our Discord</a>.</p>
+              <p>Create an account and your free bot server is set up automatically. Need more power? Start free — plans from $0.50/month, set up automatically after payment. Need help or a custom plan? <a href={HOSTING_DISCORD} target="_blank" rel="noreferrer">Join our Discord</a>.</p>
             </div>
             <a className="button primary" href={HOSTING_CHECKOUT}>See plans &amp; check out <span>→</span></a>
           </div>
@@ -446,7 +446,7 @@ export default function HostingPage() {
       {showTop && <button type="button" className="esn-hosting-top" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} aria-label="Back to top">↑</button>}
 
       <div className="esn-hosting-sticky-cta">
-        <span>Hosting from <b>$0.50/month</b></span>
+        <span>Start free — plans from <b>$0.50/month</b></span>
         <a href="#plans">See plans</a>
       </div>
     </div>
