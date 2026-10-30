@@ -53,8 +53,8 @@ const CATALOG=[
   {
     id:'bot-hosting',kind:'HOSTING',name:'ESN Discord Bot Hosting',price:.50,priceLabel:'FROM $0.50/MO',
     checkout:'https://panel.esnoffical.com/plans',status:'AVAILABLE',
-    summary:'14 bot plans from Nano (256 MB RAM, $0.50/month) to Gift (15 GB RAM, $16.99/month). Every plan can be paid yearly: 12 months for the price of 10.',
-    items:['Nano $0.50/mo','Starter $0.75/mo','Basic $0.99/mo','Plus $1.49/mo','Advanced $1.99/mo','Pro $2.99/mo','Elite $4.99/mo','Ultra $7.99/mo','Extreme $8.99/mo','Titan $12.99/mo','Gift $16.99/mo','Core $2.49/mo','Turbo $3.99/mo','Power $5.99/mo'],
+    summary:'Bot plans from Nano (256 MB RAM, $0.50/month) to Gift (15 GB RAM, $14.99/month), plus Pro Minecraft plans with 8, 12 or 16 GB RAM from $9.99/month. Many plans can also be paid yearly.',
+    items:['Nano $0.50/mo','Micro $0.65/mo','Starter $0.75/mo','Basic $0.99/mo','Plus $1.29/mo','Advanced $1.79/mo','Pro $2.49/mo','Elite $4.49/mo','Ultra $6.99/mo','Boost $7.99/mo','Extreme $7.99/mo','Titan $10.99/mo','Max $13.49/mo','Gift $14.99/mo','Core $2.19/mo','Turbo $3.49/mo','Power $5.49/mo','Pro 8GB $9.99/mo','Pro 12GB $14.99/mo','Pro 16GB $19.99/mo'],
     delivery:'Buy on the ESN panel Plans page and pay on Stripe. Your server is set up automatically and shows on your panel dashboard within a minute or two.',
     tags:['hosting','bot','discord bot','python','node','nodejs','server','plan','cheap','panel','yearly'],
   },
@@ -212,7 +212,7 @@ function visitorAnswer(query){
   }
   if(/hosting|host my|host a|bot host|vps|game server|terraria|factorio|valheim|palworld/.test(q)){
     const items=CATALOG.filter(x=>x.kind==='HOSTING')
-    return {text:'ESN Hosting plans start at $0.50/month. Buy on the ESN panel Plans page with Stripe checkout; servers are set up automatically after payment. Yearly billing is 12 months for the price of 10.',items}
+    return {text:'ESN Hosting plans start at $0.50/month. Buy on the ESN panel Plans page with Stripe checkout; servers are set up automatically after payment. Many plans can also be paid yearly.',items}
   }
   if(/website|web site|web project/.test(q)){
     const item=CATALOG.find(x=>x.id==='website')

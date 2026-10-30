@@ -6,7 +6,7 @@ import './guardian.css'
 // /guardian: public ESN Guardian setup dashboard (static, no login).
 // Checklist progress is stored only in this browser (localStorage).
 export const GUARDIAN_ADD_URL = 'https://discord.com/oauth2/authorize?client_id=1544503232674664573&permissions=8&scope=bot%20applications.commands'
-export const GUARDIAN_SUPPORT_URL = 'https://discord.gg/esn'
+export const GUARDIAN_SUPPORT_URL = 'https://discord.gg/RGPt3zEfGy'
 const STORAGE_KEY = 'esn-guardian-setup-v1'
 
 const STEPS = [
