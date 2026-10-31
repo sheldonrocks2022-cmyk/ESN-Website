@@ -314,6 +314,29 @@ fs.writeFileSync(path.join('dist', 'terms', 'index.html'), [
   '',
 ].join('\n'))
 
+// Buyers sometimes type esnoffical.com/checkout, /plans or /pricing. Send them to the real plans and checkout page on the panel.
+for (const shortcut of ['checkout', 'plans', 'pricing']) {
+  fs.mkdirSync(path.join('dist', shortcut), { recursive: true })
+  fs.writeFileSync(path.join('dist', shortcut, 'index.html'), [
+    '<!doctype html>',
+    '<html lang="en">',
+    '<head>',
+    '  <meta charset="UTF-8" />',
+    '  <meta name="viewport" content="width=device-width, initial-scale=1" />',
+    '  <title>ESN Hosting Plans &amp; Checkout | ES Network</title>',
+    '  <meta http-equiv="refresh" content="0; url=https://panel.esnoffical.com/plans" />',
+    '  <link rel="canonical" href="https://esnoffical.com/hosting/vps/" />',
+    '  <meta name="robots" content="noindex, follow" />',
+    '</head>',
+    '<body style="font-family:system-ui,sans-serif;background:#050711;color:#f3f7ff;text-align:center;padding:40px 20px">',
+    '  <p>Opening the ESN Hosting plans and checkout…</p>',
+    '  <p><a style="color:#62f1ff" href="https://panel.esnoffical.com/plans">Go to the plans page</a> or <a style="color:#62f1ff" href="/hosting/vps/">compare every plan</a>.</p>',
+    '</body>',
+    '</html>',
+    '',
+  ].join('\n'))
+}
+
 let notFoundHtml = source
   .replace(/<title>.*?<\/title>/s, '<title>Page Not Found | ES Network</title>')
   .replace(
