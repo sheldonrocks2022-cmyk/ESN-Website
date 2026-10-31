@@ -1532,8 +1532,12 @@ export default function NetworkEvolution(){
     // Buyers who land straight on a hosting, checkout or store page skip the full-screen update overlay.
     const shopping=/^\/(hosting|business|storesmp|store|faq|status|services|thanks)(\/|$)/.test(window.location.pathname)
     if(NETWORK_TAKEOVER.active&&ack!==NETWORK_TAKEOVER.id&&!shopping){
-      const timer=window.setTimeout(()=>setTakeover(true),2350)
-      return()=>window.clearTimeout(timer)
+      // Open only after the visitor first scrolls, taps or types, so the overlay never covers the page on load (faster first view, no mobile interstitial).
+      let timer=0
+      const events=['scroll','pointerdown','keydown','touchstart']
+      const arm=()=>{events.forEach(e=>window.removeEventListener(e,arm));timer=window.setTimeout(()=>setTakeover(true),2350)}
+      events.forEach(e=>window.addEventListener(e,arm,{passive:true,once:true}))
+      return()=>{events.forEach(e=>window.removeEventListener(e,arm));window.clearTimeout(timer)}
     }
   },[])
 

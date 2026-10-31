@@ -723,7 +723,7 @@ function NetworkDirectory() {
 
 function RouteLoading() {
   return (
-    <section className="route-loading" role="status" aria-live="polite" style={{ minHeight: '60vh', display: 'grid', placeItems: 'center', color: '#a8bad5' }}>
+    <section className="route-loading" role="status" aria-live="polite" style={{ minHeight: '100vh', display: 'grid', placeItems: 'center', color: '#a8bad5' }}>
       <p>Loading page…</p>
     </section>
   )

@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect,useState, useRef } from 'react'
 
 const VERT = `
 attribute vec3 a_position;
@@ -124,8 +124,17 @@ function program(gl){
 export default function ES3DViewer({variant='hero',compact=false,label='Interactive 3D viewer'}){
   const canvasRef=useRef(null)
   const stateRef=useRef({rx:-.18,ry:.45,zoom:compact?7.3:7.8,drag:false,x:0,y:0,pinch:0})
+  // The 3D scene starts after the visitor first scrolls, taps or types, so it never blocks the page while it loads.
+  const [armed,setArmed]=useState(false)
+  useEffect(()=>{
+    const events=['scroll','pointerdown','keydown','touchstart']
+    const arm=()=>{events.forEach(e=>window.removeEventListener(e,arm));setArmed(true)}
+    events.forEach(e=>window.addEventListener(e,arm,{passive:true,once:true}))
+    return()=>events.forEach(e=>window.removeEventListener(e,arm))
+  },[])
 
   useEffect(()=>{
+    if(!armed)return
     const canvas=canvasRef.current
     const gl=canvas?.getContext('webgl',{antialias:true,alpha:true,powerPreference:'high-performance'})
     if(!gl)return
@@ -165,7 +174,7 @@ export default function ES3DViewer({variant='hero',compact=false,label='Interact
     }
     raf=requestAnimationFrame(render)
     return()=>cancelAnimationFrame(raf)
-  },[variant,compact])
+  },[variant,compact,armed])
 
   const down=e=>{const s=stateRef.current;s.drag=true;s.x=e.clientX;s.y=e.clientY;e.currentTarget.setPointerCapture?.(e.pointerId)}
   const move=e=>{const s=stateRef.current;if(!s.drag)return;s.ry+=(e.clientX-s.x)*.012;s.rx=Math.max(-1.25,Math.min(1.25,s.rx+(e.clientY-s.y)*.009));s.x=e.clientX;s.y=e.clientY}
