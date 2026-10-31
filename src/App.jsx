@@ -264,11 +264,13 @@ function MetaManager() {
         link.setAttribute('hreflang', lang)
         document.head.appendChild(link)
       }
-      link.setAttribute('href', url)
+      link.setAttribute('href', lang === 'en-US' || lang === 'x-default' ? url : `${url}?lang=${lang}`)
     }
     setAlternate('en-US')
     setAlternate('x-default')
-    document.documentElement.lang = 'en-US'
+    ;['es', 'pt-BR', 'fr', 'de', 'fil', 'hi', 'id', 'tr'].forEach(setAlternate)
+    // The language layer (esn-i18n.js, served from panel.esnoffical.com) sets the page language when a visitor picks one.
+    document.documentElement.lang = window.__esnI18n?.lang && window.__esnI18n.lang !== 'en' ? window.__esnI18n.lang : 'en-US'
 
     let schema = document.getElementById('esn-route-schema')
     if (!schema) {

@@ -2,6 +2,8 @@ import fs from 'node:fs'
 import path from 'node:path'
 import { SEO_ROUTES, SOCIAL_IMAGE_ALT, canonicalUrl, robotsContent, socialImageFor, structuredDataFor } from '../src/seo.js'
 
+const I18N_LANGS = ['es', 'pt-BR', 'fr', 'de', 'fil', 'hi', 'id', 'tr']
+
 const sourcePath = path.join('dist', 'index.html')
 if (!fs.existsSync(sourcePath)) {
   console.error('dist/index.html not found. Run Vite build first.')
@@ -166,6 +168,10 @@ function injectSeo(html, route) {
   } else {
     html = html.replace('</head>', `  ${defaultLink}\n  </head>`)
   }
+  // Language versions (translated in the browser by esn-i18n.js from panel.esnoffical.com; ?lang= picks the language).
+  html = html.replace(/\s*<link rel="alternate" hreflang="(?:es|pt-BR|fr|de|fil|hi|id|tr)"[^>]*\/>/g, '')
+  const langLinks = I18N_LANGS.map((lang) => `<link rel="alternate" hreflang="${lang}" href="${url}?lang=${lang}" />`).join('\n    ')
+  html = html.replace(defaultLink, `${defaultLink}\n    ${langLinks}`)
 
   const schemaTag = `<script id="esn-route-schema" type="application/ld+json">${schema}</script>`
   if (/<script id="esn-route-schema"[^>]*>.*?<\/script>/s.test(html)) {
@@ -371,6 +377,7 @@ notFoundHtml = notFoundHtml
   .replace(/<meta property="og:url" content="[^"]*"\s*\/?>\s*/,'')
   .replace(/<link rel="alternate" hreflang="en-US"[^>]*\/?>\s*/,'')
   .replace(/<link rel="alternate" hreflang="x-default"[^>]*\/?>\s*/,'')
+  .replace(/<link rel="alternate" hreflang="(?:es|pt-BR|fr|de|fil|hi|id|tr)"[^>]*\/?>\s*/g,'')
   .replace(/<script id="esn-route-schema"[^>]*>.*?<\/script>\s*/s,'')
 
 fs.writeFileSync(path.join('dist', '404.html'), notFoundHtml)
