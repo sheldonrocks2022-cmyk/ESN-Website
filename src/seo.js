@@ -761,7 +761,8 @@ export function canonicalPath(pathname){
 
 export function canonicalUrl(pathname){
   const path=canonicalPath(pathname)
-  return SITE_URL+(path==='/'?'/':path)
+  // GitHub Pages serves each prerendered route as <route>/index.html and 301s /route to /route/, so the canonical URL ends with a slash.
+  return SITE_URL+(path==='/'?'/':path.replace(/\/+$/,'')+'/')
 }
 
 export function robotsContent(pathname,hostname=''){
