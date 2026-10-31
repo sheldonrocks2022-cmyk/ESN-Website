@@ -131,10 +131,10 @@ function bestFor(plan) {
 const PLAN_INCLUDES = [
   ['Full control panel', 'Web console, file manager, SFTP, startup settings, schedules, power controls, live CPU/RAM/disk graphs and subusers to share access. Sign in with Discord or Google.'],
   ['Set up automatically', 'Your server is created automatically after checkout and shows up on your panel dashboard.'],
-  ['Free move from another host', 'The free importer copies your bot or server over, and the Hosting Docs walk you through it step by step.'],
-  ['50 step-by-step guides', 'Hosting Docs cover Discord bots (Python, Node.js), Telegram bots, Minecraft, game servers, websites and billing.'],
-  ['Help in Discord', 'Open a ticket in the ESN Discord, or ask the ESN Helper bot with /ask, /docs and /botfix.'],
-  ['Live status page', 'Every ESN service is checked every minute on status.esnoffical.com, with an RSS feed and badge.'],
+  ['Free move from another host', 'The free importer copies your bot or server over.', 'https://docs.esnoffical.com/move-bot-to-esn.html', 'Guide: move your bot to ESN'],
+  ['40+ step-by-step guides', 'Hosting Docs cover Discord bots (Python, Node.js), Telegram bots, Minecraft, game servers, websites and billing, including new guides on Minecraft lag and Bedrock crossplay.', 'https://docs.esnoffical.com/fix-minecraft-lag.html', 'Guide: fix Minecraft lag'],
+  ['Help in Discord', 'Open a ticket in the ESN Discord, or ask the ESN Helper bot with /ask, /docs, /botfix and /uptime.'],
+  ['Live status page', 'Every ESN service is checked every minute on status.esnoffical.com, with 1h, 6h and 24h response-time charts, an RSS feed and a badge.', 'https://status.esnoffical.com', 'Open the status page'],
   ['US servers', 'Nodes in Chicago and New York.'],
   ['Secure checkout, cancel anytime', 'Stripe handles payment, so card details never touch ESN. Cancel in the billing portal and your plan runs to the end of the paid month.'],
 ]
@@ -151,8 +151,8 @@ function PlanIncludes() {
           <p>Same tools on every plan, from Nano to Pro 16GB. Bigger plans add RAM, CPU and storage.</p>
         </div>
         <ul className="esn-plan-includes">
-          {PLAN_INCLUDES.map(([title, copy]) => (
-            <li key={title}><strong>{title}</strong><span>{copy}</span></li>
+          {PLAN_INCLUDES.map(([title, copy, href, label]) => (
+            <li key={title}><strong>{title}</strong><span>{copy}{href && <> <a href={href} target="_blank" rel="noreferrer">{label} ↗</a></>}</span></li>
           ))}
         </ul>
         <p className="esn-plan-includes-note">Backups: plans don’t include backup slots by default. A daily backups add-on is available, just ask in <a href={HOSTING_DISCORD} target="_blank" rel="noreferrer">our Discord</a>. You can always download your files with the file manager or SFTP.</p>

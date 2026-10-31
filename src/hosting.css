@@ -336,5 +336,6 @@
 .esn-plan-includes li{padding:16px 18px;border:1px solid rgba(120,160,230,.22);border-radius:16px;background:rgba(8,18,36,.6)}
 .esn-plan-includes strong{display:block;margin-bottom:6px;color:#f3f7ff}
 .esn-plan-includes span{display:block;color:#a8bad5;line-height:1.55;font-size:.94rem}
+.esn-plan-includes span a{color:#7fe3ff;text-decoration:underline;text-underline-offset:2px}
 .esn-plan-includes-note{margin-top:14px;color:#a8bad5;line-height:1.6}
 @media (max-width:520px){.esn-plan-includes{grid-template-columns:1fr}}
