@@ -22,7 +22,7 @@ export default function HostingBundles({ id = 'bundles', compact = false }) {
               {bundle.setup && <p className="x-note">+ ${bundle.setup} one-time Discord server setup</p>}
               <ul className="x-list">{bundle.includes.filter((item) => !item.startsWith('+')).map((item, index) => <li key={item + index}>{item}</li>)}</ul>
               <div className="x-buy-row">
-                <a className="button primary" href={BUNDLE_CHECKOUT} aria-label={'Buy the ' + bundle.name + ' bundle on the ESN panel, $' + bundle.monthly + ' per month or $' + bundle.yearly + ' per year'}>Buy bundle <span aria-hidden="true">→</span></a>
+                <a className="button primary" href={BUNDLE_CHECKOUT} aria-label={'Buy bundle: ' + bundle.name + ', $' + bundle.monthly + ' per month or $' + bundle.yearly + ' per year, on the ESN panel'}>Buy bundle <span aria-hidden="true">→</span></a>
                 <span className="x-note">${bundle.monthly}/mo or ${bundle.yearly}/yr</span>
               </div>
             </article>
@@ -39,7 +39,7 @@ export default function HostingBundles({ id = 'bundles', compact = false }) {
               <p className="x-price"><strong>${bundle.monthly}</strong><span>/month</span><s aria-label={'$' + bundle.separate + ' if bought separately'}>${bundle.separate}</s></p>
               <p className="x-note">Save {bundle.saving} vs buying both</p>
               <div className="x-buy-row">
-                <a className="button primary" href={BUNDLE_CHECKOUT} aria-label={'Get the ' + bundle.name + ' bundle on the ESN panel, $' + bundle.monthly + ' per month'}>Get bundle ${bundle.monthly}/mo</a>
+                <a className="button primary" href={BUNDLE_CHECKOUT} aria-label={'Get bundle $' + bundle.monthly + '/mo: ' + bundle.name + ', on the ESN panel'}>Get bundle ${bundle.monthly}/mo</a>
               </div>
             </article>
           ))}
