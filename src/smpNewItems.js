@@ -1,6 +1,7 @@
-// ESN SMP new drops (Oct 31, 2026): 5 exclusives, 5 bundles and 2 mega packs with their live Stripe Payment Links.
+// ESN SMP new drops (Oct 31, 2026): the Season 2 pass, 5 exclusives, 5 bundles and 2 mega packs with their live Stripe Payment Links.
 // Each link asks for the buyer's Minecraft username; the ESN SMP plugin delivers the items in-game.
 export const SMP_NEW_ITEMS = [
+  {"name": "Season 2 Frostfall Pass (Premium)", "price": "$1.00", "kind": "pass", "icon": "❄️", "separate": null, "stripe": "https://buy.stripe.com/fZudRaaJRbUz3oXaKjdnX3i", "items": ["Unlocks the Premium track of Season 2: Frostfall (60 tiers, until Dec 26)", "Storm + Celestial armor sets, Frost/Storm/Celestial blades, keys, Angel Wings", "Tier 60: Eternal Sword + [Frostfall Champion] title", "Delivered in-game as a voucher (/pass)"]},
   {"name": "Verdant Druid Armor Set", "price": "$1.99", "kind": "exclusive", "icon": "🌿", "separate": null, "stripe": "https://buy.stripe.com/dRm28s05d1fV2kT19JdnX2W", "items": ["4-piece armor set", "Full set: Nature's Mend (below half health: Regen I for 8 s, 60 s cooldown)"]},
   {"name": "Stormcaller Trident", "price": "$1.00", "kind": "exclusive", "icon": "🔱", "separate": null, "stripe": "https://buy.stripe.com/eVqbJ22dlcYD1gP4lVdnX2X", "items": ["Thrown hits chain lightning to 2 more targets", "20 s cooldown"]},
   {"name": "Bloodmoon Scythe", "price": "$1.00", "kind": "exclusive", "icon": "🌙", "separate": null, "stripe": "https://buy.stripe.com/8x28wQ8BJ2jZf7F19JdnX2Y", "items": ["10% lifesteal on hit", "Sneak + right-click: Blood Reap cone attack (18 s cooldown)"]},
