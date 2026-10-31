@@ -8596,8 +8596,10 @@ html[data-motion="reduced"] .energy-trail-particle{
 .live-team-grid { list-style: none; padding: 0; margin: 0; }
 .live-team-tile { display: flex; align-items: center; gap: 18px; }
 .team-avatar { width: 72px; height: 72px; flex: 0 0 auto; border-radius: 50%; object-fit: cover; background: #1b2436; box-shadow: 0 12px 32px rgba(70,77,255,.18); }
-.team-role { display: inline-flex; align-items: center; gap: 7px; font-size: .74rem; font-weight: 800; letter-spacing: .02em; color: #e8eefc; padding: 4px 10px; border-radius: 999px; border: 1px solid var(--role-color); background: color-mix(in srgb, var(--role-color) 22%, transparent); margin-bottom: 8px; }
+.team-role { display: inline-flex; align-items: center; gap: 7px; font-size: .8rem; font-weight: 800; letter-spacing: .02em; color: #e8eefc; padding: 4px 10px; border-radius: 999px; border: 1px solid var(--role-color); background: color-mix(in srgb, var(--role-color) 22%, transparent); margin-bottom: 8px; }
 .team-role::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: var(--role-color); box-shadow: 0 0 0 2px rgba(255,255,255,.25); }
 .live-team-tile h3 { margin: 0 0 4px; overflow-wrap: anywhere; }
 .team-username { margin: 0; color: #9fb0c9; font-size: .85rem; overflow-wrap: anywhere; }
 .team-live-note { color: #9fb0c9; margin: 0; }
+.leadership-monogram-photo { padding: 0; }
+.leadership-monogram-photo img { width: 100%; height: 100%; object-fit: cover; border-radius: inherit; display: block; }
