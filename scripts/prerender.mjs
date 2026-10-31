@@ -306,7 +306,7 @@ fs.writeFileSync(path.join('dist', 'terms', 'index.html'), [
   '  <meta charset="UTF-8" />',
   '  <title>Rules &amp; Terms | ES Network</title>',
   '  <meta http-equiv="refresh" content="0; url=/rules" />',
-  '  <link rel="canonical" href="https://esnoffical.com/rules" />',
+  '  <link rel="canonical" href="https://esnoffical.com/rules/" />',
   '  <meta name="robots" content="noindex, follow" />',
   '</head>',
   '<body><p>Our terms are on the <a href="/rules">Rules page</a>.</p></body>',
