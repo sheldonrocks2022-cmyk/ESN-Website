@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import './hosting.css'
-import { CreatorSection, FreeNanoSection } from './GrowthSections'
+import { CreatorSection } from './GrowthSections'
 
 const HOSTING_DISCORD = 'https://discord.gg/RGPt3zEfGy'
 const HOSTING_CHECKOUT = 'https://panel.esnoffical.com/plans'
@@ -95,7 +95,6 @@ function PlanGroup({ group, plans, features, billing }) {
             <span className="eyebrow">ESN {plan.name.toUpperCase()}</span>
             <div className="esn-plan-price">
               <strong>{yearly && plan.yearly ? plan.yearly : plan.price}</strong><span>{yearly && plan.yearly ? '/ year' : '/ month'}</span>
-              {plan.name === 'Nano' && <a className="esn-plan-trial" href="#free-nano">Free with every account</a>}
             </div>
             <div className="esn-plan-resources">
               <div><span>RAM</span><b>{plan.ram}</b></div>
@@ -235,7 +234,6 @@ const HOSTING_FAQ = [
   ['How fast is my server ready?', 'Your server is set up automatically after payment, and your panel login is sent to you. Log in at panel.esnoffical.com.'],
   ['Can I cancel?', 'Yes. Use the Stripe billing portal to cancel at the end of your billing period, update your card, or download invoices.'],
   ['Which languages can my bot use?', 'Bot plans support Python and Node.js. You choose the runtime at checkout and can change startup settings in the panel.'],
-  ['Is there a free plan?', 'Yes. Every new account gets a FREE ESN Nano — 256 MB bot server, no card needed, no expiry. Create an account and your free bot server is set up automatically.'],
   ['Is VPS-lite a full VPS?', 'No. It is a Linux container with a shell in the panel console, SFTP and one public port. There is no root, apt, systemd or Docker inside.'],
   ['Where do I get help?', 'Open a ticket in our Discord, read the Hosting Docs, or check Live Uptime for service status.'],
   ['Are backups included?', 'Plans don’t include backup slots by default. A daily backups add-on is available, just ask in our Discord. You can always download your files with the file manager or SFTP.'],
@@ -302,7 +300,7 @@ export default function HostingPage() {
             <span className="eyebrow">ESN BOT HOSTING // 24/7</span>
             <h1>Your bot. Your files. <em>Your controls.</em></h1>
             <p>
-              Start free — plans from $0.50/month. {ALL_PLANS.length} plans for Discord bots, Minecraft, game servers, websites, and VPS-lite.
+              Plans from $0.50/month. {ALL_PLANS.length} plans for Discord bots, Minecraft, game servers, websites, and VPS-lite.
               Get your own panel with console, files, startup settings, and resource graphs.
             </p>
             <div className="hero-actions page-actions">
@@ -317,7 +315,6 @@ export default function HostingPage() {
               <a href={HOSTING_DISCORD} target="_blank" rel="noreferrer">Need help? Join our Discord</a>
             </p>
             <p className="esn-hosting-quicklinks">
-              <a href="#free-nano">Every new account gets a FREE ESN Nano</a>
               <a href={HOSTING_DOCS}>Hosting Docs</a>
               <a href={HOSTING_STATUS}>Live Uptime</a>
               <a href={BILLING_PORTAL}>Manage billing</a>
@@ -343,7 +340,7 @@ export default function HostingPage() {
           <div className="section-heading">
             <div>
               <span className="eyebrow">HOSTING PLANS</span>
-              <h2>{ALL_PLANS.length} plans. Start free — plans from $0.50/month.</h2>
+              <h2>{ALL_PLANS.length} plans. Plans from $0.50/month.</h2>
             </div>
             <p>Every plan includes a private Pterodactyl panel, console, file manager, SFTP, resource monitoring, and Discord ticket support. Bot plans add Python and Node.js support, startup and environment settings, and crash restarting.</p>
           </div>
@@ -392,7 +389,6 @@ export default function HostingPage() {
         </div>
       </section>
 
-      <FreeNanoSection />
 
       <section className="section dark-section" id="customer-panel">
         <div className="shell">
@@ -481,7 +477,7 @@ export default function HostingPage() {
             <div>
               <span className="eyebrow">READY TO ORDER?</span>
               <h3>Pick a plan and check out.</h3>
-              <p>Create an account and your free bot server is set up automatically. Need more power? Start free — plans from $0.50/month, set up automatically after payment. Need help or a custom plan? <a href={HOSTING_DISCORD} target="_blank" rel="noreferrer">Join our Discord</a>.</p>
+              <p>Plans from $0.50/month, set up automatically after payment. Need help or a custom plan? <a href={HOSTING_DISCORD} target="_blank" rel="noreferrer">Join our Discord</a>.</p>
             </div>
             <a className="button primary" href={HOSTING_CHECKOUT}>See plans &amp; check out <span>→</span></a>
           </div>
@@ -512,7 +508,7 @@ export default function HostingPage() {
       {showTop && <button type="button" className="esn-hosting-top" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} aria-label="Back to top">↑</button>}
 
       <div className="esn-hosting-sticky-cta">
-        <span>Start free — plans from <b>$0.50/month</b></span>
+        <span>Plans from <b>$0.50/month</b></span>
         <a href="#plans">See plans</a>
       </div>
     </div>
