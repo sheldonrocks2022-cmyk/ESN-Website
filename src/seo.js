@@ -604,7 +604,7 @@ export const FAQ_SCHEMA=[
   ['What services does ESN offer?','ESN Hosting (Discord bot, game server, web and VPS-lite hosting), Fortnite coaching, editing services, Discord server setups, and selected digital or website projects handled through ESN.'],
   ['How do I order a service?','Service ordering and support are handled through the official ESN Discord. Open a ticket and provide the details of what you need.'],
   ['How much does ESN Hosting cost?','Every account includes a free ESN Nano bot server (256 MB, no card, no expiry). Paid Discord bot hosting starts at $0.50/month (Nano). There are 33 plans in all: bot plans up to Gift at $14.99/month, new Pro Minecraft plans with 8, 12 or 16 GB RAM from $9.99/month, plus game server, web and VPS-lite plans. Many plans can also be paid yearly. See all plans on the Bot Hosting page.'],
-  ['How do I buy hosting and how fast is setup?','Go to panel.esnoffical.com/plans, sign in (or create a free account), pick a plan and pay on Stripe’s secure checkout. Your server is set up automatically after you pay and shows up on your panel dashboard within a minute or two.'],
+  ['How do I buy hosting and how fast is setup?','Go to panel.esnoffical.com/plans, sign in (or create a free account), pick a plan and pay on Stripe’s secure checkout. Your server is set up automatically after you pay and shows up on your panel dashboard.'],
   ['Do I need an account to buy hosting?','Yes, a free ESN panel account. You can create one yourself on the panel sign-in page with New here? Create an account. Your server is tied to that account.'],
   ['Where can I check if ESN Hosting is up?','The live status page at status.esnoffical.com shows the panel, the hosting nodes, the website and the SMP, checked every minute.'],
   ['Where can I get help with my server?','Start with the hosting docs at docs.esnoffical.com. You can also use the chat bubble on this website or the panel, or open a ticket in the ESN Hosting Discord.'],
@@ -622,6 +622,9 @@ export const HOSTING_FAQ_SCHEMA=[
   ['Is there a free plan?','Yes. Every new account gets a FREE ESN Nano — 256 MB bot server, no card needed, no expiry. Create an account and your free bot server is set up automatically.'],
   ['Is VPS-lite a full VPS?','No. It is a Linux container with a shell in the panel console, SFTP and one public port. There is no root, apt, systemd or Docker inside.'],
   ['Where do I get help?','Open a ticket in our Discord, read the Hosting Docs, or check Live Uptime for service status.'],
+  ['Are backups included?','Plans don’t include backup slots by default. A daily backups add-on is available, just ask in our Discord. You can always download your files with the file manager or SFTP.'],
+  ['Can I move my bot from another host?','Yes. The free importer and the step-by-step guide in the Hosting Docs help you move from Replit, Railway, Heroku, a VPS or another host.'],
+  ['Where are the servers?','ESN servers are in the US, in Chicago and New York.'],
 ]
 
 const HOSTING_OFFER_SCHEMA=[

@@ -102,6 +102,7 @@ function PlanGroup({ group, plans, features, billing }) {
               <div><span>CPU</span><b>{plan.cpu}</b></div>
               <div><span>STORAGE</span><b>{plan.storage}</b></div>
             </div>
+            <p className="esn-plan-bestfor"><b>Best for:</b> {bestFor(plan)}</p>
             <ul>
               {plan.yearly && <li>{yearly ? `Monthly: ${plan.price}/month` : `Yearly: ${plan.yearly}/year`}</li>}
               {features.map((feature) => <li key={feature}>{feature}</li>)}
@@ -110,6 +111,52 @@ function PlanGroup({ group, plans, features, billing }) {
             <a href={planCheckoutUrl(plan, yearly && Boolean(plan.yearly))} aria-label={`Order ESN ${plan.name}, ${yearly && plan.yearly ? plan.yearly + ' per year' : plan.price + ' per month'}`}>Order ESN {plan.name} <span aria-hidden="true">→</span></a>
           </article>
         ))}
+      </div>
+    </section>
+  )
+}
+
+// A plain starting point per plan. Starting points, not guarantees: the panel graphs show when to move up.
+function bestFor(plan) {
+  if (plan.group === 'game') return `A ${plan.name} server, installed for you after checkout`
+  if (plan.group === 'web') return 'A website, WordPress, Node.js or Python app'
+  if (plan.group === 'vps') return 'Scripts, tools and small apps in a Linux shell'
+  if (plan.group === 'pro') return 'Big Minecraft servers, modpacks and busy communities'
+  const gb = parseFloat(plan.ram) / (plan.ram.includes('MB') ? 1024 : 1)
+  if (gb < 1) return 'A small Discord or Telegram bot'
+  if (gb < 2) return 'A busier bot with music, a database or many servers'
+  if (gb < 4) return 'Several bots, or a small Minecraft server'
+  return 'Minecraft with plugins, or several heavy bots'
+}
+
+const PLAN_INCLUDES = [
+  ['Full control panel', 'Web console, file manager, SFTP, startup settings, schedules, power controls, live CPU/RAM/disk graphs and subusers to share access. Sign in with Discord or Google.'],
+  ['Set up automatically', 'Your server is created automatically after checkout and shows up on your panel dashboard.'],
+  ['Free move from another host', 'The free importer copies your bot or server over, and the Hosting Docs walk you through it step by step.'],
+  ['50 step-by-step guides', 'Hosting Docs cover Discord bots (Python, Node.js), Telegram bots, Minecraft, game servers, websites and billing.'],
+  ['Help in Discord', 'Open a ticket in the ESN Discord, or ask the ESN Helper bot with /ask, /docs and /botfix.'],
+  ['Live status page', 'Every ESN service is checked every minute on status.esnoffical.com, with an RSS feed and badge.'],
+  ['US servers', 'Nodes in Chicago and New York.'],
+  ['Secure checkout, cancel anytime', 'Stripe handles payment, so card details never touch ESN. Cancel in the billing portal and your plan runs to the end of the paid month.'],
+]
+
+function PlanIncludes() {
+  return (
+    <section className="section compact-section" id="every-plan-includes" aria-labelledby="every-plan-includes-title">
+      <div className="shell">
+        <div className="section-heading">
+          <div>
+            <span className="eyebrow">EVERY PLAN INCLUDES</span>
+            <h2 id="every-plan-includes-title">What you get with every ESN plan.</h2>
+          </div>
+          <p>Same tools on every plan, from Nano to Pro 16GB. Bigger plans add RAM, CPU and storage.</p>
+        </div>
+        <ul className="esn-plan-includes">
+          {PLAN_INCLUDES.map(([title, copy]) => (
+            <li key={title}><strong>{title}</strong><span>{copy}</span></li>
+          ))}
+        </ul>
+        <p className="esn-plan-includes-note">Backups: plans don’t include backup slots by default. A daily backups add-on is available, just ask in <a href={HOSTING_DISCORD} target="_blank" rel="noreferrer">our Discord</a>. You can always download your files with the file manager or SFTP.</p>
       </div>
     </section>
   )
@@ -191,6 +238,9 @@ const HOSTING_FAQ = [
   ['Is there a free plan?', 'Yes. Every new account gets a FREE ESN Nano — 256 MB bot server, no card needed, no expiry. Create an account and your free bot server is set up automatically.'],
   ['Is VPS-lite a full VPS?', 'No. It is a Linux container with a shell in the panel console, SFTP and one public port. There is no root, apt, systemd or Docker inside.'],
   ['Where do I get help?', 'Open a ticket in our Discord, read the Hosting Docs, or check Live Uptime for service status.'],
+  ['Are backups included?', 'Plans don’t include backup slots by default. A daily backups add-on is available, just ask in our Discord. You can always download your files with the file manager or SFTP.'],
+  ['Can I move my bot from another host?', 'Yes. The free importer and the step-by-step guide in the Hosting Docs help you move from Replit, Railway, Heroku, a VPS or another host.'],
+  ['Where are the servers?', 'ESN servers are in the US, in Chicago and New York.'],
 ]
 
 function HostingFAQ() {
@@ -438,6 +488,7 @@ export default function HostingPage() {
         </div>
       </section>
 
+      <PlanIncludes />
       <HostingFAQ />
 
       <CreatorSection />
