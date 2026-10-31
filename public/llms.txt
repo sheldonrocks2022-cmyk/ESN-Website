@@ -1,0 +1,26 @@
+# ES Network (ESN)
+
+> ES Network (ESN) runs ESN Hosting (Discord bot, Minecraft server, game server, VPS and web hosting, with bot hosting from $0.50/month), the ESN SMP Minecraft server (Java and Bedrock, play.esnoffical.com) with its own store, professional services for Discord and Minecraft projects, and a Discord community.
+
+## Hosting
+- Hosting overview: https://esnoffical.com/hosting/
+- Plans and prices: https://esnoffical.com/hosting/vps/
+- Buy a plan / sign in to the hosting panel: https://panel.esnoffical.com/plans
+- Bot hosting setup (Python and Node.js): https://esnoffical.com/business/setup/
+- Help center and guides: https://docs.esnoffical.com/
+- Live service status: https://status.esnoffical.com/
+
+## ESN SMP (Minecraft)
+- Server IP and how to join: https://esnoffical.com/smpconnection/
+- Join from Xbox, PlayStation or Switch: https://esnoffical.com/smpconsole/
+- SMP store (keys, relics, bundles, premium bundles): https://esnoffical.com/storesmp/
+- SMP site, leaderboards and map: https://smp.esnoffical.com/
+
+## Services and company
+- Professional services (Discord server setup, custom bots, Minecraft plugins, migrations, websites): https://esnoffical.com/services/
+- Meet the team: https://esnoffical.com/leadership/
+- About ES Network: https://esnoffical.com/about/
+- FAQ: https://esnoffical.com/faq/
+- Rules and acceptable use: https://esnoffical.com/rules/
+- Trust center (official links, payment safety): https://esnoffical.com/trust/
+- Discord community and support: https://discord.gg/RGPt3zEfGy
