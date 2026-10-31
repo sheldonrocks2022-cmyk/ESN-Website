@@ -22,26 +22,35 @@ const SHOWCASE = [
   'Custom emojis and soundboard',
 ]
 
-function money(value) {
-  return '$' + value
+function money(value, per) {
+  return '$' + value + (per ? '/' + per : '')
 }
 
 function ListingCard({ item }) {
   const href = item.url || DISCORD_TICKET
   return (
-    <article className="esn-listing" id={item.id}>
+    <article className={item.pro ? 'esn-listing esn-listing-pro' : 'esn-listing'} id={item.id}>
       <div className="esn-listing-top">
         <h3>{item.name}</h3>
-        <strong className="esn-listing-price">{money(item.price)}</strong>
+        <strong className="esn-listing-price">{money(item.price, item.per)}</strong>
       </div>
-      <span className="esn-listing-time">Delivery: {item.days}</span>
+      <span className="esn-listing-time">{item.per ? item.days : 'Delivery: ' + item.days}</span>
+      {item.desc ? <p className="esn-listing-desc">{item.desc}</p> : null}
       <ul>{item.includes.map((point) => <li key={point}>{point}</li>)}</ul>
-      <a className="button primary esn-buy" href={href} target="_blank" rel="noreferrer">Buy now · {money(item.price)}</a>
-      <ol className="esn-buy-mini">
-        <li>Buy</li>
-        <li>Open a <a href={DISCORD_TICKET} target="_blank" rel="noreferrer">Discord ticket</a> with your receipt as proof of purchase</li>
-        <li>We deliver</li>
-      </ol>
+      <a className="button primary esn-buy" href={href} target="_blank" rel="noreferrer">Buy now · {money(item.price, item.per)}</a>
+      {item.pro ? (
+        <ol className="esn-buy-mini">
+          <li>Check out with your Discord username and project details</li>
+          <li>ESN staff message you on Discord within 24 hours</li>
+          <li>We deliver</li>
+        </ol>
+      ) : (
+        <ol className="esn-buy-mini">
+          <li>Buy</li>
+          <li>Open a <a href={DISCORD_TICKET} target="_blank" rel="noreferrer">Discord ticket</a> with your receipt as proof of purchase</li>
+          <li>We deliver</li>
+        </ol>
+      )}
     </article>
   )
 }
@@ -111,6 +120,7 @@ export default function ServicesPage() {
           {groups.map(([name, items]) => (
             <div className="esn-svc-group" key={name}>
               <h3 className="esn-svc-group-title">{name}</h3>
+              {name === 'Professional Services' ? <p className="esn-svc-group-note">Done-for-you work by the ESN team. Tell us what you need at checkout and we take it from there.</p> : null}
               <div className="esn-listings">
                 {items.map((item) => <ListingCard item={item} key={item.id} />)}
               </div>

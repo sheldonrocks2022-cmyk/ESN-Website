@@ -58,3 +58,8 @@
 .esn-svc-empty a{color:#9cc0ff}
 @media(max-width:980px){.esn-listings{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:620px){.esn-listings,.esn-steps-3{grid-template-columns:1fr}.esn-svc-filters{position:static;padding:10px}}
+
+/* Professional Services (Oct 31, 2026) */
+.esn-listing-pro { border-color: rgba(98, 241, 255, 0.35); box-shadow: 0 0 0 1px rgba(98, 241, 255, 0.08), 0 14px 40px rgba(98, 241, 255, 0.06); }
+.esn-listing-desc { margin: 10px 0 0; font-size: 0.92rem; line-height: 1.5; opacity: 0.85; }
+.esn-svc-group-note { margin: -4px 0 16px; opacity: 0.8; }
