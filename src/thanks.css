@@ -23,6 +23,10 @@
 .store-x20-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
 .store-x20-card{display:flex;flex-direction:column;padding:18px;border:1px solid rgba(119,158,224,.18);border-radius:18px;background:linear-gradient(180deg,rgba(9,20,40,.96),rgba(5,12,25,.9))}
 .store-x20-card.is-bundle{border-color:rgba(255,196,94,.4)}
+.store-new-tag{align-self:flex-start;margin-top:10px;padding:3px 9px;border-radius:999px;background:rgba(255,196,94,.14);color:#ffd27a;font-size:.72rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
+.store-new-separate{margin:.2rem 0 0;color:#aab7ca;font-size:.9rem}
+.store-new-separate s{color:#c7d2e2}
+.store-x20-card.is-mega{border-color:rgba(255,196,94,.6)}
 .store-x20-top{display:flex;align-items:center;justify-content:space-between;gap:8px}
 .store-x20-icon{font-size:1.6rem}
 .store-x20-price{font-weight:900;color:#fff}

@@ -15,6 +15,7 @@ import { ChallengeLabPage, NoAccountExperienceLayer, NotificationCenterPage, Rew
 import HostingPage from './Hosting'
 import { TIP_URL } from './servicesCatalog'
 import { EXCLUSIVES20 } from './exclusives20'
+import { SMP_NEW_ITEMS } from './smpNewItems'
 import { BusinessPlatformPage } from './BusinessPlatform'
 import { LiveBusinessStaff } from './BusinessLive'
 import { ChangelogTimelinePage, DiagnosticCenterPage, GlobalOpsLayer, OperationsMapPage, PublicIncidentsPage, SessionStatsPage, SMPConnectionTesterPage, SystemBlueprintPage } from './OpsExpansion'
@@ -1577,7 +1578,7 @@ function SMPStore() {
 
       <section className="section compact-section">
         <div className="shell network-stat-grid store-stat-grid">
-          <div><strong>{liveProducts.length + EXCLUSIVES20.length}</strong><span>Current products</span></div>
+          <div><strong>{liveProducts.length + EXCLUSIVES20.length + SMP_NEW_ITEMS.length}</strong><span>Current products</span></div>
           <div><strong>Stripe</strong><span>Secure checkout</span></div>
           <div><strong>Exact name</strong><span>Required for delivery</span></div>
           <div><strong>.</strong><span>Include the prefix if your username uses it</span></div>
@@ -1596,6 +1597,24 @@ function SMPStore() {
 
           <div className="card-grid two store-grid">
             {liveProducts.map((product) => <ProductCard key={product.name} product={product} />)}
+          </div>
+
+          <div className="store-x20-head" id="new-drops">
+            <span className="eyebrow">New · Bundles &amp; mega packs</span>
+            <h2>New exclusives, bundles and mega packs.</h2>
+            <p>Five new exclusives, five bundles and two mega packs. Same Stripe checkout and username delivery as every item on this page.</p>
+          </div>
+          <div className="store-x20-grid store-new-grid">
+            {SMP_NEW_ITEMS.map((product) => (
+              <article className={'store-x20-card' + (product.kind !== 'exclusive' ? ' is-bundle' : '') + (product.kind === 'mega' ? ' is-mega' : '')} key={product.name} id={'product-' + product.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')}>
+                <div className="store-x20-top"><span className="store-x20-icon" aria-hidden="true">{product.icon}</span><span className="store-x20-price">{product.price}</span></div>
+                {product.kind === 'mega' && <span className="store-new-tag">Mega pack</span>}
+                <h3>{product.name}</h3>
+                {product.separate && <p className="store-new-separate">Separately <s>{product.separate}</s></p>}
+                <ul>{product.items.map((item) => <li key={item}>{item}</li>)}</ul>
+                <a className="button primary" href={product.stripe} target="_blank" rel="noreferrer">Buy with Stripe</a>
+              </article>
+            ))}
           </div>
 
           <div className="store-x20-head" id="exclusives-20">
