@@ -1,0 +1,13 @@
+/* One-tap copy buttons for the ESN SMP address. */
+.smp-copy{display:flex;flex-wrap:wrap;gap:10px;margin:14px 0 4px}
+.smp-copy-btn{display:inline-flex;align-items:center;gap:10px;min-height:44px;padding:8px 14px;border-radius:12px;border:1px solid rgba(98,241,255,.3);background:rgba(98,241,255,.06);color:#f8fbff;font:inherit;font-size:.86rem;cursor:pointer;transition:border-color .2s ease,background .2s ease;text-align:left;max-width:100%}
+.smp-copy-btn:hover{border-color:#62f1ff;background:rgba(98,241,255,.12)}
+.smp-copy-btn:focus-visible{outline:2px solid #62f1ff;outline-offset:3px}
+.smp-copy-btn.is-copied{border-color:rgba(62,229,154,.6);background:rgba(62,229,154,.1)}
+.smp-copy-label{font-size:.62rem;font-weight:900;letter-spacing:.14em;text-transform:uppercase;color:#a7b0c3}
+.smp-copy-value{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.86rem;background:none;padding:0;color:inherit;overflow-wrap:anywhere}
+.smp-copy-state{font-size:.72rem;font-weight:800;color:#62f1ff;white-space:nowrap}
+.smp-copy-btn.is-copied .smp-copy-state{color:#3ee59a}
+.smp-copy-live{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+@media (max-width:560px){.smp-copy-btn{width:100%}}
+.smp-copy-compact{margin:10px 0 12px}
