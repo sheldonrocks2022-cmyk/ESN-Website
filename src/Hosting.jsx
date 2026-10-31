@@ -1,3 +1,4 @@
+import HostingBundles from './HostingBundles'
 import { useEffect, useState } from 'react'
 import './hosting.css'
 import { CreatorSection } from './GrowthSections'
@@ -389,6 +390,8 @@ export default function HostingPage() {
         </div>
       </section>
 
+
+      <HostingBundles />
 
       <section className="section dark-section" id="customer-panel">
         <div className="shell">

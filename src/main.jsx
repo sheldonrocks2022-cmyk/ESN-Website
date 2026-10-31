@@ -6,7 +6,7 @@ import App from './App'
 import './styles.css'
 import './editorial-polish.css'
 import './calm-theme.css'
-import './refresh.css'
+import './theme.css'
 
 // Page-wide styling class (also managed by UltraExperience) is set before the first render so the page does not shift when it is added.
 if (!window.location.pathname.startsWith('/sites/')) document.documentElement.classList.add('esn-ultra')
