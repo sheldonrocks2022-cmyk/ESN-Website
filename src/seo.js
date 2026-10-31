@@ -705,6 +705,9 @@ export const STORE_SCHEMA=[
   {name:'ESN Riftwalker Bundle',price:'1.00',description:'An ESN SMP mobility and utility bundle with Riftblade, Rift Wings, Phase Boots, Rift Bow, Rift Core, and Void Compass.',path:'/storesmp#product-esn-riftwalker-bundle',available:true},
   {name:'ESN Immortal Warden Bundle',price:'1.30',description:'An eight-item Warden-themed ESN SMP combat bundle.',path:'/storesmp#product-esn-immortal-warden-bundle',available:true},
   {name:'ESN Exclusives Mega Bundle',price:'1.99',description:'All three ESN SMP exclusive sets in one checkout: Lightning King, Immortal Warden and Void Warrior. 20 items.',path:'/storesmp#product-esn-exclusives-mega-bundle',available:true},
+  {name:'Ultimate Legend Bundle',price:'49.99',description:'Every ESN SMP exclusive (all 76), 6 season relics and 6 kill effects, the OVERLORD and LEGEND ranks, the Season 2 Frostfall Premium Pass, 1,375 Cosmetic Tokens, 20 Crate Keys, 40 Realm 100 Keys and 5 Enchant Reroll Tickets. One-time payment.',path:'/storesmp#product-ultimate-legend-bundle',available:true},
+  {name:'ALL Exclusives Bundle',price:'29.99',description:'Every ESN SMP exclusive item (76 in all), 6 season relics and 6 kill effects, 175 Cosmetic Tokens, 5 Crate Keys and 20 Realm 100 Keys. One-time payment.',path:'/storesmp#product-all-exclusives-bundle',available:true},
+  {name:'Mythic Bundle',price:'19.99',description:'All 32 Exclusives 20 items, 5 legendary sets, the TITAN rank, the Season 2 Frostfall Premium Pass, 175 Cosmetic Tokens, 5 Crate Keys and 20 Realm 100 Keys. One-time payment.',path:'/storesmp#product-mythic-bundle',available:true},
 ]
 
 export const TOOL_SCHEMA=[
@@ -786,7 +789,7 @@ export function structuredDataFor(pathname){
       url:SITE_URL+'/',
       logo:{'@type':'ImageObject',url:SITE_URL+'/esn-mark.svg'},
       description:'ES Network provides creator and gaming services and operates the ESN SMP, ESN Arcade, ES Tools, website projects, and community experiences.',
-      sameAs:['https://github.com/sheldonrocks2022-cmyk','https://github.com/sheldonrocks2022-cmyk/ESN-Website','https://www.trustpilot.com/review/esnoffical.com','https://discord.gg/RGPt3zEfGy'],
+      sameAs:['https://github.com/sheldonrocks2022-cmyk','https://github.com/sheldonrocks2022-cmyk/ESN-Website','https://www.trustpilot.com/review/esnoffical.com','https://discord.gg/RGPt3zEfGy','https://www.youtube.com/@esnexplains','https://www.tiktok.com/@esnexplains'],
       brand:{'@type':'Brand',name:'ES Network',alternateName:'ESN'},
       knowsAbout:['Discord bot hosting','Game server hosting','Minecraft SMP','Fortnite coaching','Video editing','Discord server setup','Website creation','Browser games','Creator tools'],
     },

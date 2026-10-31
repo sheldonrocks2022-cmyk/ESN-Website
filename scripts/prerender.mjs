@@ -1,5 +1,6 @@
 import fs from 'node:fs'
 import path from 'node:path'
+import { execSync } from 'node:child_process'
 import { SEO_ROUTES, SOCIAL_IMAGE_ALT, canonicalUrl, robotsContent, socialImageFor, structuredDataFor } from '../src/seo.js'
 
 const I18N_LANGS = ['es', 'pt-BR', 'fr', 'de', 'fil', 'hi', 'id', 'tr']
@@ -390,10 +391,18 @@ const sitemapUrls = [...new Set(
     .map(([route]) => canonicalUrl(route))
 )]
 const SITEMAP_LASTMOD = Object.fromEntries(['/', '/hosting', '/hosting/vps', '/business/plans'].map((route) => [canonicalUrl(route), '2026-10-30']))
+// Every other URL gets the date of the commit being deployed (falls back to the build date), so each sitemap URL carries a lastmod.
+const SITEMAP_DEFAULT_LASTMOD = (() => {
+  try {
+    const day = execSync('git log -1 --format=%cs', { stdio: ['ignore', 'pipe', 'ignore'] }).toString().trim()
+    if (/^\d{4}-\d{2}-\d{2}$/.test(day)) return day
+  } catch {}
+  return new Date().toISOString().slice(0, 10)
+})()
 const sitemap = [
   '<?xml version="1.0" encoding="UTF-8"?>',
   '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
-  ...sitemapUrls.map((url) => SITEMAP_LASTMOD[url] ? `  <url><loc>${url}</loc><lastmod>${SITEMAP_LASTMOD[url]}</lastmod></url>` : `  <url><loc>${url}</loc></url>`),
+  ...sitemapUrls.map((url) => `  <url><loc>${url}</loc><lastmod>${[SITEMAP_LASTMOD[url] || '', SITEMAP_DEFAULT_LASTMOD].sort().pop()}</lastmod></url>`),
   '</urlset>',
   '',
 ].join('\n')
