@@ -23,7 +23,7 @@ import { ChangelogTimelinePage, DiagnosticCenterPage, GlobalOpsLayer, Operations
 import { SOCIAL_IMAGE_ALT, SOCIAL_IMAGE_URL, canonicalUrl, getSeo, robotsContent, socialImageFor, structuredDataFor } from './seo'
 import { PortfolioPage, StatusCenter, TimelinePage, UpdatesPage, VaultPage } from './LiveExperience'
 import { VERIFIED_REVIEWS } from './reviews'
-import LiveTeam from './LiveTeam'
+import LiveTeam, { LeaderAvatar } from './LiveTeam'
 import { NetworkBar, NetworkFooterRow } from './EsnNetwork'
 import { SmpCopyButtons } from './SmpCopy'
 import { HOME_FAQ } from './esnNetwork'
@@ -918,7 +918,7 @@ function Leadership() {
       <section className="section leadership-spotlight-section">
         <div className="shell leadership-spotlight" data-easter="leadership" tabIndex="0">
           <div className="leadership-scan" aria-hidden="true" />
-          <div className="leadership-monogram">L</div>
+          <LeaderAvatar username="vaeryx" name="Landon" initial="L" />
           <div>
             <span className="eyebrow">Founder & CEO</span>
             <h2>Landon</h2>
