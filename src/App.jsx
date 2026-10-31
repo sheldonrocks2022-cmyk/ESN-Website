@@ -23,6 +23,7 @@ import { ChangelogTimelinePage, DiagnosticCenterPage, GlobalOpsLayer, Operations
 import { SOCIAL_IMAGE_ALT, SOCIAL_IMAGE_URL, canonicalUrl, getSeo, robotsContent, socialImageFor, structuredDataFor } from './seo'
 import { PortfolioPage, StatusCenter, TimelinePage, UpdatesPage, VaultPage } from './LiveExperience'
 import { VERIFIED_REVIEWS } from './reviews'
+import LiveTeam from './LiveTeam'
 import { NetworkBar, NetworkFooterRow } from './EsnNetwork'
 import { SmpCopyButtons } from './SmpCopy'
 import { HOME_FAQ } from './esnNetwork'
@@ -93,21 +94,6 @@ const SHOWCASE_EXTRAS = [
   ['Hashtag Packs', 'Creator Growth', 'Need help choosing hashtags for a post or campaign? Tell us what you are promoting in a ticket.'],
   ['Stream Branding', 'Creator Branding', 'Talk to us about the visuals and branding your stream or creator channel needs.'],
   ['Custom Services', 'Custom Projects', 'Have a project that is not listed? Open a Discord ticket and tell us what you have in mind.'],
-]
-
-const LEADERS = [
-  ['Landon', 'Founder & CEO'],
-  ['Mark', 'Founder'],
-  ['Presten', 'Founder'],
-  ['Angie', 'Founder'],
-  ['caelian_', 'Founder'],
-  ['69isdabest', 'Co-Founder'],
-  ['kidrocks1313', 'Co-Founder'],
-]
-
-const ADMINISTRATION = [
-  ['lala.s.2', 'Administrator'],
-  ['Dr.crows', 'Administrator'],
 ]
 
 const LANDON_RESPONSIBILITIES = [
@@ -926,7 +912,7 @@ function Leadership() {
       <PageHero
         eyebrow="ES Network Team"
         title="The people behind ESN."
-        text="Meet the founders, co-founders, and administrators who help run ESN."
+        text="Meet the founders and staff who run ESN. This list updates automatically from our Discord."
       />
 
       <section className="section leadership-spotlight-section">
@@ -944,37 +930,7 @@ function Leadership() {
         </div>
       </section>
 
-      <section className="section dark-section">
-        <div className="shell">
-          <div className="section-heading">
-            <div><span className="eyebrow">Leadership</span><h2>Founders & co-founders</h2></div>
-          </div>
-          <div className="team-grid">
-            {LEADERS.filter(([name]) => name !== 'Landon').map(([name, title]) => (
-              <article className="leader-tile" key={name}>
-                <div className="avatar-placeholder">{name.charAt(0).toUpperCase()}</div>
-                <div><span className="eyebrow">{title}</span><h3>{name}</h3></div>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="section">
-        <div className="shell">
-          <div className="section-heading">
-            <div><span className="eyebrow">Administration</span><h2>ES Network administrators</h2></div>
-          </div>
-          <div className="team-grid admin-grid">
-            {ADMINISTRATION.map(([name, title]) => (
-              <article className="leader-tile" key={name}>
-                <div className="avatar-placeholder">{name.charAt(0).toUpperCase()}</div>
-                <div><span className="eyebrow">{title}</span><h3>{name}</h3></div>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
+      <LiveTeam />
     </>
   )
 }
