@@ -18,18 +18,6 @@ export const TEAM_FALLBACK = [
     ]
   },
   {
-    "name": "ESN OFFICIAL",
-    "username": "ep1cservicesoffical",
-    "role": "Creator of all things ESN",
-    "color": "#3f6069",
-    "avatar": "https://panel.esnoffical.com/esn-theme/team/avatars/aa81118016be08aeb23054a84e6d1815.webp",
-    "fallback_avatar": "https://panel.esnoffical.com/esn-theme/team/avatars/default-4.png",
-    "servers": [
-      "ESN Hosting",
-      "ES Network"
-    ]
-  },
-  {
     "name": "HAUNTED_PLAYZ",
     "username": "haunted_playz",
     "role": "Creator of all things ESN",
@@ -290,6 +278,17 @@ export const TEAM_FALLBACK = [
     "servers": [
       "ES Network"
     ]
+  },
+  {
+    "name": "Selling candy and lava base)",
+    "username": "hadiblox07",
+    "role": "Content Creator",
+    "color": "#cf5cde",
+    "avatar": "https://panel.esnoffical.com/esn-theme/team/avatars/9d2e0411496202a2f95686f974475d70.webp",
+    "fallback_avatar": "https://panel.esnoffical.com/esn-theme/team/avatars/default-1.png",
+    "servers": [
+      "ES Network"
+    ]
   }
 ]
 
@@ -348,6 +347,13 @@ export function LeaderAvatar({ username, name, initial }) {
       <img src={member.avatar} alt={name + ' Discord avatar'} width="150" height="150" decoding="async" onError={() => setFailed(true)} />
     </div>
   )
+}
+
+// A leader's Discord @username from the same feed (e.g. under the name on the feature card).
+export function LeaderHandle({ username }) {
+  const { team } = useLiveTeam()
+  const member = team.find((m) => m.username === username)
+  return <p className="leader-handle">@{member ? member.username : username}</p>
 }
 
 export default function LiveTeam() {

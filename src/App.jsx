@@ -23,7 +23,7 @@ import { ChangelogTimelinePage, DiagnosticCenterPage, GlobalOpsLayer, Operations
 import { SOCIAL_IMAGE_ALT, SOCIAL_IMAGE_URL, canonicalUrl, getSeo, robotsContent, socialImageFor, structuredDataFor } from './seo'
 import { PortfolioPage, StatusCenter, TimelinePage, UpdatesPage, VaultPage } from './LiveExperience'
 import { VERIFIED_REVIEWS } from './reviews'
-import LiveTeam, { LeaderAvatar } from './LiveTeam'
+import LiveTeam, { LeaderAvatar, LeaderHandle } from './LiveTeam'
 import { NetworkBar, NetworkFooterRow } from './EsnNetwork'
 import { SmpCopyButtons } from './SmpCopy'
 import { HOME_FAQ } from './esnNetwork'
@@ -922,6 +922,7 @@ function Leadership() {
           <div>
             <span className="eyebrow">Founder & CEO</span>
             <h2>Landon</h2>
+            <LeaderHandle username="vaeryx" />
             <p className="large-copy">Business operations, website and service infrastructure, creator editing, Discord ticket support, marketing strategy, and brand development.</p>
             <div className="responsibility-tags">
               {LANDON_RESPONSIBILITIES.map((item) => <span key={item}>{item}</span>)}
