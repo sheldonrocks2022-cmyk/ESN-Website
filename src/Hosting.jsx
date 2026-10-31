@@ -27,16 +27,15 @@ export const BOT_PLANS = [
   { name: 'Titan', slug: 'esn-titan', ram: '10 GB', cpu: '300%', storage: '40 GB', price: '$10.99', yearly: '$129.90', group: 'premium', label: 'BEST VALUE' },
   { name: 'Max', slug: 'esn-max', ram: '12 GB', cpu: '350%', storage: '50 GB', price: '$13.49', yearly: '', group: 'premium' },
   { name: 'Gift', slug: 'esn-gift', ram: '15 GB', cpu: '450%', storage: '60 GB', price: '$14.99', yearly: '$169.90', group: 'premium', label: 'MAX RESOURCES' },
-  { name: 'Pro 8GB', slug: 'esn-pro-8gb', ram: '8 GB', cpu: '400%', storage: '30 GB', price: '$9.99', yearly: '', group: 'pro', label: 'NEW' },
-  { name: 'Pro 12GB', slug: 'esn-pro-12gb', ram: '12 GB', cpu: '500%', storage: '40 GB', price: '$14.99', yearly: '', group: 'pro', label: 'NEW' },
-  { name: 'Pro 16GB', slug: 'esn-pro-16gb', ram: '16 GB', cpu: '600%', storage: '50 GB', price: '$19.99', yearly: '', group: 'pro', label: 'NEW' },
+  { name: 'Pro 8GB', slug: 'esn-pro-8gb', ram: '8 GB', cpu: '400%', storage: '30 GB', price: '$9.99', yearly: '', group: 'game', label: 'MINECRAFT' },
+  { name: 'Pro 12GB', slug: 'esn-pro-12gb', ram: '12 GB', cpu: '500%', storage: '40 GB', price: '$14.99', yearly: '', group: 'game', label: 'MINECRAFT' },
+  { name: 'Pro 16GB', slug: 'esn-pro-16gb', ram: '16 GB', cpu: '600%', storage: '50 GB', price: '$19.99', yearly: '', group: 'game', label: 'MINECRAFT' },
 ]
 
 const PLAN_GROUPS = [
   { id: 'budget', label: 'Budget Plans', copy: 'Affordable options for smaller bots and projects.' },
   { id: 'performance', label: 'Performance Plans', copy: 'More room for active communities and heavier workloads.' },
   { id: 'premium', label: 'Premium Plans', copy: 'Higher resources for demanding projects. Ask us about game compatibility.' },
-  { id: 'pro', label: 'Pro Plans', copy: 'Big Minecraft servers with boosted CPU and disk.' },
 ]
 
 const BOT_FEATURES = ['24/7 hosting availability', 'Python + Node.js support', 'Private Pterodactyl panel', 'Console, files + SFTP', 'Resource monitoring + auto restart']
@@ -63,7 +62,7 @@ export const MORE_PLANS = [
 
 const MORE_PLAN_GROUPS = [
   { id: 'bigger', label: 'Bigger Bot Plans', copy: 'More room for Discord bots, Telegram bots, or a Minecraft server. You pick the type at checkout.', features: ['24/7 hosting availability', 'Discord, Telegram or Minecraft', 'Private Pterodactyl panel', 'Console, files + SFTP', 'Resource monitoring + auto restart'] },
-  { id: 'game', label: 'Game Servers', copy: 'Plans for Terraria, Factorio, Valheim, and Palworld. The game server is installed for you after payment.', features: ['24/7 hosting availability', 'Game server installed for you', 'Private Pterodactyl panel', 'Console, files + SFTP', 'Resource monitoring'] },
+  { id: 'game', label: 'Game Servers', copy: 'Minecraft first: the Pro plans give big Minecraft servers boosted CPU and disk. Also Terraria, Factorio, Valheim, Palworld and more. The server is set up for you after payment.', features: ['24/7 hosting availability', 'Minecraft or your game, set up for you', 'Private Pterodactyl panel', 'Console, files + SFTP', 'Resource monitoring'] },
   { id: 'web', label: 'Web Hosting', copy: 'Host a website, WordPress, a Node.js app, or a Python app.', features: ['24/7 hosting availability', 'Website, WordPress, Node.js or Python app', 'Private Pterodactyl panel', 'Console, files + SFTP', 'Resource monitoring'] },
   { id: 'vps', label: 'VPS-lite (Linux container)', copy: 'Your own Linux container with a shell in the panel console. It is a container, not a full VPS: no root, apt, systemd, or Docker inside.', features: ['Linux shell in the panel console', 'SFTP + file manager', 'Node.js 22, Python 3, git, gcc', 'One public port + autostart.sh', 'No root, apt, systemd or Docker'] },
 ]
@@ -121,7 +120,7 @@ function bestFor(plan) {
   if (plan.group === 'game') return `A ${plan.name} server, installed for you after checkout`
   if (plan.group === 'web') return 'A website, WordPress, Node.js or Python app'
   if (plan.group === 'vps') return 'Scripts, tools and small apps in a Linux shell'
-  if (plan.group === 'pro') return 'Big Minecraft servers, modpacks and busy communities'
+  if (plan.slug.startsWith('esn-pro-')) return 'Big Minecraft servers, modpacks and busy communities'
   const gb = parseFloat(plan.ram) / (plan.ram.includes('MB') ? 1024 : 1)
   if (gb < 1) return 'A small Discord or Telegram bot'
   if (gb < 2) return 'A busier bot with music, a database or many servers'
@@ -365,7 +364,7 @@ export default function HostingPage() {
               <PlanGroup key={group.id} group={group} plans={BOT_PLANS} features={BOT_FEATURES} billing={billing} />
             ))}
             {MORE_PLAN_GROUPS.map((group) => (
-              <PlanGroup key={group.id} group={group} plans={MORE_PLANS} features={group.features} billing={billing} />
+              <PlanGroup key={group.id} group={group} plans={group.id === 'game' ? ALL_PLANS : MORE_PLANS} features={group.features} billing={billing} />
             ))}
           </div>
 
