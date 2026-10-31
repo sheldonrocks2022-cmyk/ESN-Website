@@ -1,10 +1,12 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
+import { useEffect } from 'react'
 import { BrowserRouter } from 'react-router-dom'
 import App from './App'
 import './styles.css'
 import './editorial-polish.css'
 import './calm-theme.css'
+import './refresh.css'
 
 // Page-wide styling class (also managed by UltraExperience) is set before the first render so the page does not shift when it is added.
 if (!window.location.pathname.startsWith('/sites/')) document.documentElement.classList.add('esn-ultra')
@@ -46,15 +48,34 @@ document.documentElement.classList.remove('route-transition-locked')
 document.documentElement.style.removeProperty('touch-action')
 document.body.style.removeProperty('touch-action')
 
-ReactDOM.createRoot(document.getElementById('root')).render(
+// Tells the page loader that React is attached, so a tap made while the page was still loading can be replayed.
+function ReadySignal() {
+  useEffect(() => {
+    window.__esnReady = true
+    window.dispatchEvent(new Event('esn:ready'))
+  }, [])
+  return null
+}
+
+const rootElement = document.getElementById('root')
+const tree = (
   <React.StrictMode>
     <ESNErrorBoundary>
       <BrowserRouter>
         <App />
+        <ReadySignal />
       </BrowserRouter>
     </ESNErrorBoundary>
-  </React.StrictMode>,
+  </React.StrictMode>
 )
+
+// Pages are pre-rendered at build time. Attach to that markup instead of drawing the page again;
+// if a part differs (for example saved local progress), React quietly redraws just that part.
+if (rootElement.hasAttribute('data-prerendered')) {
+  ReactDOM.hydrateRoot(rootElement, tree, { onRecoverableError: (error) => { if (window.ESN_DEBUG_HYDRATION) console.warn('hydration', error) } })
+} else {
+  ReactDOM.createRoot(rootElement).render(tree)
+}
 
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
