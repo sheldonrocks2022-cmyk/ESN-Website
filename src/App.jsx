@@ -703,7 +703,7 @@ function RouteLoading() {
 }
 
 const HOME_PLAN_PICKS = ['esn-nano', 'esn-pro', 'esn-elite']
-const HOME_DROPS = ['Legends Mega Pack', 'Ultimate Mega Pack', 'New Exclusives Bundle']
+const HOME_DROPS = ['Season 2 Frostfall Pass (Premium)', 'Legends Mega Pack', 'Ultimate Mega Pack']
 
 function XIcon({ name }) {
   const paths = {
@@ -1451,13 +1451,14 @@ function SMPStore() {
           <div className="store-x20-head" id="new-drops">
             <span className="eyebrow">New · Bundles &amp; mega packs</span>
             <h2>New exclusives, bundles and mega packs.</h2>
-            <p>Five new exclusives, five bundles and two mega packs. Same Stripe checkout and username delivery as every item on this page.</p>
+            <p>The Season 2 Frostfall pass, five new exclusives, five bundles and two mega packs. Same Stripe checkout and username delivery as every item on this page.</p>
           </div>
           <div className="store-x20-grid store-new-grid">
             {SMP_NEW_ITEMS.map((product) => (
               <article className={'store-x20-card' + (product.kind !== 'exclusive' ? ' is-bundle' : '') + (product.kind === 'mega' ? ' is-mega' : '')} key={product.name} id={'product-' + product.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')}>
                 <div className="store-x20-top"><span className="store-x20-icon" aria-hidden="true">{product.icon}</span><span className="store-x20-price">{product.price}</span></div>
                 {product.kind === 'mega' && <span className="store-new-tag">Mega pack</span>}
+                {product.kind === 'pass' && <span className="store-new-tag">Season 2</span>}
                 <h3>{product.name}</h3>
                 {product.separate && <p className="store-new-separate">Separately <s>{product.separate}</s></p>}
                 <ul>{product.items.map((item) => <li key={item}>{item}</li>)}</ul>
