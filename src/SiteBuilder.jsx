@@ -1087,7 +1087,7 @@ function FlagshipSitePreview({site,preview=false,onPageChange}){
       <div className="gfs-hero-copy">
         <div className="gfs-status"><i/> GENERATED EXPERIENCE <b>{s.category.toUpperCase()}</b></div>
         <span className="gfs-eyebrow">{s.category} // built for {s.audience}</span>
-        <h1>{s.heroTitle}</h1>
+        {preview?<h2 className="pv-h1">{s.heroTitle}</h2>:<h1>{s.heroTitle}</h1>}
         <p>{s.heroCopy}</p>
         <div className="gfs-actions">{s.ctaUrl&&<a className="gfs-primary" href={s.ctaUrl} target="_blank" rel="noreferrer">{s.ctaLabel} <b>↗</b></a>}<a className="gfs-secondary" href="#story">Explore site</a></div>
         <div className="gfs-metrics">{s.stats.map(function(item,index){return <div key={index}><span>0{index+1}</span><strong>{item.value}</strong><small>{item.label}</small></div>})}</div>
@@ -1156,7 +1156,7 @@ function GeneratedSubPage({site,page,preview=false,onPageChange}){
   return <div style={visualStyle} className={'esn-built-site generated-subpage theme-'+s.theme+' '+visualClassNames(s)}>
     <nav className={'generated-page-nav nav-'+s.visual.nav}><strong>{s.brand}</strong><div>{preview?<button type="button" onClick={function(){onPageChange?.('home')}}>Home</button>:<a href={'/sites/'+s.slug}>Home</a>}{s.pages.map(function(item){return preview?<button type="button" className={item.slug===current.slug?'active':''} key={item.slug} onClick={function(){onPageChange?.(item.slug)}}>{item.title}</button>:<a className={item.slug===current.slug?'active':''} key={item.slug} href={'/sites/'+s.slug+'/'+item.slug}>{item.title}</a>})}</div></nav>
     <main className="generated-page-main">
-      <section className="generated-page-hero"><span>{current.eyebrow}</span><h1>{current.headline}</h1><p>{current.copy}</p><div><small>{s.category.toUpperCase()}</small><small>FOR {s.audience.toUpperCase()}</small></div></section>
+      <section className="generated-page-hero"><span>{current.eyebrow}</span>{preview?<h2 className="pv-h1">{current.headline}</h2>:<h1>{current.headline}</h1>}<p>{current.copy}</p><div><small>{s.category.toUpperCase()}</small><small>FOR {s.audience.toUpperCase()}</small></div></section>
       <section className="generated-page-grid">{current.items.map(function(item,index){return <article key={index}><span>0{index+1}</span><h2>{item.title}</h2><p>{item.copy}</p><i aria-hidden="true">↗</i></article>})}</section>
       <section className="generated-page-context"><div><span>BRAND DNA</span><strong>{s.visual.type} • {s.visual.shape} • {s.visual.motion}</strong></div><div><span>EXPLORE NEXT</span><div>{s.pages.filter(function(item){return item.slug!==current.slug}).map(function(item){return preview?<button type="button" key={item.slug} onClick={function(){onPageChange?.(item.slug)}}>{item.title} →</button>:<a key={item.slug} href={'/sites/'+s.slug+'/'+item.slug}>{item.title} →</a>})}</div></div></section>
       <section className="generated-page-cta"><span>{s.brand.toUpperCase()}</span><h2>{s.ctaTitle}</h2><p>{s.ctaCopy}</p>{s.ctaUrl&&<a href={s.ctaUrl} target="_blank" rel="noreferrer">{s.ctaLabel}</a>}</section>
@@ -1172,7 +1172,7 @@ function SitePreview({site,page='home',preview=false,onPageChange}){
   if(s.layout==='flagship')return <div style={visualStyle} className={'generated-visual-shell theme-'+s.theme+' '+visualClassNames(s)}><FlagshipSitePreview site={s} preview={preview} onPageChange={onPageChange}/></div>
   return <div style={visualStyle} className={'esn-built-site theme-'+s.theme+' layout-'+s.layout+' '+visualClassNames(s)}>
     <nav style={{order:0}}><strong>{s.brand}</strong><div>{s.multiPage?<>{preview?<button type="button" onClick={function(){onPageChange?.('home')}}>Home</button>:<a href={'/sites/'+s.slug}>Home</a>}{s.pages.map(function(item){return preview?<button type="button" key={item.slug} onClick={function(){onPageChange?.(item.slug)}}>{item.title}</button>:<a key={item.slug} href={'/sites/'+s.slug+'/'+item.slug}>{item.title}</a>})}</>:<><a href="#about">About</a><a href="#highlights">Highlights</a><a href="#faq">FAQ</a></>}</div></nav>
-    <section className="built-hero" style={{order:1}}><span>{s.category} • for {s.audience}</span><h1>{s.heroTitle}</h1><p>{s.heroCopy}</p>{s.ctaUrl&&<a className="built-hero-button" href={s.ctaUrl} target="_blank" rel="noreferrer">{s.ctaLabel}</a>}</section>
+    <section className="built-hero" style={{order:1}}><span>{s.category} • for {s.audience}</span>{preview?<h2 className="pv-h1">{s.heroTitle}</h2>:<h1>{s.heroTitle}</h1>}<p>{s.heroCopy}</p>{s.ctaUrl&&<a className="built-hero-button" href={s.ctaUrl} target="_blank" rel="noreferrer">{s.ctaLabel}</a>}</section>
     <section className="built-stats" style={{order:2}}>{s.stats.map(function(item,index){return <article key={index}><strong>{item.value}</strong><span>{item.label}</span></article>})}</section>
     <section id="about" className="built-about" style={orderStyle(s,'story')}><h2>{s.aboutTitle}</h2><p>{s.aboutCopy}</p></section>
     <section id="highlights" className="built-card-grid" style={orderStyle(s,'highlights')}>{s.cards.map(function(card,index){return <article key={index}><span>0{index+1}</span><h3>{card.title}</h3><p>{card.copy}</p></article>})}</section>
