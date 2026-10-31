@@ -328,3 +328,13 @@
 /* W2-4: copy plan link, compare order column */
 .esn-plan-copy{align-self:flex-start;margin:0 0 8px;padding:0;border:0;background:none;color:#8fd8ff;font:inherit;font-size:.78rem;font-weight:700;text-decoration:underline;cursor:pointer}
 .esn-plan-compare td a{color:#8fd8ff;font-weight:800}
+
+/* Every plan includes + best-for line */
+.esn-plan-bestfor{margin:.6rem 0 0;font-size:.9rem;line-height:1.45;color:#b9c7dd}
+.esn-plan-bestfor b{color:#e8f0ff;font-weight:700}
+.esn-plan-includes{list-style:none;margin:1.2rem 0 0;padding:0;display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+.esn-plan-includes li{padding:16px 18px;border:1px solid rgba(120,160,230,.22);border-radius:16px;background:rgba(8,18,36,.6)}
+.esn-plan-includes strong{display:block;margin-bottom:6px;color:#f3f7ff}
+.esn-plan-includes span{display:block;color:#a8bad5;line-height:1.55;font-size:.94rem}
+.esn-plan-includes-note{margin-top:14px;color:#a8bad5;line-height:1.6}
+@media (max-width:520px){.esn-plan-includes{grid-template-columns:1fr}}
