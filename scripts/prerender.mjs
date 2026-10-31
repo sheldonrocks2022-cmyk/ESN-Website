@@ -10,6 +10,18 @@ if (!fs.existsSync(sourcePath)) {
 
 const source = fs.readFileSync(sourcePath, 'utf8')
 
+// The Site Builder page loads its own script and styles; start fetching them with the page instead of after the main script runs.
+const assetDirectory = path.join('dist', 'assets')
+const builderAssets = fs.existsSync(assetDirectory) ? fs.readdirSync(assetDirectory).filter((file) => /^SiteBuilder-[\w-]+\.(js|css)$/.test(file)) : []
+
+function withRoutePreloads(html, route) {
+  if (!/^\/site-builder(\/|$)/.test(route) || builderAssets.length === 0) return html
+  const tags = builderAssets
+    .map((file) => file.endsWith('.js') ? `<link rel="modulepreload" crossorigin href="/assets/${file}" />` : `<link rel="preload" as="style" href="/assets/${file}" />`)
+    .join('\n    ')
+  return html.replace('</head>', `  ${tags}\n  </head>`)
+}
+
 function escapeHtml(value) {
   return value
     .replaceAll('&', '&amp;')
@@ -283,7 +295,7 @@ function generatePublishedSiteRoutes() {
 }
 
 for (const route of Object.keys(SEO_ROUTES)) {
-  const html = injectSeo(source, route)
+  const html = withRoutePreloads(injectSeo(source, route), route)
 
   if (route === '/') {
     fs.writeFileSync(sourcePath, html)

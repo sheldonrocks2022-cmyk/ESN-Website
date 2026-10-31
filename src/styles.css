@@ -2422,7 +2422,7 @@ body:has(button:hover) .lux-cursor-ring{
   position:relative;
 }
 #main-content::before{
-  content:"";position:fixed;z-index:-1;left:50%;top:52%;width:62vw;height:62vw;max-width:880px;max-height:880px;
+  content:"";position:fixed;z-index:-1;left:50%;top:52vh;width:62vw;height:62vw;max-width:880px;max-height:880px;
   transform:translate(-50%,-50%);
   background:radial-gradient(circle,rgb(var(--route-accent)/.026),transparent 64%);
   pointer-events:none;

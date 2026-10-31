@@ -817,3 +817,15 @@
   .site:not(.user-site-mode) .flagship-actions .button {width:100%}
   .site:not(.user-site-mode) .esn-intro-panel-top {flex-wrap:wrap}
 }
+
+/* Keep the chat launcher above the mobile bottom navigation so both stay tappable. */
+@media (max-width: 860px) {
+  #esn-chat-root { bottom: 104px !important; }
+}
+
+/* Readable contrast (WCAG AA) for the hosting plan toggle, sticky plan button, panel preview labels and the related-links label. */
+.esn-billing-toggle button[aria-pressed="true"],
+.esn-hosting-sticky-cta a { background: #0b6bd6; }
+.esn-panel-metrics span,
+.esn-panel-metrics small { color: #8197ba; }
+.visibility-global-related > .shell > span { color: #8693a8; }

@@ -73,7 +73,7 @@ function CopyPlanLink({ name }) {
     const link = `https://esnoffical.com/hosting/vps#${planId(name)}`
     try { await navigator.clipboard.writeText(link); setCopied(true); setTimeout(() => setCopied(false), 2000) } catch { window.location.hash = planId(name) }
   }
-  return <button type="button" className="esn-plan-copy" onClick={copy} aria-label={`Copy a link to the ESN ${name} plan`}>{copied ? 'Link copied' : 'Copy plan link'}</button>
+  return <button type="button" className="esn-plan-copy" onClick={copy} aria-label={`${copied ? 'Link copied' : 'Copy plan link'} for the ESN ${name} plan`}>{copied ? 'Link copied' : 'Copy plan link'}</button>
 }
 
 function PlanGroup({ group, plans, features, billing }) {

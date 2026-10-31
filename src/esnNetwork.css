@@ -55,6 +55,7 @@
 @media (prefers-reduced-motion:no-preference){
   .site:not(.user-site-mode) .flagship-hero-copy .hero-line-main.esn-net-shine{animation:esnNetShine 9s ease-in-out infinite alternate !important}
   .flagship-hero-copy.esn-net-rise > *{opacity:0;transform:translateY(14px);animation:esnNetRise .7s cubic-bezier(.2,.7,.2,1) forwards}
+  .flagship-hero-copy.esn-net-rise > h1{opacity:1;transform:none;animation:none}
   .flagship-hero-copy.esn-net-rise > *:nth-child(1){animation-delay:.05s}
   .flagship-hero-copy.esn-net-rise > *:nth-child(2){animation-delay:.12s}
   .flagship-hero-copy.esn-net-rise > *:nth-child(3){animation-delay:.2s}
