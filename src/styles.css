@@ -3215,7 +3215,7 @@ html[data-lux-route="services"] .service-card:hover{box-shadow:0 30px 88px rgba(
 @keyframes startupRing{to{transform:rotate(360deg)}}@keyframes startupRingReverse{to{transform:rotate(-360deg)}}
 .startup-ring::before,.startup-ring::after{content:"";position:absolute;width:7px;height:7px;border-radius:50%;background:rgb(var(--route-accent-2));box-shadow:0 0 13px rgb(var(--route-accent-2)/.7)}.startup-ring::before{top:-4px;left:50%}.startup-ring::after{bottom:-4px;right:28%}
 .startup-kicker{font-size:.58rem;font-weight:950;letter-spacing:.2em;color:#72839e}
-.startup-core h1{font-size:clamp(2.8rem,7vw,5.4rem);letter-spacing:-.065em;margin:.55rem 0 1.3rem}
+.startup-core h1,.startup-core .startup-title{font-size:clamp(2.8rem,7vw,5.4rem);letter-spacing:-.065em;margin:.55rem 0 1.3rem;font-weight:800}
 .startup-modules{display:flex;align-items:center;gap:11px;color:#8293ac;font-size:.52rem;font-weight:950;letter-spacing:.14em}
 .startup-modules i{width:4px;height:4px;border-radius:50%;background:rgb(var(--route-accent-2)/.5)}
 .startup-progress{width:min(390px,82vw);height:2px;margin:24px 0 12px;background:rgba(255,255,255,.06);overflow:hidden}
@@ -4448,12 +4448,12 @@ html[data-esn-season="summer"] .network-evolution-ambient{filter:hue-rotate(-14d
 }
 @keyframes evTakeoverGrid{to{background-position:48px 48px,48px 48px}}
 .ev-takeover-scan{
-  position:absolute;left:0;right:0;top:-2px;height:2px;
+  position:absolute;left:0;right:0;top:0;height:2px;transform:translateY(-2px);will-change:transform;
   background:linear-gradient(90deg,transparent,#62f1ff,#fff,#8c6fff,transparent);
   box-shadow:0 0 28px rgba(98,241,255,.55);
   animation:evTakeoverScan 2.1s cubic-bezier(.2,.8,.2,1) infinite;
 }
-@keyframes evTakeoverScan{to{top:100%}}
+@keyframes evTakeoverScan{to{transform:translateY(100vh)}}
 .ev-takeover-core{
   position:absolute;
   width:min(72vw,720px);

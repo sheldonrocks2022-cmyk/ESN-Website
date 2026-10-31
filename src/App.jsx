@@ -1,8 +1,7 @@
-import { useEffect, useState } from 'react'
+import { Suspense, lazy, useEffect, useState } from 'react'
 import { Link, Navigate, Route, Routes, useLocation } from 'react-router-dom'
 import StartupIntro from './StartupIntro'
 import Global3DLighting from './Global3DLighting'
-import ESToolsSuite from './Tools'
 import ES3DViewer from './ES3DViewer'
 import PremiumChrome from './PremiumChrome'
 import UltraExperience from './UltraExperience'
@@ -12,19 +11,12 @@ import NetworkShowcase, { EasterEggLayer } from './NetworkShowcase'
 import NetworkEvolution, { NetworkEvolutionSection } from './NetworkEvolution'
 import { NetworkNexusPage, NexusEventLayer } from './NetworkNexus'
 import { ArcadeProgressCenter, ExplorePage, GalleryPage, NetworkStatsPage, RetentionHub, SettingsPage, SiteExpansionLayer, SMPEncyclopediaPage, SupportPage, WhatsNewPage } from './SiteExpansion'
-import ShareCenter from './ShareCenter'
 import { ChallengeLabPage, NoAccountExperienceLayer, NotificationCenterPage, RewardMarketPage, StaffDashboardPage } from './NoAccountExpansion'
-import StoreAIPage from './StoreAI'
-import DomainsPage from './Domains'
 import HostingPage from './Hosting'
-import ServicesPage from './Services'
-import ThanksPage from './Thanks'
-import GuardianPage from './Guardian'
 import { TIP_URL } from './servicesCatalog'
 import { EXCLUSIVES20 } from './exclusives20'
 import { BusinessPlatformPage } from './BusinessPlatform'
 import { LiveBusinessStaff } from './BusinessLive'
-import SiteBuilderPage, { HostedSitePage } from './SiteBuilder'
 import { ChangelogTimelinePage, DiagnosticCenterPage, GlobalOpsLayer, OperationsMapPage, PublicIncidentsPage, SessionStatsPage, SMPConnectionTesterPage, SystemBlueprintPage } from './OpsExpansion'
 import { SOCIAL_IMAGE_ALT, SOCIAL_IMAGE_URL, canonicalUrl, getSeo, robotsContent, socialImageFor, structuredDataFor } from './seo'
 import { PortfolioPage, StatusCenter, TimelinePage, UpdatesPage, VaultPage, WhatsHappeningNow } from './LiveExperience'
@@ -35,15 +27,26 @@ import { ESN_PLANS_URL, HOME_FAQ } from './esnNetwork'
 import HomeControlCenter from './HomeControlCenter'
 import { ActivityTimelinePage, BuilderShowcasePage, DataBackupPage, GlobalSearchPage, LabsPage, LaunchpadPage, NetworkMapPage, PlatformHomeSection, PlatformLayer, ProjectEstimatePage, ServiceConfiguratorPage, ShareGeneratorV2Page, SMPItemsPage, SMPWorldHubPage, TrustCenterPage } from './PlatformExpansion'
 import { BrandAuthorityPage, GuideArticlePage, GuidesHubPage, RelatedVisibilityLinks, SearchLandingPage, SMPFeaturePage, VisibilityInsightsPage, VisibilityLayer } from './VisibilityExpansion'
-import ClickerGame from './arcade/Clicker'
-import FactoryGame from './arcade/Factory'
-import MinesGame from './arcade/Mines'
-import MotoGame from './arcade/Moto'
-import TowerGame from './arcade/Tower'
-import TowerDefenseGame from './arcade/TowerDefense'
 import { useArcadeProgress } from './arcade/shared'
 import { AnalyticsDashboard, AnalyticsTracker } from './Analytics'
-import SMPAscensionPage from './SMPAscension'
+
+// Route-only pages load on demand so the first page opens faster.
+const ESToolsSuite = lazy(() => import('./Tools'))
+const ShareCenter = lazy(() => import('./ShareCenter'))
+const StoreAIPage = lazy(() => import('./StoreAI'))
+const DomainsPage = lazy(() => import('./Domains'))
+const ServicesPage = lazy(() => import('./Services'))
+const ThanksPage = lazy(() => import('./Thanks'))
+const GuardianPage = lazy(() => import('./Guardian'))
+const SiteBuilderPage = lazy(() => import('./SiteBuilder'))
+const HostedSitePage = lazy(() => import('./SiteBuilder').then((m) => ({ default: m.HostedSitePage })))
+const ClickerGame = lazy(() => import('./arcade/Clicker'))
+const FactoryGame = lazy(() => import('./arcade/Factory'))
+const MinesGame = lazy(() => import('./arcade/Mines'))
+const MotoGame = lazy(() => import('./arcade/Moto'))
+const TowerGame = lazy(() => import('./arcade/Tower'))
+const TowerDefenseGame = lazy(() => import('./arcade/TowerDefense'))
+const SMPAscensionPage = lazy(() => import('./SMPAscension'))
 
 const DISCORD_URL = 'https://discord.gg/RGPt3zEfGy'
 const GUARDIAN_INVITE_URL = 'https://discord.com/oauth2/authorize?client_id=1544503232674664573'
@@ -714,6 +717,14 @@ function NetworkDirectory() {
           ))}
         </div>
       </div>
+    </section>
+  )
+}
+
+function RouteLoading() {
+  return (
+    <section className="route-loading" role="status" aria-live="polite" style={{ minHeight: '60vh', display: 'grid', placeItems: 'center', color: '#a8bad5' }}>
+      <p>Loading page…</p>
     </section>
   )
 }
@@ -1734,6 +1745,7 @@ function App() {
       {!standaloneSite&&<NoAccountExperienceLayer />}
       {!standaloneSite&&<GlobalOpsLayer />}
       <main id="main-content">
+        <Suspense fallback={<RouteLoading />}>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/home" element={<Home />} />
@@ -1832,6 +1844,7 @@ function App() {
           <Route path="/estowerdefense" element={<TowerDefenseGame />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
+        </Suspense>
         {!standaloneSite&&<RelatedVisibilityLinks />}
       </main>
       {!standaloneSite&&<Footer />}
