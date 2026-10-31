@@ -30,6 +30,7 @@ import { SOCIAL_IMAGE_ALT, SOCIAL_IMAGE_URL, canonicalUrl, getSeo, robotsContent
 import { PortfolioPage, StatusCenter, TimelinePage, UpdatesPage, VaultPage, WhatsHappeningNow } from './LiveExperience'
 import { VERIFIED_REVIEWS } from './reviews'
 import { HeroNetworkActions, HomeNetworkSection, NetworkBar, NetworkFooterRow, StatusPill } from './EsnNetwork'
+import { SmpCopyButtons } from './SmpCopy'
 import { ESN_PLANS_URL, HOME_FAQ } from './esnNetwork'
 import HomeControlCenter from './HomeControlCenter'
 import { ActivityTimelinePage, BuilderShowcasePage, DataBackupPage, GlobalSearchPage, LabsPage, LaunchpadPage, NetworkMapPage, PlatformHomeSection, PlatformLayer, ProjectEstimatePage, ServiceConfiguratorPage, ShareGeneratorV2Page, SMPItemsPage, SMPWorldHubPage, TrustCenterPage } from './PlatformExpansion'
@@ -818,6 +819,7 @@ function Home() {
             <h2>Our Minecraft server is open.</h2>
             <p>Connect to the ESN SMP, shop official server items, use the console walkthrough, or download the latest public ESNSMP plugin release.</p>
             <div className="flagship-smp-address"><span>SERVER</span><strong>{SMP_HOST}</strong><small>JAVA {SMP_JAVA_PORT} • BEDROCK {SMP_BEDROCK_PORT}</small></div>
+            <SmpCopyButtons />
             <div className="hero-actions">
               <Link className="button primary" to="/smpconnection">Connection details</Link>
               <Link className="button secondary" to="/storesmp">Open SMP Store</Link>
@@ -900,7 +902,7 @@ function Home() {
 
             <article className="story-panel story-smp">
               <span className="story-index">02</span>
-              <div><span className="eyebrow">ESN SMP</span><h3>Come play on the ESN SMP.</h3><p>Java: {SMP_HOST}:{SMP_JAVA_PORT} • Bedrock/Xbox: {SMP_HOST}:{SMP_BEDROCK_PORT}. Browse the official store, use the console guide, or download the public ESNSMP plugin.</p><Link to="/smpconnection">Enter the SMP hub →</Link></div>
+              <div><span className="eyebrow">ESN SMP</span><h3>Come play on the ESN SMP.</h3><p>Java: {SMP_HOST}:{SMP_JAVA_PORT} • Bedrock/Xbox: {SMP_HOST}:{SMP_BEDROCK_PORT}. Browse the official store, use the console guide, or download the public ESNSMP plugin.</p><SmpCopyButtons className="smp-copy-compact" /><Link to="/smpconnection">Enter the SMP hub →</Link></div>
               <strong>SMP</strong>
             </article>
 
@@ -1325,6 +1327,7 @@ function SMPConnection() {
             <span className="connection-port">JAVA PORT {SMP_JAVA_PORT}</span>
             <button className="button primary copy-button" type="button" onClick={copy}>{copied ? 'Copied to clipboard' : 'Copy server address'}</button>
             <small>Java: {SMP_HOST}:{SMP_JAVA_PORT} • Bedrock/Xbox: {SMP_HOST}:{SMP_BEDROCK_PORT}</small>
+            <SmpCopyButtons />
           </div>
 
           <div className="smp-side-stack">
