@@ -308,8 +308,12 @@ export function PlatformLayer(){
   useEffect(()=>{
     applyLab()
     if(location.pathname!=='/'||localStorage.getItem('esn_launchpad_seen')==='1')return
-    const timer=setTimeout(()=>setLaunch(true),3200)
-    return()=>clearTimeout(timer)
+    // Open the launchpad only after the visitor first scrolls, taps or types, so it never covers the page on load (better LCP, no mobile interstitial).
+    let timer=0
+    const events=['scroll','pointerdown','keydown','touchstart']
+    const arm=()=>{events.forEach(e=>window.removeEventListener(e,arm));timer=setTimeout(()=>setLaunch(true),1500)}
+    events.forEach(e=>window.addEventListener(e,arm,{passive:true,once:true}))
+    return()=>{events.forEach(e=>window.removeEventListener(e,arm));clearTimeout(timer)}
   },[location.pathname])
 
   useEffect(()=>{setQuick(false)},[location.pathname])
