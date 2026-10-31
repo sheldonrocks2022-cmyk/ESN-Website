@@ -22,9 +22,8 @@ export const ESN_NETWORK_LINKS = [
 ]
 
 export const HOME_FAQ = [
-  ['How much does ESN hosting cost?', 'Start free — every account includes a free ESN Nano bot server, and paid plans start from $0.50/mo. Every plan and its monthly price is listed on the hosting page and at panel.esnoffical.com/plans.'],
+  ['How much does ESN hosting cost?', 'Plans start from $0.50/mo. Every plan and its monthly price is listed on the hosting page and at panel.esnoffical.com/plans.'],
   ['How do I buy a server and get it set up?', 'Pick a plan at panel.esnoffical.com/plans and pay through the official Stripe checkout. Your server is set up automatically after payment, and you manage it from the ESN panel.'],
-  ['Is there a free plan?', 'Yes. Every new account gets a FREE ESN Nano — 256 MB bot server, no card needed, no expiry. Create an account and your free bot server is set up automatically.'],
   ['Can I move my server from another host?', 'Yes, for free. In the panel, open your server, go to Settings and use "Import from your old host". It copies your files over SFTP, FTP or a download link, up to 20 GB.'],
   ['How can I check whether ESN is online?', 'status.esnoffical.com shows the live status and uptime of every ESN node and service, checked every minute.'],
   ['How do I get help?', 'Open a ticket in the ESN Discord at discord.gg/RGPt3zEfGy, or use the live chat bubble on this site. Real people answer.'],

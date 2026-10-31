@@ -20,7 +20,7 @@ const SECTIONS=[
   {id:'support',label:'Help',url:'/business/support'},
   {id:'setup',label:'Setup guides',url:'/business/setup'},
 ]
-const REQUEST_TYPES=['Hosting order','Server upgrade','Free trial','Partner application','Referral enquiry','Customer review','General support']
+const REQUEST_TYPES=['Hosting order','Server upgrade','Partner application','Referral enquiry','Customer review','General support']
 
 function useBusinessSettings(){
   const [settings,setSettings]=useState(readBusinessSettings)
@@ -143,7 +143,7 @@ function Plans({settings}){
       <div className="business-plan-grid">{plans.map(p=><PlanCard key={p.name} plan={p} featured={p.name===settings.featuredPlan} onAsk={setChosen}/>)}</div>
     </section>}
     <ContactRequest key={chosen} presetPlan={chosen} settings={settings}/>
-    <section className="business-promo"><div><span>FREE ESN NANO</span><h2>Every new account gets a FREE ESN Nano — 256 MB bot server, no card needed, no expiry.</h2><p>Create an account and your free bot server is set up automatically.</p></div><a href="https://panel.esnoffical.com/auth/register" target="_blank" rel="noreferrer">Create your free account ↗</a></section>
+    <section className="business-promo"><div><span>HOSTING PLANS</span><h2>Discord bot hosting from $0.50/month.</h2><p>Pick a plan on the panel and your server is set up automatically after checkout.</p></div><a href="https://panel.esnoffical.com/plans" target="_blank" rel="noreferrer">See plans ↗</a></section>
   </>
 }
 function Partners({settings}){

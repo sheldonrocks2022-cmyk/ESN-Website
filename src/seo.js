@@ -20,14 +20,14 @@ export const SEO_ROUTES={
   '/':{
     label:'Home',
     title:'ESN Hosting & ES Network | Discord Bot and Minecraft Server Hosting',
-    description:'Discord bot hosting from $0.50/month, Minecraft servers up to 16 GB, game, web and VPS-lite servers, plus the ESN SMP. Every new account gets a FREE ESN Nano.',
+    description:'Discord bot hosting from $0.50/month, Minecraft servers up to 16 GB, game, web and VPS-lite servers, plus the ESN SMP. Set up automatically after checkout.',
     canonical:'/',
     index:true,
   },
   '/home':{
     label:'Home',
     title:'ESN Hosting & ES Network | Discord Bot and Minecraft Server Hosting',
-    description:'Discord bot hosting from $0.50/month, Minecraft servers up to 16 GB, game, web and VPS-lite servers, plus the ESN SMP. Every new account gets a FREE ESN Nano.',
+    description:'Discord bot hosting from $0.50/month, Minecraft servers up to 16 GB, game, web and VPS-lite servers, plus the ESN SMP. Set up automatically after checkout.',
     canonical:'/',
     index:false,
   },
@@ -53,7 +53,7 @@ export const SEO_ROUTES={
   '/hosting':{
     label:'ESN Hosting',
     title:'ESN Hosting | Bot & Minecraft Hosting, Free Subdomains, Domains',
-    description:'Host your Discord bot or Minecraft server 24/7 from $0.50/month, get a free ESN subdomain or connect a domain. Every new account gets a FREE ESN Nano.',
+    description:'Host your Discord bot or Minecraft server 24/7 from $0.50/month, get a free ESN subdomain or connect a domain. Set up automatically after checkout.',
     index:true,
   },
   '/business':{
@@ -603,9 +603,9 @@ export const FAQ_SCHEMA=[
   ['What is ES Network?','ES Network (ESN) is the current brand. EP1C Services was the former name and is not a separate current organization or division.'],
   ['What services does ESN offer?','ESN Hosting (Discord bot, game server, web and VPS-lite hosting), Fortnite coaching, editing services, Discord server setups, and selected digital or website projects handled through ESN.'],
   ['How do I order a service?','Service ordering and support are handled through the official ESN Discord. Open a ticket and provide the details of what you need.'],
-  ['How much does ESN Hosting cost?','Every account includes a free ESN Nano bot server (256 MB, no card, no expiry). Paid Discord bot hosting starts at $0.50/month (Nano). There are 33 plans in all: bot plans up to Gift at $14.99/month, new Pro Minecraft plans with 8, 12 or 16 GB RAM from $9.99/month, plus game server, web and VPS-lite plans. Many plans can also be paid yearly. See all plans on the Bot Hosting page.'],
-  ['How do I buy hosting and how fast is setup?','Go to panel.esnoffical.com/plans, sign in (or create a free account), pick a plan and pay on Stripe’s secure checkout. Your server is set up automatically after you pay and shows up on your panel dashboard.'],
-  ['Do I need an account to buy hosting?','Yes, a free ESN panel account. You can create one yourself on the panel sign-in page with New here? Create an account. Your server is tied to that account.'],
+  ['How much does ESN Hosting cost?','Discord bot hosting starts at $0.50/month (Nano). There are 33 plans in all: bot plans up to Gift at $14.99/month, new Pro Minecraft plans with 8, 12 or 16 GB RAM from $9.99/month, plus game server, web and VPS-lite plans. Many plans can also be paid yearly. See all plans on the Bot Hosting page.'],
+  ['How do I buy hosting and how fast is setup?','Go to panel.esnoffical.com/plans, sign in (or create an account), pick a plan and pay on Stripe’s secure checkout. Your server is set up automatically after you pay and shows up on your panel dashboard.'],
+  ['Do I need an account to buy hosting?','Yes, an ESN panel account. You can create one yourself on the panel sign-in page with New here? Create an account. Your server is tied to that account.'],
   ['Where can I check if ESN Hosting is up?','The live status page at status.esnoffical.com shows the panel, the hosting nodes, the website and the SMP, checked every minute.'],
   ['Where can I get help with my server?','Start with the hosting docs at docs.esnoffical.com. You can also use the chat bubble on this website or the panel, or open a ticket in the ESN Hosting Discord.'],
   ['How do SMP purchases get delivered?','Enter your exact in-game Minecraft username at Stripe checkout. The buyer should be online on the SMP for automatic delivery. If your server username starts with a period, include the period at the beginning.'],
@@ -619,7 +619,6 @@ export const HOSTING_FAQ_SCHEMA=[
   ['How fast is my server ready?','Your server is set up automatically after payment, and your panel login is sent to you. Log in at panel.esnoffical.com.'],
   ['Can I cancel?','Yes. Use the Stripe billing portal to cancel at the end of your billing period, update your card, or download invoices.'],
   ['Which languages can my bot use?','Bot plans support Python and Node.js. You choose the runtime at checkout and can change startup settings in the panel.'],
-  ['Is there a free plan?','Yes. Every new account gets a FREE ESN Nano — 256 MB bot server, no card needed, no expiry. Create an account and your free bot server is set up automatically.'],
   ['Is VPS-lite a full VPS?','No. It is a Linux container with a shell in the panel console, SFTP and one public port. There is no root, apt, systemd or Docker inside.'],
   ['Where do I get help?','Open a ticket in our Discord, read the Hosting Docs, or check Live Uptime for service status.'],
   ['Are backups included?','Plans don’t include backup slots by default. A daily backups add-on is available, just ask in our Discord. You can always download your files with the file manager or SFTP.'],
@@ -931,7 +930,6 @@ export function structuredDataFor(pathname){
       operatingSystem:'Web Browser',
       isAccessibleForFree:true,
       publisher:{'@id':SITE_URL+'/#organization'},
-      offers:{'@type':'Offer',price:'0',priceCurrency:'USD',url},
     })
   }
 
@@ -968,7 +966,6 @@ export function structuredDataFor(pathname){
       playMode:'SinglePlayer',
       isAccessibleForFree:true,
       publisher:{'@id':SITE_URL+'/#organization'},
-      offers:{'@type':'Offer',price:'0',priceCurrency:'USD',url},
     })
   }
 
@@ -1015,7 +1012,6 @@ export function structuredDataFor(pathname){
       operatingSystem:'Minecraft Paper-compatible server',
       isAccessibleForFree:true,
       publisher:{'@id':SITE_URL+'/#organization'},
-      offers:{'@type':'Offer',price:'0',priceCurrency:'USD',url},
     })
   }
 
@@ -1035,7 +1031,6 @@ export function structuredDataFor(pathname){
           applicationCategory:'UtilitiesApplication',
           operatingSystem:'Web Browser',
           isAccessibleForFree:true,
-          offers:{'@type':'Offer',price:'0',priceCurrency:'USD',url},
         },
       })),
     })
