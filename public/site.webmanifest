@@ -1,7 +1,7 @@
 {
-  "name": "ES Network",
+  "name": "ESN Systems",
   "short_name": "ESN",
-  "description": "The official ES Network digital hub for creator services, ESN SMP, Arcade games, tools, updates, and community.",
+  "description": "The official ESN Systems digital hub for creator services, ESN SMP, Arcade games, tools, updates, and community.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",

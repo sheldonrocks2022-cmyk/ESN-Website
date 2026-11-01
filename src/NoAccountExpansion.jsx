@@ -108,7 +108,7 @@ export function NoAccountExperienceLayer(){
       if(readJson(ALERT_PREF_KEY,{enabled:false}).enabled)showBrowserNotice(notice.title,notice.copy)
     }
 
-    addNotice({id:'release-'+SITE_RELEASE,type:'RELEASE',title:SITE_RELEASE,copy:'This website release is active on ES Network.'})
+    addNotice({id:'release-'+SITE_RELEASE,type:'RELEASE',title:SITE_RELEASE,copy:'This website release is active on ESN Systems.'})
     window.addEventListener('esn-cosmetic-change',refreshCosmetic)
     window.addEventListener('esn-staff-banner-change',refreshBanner)
     window.addEventListener('esn-achievement',achievement)
@@ -154,7 +154,7 @@ export function NoAccountExperienceLayer(){
   },[banner?.active,banner?.permanent,banner?.expiresAt,banner?.updatedAt])
 
   if(!banner?.active)return null
-  return <div className="esn-staff-banner" role="status"><span>{banner.label||'ESN NETWORK NOTICE'}</span><strong>{banner.title||'Network notice'}</strong><small>{banner.copy||''}</small></div>
+  return <div className="esn-staff-banner" role="status"><span>{banner.label||'ESN SYSTEMS NOTICE'}</span><strong>{banner.title||'Network notice'}</strong><small>{banner.copy||''}</small></div>
 }
 
 export function NotificationCenterPage(){
@@ -186,7 +186,7 @@ export function NotificationCenterPage(){
     writeJson(ALERT_PREF_KEY,{enabled})
     if(enabled){
       addNotice({type:'SYSTEM',title:'Browser alerts enabled',copy:'ESN can now show on-device alerts triggered while the site is active.'})
-      await showBrowserNotice('ESN alerts enabled','On-device ES Network alerts are ready.')
+      await showBrowserNotice('ESN alerts enabled','On-device ESN Systems alerts are ready.')
     }
     refresh(v=>v+1)
   }
@@ -363,7 +363,7 @@ export function StaffDashboardPage(){
   const [authorized,setAuthorized]=useState(()=>sessionStorage.getItem(STAFF_SESSION_KEY)==='1')
   const [code,setCode]=useState('')
   const [error,setError]=useState('')
-  const [banner,setBanner]=useState(()=>readJson(STAFF_BANNER_KEY,{active:false,label:'ESN NETWORK NOTICE',title:'',copy:'',permanent:false,expiresAt:null}))
+  const [banner,setBanner]=useState(()=>readJson(STAFF_BANNER_KEY,{active:false,label:'ESN SYSTEMS NOTICE',title:'',copy:'',permanent:false,expiresAt:null}))
   const [notes,setNotes]=useState(()=>localStorage.getItem(STAFF_NOTES_KEY)||'')
   const [incidents,setIncidents]=useState(()=>readJson(STAFF_INCIDENTS_KEY,[]))
   const [incidentDraft,setIncidentDraft]=useState({title:'',severity:'MINOR',copy:''})
@@ -371,7 +371,7 @@ export function StaffDashboardPage(){
     build:false,mobile:false,links:false,smp:false,store:false,announcement:false,
   }))
   const [scan,setScan]=useState({running:false,results:[],lastRun:null})
-  const [announcement,setAnnouncement]=useState({type:'WEBSITE UPDATE',title:'ES Network Update',copy:''})
+  const [announcement,setAnnouncement]=useState({type:'WEBSITE UPDATE',title:'ESN Systems Update',copy:''})
   const [activity,setActivity]=useState(()=>readJson(STAFF_ACTIVITY_KEY,[]))
   const notices=readJson(NOTICE_KEY,[])
 
@@ -413,15 +413,15 @@ export function StaffDashboardPage(){
     writeJson(STAFF_BANNER_KEY,next)
     setBanner(next)
     window.dispatchEvent(new Event('esn-staff-banner-change'))
-    addStaffActivity('NETWORK NOTICE CLEARED',banner.title||'ESN Network Notice')
+    addStaffActivity('NETWORK NOTICE CLEARED',banner.title||'ESN Systems Notice')
   }
 
   const applyNoticePreset=(type)=>{
     const presets={
-      maintenance:{label:'ESN MAINTENANCE',title:'Website maintenance in progress',copy:'Some ES Network systems may be temporarily unavailable while maintenance is completed.'},
+      maintenance:{label:'ESN MAINTENANCE',title:'Website maintenance in progress',copy:'Some ESN Systems services may be temporarily unavailable while maintenance is completed.'},
       smp:{label:'ESN SMP NOTICE',title:'SMP maintenance in progress',copy:'ESN SMP is undergoing maintenance. Check Network Status and Discord for the latest information.'},
-      update:{label:'ESN UPDATE',title:'A new ESN update is live',copy:'The latest ES Network website update has been deployed. Check What’s New for the latest changes.'},
-      clear:{label:'ESN NETWORK NOTICE',title:'All systems normal',copy:'ES Network systems are operating normally.'},
+      update:{label:'ESN UPDATE',title:'A new ESN update is live',copy:'The latest ESN Systems website update has been deployed. Check What’s New for the latest changes.'},
+      clear:{label:'ESN SYSTEMS NOTICE',title:'All systems normal',copy:'ESN Systems services are operating normally.'},
     }
     setBanner(current=>({...current,...presets[type]}))
   }
@@ -515,7 +515,7 @@ export function StaffDashboardPage(){
   }
 
   const announcementText=()=>{
-    const title=announcement.title.trim()||'ES Network Update'
+    const title=announcement.title.trim()||'ESN Systems Update'
     const copy=announcement.copy.trim()||'More information will be posted as it becomes available.'
     return `@everyone\n\n**${title}**\n\n${copy}\n\n**Type:** ${announcement.type}\n**Website:** https://esnoffical.com/`
   }

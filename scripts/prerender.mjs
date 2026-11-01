@@ -47,9 +47,9 @@ function injectSeo(html, route) {
 
   html = html.replace(/<title>.*?<\/title>/s, `<title>${escapeHtml(meta.title)}</title>`)
   // Give crawlers without JavaScript a real heading and summary for every route (React replaces #root on load).
-  const heading = route === '/' ? 'ESN Hosting & ES Network' : (meta.label || meta.title)
+  const heading = route === '/' ? 'ESN Hosting & ESN Systems' : (meta.label || meta.title)
   html = html.replace(
-    '<p class="esn-boot-title">Loading ES Network</p>',
+    '<p class="esn-boot-title">Loading ESN Systems</p>',
     `<h1 class="esn-boot-title">${escapeHtml(heading)}</h1>\n          <p>${escapeHtml(meta.description)}</p>`,
   )
   html = replaceMeta(
@@ -85,7 +85,7 @@ function injectSeo(html, route) {
   html = replaceMeta(
     html,
     /<meta property="og:site_name" content="[^"]*"\s*\/?>/,
-    '<meta property="og:site_name" content="ES Network" />',
+    '<meta property="og:site_name" content="ESN Systems" />',
   )
   html = replaceMeta(
     html,
@@ -323,7 +323,7 @@ fs.writeFileSync(path.join('dist', 'terms', 'index.html'), [
   '<html lang="en">',
   '<head>',
   '  <meta charset="UTF-8" />',
-  '  <title>Rules &amp; Terms | ES Network</title>',
+  '  <title>Rules &amp; Terms | ESN Systems</title>',
   '  <meta http-equiv="refresh" content="0; url=/rules" />',
   '  <link rel="canonical" href="https://esnoffical.com/rules/" />',
   '  <meta name="robots" content="noindex, follow" />',
@@ -342,7 +342,7 @@ for (const shortcut of ['checkout', 'plans', 'pricing']) {
     '<head>',
     '  <meta charset="UTF-8" />',
     '  <meta name="viewport" content="width=device-width, initial-scale=1" />',
-    '  <title>ESN Hosting Plans &amp; Checkout | ES Network</title>',
+    '  <title>ESN Hosting Plans &amp; Checkout | ESN Systems</title>',
     '  <meta http-equiv="refresh" content="0; url=https://panel.esnoffical.com/plans" />',
     '  <link rel="canonical" href="https://esnoffical.com/hosting/vps/" />',
     '  <meta name="robots" content="noindex, follow" />',
@@ -357,10 +357,10 @@ for (const shortcut of ['checkout', 'plans', 'pricing']) {
 }
 
 let notFoundHtml = source
-  .replace(/<title>.*?<\/title>/s, '<title>Page Not Found | ES Network</title>')
+  .replace(/<title>.*?<\/title>/s, '<title>Page Not Found | ESN Systems</title>')
   .replace(
     /<meta name="description" content="[^"]*"\s*\/?>/,
-    '<meta name="description" content="The requested ES Network page could not be found." />',
+    '<meta name="description" content="The requested ESN Systems page could not be found." />',
   )
 
 notFoundHtml = replaceMeta(

@@ -8,7 +8,7 @@ const GAME_ROUTES=['/esclicker','/esfactory','/esmines','/esmoto','/estower','/e
 const EGG_DEFS=[
   ['core-overdrive','Core Overdrive','Charge the ESN reactor to 100%.'],
   ['brand-five','Five-Fold Signal','Tap the ESN brand five times quickly.'],
-  ['hero-version','2026 Handshake','Tap the ES NETWORK // 2026 label four times.'],
+  ['hero-version','2026 Handshake','Tap the ESN SYSTEMS // 2026 label four times.'],
   ['footer-signal','Footer Frequency','Tap the footer online signal three times.'],
   ['map-core','Network Heartbeat','Tap the center of the Network Map five times.'],
   ['core-hold','Core Lock','Press and hold the Network Map core.'],
@@ -90,14 +90,14 @@ function NetworkMap({live}) {
     {key:'discord',label:'DISCORD',meta:live.discord.onlineMembers!=null?`${live.discord.onlineMembers} online`:'Community hub',href:DISCORD_URL,status:statusLabel(live.discord.status),x:50,y:89},
   ]
 
-  return <div className="network-map" aria-label="Interactive ES Network map">
+  return <div className="network-map" aria-label="Interactive ESN Systems map">
     <div className="network-map-grid" aria-hidden="true"/>
     <svg className="network-map-lines" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
       {nodes.map(node=><line key={node.key} x1="50" y1="48" x2={node.x} y2={node.y}/>)}
       <circle cx="50" cy="48" r="22"/>
       <circle cx="50" cy="48" r="34"/>
     </svg>
-    <button className="network-map-core" type="button" data-easter="map-core" aria-label="ES Network core">
+    <button className="network-map-core" type="button" data-easter="map-core" aria-label="ESN Systems core">
       <span>ES</span><strong>QUICK LINKS</strong><small>INTERACTIVE</small>
     </button>
     {nodes.map(node=>{
@@ -151,7 +151,7 @@ export default function NetworkShowcase(){
         <ActivityFeed live={live}/>
       </div>
 
-      <div className="achievement-strip" aria-label="ES Network verified counts">
+      <div className="achievement-strip" aria-label="ESN Systems verified counts">
         <Counter value={35} label="Verified Reviews"/>
         <Counter value={6} label="Original Arcade Games"/>
         <Counter value={5} label="SMP Store Products"/>

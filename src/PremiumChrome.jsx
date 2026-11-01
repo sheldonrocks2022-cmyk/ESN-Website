@@ -10,7 +10,7 @@ const compactRouteLabels={
   '/smpconnection':'SMP','/smpconsole':'Console Guide','/smpplugin':'Plugin','/smpguide':'SMP Encyclopedia','/storesmp':'SMP Store',
   '/arcade':'Arcade','/esclicker':'Clicker','/esfactory':'Factory','/esmines':'Mines','/esmoto':'MOTO','/estower':'Tower','/estowerdefense':'Tower Defense',
   '/estools':'ES Tools','/status':'Status','/networkstats':'Network Stats','/updates':'Updates','/whatsnew':"What's New",'/timeline':'Timeline',
-  '/nexus':'Network Nexus','/explore':'Explore ESN','/gallery':'Gallery','/settings':'Settings','/support':'Support','/about':'About','/leadership':'Leadership','/faq':'FAQ','/share':'Share','/site-builder':'Site Builder','/guides':'Guides + News','/es-network':'ES Network','/minecraft-server':'Minecraft Server','/minecraft-smp':'Minecraft SMP','/fortnite-coaching':'Fortnite Coaching','/video-editing':'Video Editing','/discord-server-setup':'Discord Setup','/website-builder':'Website Builder','/free-browser-tools':'Free Browser Tools',
+  '/nexus':'Network Nexus','/explore':'Explore ESN','/gallery':'Gallery','/settings':'Settings','/support':'Support','/about':'About','/leadership':'Leadership','/faq':'FAQ','/share':'Share','/site-builder':'Site Builder','/guides':'Guides + News','/es-network':'ESN Systems','/minecraft-server':'Minecraft Server','/minecraft-smp':'Minecraft SMP','/fortnite-coaching':'Fortnite Coaching','/video-editing':'Video Editing','/discord-server-setup':'Discord Setup','/website-builder':'Website Builder','/free-browser-tools':'Free Browser Tools',
   '/launchpad':'Launchpad','/configure':'Configurator','/smp-hub':'SMP World Hub','/trust':'Trust Center','/search':'Search 2.0','/labs':'ESN Labs','/estimate':'Project Estimate','/smp-items':'SMP Items','/activity':'Network Activity','/share-generator':'Share Generator','/showcase':'Builder Showcase','/network-map':'Network Map','/backup':'Local Backup'
 }
 function localList(key){try{const value=JSON.parse(localStorage.getItem(key)||'[]');return Array.isArray(value)?value:[]}catch{return []}}
@@ -41,7 +41,7 @@ const baseCommands=[
   {label:'ESN Services',meta:'Websites, editing, community setup and creator work',keywords:'services editing website discord team orders',kind:'route',value:'/serviceshowcase'},
   {label:'Arcade Games',meta:'All six original ESN browser games',keywords:'arcade game play clicker factory mines tower moto',kind:'route',value:'/arcade'},
   {label:'ESN Guides + News',meta:'Minecraft, Discord, website guides, releases, and current ESN updates',keywords:'guides news articles minecraft discord website updates help',kind:'route',value:'/guides'},
-  {label:'What is ES Network?',meta:'Official ESN brand, projects, services, SMP, tools, and community',keywords:'es network esn official ep1c services brand about',kind:'route',value:'/es-network'},
+  {label:'What is ESN Systems?',meta:'Official ESN brand, projects, services, SMP, tools, and community',keywords:'es network esn official ep1c services brand about',kind:'route',value:'/es-network'},
   {label:'Minecraft Server',meta:'ESN server hub, status, guides, items, and official resources',keywords:'minecraft server smp ip join java bedrock',kind:'route',value:'/minecraft-server'},
   {label:'Minecraft SMP',meta:'ESN survival, progression, bosses, economy, gear, and Adventure systems',keywords:'minecraft smp survival realm bosses economy gear',kind:'route',value:'/minecraft-smp'},
   {label:'Fortnite Coaching',meta:'ESN Fortnite coaching and project scoping',keywords:'fortnite coaching coach improve gaming service',kind:'route',value:'/fortnite-coaching'},
@@ -70,7 +70,7 @@ const baseCommands=[
   {label:'Download Plugin',meta:'Download latest ESNSMP.jar',keywords:'download plugin jar esnsmp latest',kind:'download',value:PLUGIN_DOWNLOAD_URL},
   {label:'Network Status',meta:'Live ESN systems and SMP players',keywords:'status live player count uptime network',kind:'route',value:'/status'},
   {label:'Release Center',meta:'Website, plugin, Arcade, and roadmap updates',keywords:'updates releases roadmap changelog version',kind:'route',value:'/updates'},
-  {label:'ESN Timeline',meta:'EP1C Services → ES Network → current projects',keywords:'timeline history ep1c es network',kind:'route',value:'/timeline'},
+  {label:'ESN Timeline',meta:'EP1C Services → ESN Systems → current projects',keywords:'timeline history ep1c es network',kind:'route',value:'/timeline'},
   {label:'Portfolio',meta:'Interactive service before/after demos',keywords:'portfolio before after editing discord website',kind:'route',value:'/portfolio'},
   {label:'Share Deck',meta:'Generate branded ESN share cards',keywords:'share card png social smp arcade services store',kind:'route',value:'/share'},
   {label:'SMP Store',meta:'Official ESN SMP products',keywords:'store products keys relic warden void',kind:'route',value:'/storesmp'},
@@ -309,7 +309,7 @@ export default function PremiumChrome(){
     <div className={open?'premium-command-backdrop open':'premium-command-backdrop'} onClick={()=>setOpen(false)} aria-hidden={!open}/>
 
     <aside className={open?'premium-command open':'premium-command'} aria-hidden={!open} inert={!open}>
-      <div className="premium-command-head"><div><span>ES NETWORK</span><strong>ESN Command Center</strong></div><button type="button" onClick={()=>setOpen(false)} aria-label="Close command center">×</button></div>
+      <div className="premium-command-head"><div><span>ESN SYSTEMS</span><strong>ESN Command Center</strong></div><button type="button" onClick={()=>setOpen(false)} aria-label="Close command center">×</button></div>
 
       <div className="premium-command-status">
         <div><i/><span>NETWORK</span><b>ONLINE</b></div>

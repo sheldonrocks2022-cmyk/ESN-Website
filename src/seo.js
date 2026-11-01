@@ -1,10 +1,10 @@
 import { HOME_FAQ } from './esnNetwork.js'
 export const SITE_URL='https://esnoffical.com'
-export const SITE_NAME='ES Network'
+export const SITE_NAME='ESN Systems'
 export const SITE_LANGUAGE='en-US'
 export const SEO_LAUNCH_MODE='production'
 export const SOCIAL_IMAGE_URL=SITE_URL+'/esn-social-card.png'
-export const SOCIAL_IMAGE_ALT='ES Network — Build, Play, Create'
+export const SOCIAL_IMAGE_ALT='ESN Systems — Build, Play, Create'
 export function socialImageFor(pathname=''){
   const path=normalizePath(pathname)
   if(path.startsWith('/guides')||['/minecraft-server','/minecraft-smp'].includes(path))return SITE_URL+'/social/esn-guides.png'
@@ -19,22 +19,22 @@ export function socialImageFor(pathname=''){
 export const SEO_ROUTES={
   '/':{
     label:'Home',
-    title:'ESN Hosting & ES Network | Discord Bot and Minecraft Server Hosting',
+    title:'ESN Hosting & ESN Systems | Discord Bot and Minecraft Server Hosting',
     description:'Discord bot hosting from $0.50/month, Minecraft servers up to 16 GB, game, web and VPS-lite servers, plus the ESN SMP. Set up automatically after checkout.',
     canonical:'/',
     index:true,
   },
   '/home':{
     label:'Home',
-    title:'ESN Hosting & ES Network | Discord Bot and Minecraft Server Hosting',
+    title:'ESN Hosting & ESN Systems | Discord Bot and Minecraft Server Hosting',
     description:'Discord bot hosting from $0.50/month, Minecraft servers up to 16 GB, game, web and VPS-lite servers, plus the ESN SMP. Set up automatically after checkout.',
     canonical:'/',
     index:false,
   },
   '/serviceshowcase':{
     label:'Services',
-    title:'Fortnite Coaching, Editing & Discord Setup | ES Network',
-    description:'Explore ES Network services for Fortnite coaching, creator editing, Discord server setup, website creation, branding, and selected custom digital projects.',
+    title:'Fortnite Coaching, Editing & Discord Setup | ESN Systems',
+    description:'Explore ESN Systems services for Fortnite coaching, creator editing, Discord server setup, website creation, branding, and selected custom digital projects.',
     index:true,
   },
   '/store-ai':{
@@ -46,7 +46,7 @@ export const SEO_ROUTES={
   '/storeai':{
     label:'ESN Store AI',
     title:'ESN Store AI | Products, Services, Prices & Checkout Help',
-    description:'Ask ESN Store AI about official ES Network products and services.',
+    description:'Ask ESN Store AI about official ESN Systems products and services.',
     canonical:'/store-ai',
     index:false,
   },
@@ -96,21 +96,21 @@ export const SEO_ROUTES={
   '/store':{
     label:'SMP Store',
     title:'ESN SMP Store | Minecraft Keys, Relics & Bundles',
-    description:'Browse official ESN SMP digital items and bundles through ES Network.',
+    description:'Browse official ESN SMP digital items and bundles through ESN Systems.',
     canonical:'/storesmp',
     index:false,
   },
   '/store/smp':{
     label:'SMP Store',
     title:'ESN SMP Store | Minecraft Keys, Relics & Bundles',
-    description:'Browse official ESN SMP digital items and bundles through ES Network.',
+    description:'Browse official ESN SMP digital items and bundles through ESN Systems.',
     canonical:'/storesmp',
     index:false,
   },
   '/smpconnection':{
     label:'SMP Connection',
-    title:'ESN SMP Server IP & Port | Join ES Network Minecraft',
-    description:'Join ESN SMP at play.esnoffical.com using Java port 25565 or Bedrock/Xbox port 19132, with current connection details for the ES Network SMP.',
+    title:'ESN SMP Server IP & Port | Join ESN Systems Minecraft',
+    description:'Join ESN SMP at play.esnoffical.com using Java port 25565 or Bedrock/Xbox port 19132, with current connection details for the ESN Systems SMP.',
     index:true,
   },
   '/smpconsole':{
@@ -121,7 +121,7 @@ export const SEO_ROUTES={
   },
   '/smpplugin':{
     label:'ESNSMP Plugin',
-    title:'ESNSMP Plugin Download | ES Network Minecraft Plugin',
+    title:'ESNSMP Plugin Download | ESN Systems Minecraft Plugin',
     description:'Download ESNSMP v2.15.0 Realm Ascension: realm worlds, quests, mastery, factions, dungeons, raids, events, pets, mounts, PvP and endgame progression.',
     index:true,
   },
@@ -134,64 +134,64 @@ export const SEO_ROUTES={
   '/analytics':{
     label:'ESN Analytics',
     title:'ESN Website Analytics | Private Staff Dashboard',
-    description:'Private first-party ES Network website analytics dashboard.',
+    description:'Private first-party ESN Systems website analytics dashboard.',
     index:false,
     nofollow:true,
   },
   '/status':{
     label:'Network Status',
-    title:'ESN Network Status | SMP, Website, Arcade & Plugin',
-    description:'Check current ES Network status information for the website, ESN SMP, public ESNSMP plugin release, Arcade, and Discord connection.',
+    title:'ESN Systems Status | SMP, Website, Arcade & Plugin',
+    description:'Check current ESN Systems status information for the website, ESN SMP, public ESNSMP plugin release, Arcade, and Discord connection.',
     index:true,
   },
   '/timeline':{
     label:'Timeline',
-    title:'ES Network History | EP1C Services to ESN Timeline',
-    description:'Explore the ES Network timeline from its former EP1C Services name through the current ESN brand, SMP, Arcade, and ongoing projects.',
+    title:'ESN Systems History | EP1C Services to ESN Timeline',
+    description:'Explore the ESN Systems timeline from its former EP1C Services name through the current ESN brand, SMP, Arcade, and ongoing projects.',
     index:true,
   },
   '/updates':{
     label:'Release Center',
-    title:'ES Network Updates | Website, ESNSMP & Arcade Releases',
-    description:'See current ES Network website updates, ESNSMP plugin releases, Arcade improvements, live-network changes, and clearly labeled roadmap candidates.',
+    title:'ESN Systems Updates | Website, ESNSMP & Arcade Releases',
+    description:'See current ESN Systems website updates, ESNSMP plugin releases, Arcade improvements, live-network changes, and clearly labeled roadmap candidates.',
     index:true,
   },
   '/portfolio':{
     label:'Portfolio',
-    title:'ES Network Portfolio | Editing, Discord & Website Demos',
-    description:'Explore clearly labeled illustrative ES Network before-and-after process demos for creator editing, Discord setup, and website creation.',
+    title:'ESN Systems Portfolio | Editing, Discord & Website Demos',
+    description:'Explore clearly labeled illustrative ESN Systems before-and-after process demos for creator editing, Discord setup, and website creation.',
     index:true,
   },
   '/share':{
     label:'Share Deck',
-    title:'ESN Share Deck | Create Branded ES Network Cards',
-    description:'Generate branded ES Network share cards for the SMP, Arcade, services, releases, and current ESN SMP store products.',
+    title:'ESN Share Deck | Create Branded ESN Systems Cards',
+    description:'Generate branded ESN Systems share cards for the SMP, Arcade, services, releases, and current ESN SMP store products.',
     index:true,
   },
   '/vault':{
     label:'Vault',
     title:'ESN Vault | Secret Network Layer',
-    description:'A hidden ES Network experience unlocked through site easter eggs.',
+    description:'A hidden ESN Systems experience unlocked through site easter eggs.',
     index:false,
     nofollow:true,
   },
   '/estools':{
     label:'ES Tools',
     title:'ES Tools | Free Creator, Gaming & Browser Utilities',
-    description:'Use free ES Network browser tools including challenge generation, focus timer, prompt creation, random picker, coin flip, dice, and website estimates.',
+    description:'Use free ESN Systems browser tools including challenge generation, focus timer, prompt creation, random picker, coin flip, dice, and website estimates.',
     index:true,
   },
   '/tools':{
     label:'ES Tools',
     title:'ES Tools | Free Creator, Gaming & Browser Utilities',
-    description:'Use free browser-based ES Network creator and gaming utilities.',
+    description:'Use free browser-based ESN Systems creator and gaming utilities.',
     canonical:'/estools',
     index:false,
   },
   '/arcade':{
     label:'Arcade',
-    title:'ESN Arcade | Six Free Browser Games by ES Network',
-    description:'Play six original ES Network browser games: ES Clicker, ES Factory, ES Mines, ES MOTO, ES Tower, and ES Tower Defense.',
+    title:'ESN Arcade | Six Free Browser Games by ESN Systems',
+    description:'Play six original ESN Systems browser games: ES Clicker, ES Factory, ES Mines, ES MOTO, ES Tower, and ES Tower Defense.',
     index:true,
   },
   '/esclicker':{
@@ -238,26 +238,26 @@ export const SEO_ROUTES={
   },
   '/networkstats':{
     label:'Network Statistics',
-    title:'ES Network Statistics | Live Status & Local Progress',
-    description:'View ES Network live system information alongside local Arcade, Passport, Easter egg, recent-route, and favorite progress.',
+    title:'ESN Systems Statistics | Live Status & Local Progress',
+    description:'View ESN Systems live system information alongside local Arcade, Passport, Easter egg, recent-route, and favorite progress.',
     index:true,
   },
   '/nexus':{
     label:'Network Nexus',
-    title:'ES Network Nexus | XP, Missions, Arcade & Live Systems',
-    description:'Explore the ES Network Nexus with XP, missions, achievements, Arcade competition, live activity, events, 3D systems, and the ESN Guide.',
+    title:'ESN Systems Nexus | XP, Missions, Arcade & Live Systems',
+    description:'Explore the ESN Systems Nexus with XP, missions, achievements, Arcade competition, live activity, events, 3D systems, and the ESN Guide.',
     index:true,
   },
   '/notifications':{
     label:'Notification Center',
     title:'ESN Notification Center | Local Alerts & Network Activity',
-    description:'View account-free ES Network alerts for releases, achievements, rewards, SMP telemetry, and local browser notifications.',
+    description:'View account-free ESN Systems alerts for releases, achievements, rewards, SMP telemetry, and local browser notifications.',
     index:true,
   },
   '/rewards':{
     label:'Reward Vault',
     title:'ESN Reward Vault | Shards, Cosmetics & Inventory',
-    description:'Spend locally earned ESN Network Shards on account-free cosmetic unlocks and manage a device-local ESN identity card.',
+    description:'Spend locally earned ESN Systems Shards on account-free cosmetic unlocks and manage a device-local ESN identity card.',
     index:true,
   },
   '/challenges':{
@@ -269,32 +269,32 @@ export const SEO_ROUTES={
   '/staff':{
     label:'Staff Dashboard',
     title:'ESN Staff Dashboard',
-    description:'Code-gated local ES Network operator dashboard.',
+    description:'Code-gated local ESN Systems operator dashboard.',
     index:false,
     nofollow:true,
   },
   '/operations':{
     label:'Operations Map',
     title:'ESN Operations Map | Live Network Systems & Status',
-    description:'Explore a connected ES Network operations map for the website, Nexus, SMP, Arcade, Terminal, Store, Staff tools, and current system telemetry.',
+    description:'Explore a connected ESN Systems operations map for the website, Nexus, SMP, Arcade, Terminal, Store, Staff tools, and current system telemetry.',
     index:true,
   },
   '/incidents':{
     label:'Incident History',
     title:'ESN Incident History | Network Issues & Resolutions',
-    description:'View ES Network incident records explicitly published from the local Staff Dashboard, including severity, current status, details, and resolution times.',
+    description:'View ESN Systems incident records explicitly published from the local Staff Dashboard, including severity, current status, details, and resolution times.',
     index:true,
   },
   '/changelog':{
     label:'Network Changelog',
-    title:'ESN Network Changelog | Website, Staff, Terminal & Arcade',
-    description:'Explore an interactive ES Network changelog timeline covering major website, Staff, Network, Terminal, Arcade, and infrastructure releases.',
+    title:'ESN Systems Changelog | Website, Staff, Terminal & Arcade',
+    description:'Explore an interactive ESN Systems changelog timeline covering major website, Staff, Network, Terminal, Arcade, and infrastructure releases.',
     index:true,
   },
   '/diagnostics':{
     label:'Diagnostic Center',
     title:'ESN Diagnostic Center | Browser, Network & SMP Checks',
-    description:'Run ES Network diagnostics for browser connectivity, storage, notifications, service workers, cache, SMP telemetry, plugin releases, and Discord.',
+    description:'Run ESN Systems diagnostics for browser connectivity, storage, notifications, service workers, cache, SMP telemetry, plugin releases, and Discord.',
     index:true,
   },
   '/smpcheck':{
@@ -306,61 +306,61 @@ export const SEO_ROUTES={
   '/blueprint':{
     label:'System Blueprint',
     title:'ESN System Blueprint | Nexus, Terminal, SMP, Arcade & Staff',
-    description:'Explore an interactive ES Network system blueprint showing how Nexus, Terminal, Vault, Arcade, SMP, Staff tools, Operations, and other systems connect.',
+    description:'Explore an interactive ESN Systems system blueprint showing how Nexus, Terminal, Vault, Arcade, SMP, Staff tools, Operations, and other systems connect.',
     index:true,
   },
   '/session':{
     label:'Session Stats',
     title:'ESN Session Stats | Local Visit, Arcade & Terminal Activity',
-    description:'View account-free local ES Network session statistics including visit duration, pages explored, Arcade XP, hidden signals, Terminal commands, and session rank.',
+    description:'View account-free local ESN Systems session statistics including visit duration, pages explored, Arcade XP, hidden signals, Terminal commands, and session rank.',
     index:true,
   },
   '/whatsnew':{
     label:"What's New",
-    title:"What's New at ES Network | Latest Website Features",
-    description:'See the newest ES Network website features including PWA install, performance controls, SMP encyclopedia, Arcade challenges, accessibility, and discovery tools.',
+    title:"What's New at ESN Systems | Latest Website Features",
+    description:'See the newest ESN Systems website features including PWA install, performance controls, SMP encyclopedia, Arcade challenges, accessibility, and discovery tools.',
     index:true,
   },
   '/explore':{
     label:'Explore ESN',
-    title:'Explore ES Network | Website Features, Favorites & Recents',
-    description:'Discover ES Network website features and revisit recent or favorite destinations across services, SMP, Arcade, tools, updates, accessibility, and support.',
+    title:'Explore ESN Systems | Website Features, Favorites & Recents',
+    description:'Discover ESN Systems website features and revisit recent or favorite destinations across services, SMP, Arcade, tools, updates, accessibility, and support.',
     index:true,
   },
   '/gallery':{
     label:'Media Gallery',
-    title:'ES Network Media Gallery | Brand, SMP & Milestones',
-    description:'Explore official ES Network brand visuals, website milestones, ESNSMP releases, and space for approved SMP and community media.',
+    title:'ESN Systems Media Gallery | Brand, SMP & Milestones',
+    description:'Explore official ESN Systems brand visuals, website milestones, ESNSMP releases, and space for approved SMP and community media.',
     index:true,
   },
   '/settings':{
     label:'Performance & Accessibility',
-    title:'ES Network Performance & Accessibility Settings',
-    description:'Control ES Network performance mode, motion, flashing, contrast, text size, touch target size, and install the website as a supported web app.',
+    title:'ESN Systems Performance & Accessibility Settings',
+    description:'Control ESN Systems performance mode, motion, flashing, contrast, text size, touch target size, and install the website as a supported web app.',
     index:true,
   },
   '/support':{
     label:'Website Support',
-    title:'Report an ES Network Website Problem | ESN Support',
-    description:'Create a local diagnostic website bug report, copy the report details, and open ES Network Discord support.',
+    title:'Report an ESN Systems Website Problem | ESN Support',
+    description:'Create a local diagnostic website bug report, copy the report details, and open ESN Systems Discord support.',
     index:true,
   },
   '/about':{
     label:'About',
-    title:'About ES Network | Gaming, Creator Services & Community',
-    description:'Learn about ES Network, the current organization formerly known as EP1C Services, and its creator services, gaming projects, SMP, Arcade, and community.',
+    title:'About ESN Systems | Gaming, Creator Services & Community',
+    description:'Learn about ESN Systems, the current organization formerly known as EP1C Services, and its creator services, gaming projects, SMP, Arcade, and community.',
     index:true,
   },
   '/leadership':{
     label:'Leadership',
-    title:'ES Network Leadership | Founders & Administration',
-    description:'Meet the founders, co-founders, and administrators behind ES Network and learn about the team responsible for the organization and its projects.',
+    title:'ESN Systems Leadership | Founders & Administration',
+    description:'Meet the founders, co-founders, and administrators behind ESN Systems and learn about the team responsible for the organization and its projects.',
     index:true,
   },
   '/testimonials':{
     label:'Reviews',
-    title:'ES Network Reviews | Fortnite, Editing & Discord Services',
-    description:'Read 35 verified-on-Discord ES Network reviews covering Fortnite coaching, creator editing, and Discord server setup services.',
+    title:'ESN Systems Reviews | Fortnite, Editing & Discord Services',
+    description:'Read 35 verified-on-Discord ESN Systems reviews covering Fortnite coaching, creator editing, and Discord server setup services.',
     index:true,
   },
   '/rules':{
@@ -371,20 +371,20 @@ export const SEO_ROUTES={
   },
   '/faq':{
     label:'FAQ',
-    title:'ES Network FAQ | Services, SMP, Ordering & Support',
-    description:'Get answers about ES Network services, Discord ordering and support, ESN SMP purchases, console access, browser tools, and community access.',
+    title:'ESN Systems FAQ | Services, SMP, Ordering & Support',
+    description:'Get answers about ESN Systems services, Discord ordering and support, ESN SMP purchases, console access, browser tools, and community access.',
     index:true,
   },
   '/launchpad':{
     label:'ESN Launchpad',
-    title:'ESN Launchpad | Start Anywhere in ES Network',
-    description:'Choose the fastest route into ES Network for services, SMP, Arcade, tools, search, or network status without creating an account.',
+    title:'ESN Launchpad | Start Anywhere in ESN Systems',
+    description:'Choose the fastest route into ESN Systems for services, SMP, Arcade, tools, search, or network status without creating an account.',
     index:true,
   },
   '/configure':{
     label:'Service Configurator',
     title:'ESN Service Configurator | Build a Project Brief',
-    description:'Build a local ES Network project brief for website, editing, Discord, coaching, branding, or custom work before opening a support ticket.',
+    description:'Build a local ESN Systems project brief for website, editing, Discord, coaching, branding, or custom work before opening a support ticket.',
     index:true,
   },
   '/smp-hub':{
@@ -396,25 +396,25 @@ export const SEO_ROUTES={
   '/trust':{
     label:'Trust Center',
     title:'ESN Trust Center | Official Links, Privacy & Payment Safety',
-    description:'Review official ES Network access paths, payment safety, local browser privacy, no-account features, support, and operational transparency.',
+    description:'Review official ESN Systems access paths, payment safety, local browser privacy, no-account features, support, and operational transparency.',
     index:true,
   },
   '/search':{
     label:'Search 2.0',
-    title:'Search ES Network | Services, SMP Items, Tools & Pages',
-    description:'Search ES Network pages, services, SMP items, FAQs, tools, releases, and platform features from one local search experience.',
+    title:'Search ESN Systems | Services, SMP Items, Tools & Pages',
+    description:'Search ESN Systems pages, services, SMP items, FAQs, tools, releases, and platform features from one local search experience.',
     index:true,
   },
   '/labs':{
     label:'ESN Labs',
     title:'ESN Labs | Local Beta Experience Controls',
-    description:'Try optional ES Network presentation experiments stored only on this browser without an account.',
+    description:'Try optional ESN Systems presentation experiments stored only on this browser without an account.',
     index:false,
   },
   '/estimate':{
     label:'Project Estimate',
     title:'ESN Project Estimate | Websites, Editing & Discord',
-    description:'Estimate ES Network project complexity and scope before opening a service ticket. Final pricing and delivery are confirmed separately.',
+    description:'Estimate ESN Systems project complexity and scope before opening a service ticket. Final pricing and delivery are confirmed separately.',
     index:true,
   },
   '/smp-items':{
@@ -425,14 +425,14 @@ export const SEO_ROUTES={
   },
   '/activity':{
     label:'Network Activity',
-    title:'ESN Network Activity | Website Releases & Local Recents',
-    description:'Review recent ES Network platform milestones alongside route history stored locally on this device without an account.',
+    title:'ESN Systems Activity | Website Releases & Local Recents',
+    description:'Review recent ESN Systems platform milestones alongside route history stored locally on this device without an account.',
     index:true,
   },
   '/share-generator':{
     label:'Share Generator 2.0',
     title:'ESN Share Generator | QR Codes & Network Links',
-    description:'Create share-ready ES Network URLs and QR targets for ESN, the SMP, Arcade, tools, Website Builder, and services.',
+    description:'Create share-ready ESN Systems URLs and QR targets for ESN, the SMP, Arcade, tools, Website Builder, and services.',
     index:true,
   },
   '/showcase':{
@@ -443,38 +443,38 @@ export const SEO_ROUTES={
   },
   '/network-map':{
     label:'Interactive Network Map',
-    title:'ESN Network Map | Explore the Entire ES Network',
-    description:'Explore ES Network as one connected platform across services, SMP, Arcade, tools, search, support, sharing, and website creation.',
+    title:'ESN Systems Map | Explore the Entire ESN Systems',
+    description:'Explore ESN Systems as one connected platform across services, SMP, Arcade, tools, search, support, sharing, and website creation.',
     index:true,
   },
   '/backup':{
     label:'Local Backup + Restore',
     title:'ESN Local Backup & Restore | No Account Required',
-    description:'Export and restore ES Network browser-stored preferences, favorites, local progress, and settings without creating an account.',
+    description:'Export and restore ESN Systems browser-stored preferences, favorites, local progress, and settings without creating an account.',
     index:false,
   },
   '/minecraft-server':{
     label:'Minecraft Server',
     title:'Minecraft Server | ESN SMP Server, Status & Connection',
-    description:'Explore the ESN Minecraft server with current SMP status, server resources, progression guides, item information, and official ES Network links.',
+    description:'Explore the ESN Minecraft server with current SMP status, server resources, progression guides, item information, and official ESN Systems links.',
     index:true,
   },
   '/minecraft-smp':{
     label:'Minecraft SMP',
     title:'Minecraft SMP | ESN Survival, Progression, Bosses & Economy',
-    description:'Explore ESN SMP survival, Realm progression, economy, bosses, custom gear, Adventure systems, server resources, and current ES Network information.',
+    description:'Explore ESN SMP survival, Realm progression, economy, bosses, custom gear, Adventure systems, server resources, and current ESN Systems information.',
     index:true,
   },
   '/fortnite-coaching':{
     label:'Fortnite Coaching',
-    title:'Fortnite Coaching for Better Gameplay | ES Network',
-    description:'Explore ES Network Fortnite coaching focused on practical improvement, stronger decisions, consistency, and a clear project brief before ordering.',
+    title:'Fortnite Coaching for Better Gameplay | ESN Systems',
+    description:'Explore ESN Systems Fortnite coaching focused on practical improvement, stronger decisions, consistency, and a clear project brief before ordering.',
     index:true,
   },
   '/video-editing':{
     label:'Video Editing',
-    title:'Video Editing Services for Creators | ES Network',
-    description:'Explore ES Network creator video editing support for gaming and digital content, with clear project scoping and official Discord-based ordering.',
+    title:'Video Editing Services for Creators | ESN Systems',
+    description:'Explore ESN Systems creator video editing support for gaming and digital content, with clear project scoping and official Discord-based ordering.',
     index:true,
   },
   '/services':{
@@ -497,26 +497,26 @@ export const SEO_ROUTES={
   },
   '/discord-server-setup':{
     label:'Discord Server Setup',
-    title:'Discord Server Setup for Gaming Communities | ES Network',
-    description:'Explore ES Network Discord setup services for channels, roles, onboarding, moderation, community structure, and custom project requirements.',
+    title:'Discord Server Setup for Gaming Communities | ESN Systems',
+    description:'Explore ESN Systems Discord setup services for channels, roles, onboarding, moderation, community structure, and custom project requirements.',
     index:true,
   },
   '/website-builder':{
     label:'Website Builder',
-    title:'Website Builder | Build and Publish with ES Network',
-    description:'Build, preview, edit, share, and publish a website with the ESN Website Builder under the official ES Network /sites path.',
+    title:'Website Builder | Build and Publish with ESN Systems',
+    description:'Build, preview, edit, share, and publish a website with the ESN Website Builder under the official ESN Systems /sites path.',
     index:true,
   },
   '/free-browser-tools':{
     label:'Free Browser Tools',
     title:'Free Browser Tools for Creators & Gamers | ES Tools',
-    description:'Use free ES Network browser utilities including prompt tools, focus timer, challenge generator, random picker, coin flip, dice, and estimates.',
+    description:'Use free ESN Systems browser utilities including prompt tools, focus timer, challenge generator, random picker, coin flip, dice, and estimates.',
     index:true,
   },
   '/es-network':{
-    label:'ES Network',
-    title:'ES Network (ESN) | Gaming, Creator Services, SMP & Web Tools',
-    description:'Learn what ES Network is and explore ESN creator services, Minecraft SMP, browser games, free tools, website projects, and official community access.',
+    label:'ESN Systems',
+    title:'ESN Systems (ESN) | Gaming, Creator Services, SMP & Web Tools',
+    description:'Learn what ESN Systems is and explore ESN creator services, Minecraft SMP, browser games, free tools, website projects, and official community access.',
     index:true,
   },
   '/badge':{
@@ -528,7 +528,7 @@ export const SEO_ROUTES={
   '/guides':{
     label:'ESN Guides',
     title:'ESN Guides | Minecraft, Discord, Websites & Creator Help',
-    description:'Read practical ES Network guides for Minecraft custom servers, SMP progression, gaming Discord setup, creator websites, and ESN resources.',
+    description:'Read practical ESN Systems guides for Minecraft custom servers, SMP progression, gaming Discord setup, creator websites, and ESN resources.',
     index:true,
   },
   '/guides/host-discord-bot-24-7':{
@@ -624,18 +624,18 @@ export const SEO_ROUTES={
 }
 
 export const FAQ_SCHEMA=[
-  ['What is ES Network?','ES Network (ESN) is the current brand. EP1C Services was the former name and is not a separate current organization or division.'],
+  ['What is ESN Systems?','ESN Systems (ESN) is the current brand. EP1C Services was the former name and is not a separate current organization or division.'],
   ['What services does ESN offer?','ESN Hosting (Discord bot, game server, web and VPS-lite hosting), Fortnite coaching, editing services, Discord server setups, and selected digital or website projects handled through ESN.'],
   ['How do I order a service?','Service ordering and support are handled through the official ESN Discord. Open a ticket and provide the details of what you need.'],
   ['How much does ESN Hosting cost?','Discord bot hosting starts at $0.50/month (Nano). There are 33 plans in all: bot plans up to Gift at $14.99/month, new Pro Minecraft plans with 8, 12 or 16 GB RAM from $9.99/month, plus game server, web and VPS-lite plans. Many plans can also be paid yearly. See all plans on the Bot Hosting page.'],
   ['How do I buy hosting and how fast is setup?','Go to panel.esnoffical.com/plans, sign in (or create an account), pick a plan and pay on Stripe’s secure checkout. Your server is set up automatically after you pay and shows up on your panel dashboard.'],
   ['Do I need an account to buy hosting?','Yes, an ESN panel account. You can create one yourself on the panel sign-in page with New here? Create an account. Your server is tied to that account.'],
   ['Where can I check if ESN Hosting is up?','The live status page at status.esnoffical.com shows the panel, the hosting nodes, the website and the SMP, checked every minute.'],
-  ['Where can I get help with my server?','Start with the hosting docs at docs.esnoffical.com. You can also use the chat bubble on this website or the panel, or open a ticket in the ESN Hosting Discord.'],
+  ['Where can I get help with my server?','Start with the hosting docs at docs.esnoffical.com. You can also use the chat bubble on this website or the panel, or open a ticket in the ESN Systems Discord.'],
   ['How do SMP purchases get delivered?','Enter your exact in-game Minecraft username at Stripe checkout. The buyer should be online on the SMP for automatic delivery. If your server username starts with a period, include the period at the beginning.'],
   ['Are ES Tools paid?','ES Tools are intended to be free browser-based utilities. They do not require an account and are not supposed to save your personal data.'],
   ['Can console players join the ESN SMP?','Yes. Xbox, PlayStation, and Nintendo Switch generally need a third-party-server workaround because Minecraft console editions do not expose a normal Add Server field. Use the Console Connection page for ESN server details and guidance.'],
-  ['Where can I join the ESN community?','Use the official Discord link anywhere on this website to join the ES Network community.'],
+  ['Where can I join the ESN community?','Use the official Discord link anywhere on this website to join the ESN Systems community.'],
 ]
 
 // Monthly prices of every plan on /hosting/vps (keep in sync with src/Hosting.jsx BOT_PLANS + MORE_PLANS).
@@ -701,7 +701,7 @@ export const SERVICE_PAGE_SCHEMA={
 }
 
 export const WEB_APP_SCHEMA={
-  '/website-builder':{name:'ESN Website Builder',description:'Build, preview, edit, share, and publish a website with ES Network.'},
+  '/website-builder':{name:'ESN Website Builder',description:'Build, preview, edit, share, and publish a website with ESN Systems.'},
   '/site-builder':{name:'ESN Website Builder',description:'Prompt-driven website builder with editable sections, responsive previews, HTML export, and ESN publishing.'},
 }
 
@@ -741,7 +741,7 @@ export const TOOL_SCHEMA=[
   ['Random Picker','Choose randomly from user-provided options.'],
   ['Coin Flip','Flip a virtual coin in the browser.'],
   ['D6 Dice','Roll a virtual six-sided die.'],
-  ['Website Estimate','View ES Network website project starting estimates.'],
+  ['Website Estimate','View ESN Systems website project starting estimates.'],
 ]
 
 export const GUIDE_SCHEMA_DETAILS={
@@ -769,7 +769,7 @@ export const CONSOLE_HOWTO_STEPS=[
 // GitHub Pages serves each prerendered route as /route/index.html and redirects
 // /route to /route/, so the trailing slash is dropped before the route lookup.
 // Without this, every page opened from a link or search fell back to the generic
-// "ES Network" title with a noindex robots tag once the app loaded.
+// "ESN Systems" title with a noindex robots tag once the app loaded.
 export function normalizePath(pathname){
   const path=(pathname||'/').replace(/\/+$/,'')
   return path||'/'
@@ -778,9 +778,9 @@ export function normalizePath(pathname){
 export function getSeo(pathname){
   const path=normalizePath(pathname)
   return SEO_ROUTES[path]||{
-    label:'ES Network',
-    title:'ES Network',
-    description:'Official ES Network website.',
+    label:'ESN Systems',
+    title:'ESN Systems',
+    description:'Official ESN Systems website.',
     canonical:path,
     index:false,
   }
@@ -812,12 +812,12 @@ export function structuredDataFor(pathname){
       '@type':'Organization',
       '@id':SITE_URL+'/#organization',
       name:SITE_NAME,
-      alternateName:'EP1C Services',
+      alternateName:['ES Network','EP1C Services'],
       url:SITE_URL+'/',
       logo:{'@type':'ImageObject',url:SITE_URL+'/esn-mark.svg'},
-      description:'ES Network provides creator and gaming services and operates the ESN SMP, ESN Arcade, ES Tools, website projects, and community experiences.',
+      description:'ESN Systems provides creator and gaming services and operates the ESN SMP, ESN Arcade, ES Tools, website projects, and community experiences.',
       sameAs:['https://github.com/sheldonrocks2022-cmyk','https://github.com/sheldonrocks2022-cmyk/ESN-Website','https://www.trustpilot.com/review/esnoffical.com','https://discord.gg/RGPt3zEfGy','https://www.youtube.com/@esnexplains','https://www.tiktok.com/@esnexplains'],
-      brand:{'@type':'Brand',name:'ES Network',alternateName:'ESN'},
+      brand:{'@type':'Brand',name:'ESN Systems',alternateName:'ESN'},
       knowsAbout:['Discord bot hosting','Game server hosting','Minecraft SMP','Fortnite coaching','Video editing','Discord server setup','Website creation','Browser games','Creator tools'],
     },
     {
@@ -846,7 +846,7 @@ export function structuredDataFor(pathname){
       '@type':'BreadcrumbList',
       '@id':url+'#breadcrumb',
       itemListElement:[
-        {'@type':'ListItem',position:1,name:'ES Network',item:SITE_URL+'/'},
+        {'@type':'ListItem',position:1,name:'ESN Systems',item:SITE_URL+'/'},
         {'@type':'ListItem',position:2,name:meta.label,item:url},
       ],
     })
@@ -925,7 +925,7 @@ export function structuredDataFor(pathname){
     graph.push({
       '@type':'ItemList',
       '@id':url+'#services',
-      name:'ES Network Services',
+      name:'ESN Systems Services',
       itemListElement:SERVICE_SCHEMA.map(([name,description,path],index)=>({
         '@type':'ListItem',
         position:index+1,
@@ -1034,7 +1034,7 @@ export function structuredDataFor(pathname){
       '@type':'SoftwareApplication',
       '@id':url+'#software',
       name:'ESNSMP',
-      description:'The public ES Network Minecraft server plugin distributed as ESNSMP.jar.',
+      description:'The public ESN Systems Minecraft server plugin distributed as ESNSMP.jar.',
       url,
       downloadUrl:SITE_URL+'/downloads/ESNSMP.jar',
       softwareVersion:'v2.15.0',

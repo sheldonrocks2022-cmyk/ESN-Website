@@ -77,9 +77,9 @@ export function GlobalOpsLayer(){
 
   return <>
     {location.pathname==='/operations'&&<div className="ops-home-state"><span>ESN LIVE STATE</span><strong>{homeState}</strong><small>{maintenance.active?'Local maintenance presentation is enabled on this device.':openIncidents.length?openIncidents[0].title:live.smp.online?'SMP and website systems are reporting operational.':'Public telemetry is being checked.'}</small><Link to="/operations">OPEN OPERATIONS</Link></div>}
-    {countdown?.active&&cd&&!cd.done&&<div className="ops-countdown-bar"><span>{countdown.label||'ESN EVENT'}</span><strong>{cd.days?cd.days+'d ':''}{String(cd.hours).padStart(2,'0')}:{String(cd.minutes).padStart(2,'0')}:{String(cd.seconds).padStart(2,'0')}</strong><small>{countdown.copy||'Upcoming ES Network event'}</small></div>}
+    {countdown?.active&&cd&&!cd.done&&<div className="ops-countdown-bar"><span>{countdown.label||'ESN EVENT'}</span><strong>{cd.days?cd.days+'d ':''}{String(cd.hours).padStart(2,'0')}:{String(cd.minutes).padStart(2,'0')}:{String(cd.seconds).padStart(2,'0')}</strong><small>{countdown.copy||'Upcoming ESN Systems event'}</small></div>}
     {maintenance?.active&&!['/staff','/status'].includes(location.pathname)&&<div className="ops-maintenance-cover">
-      <div className="ops-maintenance-core"><span>ESN MAINTENANCE MODE</span><h1>{maintenance.title||'Network maintenance in progress.'}</h1><p>{maintenance.copy||'Some ES Network systems may be temporarily unavailable.'}</p>
+      <div className="ops-maintenance-core"><span>ESN MAINTENANCE MODE</span><h1>{maintenance.title||'Network maintenance in progress.'}</h1><p>{maintenance.copy||'Some ESN Systems services may be temporarily unavailable.'}</p>
         <div className="ops-maintenance-tags">{(maintenance.affected||['Website']).map(item=><b key={item}>{item}</b>)}</div>
         {maintenance.estimate&&<small>ESTIMATED RESTORATION: {maintenance.estimate}</small>}
         <div className="noacct-actions"><Link to="/status">NETWORK STATUS</Link><a href={DISCORD_URL} target="_blank" rel="noreferrer">DISCORD</a></div>
@@ -253,10 +253,10 @@ export function SessionStatsPage(){
 export function StaffOpsExpansion(){
   const live=useLiveNetwork()
   const [,refresh]=useState(0)
-  const [maintenance,setMaintenance]=useState(()=>readJson(OPS_MAINTENANCE_KEY,{active:false,title:'ESN maintenance in progress',copy:'Some ES Network systems may be temporarily unavailable.',affected:['Website'],estimate:''}))
+  const [maintenance,setMaintenance]=useState(()=>readJson(OPS_MAINTENANCE_KEY,{active:false,title:'ESN maintenance in progress',copy:'Some ESN Systems services may be temporarily unavailable.',affected:['Website'],estimate:''}))
   const [countdown,setCountdown]=useState(()=>readJson(OPS_COUNTDOWN_KEY,{active:false,label:'ESN EVENT',copy:'',target:''}))
   const [emergency,setEmergency]=useState(()=>readJson(OPS_EMERGENCY_KEY,{mode:'normal'}))
-  const [preview,setPreview]=useState({title:'ES Network Notice',copy:'Preview how a network broadcast will look before showing it.'})
+  const [preview,setPreview]=useState({title:'ESN Systems Notice',copy:'Preview how a network broadcast will look before showing it.'})
   const incidents=readJson(OPS_INCIDENTS_KEY,[])
 
   const saveMaintenance=next=>{setMaintenance(next);writeJson(OPS_MAINTENANCE_KEY,next);window.dispatchEvent(new Event('esn-ops-change'));record('MAINTENANCE MODE '+(next.active?'ENABLED':'DISABLED'),next.title||'')}

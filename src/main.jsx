@@ -32,7 +32,7 @@ class ESNErrorBoundary extends React.Component {
         <section style={{width:'min(640px,100%)',padding:'28px',border:'1px solid rgba(120,160,230,.22)',borderRadius:'24px',background:'#081224'}}>
           <small style={{letterSpacing:'.16em',fontWeight:900,color:'#7f95b8'}}>ESN // PAGE RECOVERY</small>
           <h1 style={{fontSize:'clamp(2rem,8vw,4rem)',margin:'.7rem 0'}}>This page hit an error.</h1>
-          <p style={{color:'#aebbd0',lineHeight:1.6}}>ES Network stopped the failed view instead of leaving a blank screen. Reload the page or return home.</p>
+          <p style={{color:'#aebbd0',lineHeight:1.6}}>ESN Systems stopped the failed view instead of leaving a blank screen. Reload the page or return home.</p>
           <div style={{display:'flex',gap:'10px',flexWrap:'wrap',marginTop:'20px'}}>
             <button type="button" onClick={()=>window.location.reload()} style={{minHeight:'46px',padding:'0 18px',borderRadius:'12px',border:'0',fontWeight:900,cursor:'pointer'}}>Reload page</button>
             <button type="button" onClick={()=>window.location.assign('/')} style={{minHeight:'46px',padding:'0 18px',borderRadius:'12px',border:'1px solid rgba(255,255,255,.18)',background:'transparent',color:'#fff',fontWeight:900,cursor:'pointer'}}>Return home</button>

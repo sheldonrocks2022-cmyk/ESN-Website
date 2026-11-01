@@ -72,7 +72,7 @@ for (const [route, meta] of Object.entries(SEO_ROUTES)) {
   if (!html.includes(`property="og:title" content="`)) failures.push(`Missing Open Graph title in ${file}`)
   if (!html.includes(`property="og:description" content="`)) failures.push(`Missing Open Graph description in ${file}`)
   if (!html.includes(`property="og:url" content="${expectedCanonical}"`)) failures.push(`Wrong or missing Open Graph URL in ${file}`)
-  if (!html.includes('property="og:site_name" content="ES Network"')) failures.push(`Missing Open Graph site name in ${file}`)
+  if (!html.includes('property="og:site_name" content="ESN Systems"')) failures.push(`Missing Open Graph site name in ${file}`)
   if (!html.includes('name="twitter:title"')) failures.push(`Missing Twitter title in ${file}`)
   if (!html.includes('name="twitter:description"')) failures.push(`Missing Twitter description in ${file}`)
   if (!html.includes(`property="og:image" content="${expectedSocialImage}"`)) failures.push(`Missing social preview image in ${file}`)
@@ -179,11 +179,11 @@ if (!fs.existsSync(sitemapFile)) {
 
 const socialImageFile = path.join('dist', 'esn-social-card.svg')
 if (!fs.existsSync(socialImageFile)) {
-  failures.push('Missing built ES Network social preview asset')
+  failures.push('Missing built ESN Systems social preview asset')
 } else {
   const socialImage = fs.readFileSync(socialImageFile, 'utf8')
   if (!socialImage.includes('width="1200"') || !socialImage.includes('height="630"')) failures.push('Social preview asset must remain 1200x630')
-  if (!socialImage.includes('BUILD. PLAY. CREATE.')) failures.push('Social preview asset lost ES Network branding')
+  if (!socialImage.includes('BUILD. PLAY. CREATE.')) failures.push('Social preview asset lost ESN Systems branding')
 }
 
 if (failures.length) {

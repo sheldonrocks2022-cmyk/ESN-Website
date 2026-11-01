@@ -58,7 +58,7 @@ function NetLink({ item, className }){
 export function NetworkBar(){
   return <div className="esn-net-bar" role="navigation" aria-label="ESN network">
     <div className="esn-net-bar-inner">
-      <span className="esn-net-bar-label">ESN NETWORK</span>
+      <span className="esn-net-bar-label">ESN SYSTEMS</span>
       <div className="esn-net-bar-links">
         {ESN_NETWORK_LINKS.map(item=><NetLink key={item.id} item={item} className="esn-net-bar-link"/>)}
       </div>
@@ -69,7 +69,7 @@ export function NetworkBar(){
 
 export function NetworkFooterRow(){
   return <div className="shell esn-net-footer" role="navigation" aria-label="ESN network sites">
-    <div className="esn-net-footer-head"><span>THE ESN NETWORK</span><StatusPill/></div>
+    <div className="esn-net-footer-head"><span>ESN SYSTEMS</span><StatusPill/></div>
     <div className="esn-net-footer-links">
       {ESN_NETWORK_LINKS.map(item=><NetLink key={item.id} item={item} className="esn-net-footer-link"/>)}
     </div>

@@ -79,7 +79,7 @@ export default function OriginalFrame({title,subtitle='Browser Arcade',children}
       </nav>
 
       <section className="oa-title-card">
-        <span className="oa-kicker">ES NETWORK • ARCADE</span>
+        <span className="oa-kicker">ESN SYSTEMS • ARCADE</span>
         <h1>{title}</h1>
         <p>{subtitle}</p>
       </section>
@@ -105,7 +105,7 @@ export default function OriginalFrame({title,subtitle='Browser Arcade',children}
         <div>
           <span className="oa-kicker">ESN ARCADE</span>
           <h2>One network. Six original games.</h2>
-          <p>Your game stays inside the same ES Network experience — navigation, community, services, tools, SMP, and support remain one tap away.</p>
+          <p>Your game stays inside the same ESN Systems experience — navigation, community, services, tools, SMP, and support remain one tap away.</p>
         </div>
         <Link className="button secondary" to="/arcade">Back to Arcade Hub</Link>
       </section>

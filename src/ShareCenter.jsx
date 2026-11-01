@@ -6,7 +6,7 @@ import { SITE_RELEASE, SMP_ADDRESS, SMP_PORT, useLiveNetwork } from './liveNetwo
 const templates=[
   {id:'smp',type:'ESN SMP',title:'JOIN ESN SMP',subtitle:SMP_ADDRESS+' • PORT '+SMP_PORT,body:'Join our survival server with boss fights, events, crates, and custom gear.',link:'/smpconnection',accent:'#45e59d'},
   {id:'arcade',type:'ESN ARCADE',title:'PLAY THE ESN ARCADE',subtitle:'6 ORIGINAL BROWSER GAMES',body:'Clicker • Factory • Mines • MOTO • Tower • Tower Defense',link:'/arcade',accent:'#a75dff'},
-  {id:'services',type:'ES NETWORK',title:'BUILD WITH ESN',subtitle:'CREATOR • GAMING • COMMUNITY',body:'Get help with editing, coaching, Discord setups, and websites.',link:'/serviceshowcase',accent:'#5aa9ff'},
+  {id:'services',type:'ESN SYSTEMS',title:'BUILD WITH ESN',subtitle:'CREATOR • GAMING • COMMUNITY',body:'Get help with editing, coaching, Discord setups, and websites.',link:'/serviceshowcase',accent:'#5aa9ff'},
   {id:'release',type:'ESN UPDATE',title:'WHAT CHANGED?',subtitle:SITE_RELEASE,body:'See what changed on the website, SMP, and Arcade.',link:'/updates',accent:'#70d8ff'},
   {id:'realm',type:'ESN SMP STORE',title:'20 REALM 100 KEYS',subtitle:'$1.25',body:'Twenty Realm 100 keys through the official ESN SMP store.',link:'/storesmp#product-20-realm-100-keys',accent:'#f4c35e'},
   {id:'relic',type:'ESN SMP STORE',title:'SEASON PASS RELIC BUNDLE',subtitle:'$0.50',body:'Angel Wings • Inferno Scepter • Storm Crystal • Tideheart • Void Relic • Celestial Star',link:'/storesmp#product-esn-season-pass-relic-bundle',accent:'#77f3ff'},
@@ -80,7 +80,7 @@ function drawCard(canvas,item,live){
   ctx.fillText('ES',920,425)
   ctx.font='800 19px Arial'
   ctx.fillStyle='#71839d'
-  ctx.fillText('ES NETWORK',920,460)
+  ctx.fillText('ESN SYSTEMS',920,460)
 
   ctx.font='700 18px Arial'
   ctx.fillStyle='#6e819e'
@@ -91,7 +91,7 @@ function drawCard(canvas,item,live){
   ctx.arc(925,545,7,0,Math.PI*2)
   ctx.fill()
   ctx.fillStyle='#8ea0b9'
-  ctx.fillText(live.smp.status==='online'?'ESN NETWORK LIVE':'ESN NETWORK',945,552)
+  ctx.fillText(live.smp.status==='online'?'ESN SYSTEMS LIVE':'ESN SYSTEMS',945,552)
 }
 
 export default function ShareCenter(){

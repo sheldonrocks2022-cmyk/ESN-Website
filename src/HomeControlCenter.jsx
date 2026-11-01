@@ -116,7 +116,7 @@ export default function HomeControlCenter(){
                 </Link>
               ):(
                 <Link className="home-control-resume empty" to="/explore">
-                  <div><small>START HERE</small><strong>Explore ES Network</strong><span>Pages you visit will show up here.</span></div>
+                  <div><small>START HERE</small><strong>Explore ESN Systems</strong><span>Pages you visit will show up here.</span></div>
                   <em>↗</em>
                 </Link>
               )}

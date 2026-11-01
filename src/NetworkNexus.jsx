@@ -32,14 +32,14 @@ const GAME_META=[
 ]
 
 const EVENTS=[
-  {id:'core',label:'CORE STABLE',copy:'Normal ES Network state. All systems are running in standard visual mode.'},
+  {id:'core',label:'CORE STABLE',copy:'Normal ESN Systems state. All systems are running in standard visual mode.'},
   {id:'blackout',label:'BLACKOUT PROTOCOL',copy:'A dark network pulse reduces ambient light and reveals high-contrast core signals.'},
   {id:'overdrive',label:'ARCADE OVERDRIVE',copy:'Arcade energy is elevated across the network. Neon routing and reactor intensity increase.'},
   {id:'rift',label:'RIFT SIGNAL',copy:'A violet route signal is passing through the ESN core. Hidden systems become more visible.'},
 ]
 
 const LORE=[
-  {id:'origin',title:'FILE 001 // ORIGIN',copy:'EP1C Services was the former name. ES Network is the current unified identity.',need:()=>true},
+  {id:'origin',title:'FILE 001 // ORIGIN',copy:'EP1C Services was the former name. ESN Systems is the current unified identity.',need:()=>true},
   {id:'arcade',title:'FILE 014 // ARCADE CORE',copy:'The Arcade is connected through one shared local progression layer instead of six isolated experiences.',need:s=>s.arcadeXp>=250},
   {id:'terminal',title:'FILE 031 // OPERATOR',copy:'Terminal operators leave traces: commands, relics, achievements, and signals persist locally on the device.',need:s=>s.operatorCommands>=10},
   {id:'vault',title:'FILE 077 // MIDNIGHT',copy:'The Midnight Core is tied to the hidden Vault and the wider ESN signal-hunting system.',need:s=>s.vaultUnlocked},
@@ -293,7 +293,7 @@ function PersonalizedDock({snapshot}){
 function NetworkVisualization(){
   return <section className="nexus-panel nexus-visual-panel">
     <div className="nexus-panel-head"><div><span>3D NETWORK VISUALIZATION</span><h2>Explore the 3D ESN display.</h2></div><small>INTERACTIVE</small></div>
-    <div className="nexus-3d"><ES3DViewer variant="hero" label="Interactive ES Network core visualization"/></div>
+    <div className="nexus-3d"><ES3DViewer variant="hero" label="Interactive ESN Systems core visualization"/></div>
   </section>
 }
 
@@ -324,7 +324,7 @@ function Guide(){
       [['reward','market','inventory'],'/rewards','Opening the account-free Reward Vault and Shard Market.'],
       [['challenge','compete'],'/challenges','Opening the Challenge Lab so you can create or accept a shareable Arcade challenge.'],
       [['staff','operator console'],'/staff','Opening the code-gated Staff Dashboard.'],
-      [['status','network status'],'/status','Opening live ESN Network Status.'],
+      [['status','network status'],'/status','Opening live ESN Systems Status.'],
       [['update','release','what changed','what is new'] ,'/updates','Opening the Release Center.'],
       [['service'],'/serviceshowcase','Opening ESN Services.'],
       [['tool'],'/estools','Opening ES Tools.'],
@@ -405,7 +405,7 @@ export function NetworkNexusPage(){
       <div className="nexus-hero-grid" aria-hidden="true"/>
       <div className="shell nexus-hero-inner">
         <div className="nexus-hero-copy">
-          <span className="eyebrow">ES NETWORK // NETWORK NEXUS</span>
+          <span className="eyebrow">ESN SYSTEMS // NETWORK NEXUS</span>
           <h1>Your ESN shortcuts and progress.</h1>
           <p>Open your favorite pages, check the SMP, track missions, and see your Arcade progress. Your personal records and achievements stay on this device.</p>
           <div className="hero-actions"><button className="button primary" type="button" onClick={openCommand}>Open Command Center</button><button className="button secondary" type="button" onClick={openTerminal}>Launch Terminal</button></div>

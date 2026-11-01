@@ -34,7 +34,7 @@ async function inspect(route, check) {
 }
 
 await inspect('/', html => [
-  '<title>ES Network (ESN)',
+  '<title>ESN Systems (ESN)',
   'name="description"',
   'property="og:image"',
   'property="og:image:type" content="image/png"',

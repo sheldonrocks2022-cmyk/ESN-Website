@@ -1,9 +1,9 @@
-export const NETWORK_EVOLUTION_VERSION='ESN Network Evolution 12X'
+export const NETWORK_EVOLUTION_VERSION='ESN Systems Evolution 12X'
 
 export const NETWORK_TAKEOVER={
   id:'network-evolution-12x-2026-09-27',
   active:true,
-  kicker:'ES NETWORK // MAJOR SYSTEM UPDATE',
+  kicker:'ESN SYSTEMS // MAJOR SYSTEM UPDATE',
   title:'NETWORK EVOLUTION IS LIVE',
   copy:'Missions, Passport progression, Terminal commands, universal search, seasonal events, customizable shortcuts, achievement cards, live event tracking, and rare network anomalies are now active.',
   actionLabel:'ENTER THE NETWORK',
@@ -31,7 +31,7 @@ export const MISSIONS=[
 ]
 
 export const SEARCH_INDEX=[
-  {label:'Home',meta:'ES Network digital hub',path:'/',category:'Network'},
+  {label:'Home',meta:'ESN Systems digital hub',path:'/',category:'Network'},
   {label:'Service Showcase',meta:'Fortnite coaching, editing, Discord setups, websites',path:'/serviceshowcase',category:'Services'},
   {label:'Portfolio',meta:'ESN service before/after demos',path:'/portfolio',category:'Services'},
   {label:'Verified Reviews',meta:'35 verified ESN customer reviews',path:'/testimonials',category:'Services'},
@@ -71,8 +71,8 @@ export const SEARCH_INDEX=[
   {label:'Media Gallery',meta:'Official ESN visuals and milestones',path:'/gallery',category:'Media'},
   {label:'Performance & Accessibility',meta:'Performance, motion, contrast, text, and install controls',path:'/settings',category:'Help'},
   {label:'Report a Problem',meta:'Build a diagnostic website bug report',path:'/support',category:'Help'},
-  {label:'Leadership',meta:'ES Network team',path:'/leadership',category:'About'},
-  {label:'About ES Network',meta:'What ESN is and what it does',path:'/about',category:'About'},
+  {label:'Leadership',meta:'ESN Systems team',path:'/leadership',category:'About'},
+  {label:'About ESN Systems',meta:'What ESN is and what it does',path:'/about',category:'About'},
   {label:'FAQ',meta:'Quick answers and support information',path:'/faq',category:'Help'},
   {label:'Share Deck',meta:'Create ESN share cards',path:'/share',category:'Network'},
   {label:'Vault',meta:'Hidden ESN network layer',path:'/vault',category:'Network'},

@@ -32,12 +32,12 @@ const SEARCH_INDEX=[
   {to:'/minecraft-server',label:'Minecraft Server',copy:'ESN Minecraft server status, resources, guides, and official links.',category:'DISCOVER',keywords:'minecraft server ip join java bedrock smp'},
   {to:'/minecraft-smp',label:'Minecraft SMP',copy:'ESN SMP survival, progression, bosses, economy, gear, and Adventure systems.',category:'DISCOVER',keywords:'minecraft smp survival realms bosses economy'},
   {to:'/fortnite-coaching',label:'Fortnite Coaching',copy:'Practical ESN Fortnite coaching and project scoping.',category:'SERVICES',keywords:'fortnite coach coaching improve gaming'},
-  {to:'/video-editing',label:'Video Editing Services',copy:'Creator and gaming video editing support through ES Network.',category:'SERVICES',keywords:'video edit editing creator gaming'},
+  {to:'/video-editing',label:'Video Editing Services',copy:'Creator and gaming video editing support through ESN Systems.',category:'SERVICES',keywords:'video edit editing creator gaming'},
   {to:'/discord-server-setup',label:'Discord Server Setup',copy:'Roles, channels, moderation, onboarding, and gaming community structure.',category:'SERVICES',keywords:'discord server setup roles channels moderation'},
   {to:'/website-builder',label:'Website Builder',copy:'Build, preview, publish, and share websites with ESN.',category:'BUILDER',keywords:'website builder create publish sites'},
   {to:'/free-browser-tools',label:'Free Browser Tools',copy:'Free ES Tools for creators and gamers.',category:'TOOLS',keywords:'free browser tools prompt timer randomizer'},
   {to:'/guides',label:'ESN Guides + News',copy:'Minecraft, Discord, website guides, plus current ESN releases.',category:'GUIDES',keywords:'guides articles news help minecraft discord website'},
-  {to:'/es-network',label:'What is ES Network?',copy:'Official ES Network brand, projects, services, SMP, tools, and community.',category:'ABOUT',keywords:'es network esn ep1c services official brand'},
+  {to:'/es-network',label:'What is ESN Systems?',copy:'Official ESN Systems brand, projects, services, SMP, tools, and community.',category:'ABOUT',keywords:'es network esn ep1c services official brand'},
 
   {to:'/serviceshowcase',label:'ESN Services',copy:'Fortnite coaching, editing, Discord setups, website projects, and custom work.',category:'SERVICES',keywords:'order coaching edit discord website service'},
   {to:'/site-builder',label:'ESN Website Builder',copy:'Build and publish a website under the ESN /sites path.',category:'BUILDER',keywords:'ai website builder publish site generate'},
@@ -47,7 +47,7 @@ const SEARCH_INDEX=[
   {to:'/updates',label:'Release Center',copy:'Website, SMP, Arcade, network, and security releases.',category:'NETWORK',keywords:'updates release version roadmap changelog'},
   {to:'/estools',label:'ES Tools',copy:'Free browser utilities with no account wall.',category:'TOOLS',keywords:'timer prompt randomizer utilities free'},
   {to:'/arcade',label:'ESN Arcade',copy:'Six original browser games.',category:'ARCADE',keywords:'play games clicker factory mines moto tower defense'},
-  {to:'/faq',label:'FAQ',copy:'Quick answers about ES Network, ordering, SMP purchases, tools, and console access.',category:'HELP',keywords:'question help order username console'},
+  {to:'/faq',label:'FAQ',copy:'Quick answers about ESN Systems, ordering, SMP purchases, tools, and console access.',category:'HELP',keywords:'question help order username console'},
   {to:'/support',label:'Support',copy:'Create diagnostics and get the correct ESN support path.',category:'HELP',keywords:'bug issue problem ticket discord support'},
   ...ITEMS.flatMap(bundle=>[
     {to:'/smp-items',label:bundle.product,copy:bundle.summary,category:'SMP ITEM',keywords:bundle.items.join(' ')},
@@ -132,7 +132,7 @@ export function SMPWorldHubPage(){
 
 export function TrustCenterPage(){
   const cards=[
-    ['Official website','You are on the official ES Network website. Use site links instead of copies sent by unknown accounts.'],
+    ['Official website','You are on the official ESN Systems website. Use site links instead of copies sent by unknown accounts.'],
     ['Payments','SMP purchases use official Stripe checkout links surfaced by ESN. Stripe handles the payment form; ESN requires the exact Minecraft username for delivery.'],
     ['Local privacy','Favorites, recent routes, themes, Launchpad state, Labs switches, and backup data stay in browser storage on this device unless you export them yourself.'],
     ['No accounts','This website platform layer does not require an ESN user account. There is no password or profile database for these features.'],
@@ -210,14 +210,14 @@ export function ActivityTimelinePage(){
     ['2026.09.29','My ESN','Local favorites, recents, smart next moves, and adaptive homepage controls.'],
     ['2026.09.29','Experience Core V2','Smart page navigation and adaptive rendering profiles.'],
     ['2026.09.28','Website Builder','ESN site creation and /sites publishing workflow expanded.'],
-    ['HISTORY','ES Network','EP1C Services became ES Network, the current organization and brand.'],
+    ['HISTORY','ESN Systems','EP1C Services became ESN Systems, the current organization and brand.'],
   ]
   return <><PageIntro eyebrow="NETWORK ACTIVITY" title="What changed, plus where you have been." copy="Public ESN milestones are combined with recent routes saved locally on this device. No account activity feed is required."/>
   <section className="section"><div className="shell platform-activity-layout"><div className="platform-timeline">{releases.map(([date,title,copy])=><article key={title}><span>{date}</span><i/><div><h2>{title}</h2><p>{copy}</p></div></article>)}</div><aside className="platform-local-activity"><span>THIS DEVICE</span><h2>Recent ESN routes</h2>{recents.length?recents.map((route,index)=><div key={route+index}><b>{String(index+1).padStart(2,'0')}</b><code>{route}</code></div>):<p>No recent routes saved yet.</p>}<Link to="/backup">Back up local ESN data →</Link></aside></div></section></>
 }
 
 const SHARE_TARGETS={
-  'ES Network':'/',
+  'ESN Systems':'/',
   'ESN SMP':'/smp-hub',
   'ESN Arcade':'/arcade',
   'ES Tools':'/estools',
@@ -225,15 +225,15 @@ const SHARE_TARGETS={
   'ESN Services':'/serviceshowcase',
 }
 export function ShareGeneratorV2Page(){
-  const [target,setTarget]=useState('ES Network')
+  const [target,setTarget]=useState('ESN Systems')
   const [source,setSource]=useState('share')
   const [copied,setCopied]=useState(false)
   const base=typeof window==='undefined'?'https://esnoffical.com/':new URL(SHARE_TARGETS[target],window.location.origin).href
   const url=base+(base.includes('?')?'&':'?')+'ref='+encodeURIComponent(source)
   const qr='https://api.qrserver.com/v1/create-qr-code/?size=260x260&data='+encodeURIComponent(url)
-  const share=async()=>{if(navigator.share){try{await navigator.share({title:target,text:'Check out '+target+' on ES Network.',url});return}catch{}}await copyText(url);setCopied(true);setTimeout(()=>setCopied(false),1600)}
+  const share=async()=>{if(navigator.share){try{await navigator.share({title:target,text:'Check out '+target+' on ESN Systems.',url});return}catch{}}await copyText(url);setCopied(true);setTimeout(()=>setCopied(false),1600)}
   return <><PageIntro eyebrow="SHARE GENERATOR 2.0" title="Turn any major ESN area into a share target." copy="Choose a destination and referral label, then get a trackable ESN URL, QR code, native share action, or copyable link — no account required."/>
-  <section className="section"><div className="shell platform-share-layout"><div><div className="platform-share-options">{Object.keys(SHARE_TARGETS).map(name=><button type="button" className={name===target?'active':''} onClick={()=>setTarget(name)} key={name}><span>{name===target?'●':'○'}</span><strong>{name}</strong><small>{SHARE_TARGETS[name]}</small></button>)}</div><label className="platform-ref-source"><span>REFERRAL LABEL</span><select value={source} onChange={e=>setSource(e.target.value)}><option value="share">General share</option><option value="discord">Discord</option><option value="tiktok">TikTok</option><option value="youtube">YouTube</option><option value="github">GitHub</option><option value="staff">ESN staff</option><option value="community">Community</option></select><small>ESN records this referral only in the visitor's local browser diagnostics unless a privacy-focused aggregate analytics service is connected later.</small></label></div><aside className="platform-share-card"><span>ES NETWORK // SHARE</span><h2>{target}</h2><img src={qr} alt={'QR code for '+target}/><code>{url}</code><div className="platform-button-row"><button className="button primary" type="button" onClick={share}>{copied?'Copied':'Share'}</button><button className="button secondary" type="button" onClick={()=>copyText(url)}>Copy URL</button></div><small>The QR image contains only the public ESN destination and referral label. It contains no account or personal information.</small></aside></div></section></>
+  <section className="section"><div className="shell platform-share-layout"><div><div className="platform-share-options">{Object.keys(SHARE_TARGETS).map(name=><button type="button" className={name===target?'active':''} onClick={()=>setTarget(name)} key={name}><span>{name===target?'●':'○'}</span><strong>{name}</strong><small>{SHARE_TARGETS[name]}</small></button>)}</div><label className="platform-ref-source"><span>REFERRAL LABEL</span><select value={source} onChange={e=>setSource(e.target.value)}><option value="share">General share</option><option value="discord">Discord</option><option value="tiktok">TikTok</option><option value="youtube">YouTube</option><option value="github">GitHub</option><option value="staff">ESN staff</option><option value="community">Community</option></select><small>ESN records this referral only in the visitor's local browser diagnostics unless a privacy-focused aggregate analytics service is connected later.</small></label></div><aside className="platform-share-card"><span>ESN SYSTEMS // SHARE</span><h2>{target}</h2><img src={qr} alt={'QR code for '+target}/><code>{url}</code><div className="platform-button-row"><button className="button primary" type="button" onClick={share}>{copied?'Copied':'Share'}</button><button className="button secondary" type="button" onClick={()=>copyText(url)}>Copy URL</button></div><small>The QR image contains only the public ESN destination and referral label. It contains no account or personal information.</small></aside></div></section></>
 }
 
 export function BuilderShowcasePage(){
@@ -265,7 +265,7 @@ export function NetworkMapPage(){
     ['UTILITY',[['ES Tools','/estools'],['Share','/share-generator'],['Backup','/backup'],['Support','/support'],['Settings','/settings'],['Explore','/explore']]],
   ]
   return <><PageIntro eyebrow="INTERACTIVE NETWORK MAP" title="ESN as one connected platform." copy="Every major area grouped by purpose, with direct routes instead of making visitors hunt through menus."/>
-  <section className="section"><div className="shell platform-network-map"><div className="platform-map-core"><span>ES</span><strong>ES NETWORK</strong><small>CORE</small></div>{groups.map(([group,links],index)=><section className={'platform-map-group group-'+index} key={group}><span>{group}</span><div>{links.map(([label,to])=><Link to={to} key={to}>{label}<em>↗</em></Link>)}</div></section>)}</div></section></>
+  <section className="section"><div className="shell platform-network-map"><div className="platform-map-core"><span>ES</span><strong>ESN SYSTEMS</strong><small>CORE</small></div>{groups.map(([group,links],index)=><section className={'platform-map-group group-'+index} key={group}><span>{group}</span><div>{links.map(([label,to])=><Link to={to} key={to}>{label}<em>↗</em></Link>)}</div></section>)}</div></section></>
 }
 
 export function DataBackupPage(){
@@ -326,7 +326,7 @@ export function PlatformLayer(){
   const copyServer=async()=>{await copyText(SMP_ADDRESS+':'+SMP_PORT);setQuick(false)}
 
   return <>
-    {launch&&<div className="platform-firstvisit-backdrop" role="dialog" aria-modal="true" aria-label="ESN Launchpad"><div className="platform-firstvisit"><header><div><span>WELCOME TO ES NETWORK</span><strong>What are you here for?</strong></div><button type="button" onClick={closeLaunch} aria-label="Close">×</button></header><div>{INTENTS.slice(0,6).map(([mark,label,,to])=><button type="button" onClick={()=>launchTo(to)} key={to}><span>{mark}</span><strong>{label}</strong><em>↗</em></button>)}</div><footer><button type="button" onClick={()=>launchTo('/launchpad')}>Open full Launchpad</button><button type="button" onClick={closeLaunch}>Skip for now</button></footer></div></div>}
+    {launch&&<div className="platform-firstvisit-backdrop" role="dialog" aria-modal="true" aria-label="ESN Launchpad"><div className="platform-firstvisit"><header><div><span>WELCOME TO ESN SYSTEMS</span><strong>What are you here for?</strong></div><button type="button" onClick={closeLaunch} aria-label="Close">×</button></header><div>{INTENTS.slice(0,6).map(([mark,label,,to])=><button type="button" onClick={()=>launchTo(to)} key={to}><span>{mark}</span><strong>{label}</strong><em>↗</em></button>)}</div><footer><button type="button" onClick={()=>launchTo('/launchpad')}>Open full Launchpad</button><button type="button" onClick={closeLaunch}>Skip for now</button></footer></div></div>}
 
     <div className={'platform-mobile-quick '+(quick?'open':'')}>
       {quick&&<div className="platform-mobile-quick-panel">

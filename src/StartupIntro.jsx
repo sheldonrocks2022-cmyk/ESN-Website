@@ -15,7 +15,7 @@ export default function StartupIntro(){
 
   const className=phase==='boot'?'startup-intro':`startup-intro ${phase}`
 
-  return <div className={className} aria-label="ES Network loading">
+  return <div className={className} aria-label="ESN Systems loading">
     <div className="startup-grid" aria-hidden="true"/>
     <div className="startup-beam" aria-hidden="true"/>
     <div className="startup-exit-scan" aria-hidden="true"/>
@@ -25,7 +25,7 @@ export default function StartupIntro(){
         <div className="startup-ring ring-b"/>
         <div className="startup-logo">ES</div>
       </div>
-      <span className="startup-kicker">ES NETWORK</span>
+      <span className="startup-kicker">ESN SYSTEMS</span>
       <p className="startup-title">Initializing ESN</p>
       <div className="startup-modules">
         <span>NETWORK</span><i/>

@@ -77,7 +77,7 @@ async function inspect(route,viewport,label){
         mainDisplay:style?.display||'',
         mainVisibility:style?.visibility||'',
         bodyTextLength:(body?.innerText||'').replace(/\s+/g,' ').trim().length,
-        notFound:/That page isn't here\.|Page Not Found \| ES Network/i.test(document.documentElement.innerText||document.title),
+        notFound:/That page isn't here\.|Page Not Found \| ESN Systems/i.test(document.documentElement.innerText||document.title),
         builder:location.pathname==='/site-builder'?(()=>{
           const hero=document.querySelector('.builder-hero')
           const section=document.querySelector('.builder-hero + .section')

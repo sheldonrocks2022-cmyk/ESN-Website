@@ -77,13 +77,13 @@ const TERMINAL_MAN={
 
 const TERMINAL_LORE={
   '/network/archive/origin.txt':[
-    'ES NETWORK ARCHIVE // ORIGIN',
-    'EP1C Services was the former name. ES Network is the current organization and identity.',
+    'ESN SYSTEMS ARCHIVE // ORIGIN',
+    'EP1C Services was the former name. ESN Systems is the current organization and identity.',
     'The archive records the rename as an evolution of the same project, not a separate active division.',
   ],
   '/network/archive/founder.log':[
     'FOUNDER CHANNEL // AUTHORIZED PUBLIC RECORD',
-    'Landon // Founder & CEO of ES Network.',
+    'Landon // Founder & CEO of ESN Systems.',
     'The Founder channel is tied to one of the network’s hidden signals.',
   ],
   '/network/archive/arcade.sys':[
@@ -336,7 +336,7 @@ function RareEvent({event,onDone,soundEnabled}) {
   },[event])
   return <div className={'ev-rare-event rare-'+event.key} role="status">
     <div className="ev-rare-wave" aria-hidden="true"/>
-    <span>ULTRA-RARE ESN NETWORK EVENT</span>
+    <span>ULTRA-RARE ESN SYSTEMS EVENT</span>
     <strong>{event.title}</strong>
     <p>{event.copy}</p>
     <small>VISUAL EVENT • AUTO-CLEARING</small>
@@ -377,7 +377,7 @@ function PassportPanel({visited,eggs,onClose}) {
     ctx.strokeRect(42,42,1116,546)
     ctx.fillStyle='#62f1ff'
     ctx.font='800 26px system-ui'
-    ctx.fillText('ES NETWORK // DIGITAL PASSPORT',78,105)
+    ctx.fillText('ESN SYSTEMS // DIGITAL PASSPORT',78,105)
     ctx.fillStyle='#ffffff'
     ctx.font='900 82px system-ui'
     ctx.fillText('NETWORK LEVEL '+snapshot.level,78,220)
@@ -398,7 +398,7 @@ function PassportPanel({visited,eggs,onClose}) {
       const file=new File([blob],'esn-passport.png',{type:'image/png'})
       try{
         if(navigator.share&&navigator.canShare?.({files:[file]})){
-          await navigator.share({title:'My ESN Passport',text:'My ES Network Passport progress.',files:[file]})
+          await navigator.share({title:'My ESN Passport',text:'My ESN Systems Passport progress.',files:[file]})
           return
         }
       }catch{}
@@ -744,7 +744,7 @@ function TerminalPanel({onClose,onOpenPassport,onOpenSearch,soundEnabled,setSoun
     }else if(command==='map'){
       pushMany('system',[
         '              ┌─────────────┐',
-        '              │  ES NETWORK │',
+        '              │  ESN SYSTEMS │',
         '              └──────┬──────┘',
         '       ┌──────────────┼──────────────┐',
         '       ▼              ▼              ▼',
@@ -783,7 +783,7 @@ function TerminalPanel({onClose,onOpenPassport,onOpenSearch,soundEnabled,setSoun
       else push('error','Game not found. Try clicker, factory, mines, moto, tower, or defense.')
     }else if(command==='dashboard'||command==='dashboard network'){
       pushMany('system',[
-        '┌─ ESN NETWORK DASHBOARD ─────────────────────┐',
+        '┌─ ESN SYSTEMS DASHBOARD ─────────────────────┐',
         '│ WEBSITE  '+String(live.website.status||'online').toUpperCase().padEnd(10)+' SMP '+String(live.smp.status||'checking').toUpperCase().padEnd(10)+' │',
         '│ ARCADE   6/6 LIVE    PLUGIN '+String(live.plugin.version||'…').slice(0,15).padEnd(15)+' │',
         '│ DISCORD  '+String(live.discord.status||'checking').toUpperCase().padEnd(10)+' RELEASE ACTIVE        │',
