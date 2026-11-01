@@ -384,7 +384,7 @@ function ExperienceEffects() {
 function Brand() {
   return (
     <Link to="/" className="brand" data-easter="brand" aria-label="ESN Systems home">
-      <span className="brand-mark">ES</span>
+      <span className="brand-mark brand-mark-logo"><img src="/esn-mark.svg" alt="ESN Systems" width="44" height="44" decoding="async" /></span>
       <span className="brand-copy">
         <strong>ESN SYSTEMS</strong>
         <small>BUILD • PLAY • CREATE</small>

@@ -14,10 +14,6 @@ const assets = [
       path.join('public/social', file.replace(/\.svg$/, '.png')),
       1200, 630,
     ]),
-  ['public/esn-mark.svg', 'public/favicon-32.png', 32, 32],
-  ['public/esn-mark.svg', 'public/apple-touch-icon.png', 180, 180],
-  ['public/esn-mark.svg', 'public/icon-192.png', 192, 192],
-  ['public/esn-mark.svg', 'public/icon-512.png', 512, 512],
 ]
 
 for (const [source, destination, width, height] of assets) {
@@ -31,20 +27,18 @@ for (const [source, destination, width, height] of assets) {
   console.log('Rendered ' + destination + ' (' + width + 'x' + height + ')')
 }
 
-// Browsers and crawlers request /favicon.ico by default. Wrap the rendered
-// 32x32 PNG in a one-image ICO container (PNG-in-ICO is supported everywhere).
-const faviconPng = fs.readFileSync('public/favicon-32.png')
-const icoHeader = Buffer.alloc(22)
-icoHeader.writeUInt16LE(0, 0)
-icoHeader.writeUInt16LE(1, 2)
-icoHeader.writeUInt16LE(1, 4)
-icoHeader.writeUInt8(32, 6)
-icoHeader.writeUInt8(32, 7)
-icoHeader.writeUInt8(0, 8)
-icoHeader.writeUInt8(0, 9)
-icoHeader.writeUInt16LE(1, 10)
-icoHeader.writeUInt16LE(32, 12)
-icoHeader.writeUInt32LE(faviconPng.length, 14)
-icoHeader.writeUInt32LE(22, 18)
-fs.writeFileSync('public/favicon.ico', Buffer.concat([icoHeader, faviconPng]))
-console.log('Rendered public/favicon.ico (32x32 PNG-in-ICO)')
+// Official ESN Systems shield logo files (public/brand/) are used as-is for the
+// favicons, app icons and the default share image.
+const brandFiles = [
+  ['public/brand/favicon-32x32.png', 'public/favicon-32.png'],
+  ['public/brand/apple-touch-icon.png', 'public/apple-touch-icon.png'],
+  ['public/brand/android-chrome-192x192.png', 'public/icon-192.png'],
+  ['public/brand/android-chrome-512x512.png', 'public/icon-512.png'],
+  ['public/brand/favicon.ico', 'public/favicon.ico'],
+  ['public/brand/og-image.png', 'public/social/esn-network.png'],
+  ['public/brand/og-image.png', 'public/esn-social-card.png'],
+]
+for (const [source, destination] of brandFiles) {
+  fs.copyFileSync(source, destination)
+  console.log('Copied ' + source + ' -> ' + destination)
+}
