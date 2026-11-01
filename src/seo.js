@@ -519,10 +519,34 @@ export const SEO_ROUTES={
     description:'Learn what ES Network is and explore ESN creator services, Minecraft SMP, browser games, free tools, website projects, and official community access.',
     index:true,
   },
+  '/badge':{
+    label:'Hosted on ESN Badge',
+    title:'Hosted on ESN Badge | Embed for Bots, READMEs & Sites',
+    description:'Free "Hosted on ESN" badges in light and dark, with copy-paste HTML and Markdown for bot pages, GitHub READMEs and websites hosted on ESN.',
+    index:true,
+  },
   '/guides':{
     label:'ESN Guides',
     title:'ESN Guides | Minecraft, Discord, Websites & Creator Help',
     description:'Read practical ES Network guides for Minecraft custom servers, SMP progression, gaming Discord setup, creator websites, and ESN resources.',
+    index:true,
+  },
+  '/guides/host-discord-bot-24-7':{
+    label:"Discord Bot Hosting Guide",
+    title:"How to Host a Discord Bot 24/7 (Cheaply) | ESN Guide",
+    description:"Compare your own PC, free tiers, a VPS and bot hosting, then put a Discord bot online 24/7 on ESN step by step, with your token kept safe.",
+    index:true,
+  },
+  '/guides/java-bedrock-crossplay-smp':{
+    label:"Java + Bedrock Crossplay Guide",
+    title:"Java + Bedrock Crossplay: How Minecraft Crossplay SMPs Work",
+    description:"How Geyser and Floodgate let Bedrock players join Java servers, which ports they use, what works for Bedrock players, and how to set it up yourself.",
+    index:true,
+  },
+  '/guides/minecraft-server-hosting-for-beginners':{
+    label:"Minecraft Hosting Beginner Guide",
+    title:"Minecraft Server Hosting for Beginners | ESN Guide",
+    description:"RAM and CPU basics, Paper vs vanilla, plugins, backups and the settings that matter, plus how to start your first Minecraft server on ESN.",
     index:true,
   },
   '/guides/join-minecraft-server-xbox':{
@@ -721,6 +745,9 @@ export const TOOL_SCHEMA=[
 ]
 
 export const GUIDE_SCHEMA_DETAILS={
+  '/guides/host-discord-bot-24-7':{headline:"How to host a Discord bot 24/7 (cheaply)",datePublished:'2026-11-01',dateModified:'2026-11-01'},
+  '/guides/java-bedrock-crossplay-smp':{headline:"Java + Bedrock crossplay: how Minecraft crossplay SMPs work",datePublished:'2026-11-01',dateModified:'2026-11-01'},
+  '/guides/minecraft-server-hosting-for-beginners':{headline:"Minecraft server hosting for beginners",datePublished:'2026-11-01',dateModified:'2026-11-01'},
   '/guides/join-minecraft-server-xbox':{headline:'How to join a custom Minecraft server on Xbox',datePublished:'2026-09-29',dateModified:'2026-09-29'},
   '/guides/join-minecraft-server-playstation':{headline:'How to join a custom Minecraft server on PlayStation',datePublished:'2026-09-29',dateModified:'2026-09-29'},
   '/guides/minecraft-smp-beginner-guide':{headline:'Minecraft SMP beginner guide: what to do first',datePublished:'2026-09-29',dateModified:'2026-09-29'},

@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="60" viewBox="0 0 200 60" role="img" aria-label="Hosted on ESN Hosting, esnoffical.com">
+<title>Hosted on ESN Hosting</title>
+<defs><linearGradient id="esng" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3379ff"/><stop offset="1" stop-color="#8d5cff"/></linearGradient></defs>
+<rect x="1" y="1" width="198" height="58" rx="10" fill="#ffffff" stroke="url(#esng)" stroke-width="2"/>
+<g transform="translate(10 10)"><rect width="40" height="40" rx="9.4" fill="#070a14"/><rect x="0.94" y="0.94" width="38.12" height="38.12" rx="8.4" fill="none" stroke="url(#esng)" stroke-width="1.88"/><text x="20.0" y="24.8" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="15.2" font-weight="900" fill="#f8fbff">ES</text></g>
+<g font-family="Verdana,DejaVu Sans,Geneva,sans-serif" text-rendering="geometricPrecision">
+<text x="60" y="22" font-size="9" letter-spacing="1.2" fill="#5b6478">HOSTED ON</text>
+<text x="60" y="40" font-size="16" font-weight="bold" fill="#111827">ESN Hosting</text>
+<text x="60" y="52" font-size="9" fill="#5b6478">esnoffical.com</text>
+</g>
+</svg>
