@@ -28,7 +28,7 @@ import { NetworkBar, NetworkFooterRow } from './EsnNetwork'
 import { SmpCopyButtons } from './SmpCopy'
 import { HOME_FAQ } from './esnNetwork'
 import { ActivityTimelinePage, BuilderShowcasePage, DataBackupPage, GlobalSearchPage, LabsPage, LaunchpadPage, NetworkMapPage, PlatformLayer, ProjectEstimatePage, ServiceConfiguratorPage, ShareGeneratorV2Page, SMPItemsPage, SMPWorldHubPage, TrustCenterPage } from './PlatformExpansion'
-import { BrandAuthorityPage, GuideArticlePage, GuidesHubPage, RelatedVisibilityLinks, SearchLandingPage, SMPFeaturePage, VisibilityInsightsPage, VisibilityLayer } from './VisibilityExpansion'
+import { BadgePage, BrandAuthorityPage, GuideArticlePage, GuidesHubPage, RelatedVisibilityLinks, SearchLandingPage, SMPFeaturePage, VisibilityInsightsPage, VisibilityLayer } from './VisibilityExpansion'
 import { useArcadeProgress } from './arcade/shared'
 import { AnalyticsDashboard, AnalyticsTracker } from './Analytics'
 
@@ -618,6 +618,7 @@ function Footer() {
             <Link to="/whatsnew">What's New</Link>
             <Link to="/updates">Updates & Releases</Link>
             <Link to="/guides">Guides & News</Link>
+            <Link to="/badge">Hosted on ESN Badge</Link>
             <a href="https://docs.esnoffical.com" target="_blank" rel="noreferrer">Hosting Docs ↗</a>
             <a href="https://www.trustpilot.com/review/esnoffical.com" target="_blank" rel="noreferrer">Review us on Trustpilot ↗</a>
             <Link to="/explore">Explore ESN</Link>
@@ -1637,6 +1638,7 @@ function App() {
           <Route path="/free-browser-tools" element={<SearchLandingPage />} />
           <Route path="/guides" element={<GuidesHubPage />} />
           <Route path="/guides/:slug" element={<GuideArticlePage />} />
+          <Route path="/badge" element={<BadgePage />} />
           <Route path="/es-network" element={<BrandAuthorityPage />} />
           <Route path="/smp/:feature" element={<SMPFeaturePage />} />
           <Route path="/visibility" element={<VisibilityInsightsPage />} />

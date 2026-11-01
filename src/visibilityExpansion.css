@@ -6,3 +6,14 @@
 .visibility-news-grid>a{min-height:155px;padding:17px;display:flex;flex-direction:column;border:1px solid rgba(255,255,255,.07);border-radius:18px;background:rgba(255,255,255,.022)}
 .visibility-news-grid strong{font-size:.8rem}.visibility-news-grid p{color:#75849a;font-size:.62rem;line-height:1.55}.visibility-news-grid span{margin-top:auto;color:rgb(var(--route-accent-2,143 249 255));font-size:.57rem;font-weight:900}
 @media(max-width:850px){.visibility-news-grid{grid-template-columns:repeat(2,1fr)}}@media(max-width:520px){.visibility-news-grid{grid-template-columns:1fr}}
+
+.esn-badge-list{display:grid;gap:14px}
+.esn-badge-item{display:grid;grid-template-columns:240px 1fr 1fr;gap:12px;align-items:start;padding:16px;border:1px solid rgba(255,255,255,.08);border-radius:18px;background:rgba(255,255,255,.022)}
+.esn-badge-preview{display:flex;flex-direction:column;gap:12px}
+.esn-badge-preview img{max-width:100%;height:auto}
+.esn-badge-snippet{min-width:0}
+.esn-badge-snippet>div{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:6px}
+.esn-badge-snippet span{color:#8b97ad;font-size:.68rem}
+.esn-badge-snippet button{padding:5px 12px;border-radius:999px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.06);color:inherit;font:inherit;font-size:.7rem;cursor:pointer}
+.esn-badge-snippet pre{margin:0;padding:10px;border-radius:12px;background:rgba(0,0,0,.35);overflow-x:auto;white-space:pre-wrap;word-break:break-all;font-size:.66rem;line-height:1.5}
+@media(max-width:850px){.esn-badge-item{grid-template-columns:1fr}}
