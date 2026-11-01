@@ -153,9 +153,9 @@ const timelinePhases=[
   {
     id:'esn',
     index:'02',
-    title:'ES Network',
+    title:'ESN Systems',
     eyebrow:'Current Brand',
-    copy:'We renamed EP1C Services to ES Network as we started taking on more gaming and community projects.',
+    copy:'We renamed EP1C Services to ESN Systems as we started taking on more gaming and community projects.',
     points:['One network identity','Unified navigation and branding','Services + community + digital experiences'],
   },
   {
@@ -191,7 +191,7 @@ export function TimelinePage(){
   return <>
     <section className="page-hero timeline-hero">
       <div className="shell page-hero-inner">
-        <div className="page-hero-copy"><span className="eyebrow">ESN HISTORY</span><h1>From EP1C to ES Network.</h1><p>A look at how EP1C Services became ES Network and the projects that followed.</p></div>
+        <div className="page-hero-copy"><span className="eyebrow">ESN HISTORY</span><h1>From EP1C to ESN Systems.</h1><p>A look at how EP1C Services became ESN Systems and the projects that followed.</p></div>
         <div className="page-hero-mark" aria-hidden="true"><span>05</span><small>ERAS</small></div>
       </div>
     </section>

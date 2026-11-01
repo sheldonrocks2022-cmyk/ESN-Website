@@ -13,7 +13,7 @@ function routeScene(path){
   if(path==='/estools'||path==='/tools')return {key:'tools',label:'TOOLS HUD',glyph:'⌁'}
   if(path==='/vault')return {key:'vault',label:'VAULT ACCESS',glyph:'◈'}
   if(['/status','/updates','/timeline','/share','/nexus','/notifications','/rewards','/challenges','/staff','/networkstats','/whatsnew','/explore','/gallery','/settings','/support','/operations','/incidents','/changelog','/diagnostics','/smpcheck','/blueprint','/session','/store-ai','/hosting','/domains','/site-builder'].includes(path))return {key:'network',label:'NETWORK CORE',glyph:'◎'}
-  return {key:'home',label:'ES NETWORK',glyph:'ES'}
+  return {key:'home',label:'ESN SYSTEMS',glyph:'ES'}
 }
 
 export function RouteTransition(){
@@ -202,7 +202,7 @@ export function NotificationCenter(){
     </button>
     <div className={open?'notification-backdrop open':'notification-backdrop'} onClick={()=>setOpen(false)} aria-hidden={!open}/>
     <aside className={open?'notification-panel open':'notification-panel'} aria-hidden={!open} inert={!open}>
-      <div className="notification-head"><div><span>ES NETWORK</span><strong>Notification Center</strong></div><button type="button" onClick={()=>setOpen(false)} aria-label="Close notifications">×</button></div>
+      <div className="notification-head"><div><span>ESN SYSTEMS</span><strong>Notification Center</strong></div><button type="button" onClick={()=>setOpen(false)} aria-label="Close notifications">×</button></div>
       <div className="notification-live-strip"><i/><span>LIVE NETWORK FEED</span><small>Current ESN website data</small></div>
       <div className="notification-list">
         {notifications.map((item,index)=><Link to={item.to} key={item.type}>
@@ -234,7 +234,7 @@ export function HeroReactor(){
 
   return <div className={overdrive?'hero-reactor overdrive':'hero-reactor'}>
     <div className="flagship-core-visual">
-      <ES3DViewer variant="hero" label="Interactive 3D ES Network reactor" />
+      <ES3DViewer variant="hero" label="Interactive 3D ESN Systems reactor" />
       <div className="reactor-burst" key={burst} aria-hidden="true"/>
       <Link className="core-orbit-label label-a" to="/serviceshowcase">SERVICES</Link>
       <Link className="core-orbit-label label-b" to="/arcade">ARCADE</Link>

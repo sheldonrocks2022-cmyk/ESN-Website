@@ -24,7 +24,7 @@ const LANDINGS={
   },
   'fortnite-coaching':{
     eyebrow:'FORTNITE COACHING',
-    title:'Fortnite coaching through ES Network.',
+    title:'Fortnite coaching through ESN Systems.',
     intro:'Work on the parts of Fortnite that matter to you, from match decisions and positioning to consistency.',
     bullets:['Focused improvement instead of generic advice','Project brief builder before opening a ticket','Discord-based ordering and support','Scope is confirmed before work begins'],
     primary:['Configure coaching','/configure'],
@@ -64,7 +64,7 @@ const LANDINGS={
     intro:'Free timers, randomizers, prompt tools, and other utilities you can use right in your browser.',
     bullets:['Challenge generator','Focus timer','Prompt generator and random picker','Coin flip, dice, and website estimates'],
     primary:['Open ES Tools','/estools'],
-    secondary:['Explore ES Network','/explore'],
+    secondary:['Explore ESN Systems','/explore'],
     related:[['Launchpad','/launchpad'],['Search ESN','/search'],['Local Backup','/backup']],
   },
 }
@@ -143,7 +143,7 @@ const GUIDES={
       ['Why it works differently on Xbox','Minecraft Bedrock on Xbox does not normally provide the same simple Add Server field available on some other platforms. Joining a custom server can therefore require a console-compatible connection method.'],
       ['Prepare the server details','Have the server hostname and port ready. For ESN SMP, the current website lists '+SMP_ADDRESS+' with port '+SMP_PORT+'.'],
       ['Use the ESN connection guide','ESN keeps its current console connection flow and server details in its dedicated connection resources. Follow the current instructions shown there rather than relying on an old screenshot or saved address.'],
-      ['If it stops working','Custom-server workarounds can change as console networking or Minecraft changes. Check ESN Network Status and the official Discord if the normal flow no longer reaches the server.'],
+      ['If it stops working','Custom-server workarounds can change as console networking or Minecraft changes. Check ESN Systems Status and the official Discord if the normal flow no longer reaches the server.'],
     ],
     links:[['ESN SMP World Hub','/smp-hub'],['Network Status','/status'],['Official Discord',DISCORD_URL,true]],
   },
@@ -219,7 +219,7 @@ export function SearchLandingPage(){
   const {topic}=useParams()
   const resolved=topic||location.pathname.replace(/^\//,'')
   const page=LANDINGS[resolved]
-  if(!page)return <Hero eyebrow="ES NETWORK" title="That ESN guide was not found." copy="Use the Explore page to find the current ESN destination."/>
+  if(!page)return <Hero eyebrow="ESN SYSTEMS" title="That ESN guide was not found." copy="Use the Explore page to find the current ESN destination."/>
   return <><Hero eyebrow={page.eyebrow} title={page.title} copy={page.intro}><div className="hero-actions"><Link className="button primary" to={page.primary[1]}>{page.primary[0]}</Link><Link className="button secondary" to={page.secondary[1]}>{page.secondary[0]}</Link></div></Hero>
     <section className="section"><div className="shell visibility-landing-grid"><article><span className="eyebrow">WHY THIS PAGE EXISTS</span><h2>Get to the useful part quickly.</h2><p>{page.intro}</p></article><div className="visibility-benefits">{page.bullets.map((item,index)=><div key={item}><span>{String(index+1).padStart(2,'0')}</span><strong>{item}</strong></div>)}</div></div></section>
     <section className="section dark-section"><div className="shell visibility-related"><div><span className="eyebrow">KEEP EXPLORING</span><h2>Keep reading.</h2></div><div>{page.related.map(([label,to])=><Link to={to} key={to}>{label}<span>↗</span></Link>)}</div></div></section></>
@@ -237,7 +237,7 @@ export function GuideArticlePage(){
   const {slug}=useParams()
   const article=GUIDES[slug]
   if(!article)return <Hero eyebrow="ESN GUIDES" title="Guide not found." copy="Open the ESN Guides Center to browse current articles."/>
-  return <><Hero eyebrow={article.category} title={article.title} copy={article.description}><div className="visibility-article-meta"><span>Updated {article.updated}</span><span>ES NETWORK</span><span>ACCOUNT-FREE</span></div></Hero>
+  return <><Hero eyebrow={article.category} title={article.title} copy={article.description}><div className="visibility-article-meta"><span>Updated {article.updated}</span><span>ESN SYSTEMS</span><span>ACCOUNT-FREE</span></div></Hero>
     <article className="section visibility-article"><div className="shell visibility-article-shell">{article.sections.map(([title,copy],index)=><section key={title}><span>{String(index+1).padStart(2,'0')}</span><div><h2>{title}</h2><p>{copy}</p></div></section>)}<aside><span className="eyebrow">NEXT STEPS</span><div>{article.links.map(([label,to,external])=>external?<a href={to} target="_blank" rel="noreferrer" key={to}>{label} ↗</a>:<Link to={to} key={to}>{label} ↗</Link>)}</div></aside></div></article></>
 }
 
@@ -263,14 +263,14 @@ export function BadgePage(){
 }
 
 export function BrandAuthorityPage(){
-  return <><Hero eyebrow="ES NETWORK // OFFICIAL" title="Meet ES Network." copy="ES Network (ESN) is the current organization and brand. EP1C Services was the former name, not a separate current division."/>
+  return <><Hero eyebrow="ESN SYSTEMS // OFFICIAL" title="Meet ESN Systems." copy="ESN Systems (ESN) is the current organization and brand. EP1C Services was the former name, not a separate current division."/>
     <section className="section"><div className="shell visibility-brand-grid">
       <article><span>01</span><h2>Creator services</h2><p>Fortnite coaching, creator editing, Discord server setups, website projects, and selected custom digital work.</p><Link to="/serviceshowcase">Explore services →</Link></article>
       <article><span>02</span><h2>Gaming network</h2><p>ESN includes the ESN SMP and six original browser games inside the ESN Arcade.</p><Link to="/minecraft-smp">Explore gaming →</Link></article>
       <article><span>03</span><h2>Tools + creation</h2><p>Try free browser tools, build a website, or find information about ESN products and services.</p><Link to="/website-builder">Explore creation →</Link></article>
       <article><span>04</span><h2>Community</h2><p>Join the Discord for updates, support, project tickets, and community conversations.</p><a href={DISCORD_URL} target="_blank" rel="noreferrer">Official Discord ↗</a></article>
     </div></section>
-    <section className="section dark-section"><div className="shell visibility-official-card"><div><span className="eyebrow">IDENTITY</span><h2>How ESN got its name.</h2><p>When you see ES Network or ESN on this site, it refers to the current organization. References to EP1C Services describe the former name and history.</p></div><div><Link to="/about">About ESN ↗</Link><Link to="/trust">Trust Center ↗</Link><Link to="/timeline">ESN Timeline ↗</Link><Link to="/leadership">Leadership ↗</Link></div></div></section></>
+    <section className="section dark-section"><div className="shell visibility-official-card"><div><span className="eyebrow">IDENTITY</span><h2>How ESN got its name.</h2><p>When you see ESN Systems or ESN on this site, it refers to the current organization. References to EP1C Services describe the former name and history.</p></div><div><Link to="/about">About ESN ↗</Link><Link to="/trust">Trust Center ↗</Link><Link to="/timeline">ESN Timeline ↗</Link><Link to="/leadership">Leadership ↗</Link></div></div></section></>
 }
 
 export function SMPFeaturePage(){
@@ -320,7 +320,7 @@ const RELATED={
   '/smp-hub':[['Minecraft Server','/minecraft-server'],['Minecraft SMP','/minecraft-smp'],['Beginner Guide','/guides/minecraft-smp-beginner-guide'],['SMP Items','/smp-items']],
   '/smp-items':[['Riftwalker','/smp/riftwalker'],['Immortal Warden','/smp/immortal-warden'],['Season Pass','/smp/season-pass'],['Realm 100','/smp/realm-100']],
   '/showcase':[['Website Builder','/website-builder'],['Creator Website Guide','/guides/creator-website-guide'],['Build a Site','/site-builder']],
-  '/about':[['ES Network','/es-network'],['Trust Center','/trust'],['Timeline','/timeline']],
+  '/about':[['ESN Systems','/es-network'],['Trust Center','/trust'],['Timeline','/timeline']],
 }
 
 export function RelatedVisibilityLinks(){

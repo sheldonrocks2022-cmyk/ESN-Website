@@ -14,7 +14,7 @@ export const TEAM_FALLBACK = [
     "fallback_avatar": "https://panel.esnoffical.com/esn-theme/team/avatars/default-1.png",
     "servers": [
       "ESN Hosting",
-      "ES Network"
+      "ESN Systems"
     ]
   },
   {
@@ -26,7 +26,7 @@ export const TEAM_FALLBACK = [
     "fallback_avatar": "https://panel.esnoffical.com/esn-theme/team/avatars/default-3.png",
     "servers": [
       "ESN Hosting",
-      "ES Network"
+      "ESN Systems"
     ]
   },
   {
@@ -38,7 +38,7 @@ export const TEAM_FALLBACK = [
     "fallback_avatar": "https://panel.esnoffical.com/esn-theme/team/avatars/default-1.png",
     "servers": [
       "ESN Hosting",
-      "ES Network"
+      "ESN Systems"
     ]
   },
   {
@@ -50,7 +50,7 @@ export const TEAM_FALLBACK = [
     "fallback_avatar": "https://panel.esnoffical.com/esn-theme/team/avatars/default-4.png",
     "servers": [
       "ESN Hosting",
-      "ES Network"
+      "ESN Systems"
     ]
   },
   {
@@ -62,7 +62,7 @@ export const TEAM_FALLBACK = [
     "fallback_avatar": "https://panel.esnoffical.com/esn-theme/team/avatars/default-5.png",
     "servers": [
       "ESN Hosting",
-      "ES Network"
+      "ESN Systems"
     ]
   },
   {
@@ -74,7 +74,7 @@ export const TEAM_FALLBACK = [
     "fallback_avatar": "https://panel.esnoffical.com/esn-theme/team/avatars/default-3.png",
     "servers": [
       "ESN Hosting",
-      "ES Network"
+      "ESN Systems"
     ]
   },
   {
@@ -86,7 +86,7 @@ export const TEAM_FALLBACK = [
     "fallback_avatar": "https://panel.esnoffical.com/esn-theme/team/avatars/default-0.png",
     "servers": [
       "ESN Hosting",
-      "ES Network"
+      "ESN Systems"
     ]
   },
   {
@@ -98,7 +98,7 @@ export const TEAM_FALLBACK = [
     "fallback_avatar": "https://panel.esnoffical.com/esn-theme/team/avatars/default-4.png",
     "servers": [
       "ESN Hosting",
-      "ES Network"
+      "ESN Systems"
     ]
   },
   {
@@ -109,7 +109,7 @@ export const TEAM_FALLBACK = [
     "avatar": "https://panel.esnoffical.com/esn-theme/team/avatars/2af7c247ee9d6ca2f04adda1dc301b2b.webp",
     "fallback_avatar": "https://panel.esnoffical.com/esn-theme/team/avatars/default-3.png",
     "servers": [
-      "ES Network"
+      "ESN Systems"
     ]
   },
   {
@@ -120,7 +120,7 @@ export const TEAM_FALLBACK = [
     "avatar": "https://panel.esnoffical.com/esn-theme/team/avatars/824e967c6da36c358907c5d3515ee100.webp",
     "fallback_avatar": "https://panel.esnoffical.com/esn-theme/team/avatars/default-4.png",
     "servers": [
-      "ES Network"
+      "ESN Systems"
     ]
   },
   {
@@ -132,7 +132,7 @@ export const TEAM_FALLBACK = [
     "fallback_avatar": "https://panel.esnoffical.com/esn-theme/team/avatars/default-5.png",
     "servers": [
       "ESN Hosting",
-      "ES Network"
+      "ESN Systems"
     ]
   },
   {
@@ -154,7 +154,7 @@ export const TEAM_FALLBACK = [
     "avatar": "https://panel.esnoffical.com/esn-theme/team/avatars/2286c217f4e784f6cdc61598e6c90804.webp",
     "fallback_avatar": "https://panel.esnoffical.com/esn-theme/team/avatars/default-4.png",
     "servers": [
-      "ES Network"
+      "ESN Systems"
     ]
   },
   {
@@ -165,7 +165,7 @@ export const TEAM_FALLBACK = [
     "avatar": "https://panel.esnoffical.com/esn-theme/team/avatars/900365583947dab844c47b449f5d7b65.webp",
     "fallback_avatar": "https://panel.esnoffical.com/esn-theme/team/avatars/default-0.png",
     "servers": [
-      "ES Network"
+      "ESN Systems"
     ]
   },
   {
@@ -188,7 +188,7 @@ export const TEAM_FALLBACK = [
     "fallback_avatar": "https://panel.esnoffical.com/esn-theme/team/avatars/default-2.png",
     "servers": [
       "ESN Hosting",
-      "ES Network"
+      "ESN Systems"
     ]
   },
   {
@@ -199,7 +199,7 @@ export const TEAM_FALLBACK = [
     "avatar": "https://panel.esnoffical.com/esn-theme/team/avatars/5704257454fc5bde3e414883c669a636.webp",
     "fallback_avatar": "https://panel.esnoffical.com/esn-theme/team/avatars/default-2.png",
     "servers": [
-      "ES Network"
+      "ESN Systems"
     ]
   },
   {
@@ -276,7 +276,7 @@ export const TEAM_FALLBACK = [
     "avatar": "https://panel.esnoffical.com/esn-theme/team/avatars/b70056a9d5a9307e552621f91e924306.webp",
     "fallback_avatar": "https://panel.esnoffical.com/esn-theme/team/avatars/default-5.png",
     "servers": [
-      "ES Network"
+      "ESN Systems"
     ]
   },
   {
@@ -287,7 +287,7 @@ export const TEAM_FALLBACK = [
     "avatar": "https://panel.esnoffical.com/esn-theme/team/avatars/9d2e0411496202a2f95686f974475d70.webp",
     "fallback_avatar": "https://panel.esnoffical.com/esn-theme/team/avatars/default-1.png",
     "servers": [
-      "ES Network"
+      "ESN Systems"
     ]
   }
 ]

@@ -1,6 +1,6 @@
-# ES Network (ESN)
+# ESN Systems (ESN)
 
-> ES Network (ESN) runs ESN Hosting (Discord bot, Minecraft server, game server, VPS and web hosting, with bot hosting from $0.50/month), the ESN SMP Minecraft server (Java and Bedrock, play.esnoffical.com) with its own store, professional services for Discord and Minecraft projects, and a Discord community.
+> ESN Systems (ESN) runs ESN Hosting (Discord bot, Minecraft server, game server, VPS and web hosting, with bot hosting from $0.50/month), the ESN SMP Minecraft server (Java and Bedrock, play.esnoffical.com) with its own store, professional services for Discord and Minecraft projects, and a Discord community.
 
 ## Hosting
 - Hosting overview: https://esnoffical.com/hosting/
@@ -19,7 +19,7 @@
 ## Services and company
 - Professional services (Discord server setup, custom bots, Minecraft plugins, migrations, websites): https://esnoffical.com/services/
 - Meet the team: https://esnoffical.com/leadership/
-- About ES Network: https://esnoffical.com/about/
+- About ESN Systems: https://esnoffical.com/about/
 - FAQ: https://esnoffical.com/faq/
 - Rules and acceptable use: https://esnoffical.com/rules/
 - Trust center (official links, payment safety): https://esnoffical.com/trust/

@@ -11,7 +11,7 @@ export const ESN_STATUS_JSON = 'https://status.esnoffical.com/status.json'
 
 // [label, href, short description, internal route?]
 export const ESN_NETWORK_LINKS = [
-  { id:'home', label:'Home', href:'/', copy:'ES Network home', internal:true },
+  { id:'home', label:'Home', href:'/', copy:'ESN Systems home', internal:true },
   { id:'panel', label:'Hosting Panel', href:ESN_PANEL_URL, copy:'Manage your servers and bots' },
   { id:'plans', label:'Plans', href:ESN_PLANS_URL, copy:'Bot hosting from $0.50/mo' },
   { id:'store', label:'SMP Store', href:ESN_SMP_STORE_URL, copy:'Ranks, keys and bundles' },

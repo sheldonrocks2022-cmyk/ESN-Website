@@ -100,7 +100,7 @@ const LANDON_RESPONSIBILITIES = [
   'Business Operations',
   'Website & Service Infrastructure',
   'Creator Editing (Gaming, Anime, TV & Movie)',
-  'ES Network Discord Ticket Support',
+  'ESN Systems Discord Ticket Support',
   'Marketing Strategy',
   'Brand Development',
 ]
@@ -173,18 +173,18 @@ const ARCADE_GAMES = [
 ]
 
 const FAQ_ITEMS = [
-  ['What is ES Network?', 'ES Network (ESN) is the current brand. EP1C Services was the former name and is not a separate current organization or division.'],
+  ['What is ESN Systems?', 'ESN Systems (ESN) is the current brand. EP1C Services was the former name and is not a separate current organization or division.'],
   ['What services does ESN offer?', 'ESN Hosting (Discord bot, game server, web and VPS-lite hosting), Fortnite coaching, editing services, Discord server setups, and selected digital or website projects handled through ESN.'],
   ['How do I order a service?', 'Service ordering and support are handled through the official ESN Discord. Open a ticket and provide the details of what you need.'],
   ['How much does ESN Hosting cost?', 'Discord bot hosting starts at $0.50/month (Nano). There are 33 plans in all: bot plans up to Gift at $14.99/month, new Pro Minecraft plans with 8, 12 or 16 GB RAM from $9.99/month, plus game server, web and VPS-lite plans. Many plans can also be paid yearly. See all plans on the Bot Hosting page.'],
   ['How do I buy hosting and how fast is setup?', 'Go to panel.esnoffical.com/plans, sign in (or create an account), pick a plan and pay on Stripe’s secure checkout. Your server is set up automatically after you pay and shows up on your panel dashboard.'],
   ['Do I need an account to buy hosting?', 'Yes, an ESN panel account. You can create one yourself on the panel sign-in page with New here? Create an account. Your server is tied to that account.'],
   ['Where can I check if ESN Hosting is up?', 'The live status page at status.esnoffical.com shows the panel, the hosting nodes, the website and the SMP, checked every minute.'],
-  ['Where can I get help with my server?', 'Start with the hosting docs at docs.esnoffical.com. You can also use the chat bubble on this website or the panel, or open a ticket in the ESN Hosting Discord.'],
+  ['Where can I get help with my server?', 'Start with the hosting docs at docs.esnoffical.com. You can also use the chat bubble on this website or the panel, or open a ticket in the ESN Systems Discord.'],
   ['How do SMP purchases get delivered?', 'Enter your exact in-game Minecraft username at Stripe checkout. The buyer should be online on the SMP for automatic delivery. If your server username starts with a period, include the period at the beginning.'],
   ['Are ES Tools paid?', 'ES Tools are intended to be free browser-based utilities. They do not require an account and are not supposed to save your personal data.'],
   ['Can console players join the ESN SMP?', 'Yes. Xbox, PlayStation, and Nintendo Switch generally need a third-party-server workaround because Minecraft console editions do not expose a normal Add Server field. Use the Console Connection page for ESN server details and guidance.'],
-  ['Where can I join the ESN community?', 'Use the official Discord link anywhere on this website to join the ES Network community.'],
+  ['Where can I join the ESN community?', 'Use the official Discord link anywhere on this website to join the ESN Systems community.'],
 ]
 
 function MetaManager() {
@@ -218,7 +218,7 @@ function MetaManager() {
     setMeta('meta[property="og:title"]', 'property', 'og:title', title)
     setMeta('meta[property="og:description"]', 'property', 'og:description', description)
     setMeta('meta[property="og:type"]', 'property', 'og:type', 'website')
-    setMeta('meta[property="og:site_name"]', 'property', 'og:site_name', 'ES Network')
+    setMeta('meta[property="og:site_name"]', 'property', 'og:site_name', 'ESN Systems')
     setMeta('meta[property="og:locale"]', 'property', 'og:locale', 'en_US')
     setMeta('meta[property="og:url"]', 'property', 'og:url', url)
     setMeta('meta[property="og:image"]', 'property', 'og:image', socialImage)
@@ -383,10 +383,10 @@ function ExperienceEffects() {
 
 function Brand() {
   return (
-    <Link to="/" className="brand" data-easter="brand" aria-label="ES Network home">
+    <Link to="/" className="brand" data-easter="brand" aria-label="ESN Systems home">
       <span className="brand-mark">ES</span>
       <span className="brand-copy">
-        <strong>ES NETWORK</strong>
+        <strong>ESN SYSTEMS</strong>
         <small>BUILD • PLAY • CREATE</small>
       </span>
     </Link>
@@ -429,7 +429,7 @@ function Header() {
       <div className="shell header-inner">
         <Brand />
 
-        <div className="header-status" aria-label="ES Network status">
+        <div className="header-status" aria-label="ESN Systems status">
           <i />
           <span>ESN ONLINE</span>
         </div>
@@ -636,7 +636,7 @@ function Footer() {
       <div className="shell"><FooterCommandDeck /></div>
 
       <div className="shell footer-bottom">
-        <span>© {new Date().getFullYear()} ES Network. All rights reserved.</span>
+        <span>© {new Date().getFullYear()} ESN Systems. All rights reserved.</span>
         <span className="footer-signal" data-easter="footer-signal"><i /> ESN SYSTEMS ONLINE</span>
       </div>
     </footer>
@@ -665,7 +665,7 @@ function PageHero({ eyebrow, title, text, actions }) {
 }
 function RelatedLinks({ title, links }) {
   return (
-    <section className="section compact-section" aria-label="Related ES Network pages">
+    <section className="section compact-section" aria-label="Related ESN Systems pages">
       <div className="shell">
         <div className="section-heading">
           <div><span className="eyebrow">Explore Related ESN Pages</span><h2>{title}</h2></div>
@@ -714,7 +714,7 @@ function Home() {
       <section className="x-hero" id="hero-banner">
         <div className="shell x-hero-grid">
           <div className="x-hero-copy">
-            <span className="eyebrow">ES Network · Hosting · Minecraft · Community</span>
+            <span className="eyebrow">ESN Systems · Hosting · Minecraft · Community</span>
             <h1>Host your bot. Run your server. <em>Join the crew.</em></h1>
             <p className="x-lead">Discord bot, Minecraft and game server hosting from $0.50/month, our own Minecraft SMP, and a community that actually helps. Pick a plan, check out, and your server is set up automatically after payment.</p>
             <div className="x-actions">
@@ -863,9 +863,9 @@ function About() {
   return (
     <>
       <PageHero
-        eyebrow="About ES Network"
-        title="Get to know ES Network."
-        text="ES Network is the current organization and brand. EP1C Services was the former name — not a separate current division."
+        eyebrow="About ESN Systems"
+        title="Get to know ESN Systems."
+        text="ESN Systems is the current organization and brand. EP1C Services was the former name — not a separate current division."
       />
 
       <section className="section compact-section">
@@ -882,12 +882,12 @@ function About() {
           <div className="about-story-copy">
             <span className="eyebrow">What we do</span>
             <h2>Services, games, and projects built by ESN.</h2>
-            <p className="large-copy">We started out as EP1C Services and grew into ES Network. Today you can hire us for creative work, join our Minecraft server, play Arcade games, or try our free tools.</p>
+            <p className="large-copy">We started out as EP1C Services and grew into ESN Systems. Today you can hire us for creative work, join our Minecraft server, play Arcade games, or try our free tools.</p>
           </div>
           <div className="brand-timeline">
             <div><span>THEN</span><strong>EP1C Services</strong><p>The former name.</p></div>
             <div className="timeline-line"><i /></div>
-            <div><span>NOW</span><strong>ES Network</strong><p>Our name today, and the home for our projects.</p></div>
+            <div><span>NOW</span><strong>ESN Systems</strong><p>Our name today, and the home for our projects.</p></div>
           </div>
         </div>
       </section>
@@ -895,7 +895,7 @@ function About() {
       <section className="section dark-section">
         <div className="shell">
           <div className="section-heading">
-            <div><span className="eyebrow">Why ES Network</span><h2>What can you do here?</h2></div>
+            <div><span className="eyebrow">Why ESN Systems</span><h2>What can you do here?</h2></div>
           </div>
           <div className="card-grid three">
             <article className="feature-panel"><span className="eyebrow">Services</span><h3>Direct ordering & support</h3><p>Service requests and support are routed through ESN Discord tickets so visitors have one clear place to start.</p></article>
@@ -911,7 +911,7 @@ function Leadership() {
   return (
     <>
       <PageHero
-        eyebrow="ES Network Team"
+        eyebrow="ESN Systems Team"
         title="The people behind ESN."
         text="Meet the founders and staff who run ESN. This list updates automatically from our Discord."
       />
@@ -939,7 +939,7 @@ function Leadership() {
 function RulesPage() {
   return (
     <>
-      <PageHero eyebrow="ESN Hosting" title="Rules & Acceptable Use" text="ESN Hosting (ES Network) · Last updated October 29, 2026" />
+      <PageHero eyebrow="ESN Hosting" title="Rules & Acceptable Use" text="ESN Hosting (ESN Systems) · Last updated October 29, 2026" />
       <section className="section">
         <div className="shell narrow rules-page">
           <p>These rules apply to everyone who uses ESN Hosting: game servers, Discord bots, websites and anything else running on our servers. By creating an account or buying a plan, you agree to them. We keep them short and plain so they are easy to follow.</p>
@@ -977,7 +977,7 @@ function RulesPage() {
 function FAQ() {
   return (
     <>
-      <PageHero eyebrow="Support" title="Frequently asked questions" text="Answers about ES Network, hosting, ordering, support, community access, tools, and the SMP." />
+      <PageHero eyebrow="Support" title="Frequently asked questions" text="Answers about ESN Systems, hosting, ordering, support, community access, tools, and the SMP." />
       <section className="section">
         <div className="shell narrow faq-list">
           {FAQ_ITEMS.map(([q, a]) => <details key={q}><summary>{q}</summary><p>{a}</p></details>)}
@@ -1341,9 +1341,9 @@ function SMPPluginDownload() {
       <RelatedLinks
         title="Continue through the ESN Minecraft network."
         links={[
-          ['Join ESN SMP','Use the official server address and port for the ES Network Minecraft server.','/smpconnection'],
+          ['Join ESN SMP','Use the official server address and port for the ESN Systems Minecraft server.','/smpconnection'],
           ['SMP Store','Browse the current ESN SMP digital products and Stripe checkout links.','/storesmp'],
-          ['Release Center','See current ES Network website, plugin, Arcade, and network updates.','/updates'],
+          ['Release Center','See current ESN Systems website, plugin, Arcade, and network updates.','/updates'],
         ]}
       />
     </>

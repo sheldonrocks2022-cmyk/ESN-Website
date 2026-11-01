@@ -407,7 +407,7 @@ export function SettingsPage(){
         <div className="effective-mode"><span>ACTIVE PROFILE</span><strong>{effective.toUpperCase()}</strong></div>
       </article>
       <article className="expansion-panel">
-        <span className="eyebrow">INSTALL ESN</span><h2>Add the site like an app.</h2><p>Supported browsers can install ES Network to the home screen and launch it in a standalone window.</p>
+        <span className="eyebrow">INSTALL ESN</span><h2>Add the site like an app.</h2><p>Supported browsers can install ESN Systems to the home screen and launch it in a standalone window.</p>
         <button className="button primary" type="button" onClick={()=>window.dispatchEvent(new Event('esn-install-request'))}>Install ESN</button>
         {installMessage&&<small className="settings-message">{installMessage}</small>}
       </article>
@@ -485,8 +485,8 @@ export function SupportPage(){
 
 export function GalleryPage(){
   const media=[
-    {type:'BRAND',title:'ES Network Social Card',copy:'Current official 1200×630 ESN social-preview artwork.',image:'/esn-social-card.svg'},
-    {type:'BRAND',title:'ES Network Mark',copy:'Current ESN mark used across the website and installable app experience.',image:'/esn-mark.svg'},
+    {type:'BRAND',title:'ESN Systems Social Card',copy:'Current official 1200×630 ESN social-preview artwork.',image:'/esn-social-card.svg'},
+    {type:'BRAND',title:'ESN Systems Mark',copy:'Current ESN mark used across the website and installable app experience.',image:'/esn-mark.svg'},
     {type:'MILESTONE',title:'Network Evolution 12X',copy:'Missions, Passport, Terminal, search, event board, achievements, and mobile-safe systems shipped together.'},
     {type:'MILESTONE',title:'Custom .com Launch',copy:'The rebuilt production website moved onto esnoffical.com with production indexing enabled.'},
     {type:'SMP',title:'ESNSMP v2.9.8',copy:'Reference version used for the command list. Check the plugin page for current releases.'},
