@@ -121,6 +121,7 @@ export default function ServicesPage() {
             <div className="esn-svc-group" key={name}>
               <h3 className="esn-svc-group-title">{name}</h3>
               {name === 'Professional Services' ? <p className="esn-svc-group-note">Done-for-you work by the ESN team. Tell us what you need at checkout and we take it from there.</p> : null}
+              {name === 'Professional Services' ? <p className="esn-svc-group-note">What we edit: clean gaming and tech videos with cuts, zooms, captions, music, intros and thumbnails. We don't take anime/AMV-style edits or heavy motion-graphics/VFX work.</p> : null}
               <div className="esn-listings">
                 {items.map((item) => <ListingCard item={item} key={item.id} />)}
               </div>
