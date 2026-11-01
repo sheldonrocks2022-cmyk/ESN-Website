@@ -23,7 +23,7 @@ export default function StartupIntro(){
       <div className="startup-logo-wrap">
         <div className="startup-ring ring-a"/>
         <div className="startup-ring ring-b"/>
-        <div className="startup-logo">ES</div>
+        <div className="startup-logo startup-logo-img"><img src="/esn-mark.svg" alt="ESN Systems" width="108" height="108" decoding="async" /></div>
       </div>
       <span className="startup-kicker">ESN SYSTEMS</span>
       <p className="startup-title">Initializing ESN</p>
