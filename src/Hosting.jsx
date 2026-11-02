@@ -131,7 +131,7 @@ function bestFor(plan) {
 const PLAN_INCLUDES = [
   ['Full control panel', 'Web console, file manager, SFTP, startup settings, schedules, power controls, live CPU/RAM/disk graphs and subusers to share access. Sign in with Discord or Google.'],
   ['Set up automatically', 'Your server is created automatically after checkout and shows up on your panel dashboard.'],
-  ['Free move from another host', 'The free importer copies your bot or server over.', 'https://docs.esnoffical.com/move-bot-to-esn.html', 'Guide: move your bot to ESN'],
+  ['Move from another host', 'The importer copies your bot or server over.', 'https://docs.esnoffical.com/move-bot-to-esn.html', 'Guide: move your bot to ESN'],
   ['40+ step-by-step guides', 'Hosting Docs cover Discord bots (Python, Node.js), Telegram bots, Minecraft, game servers, websites and billing, including new guides on Minecraft lag and Bedrock crossplay.', 'https://docs.esnoffical.com/fix-minecraft-lag.html', 'Guide: fix Minecraft lag'],
   ['Help in Discord', 'Open a ticket in the ESN Discord, or ask the ESN Helper bot with /ask, /docs, /botfix and /uptime.'],
   ['Live status page', 'Every ESN service is checked every minute on status.esnoffical.com, with 1h, 6h and 24h response-time charts, an RSS feed and a badge.', 'https://status.esnoffical.com', 'Open the status page'],
@@ -237,7 +237,7 @@ const HOSTING_FAQ = [
   ['Is VPS-lite a full VPS?', 'No. It is a Linux container with a shell in the panel console, SFTP and one public port. There is no root, apt, systemd or Docker inside.'],
   ['Where do I get help?', 'Open a ticket in our Discord, read the Hosting Docs, or check Live Uptime for service status.'],
   ['Are backups included?', 'Plans don’t include backup slots by default. A daily backups add-on is available, just ask in our Discord. You can always download your files with the file manager or SFTP.'],
-  ['Can I move my bot from another host?', 'Yes. The free importer and the step-by-step guide in the Hosting Docs help you move from Replit, Railway, Heroku, a VPS or another host.'],
+  ['Can I move my bot from another host?', 'Yes. The importer and the step-by-step guide in the Hosting Docs help you move from Replit, Railway, Heroku, a VPS or another host.'],
   ['Where are the servers?', 'ESN servers are in the US, in Chicago and New York.'],
 ]
 
