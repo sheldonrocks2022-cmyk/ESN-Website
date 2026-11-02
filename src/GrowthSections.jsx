@@ -1,39 +1,9 @@
-// Free ESN Nano + Creator Program sections. The free trial section was replaced by Free ESN Nano on Oct 30, 2026.
-const PANEL_REGISTER = 'https://panel.esnoffical.com/auth/register'
-const FREE_NANO_SPECS = ['256 MB RAM', '25% CPU', '1 GB storage', 'Python or Node.js']
+// Creator Program section. (The old trial/Nano section was removed Nov 2, 2026: ESN hosting is paid-only.)
 
 const DISCORD = 'https://discord.gg/RGPt3zEfGy'
 
 const card = { border: '1px solid rgba(139,156,255,.28)', borderRadius: 16, padding: '20px 22px', background: 'rgba(14,19,48,.55)' }
 const grid = { display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(220px,1fr))', gap: 16, marginTop: 18 }
-
-export function FreeNanoSection() {
-  return (
-    <section className="section compact-section" id="free-nano">
-      <span id="free-trial" aria-hidden="true" />
-      <div className="shell">
-        <div className="section-heading">
-          <div>
-            <span className="eyebrow">FREE ESN NANO</span>
-            <h2>Every new account gets a FREE ESN Nano — 256 MB bot server, no card needed, no expiry.</h2>
-          </div>
-          <p>Create an account and your free bot server is set up automatically. No card, no trial clock, no expiry. Need more power later? Pick any paid plan from $0.50/month.</p>
-        </div>
-        <div style={grid}>
-          <div style={card}>
-            <strong style={{ fontSize: 20 }}>ESN Nano · Free</strong>
-            <p style={{ margin: '6px 0 14px' }}>{FREE_NANO_SPECS.join(' · ')}</p>
-            <a className="button primary" href={PANEL_REGISTER} target="_blank" rel="noreferrer">Create your free account</a>
-          </div>
-        </div>
-        <div className="esn-hosting-payment-safety">
-          <strong>How it works</strong>
-          <p>Sign up at panel.esnoffical.com. Your free ESN Nano is created on your account automatically, ready for your Discord bot. One free server per person (account, email, or Discord). Questions? Ask in our <a href={DISCORD} target="_blank" rel="noreferrer">Discord</a>.</p>
-        </div>
-      </div>
-    </section>
-  )
-}
 
 export function CreatorSection() {
   return (

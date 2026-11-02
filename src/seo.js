@@ -646,7 +646,7 @@ export const HOSTING_FAQ_SCHEMA=[
   ['Is VPS-lite a full VPS?','No. It is a Linux container with a shell in the panel console, SFTP and one public port. There is no root, apt, systemd or Docker inside.'],
   ['Where do I get help?','Open a ticket in our Discord, read the Hosting Docs, or check Live Uptime for service status.'],
   ['Are backups included?','Plans don’t include backup slots by default. A daily backups add-on is available, just ask in our Discord. You can always download your files with the file manager or SFTP.'],
-  ['Can I move my bot from another host?','Yes. The free importer and the step-by-step guide in the Hosting Docs help you move from Replit, Railway, Heroku, a VPS or another host.'],
+  ['Can I move my bot from another host?','Yes. The importer and the step-by-step guide in the Hosting Docs help you move from Replit, Railway, Heroku, a VPS or another host.'],
   ['Where are the servers?','ESN servers are in the US, in Chicago and New York.'],
 ]
 
