@@ -453,6 +453,7 @@ function Header() {
                 <Link onClick={close} to="/business">Customer Business Hub</Link>
                 <Link onClick={close} to="/hosting">Domains & Hosting Requests</Link>
                 <Link onClick={close} to="/status">Service Status</Link>
+                <a onClick={close} href="https://docs.esnoffical.com/switch-to-esn.html?utm_source=esnoffical&utm_medium=nav&utm_campaign=switch">Switch to ESN</a>
               </div>
               <div className="dropdown-section">
                 <span className="dropdown-label">NEED A HAND?</span>
@@ -482,6 +483,9 @@ function Header() {
                 <Link onClick={close} to="/showcase">Published Websites</Link>
                 <Link onClick={close} to="/store-ai">Store AI</Link>
                 <Link onClick={close} to="/estools">Free Browser Tools</Link>
+                <a onClick={close} href="https://docs.esnoffical.com/minecraft-server-status-banner.html?utm_source=esnoffical&utm_medium=nav&utm_campaign=mc-tools">MC Status Banner</a>
+                <a onClick={close} href="https://docs.esnoffical.com/minecraft-motd-generator.html?utm_source=esnoffical&utm_medium=nav&utm_campaign=mc-tools">MOTD Generator</a>
+                <a onClick={close} href="https://docs.esnoffical.com/minecraft-server-icon-maker.html?utm_source=esnoffical&utm_medium=nav&utm_campaign=mc-tools">Server Icon Maker</a>
                 <Link onClick={close} to="/tools/">All ESN tools</Link>
               </div>
             </div>

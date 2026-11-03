@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import './domains.css'
+import { SwitchHostSection } from './Hosting'
 
 const ROOT_DOMAIN='esnoffical.com'
 const DISCORD_URL='https://discord.gg/RGPt3zEfGy'
@@ -438,6 +439,8 @@ export default function DomainsPage(){
 
       <div className="domains-staff-note"><strong>LOCAL REQUESTS ON THIS DEVICE: {requests.length}</strong><span>These statuses do not sync between customer and staff devices yet. Discord + the official Stripe dashboard remain the source of truth during the manual beta.</span></div>
     </div></section>}
+
+    <SwitchHostSection />
 
     {showStaff&&<div className="domains-modal-backdrop" onMouseDown={e=>{if(e.target===e.currentTarget)setShowStaff(false)}}><form className="domains-modal" onSubmit={unlockStaff}><span>ESN HOSTING // STAFF</span><h2>Unlock hosting controls.</h2><input type="password" inputMode="numeric" autoComplete="off" value={staffCode} onChange={e=>setStaffCode(e.target.value)} placeholder="STAFF ACCESS CODE"/><button type="submit">UNLOCK</button>{staffError&&<strong>{staffError}</strong>}<button type="button" className="cancel" onClick={()=>setShowStaff(false)}>CANCEL</button></form></div>}
   </>
