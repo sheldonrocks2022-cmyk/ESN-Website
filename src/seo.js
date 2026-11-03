@@ -7,7 +7,7 @@ export const SOCIAL_IMAGE_URL=SITE_URL+'/esn-social-card.png'
 export const SOCIAL_IMAGE_ALT='ESN Systems — Build, Play, Create'
 export function socialImageFor(pathname=''){
   const path=normalizePath(pathname)
-  if(path.startsWith('/guides')||['/minecraft-server','/minecraft-smp'].includes(path))return SITE_URL+'/social/esn-guides.png'
+  if(path==='/tools'||path.startsWith('/guides')||['/minecraft-server','/minecraft-smp'].includes(path))return SITE_URL+'/social/esn-guides.png'
   if(path.startsWith('/smp/')||path.startsWith('/smp-')||['/storesmp','/smpguide','/smpconnection'].includes(path))return SITE_URL+'/social/esn-smp.png'
   if(['/services','/fortnite-coaching','/video-editing','/discord-server-setup','/serviceshowcase','/configure','/estimate','/portfolio','/testimonials'].includes(path))return SITE_URL+'/social/esn-services.png'
   if(['/website-builder','/site-builder','/showcase','/hosting'].includes(path))return SITE_URL+'/social/esn-builder.png'
@@ -182,11 +182,10 @@ export const SEO_ROUTES={
     index:true,
   },
   '/tools':{
-    label:'ES Tools',
-    title:'ES Tools | Free Creator, Gaming & Browser Utilities',
-    description:'Use free browser-based ESN Systems creator and gaming utilities.',
-    canonical:'/estools',
-    index:false,
+    label:'Tools',
+    title:'ESN Tools: Discord, Server Security & Minecraft | ESN Systems',
+    description:'Browser tools from ESN: Discord embed builder, timestamp and invite link generators, scam link and permissions checkers, Minecraft RAM calculator, MOTD and server.properties generators, status banners and badges.',
+    index:true,
   },
   '/arcade':{
     label:'Arcade',
@@ -812,11 +811,11 @@ export function structuredDataFor(pathname){
       '@type':'Organization',
       '@id':SITE_URL+'/#organization',
       name:SITE_NAME,
-      alternateName:['ES Network','EP1C Services'],
+      alternateName:['ESN','ESN Hosting'],
       url:SITE_URL+'/',
-      logo:{'@type':'ImageObject',url:SITE_URL+'/esn-mark.svg'},
+      logo:'https://smp.esnoffical.com/icon-512.png?v=2',
       description:'ESN Systems provides creator and gaming services and operates the ESN SMP, ESN Arcade, ES Tools, website projects, and community experiences.',
-      sameAs:['https://github.com/sheldonrocks2022-cmyk','https://github.com/sheldonrocks2022-cmyk/ESN-Website','https://www.trustpilot.com/review/esnoffical.com','https://discord.gg/RGPt3zEfGy','https://www.youtube.com/@esnexplains','https://www.tiktok.com/@esnexplains'],
+      sameAs:["https://discord.gg/RGPt3zEfGy", "https://www.youtube.com/@esnexplains", "https://www.youtube.com/@esnhosting", "https://www.tiktok.com/@esnexplains", "https://bsky.app/profile/esnhosting.bsky.social", "https://mastodon.social/@esnhosting", "https://www.pinterest.com/esnhosting/", "https://x.com/esnhosting", "https://dev.to/esnhosting", "https://esnsystems.hashnode.dev/"],
       brand:{'@type':'Brand',name:'ESN Systems',alternateName:'ESN'},
       knowsAbout:['Discord bot hosting','Game server hosting','Minecraft SMP','Fortnite coaching','Video editing','Discord server setup','Website creation','Browser games','Creator tools'],
     },
@@ -829,7 +828,7 @@ export function structuredDataFor(pathname){
       inLanguage:SITE_LANGUAGE,
     },
     {
-      '@type':'WebPage',
+      '@type':normalizePath(pathname)==='/tools'?'CollectionPage':'WebPage',
       '@id':url+'#webpage',
       url,
       name:meta.title,
@@ -850,6 +849,10 @@ export function structuredDataFor(pathname){
         {'@type':'ListItem',position:2,name:meta.label,item:url},
       ],
     })
+  }
+
+  if(normalizePath(pathname)==='/tools'){
+    graph.find((node)=>node['@id']===url+'#webpage').mainEntity={"@type": "ItemList", "name": "ESN tools", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Embed builder", "url": "https://docs.esnoffical.com/discord-embed-builder.html"}, {"@type": "ListItem", "position": 2, "name": "Timestamp generator", "url": "https://docs.esnoffical.com/discord-timestamp-generator.html"}, {"@type": "ListItem", "position": 3, "name": "Colored text generator", "url": "https://docs.esnoffical.com/discord-colored-text-generator.html"}, {"@type": "ListItem", "position": 4, "name": "ID to date", "url": "https://docs.esnoffical.com/discord-snowflake-to-date.html"}, {"@type": "ListItem", "position": 5, "name": "Bot invite link generator", "url": "https://docs.esnoffical.com/discord-bot-invite-link-generator.html"}, {"@type": "ListItem", "position": 6, "name": "Scam link checker", "url": "https://guardian.esnoffical.com/guardian/scam-link-checker"}, {"@type": "ListItem", "position": 7, "name": "Permissions checker", "url": "https://guardian.esnoffical.com/guardian/permissions-checker"}, {"@type": "ListItem", "position": 8, "name": "Server security grade", "url": "https://guardian.esnoffical.com/guardian/grade"}, {"@type": "ListItem", "position": 9, "name": "RAM calculator", "url": "https://docs.esnoffical.com/minecraft-server-ram-calculator.html"}, {"@type": "ListItem", "position": 10, "name": "server.properties generator", "url": "https://docs.esnoffical.com/minecraft-server-properties-generator.html"}, {"@type": "ListItem", "position": 11, "name": "Startup flags generator", "url": "https://docs.esnoffical.com/minecraft-startup-flags-generator.html"}, {"@type": "ListItem", "position": 12, "name": "MOTD generator", "url": "https://docs.esnoffical.com/minecraft-motd-generator.html"}, {"@type": "ListItem", "position": 13, "name": "Status banner", "url": "https://docs.esnoffical.com/minecraft-server-status-banner.html"}, {"@type": "ListItem", "position": 14, "name": "Server icon maker", "url": "https://docs.esnoffical.com/minecraft-server-icon-maker.html"}, {"@type": "ListItem", "position": 15, "name": "Hosted on ESN badge", "url": "https://esnoffical.com/badge/"}, {"@type": "ListItem", "position": 16, "name": "ESN status badge", "url": "https://status.esnoffical.com/"}, {"@type": "ListItem", "position": 17, "name": "ESN Guardian security badge", "url": "https://guardian.esnoffical.com/guardian/badge"}, {"@type": "ListItem", "position": 18, "name": "ESN SMP server banner", "url": "https://smp.esnoffical.com/widget"}]}
   }
 
   if(GUIDE_SCHEMA_DETAILS[pathname]){

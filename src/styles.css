@@ -8604,3 +8604,8 @@ html[data-motion="reduced"] .energy-trail-particle{
 .leadership-monogram-photo { padding: 0; }
 .leader-handle { margin: -6px 0 14px; color: #9fb0c9; font-weight: 700; font-size: 1.05rem; }
 .leadership-monogram-photo img { width: 100%; height: 100%; object-fit: cover; border-radius: inherit; display: block; }
+
+.esn-network{display:flex;flex-wrap:wrap;gap:6px 14px;justify-content:center;font-size:13px;opacity:.85;margin-top:10px}
+.esn-network span{font-weight:700}
+.esn-network a{color:inherit;text-decoration:none}
+.esn-network a:hover{text-decoration:underline}

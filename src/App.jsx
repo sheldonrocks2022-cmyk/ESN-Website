@@ -28,7 +28,7 @@ import { NetworkBar, NetworkFooterRow } from './EsnNetwork'
 import { SmpCopyButtons } from './SmpCopy'
 import { HOME_FAQ } from './esnNetwork'
 import { ActivityTimelinePage, BuilderShowcasePage, DataBackupPage, GlobalSearchPage, LabsPage, LaunchpadPage, NetworkMapPage, PlatformLayer, ProjectEstimatePage, ServiceConfiguratorPage, ShareGeneratorV2Page, SMPItemsPage, SMPWorldHubPage, TrustCenterPage } from './PlatformExpansion'
-import { BadgePage, BrandAuthorityPage, GuideArticlePage, GuidesHubPage, RelatedVisibilityLinks, SearchLandingPage, SMPFeaturePage, VisibilityInsightsPage, VisibilityLayer } from './VisibilityExpansion'
+import { ToolsPage, BadgePage, BrandAuthorityPage, GuideArticlePage, GuidesHubPage, RelatedVisibilityLinks, SearchLandingPage, SMPFeaturePage, VisibilityInsightsPage, VisibilityLayer } from './VisibilityExpansion'
 import { useArcadeProgress } from './arcade/shared'
 import { AnalyticsDashboard, AnalyticsTracker } from './Analytics'
 
@@ -482,6 +482,7 @@ function Header() {
                 <Link onClick={close} to="/showcase">Published Websites</Link>
                 <Link onClick={close} to="/store-ai">Store AI</Link>
                 <Link onClick={close} to="/estools">Free Browser Tools</Link>
+                <Link onClick={close} to="/tools/">All ESN tools</Link>
               </div>
             </div>
           </div>
@@ -630,6 +631,16 @@ function Footer() {
           </div>
         </div>
       </div>
+
+      <nav className="esn-network" aria-label="ESN network">
+        <span>ESN network:</span>
+        <a href="https://docs.esnoffical.com/?utm_source=esnoffical&utm_medium=footer&utm_campaign=network">Docs</a>
+        <a href="/tools/">Tools</a>
+        <a href="https://status.esnoffical.com/?utm_source=esnoffical&utm_medium=footer&utm_campaign=network">Status</a>
+        <a href="https://guardian.esnoffical.com/?utm_source=esnoffical&utm_medium=footer&utm_campaign=network">Guardian</a>
+        <a href="https://smp.esnoffical.com/?utm_source=esnoffical&utm_medium=footer&utm_campaign=network">ESN SMP</a>
+        <a href="https://smp.esnoffical.com/changelog?utm_source=esnoffical&utm_medium=footer&utm_campaign=network">SMP updates</a>
+      </nav>
 
       <NetworkFooterRow />
 
@@ -1639,6 +1650,7 @@ function App() {
           <Route path="/guides" element={<GuidesHubPage />} />
           <Route path="/guides/:slug" element={<GuideArticlePage />} />
           <Route path="/badge" element={<BadgePage />} />
+          <Route path="/tools" element={<ToolsPage />} />
           <Route path="/es-network" element={<BrandAuthorityPage />} />
           <Route path="/smp/:feature" element={<SMPFeaturePage />} />
           <Route path="/visibility" element={<VisibilityInsightsPage />} />
@@ -1668,7 +1680,6 @@ function App() {
           <Route path="/support" element={<SupportPage />} />
           <Route path="/vault" element={<VaultPage />} />
           <Route path="/estools" element={<ESToolsSuite />} />
-          <Route path="/tools" element={<Navigate to="/estools" replace />} />
           <Route path="/arcade" element={<ArcadeHub />} />
           <Route path="/esclicker" element={<ClickerGame />} />
           <Route path="/esfactory" element={<FactoryGame />} />
