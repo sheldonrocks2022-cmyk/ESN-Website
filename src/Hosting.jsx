@@ -516,3 +516,21 @@ export default function HostingPage() {
     </div>
   )
 }
+
+export function SwitchHostSection() {
+  return (
+    <section className="section esn-switch">
+      <div className="shell">
+        <article className="feature-panel">
+          <h2>Moving from another host?</h2>
+          <p>Bring your bot or Minecraft server over in about 10 minutes with the built-in importer, or open a ticket and staff will help.</p>
+          <p>
+            <a href="https://docs.esnoffical.com/switch-to-esn.html?utm_source=esnoffical&utm_medium=section&utm_campaign=switch">Switch to ESN</a> ·{' '}
+            <a href="https://docs.esnoffical.com/replit-alternative-discord-bot.html?utm_source=esnoffical&utm_medium=section&utm_campaign=replit-alternative">Leaving Replit?</a> ·{' '}
+            <a href="https://docs.esnoffical.com/pebblehost-alternative.html?utm_source=esnoffical&utm_medium=section&utm_campaign=pebblehost-alternative">ESN vs PebbleHost</a>
+          </p>
+        </article>
+      </div>
+    </section>
+  )
+}

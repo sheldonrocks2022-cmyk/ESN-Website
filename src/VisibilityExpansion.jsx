@@ -256,7 +256,7 @@ export function SearchLandingPage(){
   const resolved=topic||location.pathname.replace(/^\//,'')
   const page=LANDINGS[resolved]
   if(!page)return <Hero eyebrow="ESN SYSTEMS" title="That ESN guide was not found." copy="Use the Explore page to find the current ESN destination."/>
-  return <><Hero eyebrow={page.eyebrow} title={page.title} copy={page.intro}><div className="hero-actions"><Link className="button primary" to={page.primary[1]}>{page.primary[0]}</Link><Link className="button secondary" to={page.secondary[1]}>{page.secondary[0]}</Link></div></Hero>
+  return <><Hero eyebrow={page.eyebrow} title={page.title} copy={page.intro}><div className="hero-actions"><Link className="button primary" to={page.primary[1]}>{page.primary[0]}</Link><Link className="button secondary" to={page.secondary[1]}>{page.secondary[0]}</Link></div>{resolved === 'minecraft-server' && <p>Server owner tools: <a href="https://docs.esnoffical.com/minecraft-server-status-banner.html?utm_source=esnoffical&utm_medium=section&utm_campaign=mc-tools">MC Status Banner</a> · <a href="https://docs.esnoffical.com/minecraft-motd-generator.html?utm_source=esnoffical&utm_medium=section&utm_campaign=mc-tools">MOTD Generator</a> · <a href="https://docs.esnoffical.com/minecraft-server-icon-maker.html?utm_source=esnoffical&utm_medium=section&utm_campaign=mc-tools">Server Icon Maker</a></p>}</Hero>
     <section className="section"><div className="shell visibility-landing-grid"><article><span className="eyebrow">WHY THIS PAGE EXISTS</span><h2>Get to the useful part quickly.</h2><p>{page.intro}</p></article><div className="visibility-benefits">{page.bullets.map((item,index)=><div key={item}><span>{String(index+1).padStart(2,'0')}</span><strong>{item}</strong></div>)}</div></div></section>
     <section className="section dark-section"><div className="shell visibility-related"><div><span className="eyebrow">KEEP EXPLORING</span><h2>Keep reading.</h2></div><div>{page.related.map(([label,to])=><Link to={to} key={to}>{label}<span>↗</span></Link>)}</div></div></section></>
 }
@@ -275,6 +275,7 @@ function GuideContent({ article, tools = false }) {
     : <Link to={to.startsWith('https://esnoffical.com/') ? to.slice('https://esnoffical.com'.length) : to} key={to}>{label} ↗</Link>
   const ranges = [[0, 5], [5, 8], [8, 14], [14, 19]]
   return <><Hero eyebrow={tools ? 'ESN TOOLS' : article.category} title={article.title} copy={article.intro || article.description}>
+    {article === GUIDES['host-discord-bot-24-7'] && <p>Bot keeps going offline? See <a href="https://docs.esnoffical.com/discord-bot-offline-when-pc-off.html?utm_source=esnoffical&utm_medium=guide">Goes offline when I close my PC</a> and <a href="https://docs.esnoffical.com/discord-py-bot-keeps-disconnecting.html?utm_source=esnoffical&utm_medium=guide">discord.py keeps disconnecting</a></p>}
     {!tools && <div className="visibility-article-meta"><span>Updated {article.updated}</span><span>ESN SYSTEMS</span><span>ACCOUNT-FREE</span></div>}
   </Hero>
     <article className={'section visibility-article' + (tools ? ' esn-tools-hub' : '')}><div className="shell visibility-article-shell">
