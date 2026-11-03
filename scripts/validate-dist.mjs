@@ -85,7 +85,8 @@ for (const [route, meta] of Object.entries(SEO_ROUTES)) {
   if (!html.includes(`rel="alternate" hreflang="en-US" href="${expectedCanonical}"`)) failures.push(`Missing en-US hreflang in ${file}`)
   if (!html.includes(`rel="alternate" hreflang="x-default" href="${expectedCanonical}"`)) failures.push(`Missing x-default hreflang in ${file}`)
   if (!html.includes('id="esn-route-schema"')) failures.push(`Missing JSON-LD route schema in ${file}`)
-  if (!html.includes('"@type":"WebPage"')) failures.push(`Missing WebPage structured data in ${file}`)
+  const pageType = route === '/tools' ? 'CollectionPage' : 'WebPage'
+  if (!html.includes('"@type":"' + pageType + '"')) failures.push(`Missing ${pageType} structured data in ${file}`)
 
   if (route === '/faq' && !html.includes('"@type":"FAQPage"')) failures.push('FAQPage structured data missing from /faq')
   if (route === '/serviceshowcase' && !html.includes('"@type":"Service"')) failures.push('Service structured data missing from /serviceshowcase')

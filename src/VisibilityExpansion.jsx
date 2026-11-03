@@ -69,6 +69,42 @@ const LANDINGS={
   },
 }
 
+export const TOOLS_PAGE = {
+  slug: "tools",
+  path: "/tools/",
+  title: "ESN Tools: Discord, Server Security & Minecraft",
+  intro: "Tools from ESN Systems for Discord, server security and Minecraft. Most run right in your browser, and none need an account.",
+  sections: [
+      ["Discord", "Small tools for Discord server owners and bot developers."],
+      ["Server security", "Checkers from ESN Guardian, ESN's Discord security bot."],
+      ["Minecraft", "Tools for running and promoting a Minecraft server."],
+      ["Badges and banners", "Copy-paste badges and banners for your site, README or forum."],
+  ],
+  links: [
+      ["Embed builder: Build a Discord embed with a live preview, then copy the JSON or bot code.", "https://docs.esnoffical.com/discord-embed-builder.html?utm_source=esnoffical&utm_medium=tools&utm_campaign=embed-builder", true],
+      ["Timestamp generator: Make <t:…> codes that show in each reader's own time zone.", "https://docs.esnoffical.com/discord-timestamp-generator.html?utm_source=esnoffical&utm_medium=tools&utm_campaign=timestamp-generator", true],
+      ["Colored text generator: Colored and bold text using ansi code blocks.", "https://docs.esnoffical.com/discord-colored-text-generator.html?utm_source=esnoffical&utm_medium=tools&utm_campaign=colored-text-generator", true],
+      ["ID to date: See when any user, server, channel or message ID was created.", "https://docs.esnoffical.com/discord-snowflake-to-date.html?utm_source=esnoffical&utm_medium=tools&utm_campaign=id-to-date", true],
+      ["Bot invite link generator: Pick scopes and permissions and copy your bot's invite link.", "https://docs.esnoffical.com/discord-bot-invite-link-generator.html?utm_source=esnoffical&utm_medium=tools&utm_campaign=bot-invite-link-generator", true],
+      ["Scam link checker: Check a link or a whole message against ESN Guardian's list of known scam domains.", "https://guardian.esnoffical.com/guardian/scam-link-checker?utm_source=esnoffical&utm_medium=tools&utm_campaign=scam-link-checker", true],
+      ["Permissions checker: See which permissions a number or bot invite link grants, and which are risky.", "https://guardian.esnoffical.com/guardian/permissions-checker?utm_source=esnoffical&utm_medium=tools&utm_campaign=permissions-checker", true],
+      ["Server security grade: Answer a few questions and get a security grade for your Discord server.", "https://guardian.esnoffical.com/guardian/grade?utm_source=esnoffical&utm_medium=tools&utm_campaign=server-security-grade", true],
+      ["RAM calculator: How much RAM your Minecraft server needs, and the plan that fits.", "https://docs.esnoffical.com/minecraft-server-ram-calculator.html?utm_source=esnoffical&utm_medium=tools&utm_campaign=ram-calculator", true],
+      ["server.properties generator: Pick settings in plain English and download a ready server.properties.", "https://docs.esnoffical.com/minecraft-server-properties-generator.html?utm_source=esnoffical&utm_medium=tools&utm_campaign=server-properties-generator", true],
+      ["Startup flags generator: A Java start command with Aikar's flags for the RAM you choose.", "https://docs.esnoffical.com/minecraft-startup-flags-generator.html?utm_source=esnoffical&utm_medium=tools&utm_campaign=startup-flags-generator", true],
+      ["MOTD generator: A colored server list message with a live preview.", "https://docs.esnoffical.com/minecraft-motd-generator.html?utm_source=esnoffical&utm_medium=tools&utm_campaign=motd-generator", true],
+      ["Status banner: A live status image for your website, forum or Discord.", "https://docs.esnoffical.com/minecraft-server-status-banner.html?utm_source=esnoffical&utm_medium=tools&utm_campaign=status-banner", true],
+      ["Server icon maker: Make the 64×64 server-icon.png in your browser.", "https://docs.esnoffical.com/minecraft-server-icon-maker.html?utm_source=esnoffical&utm_medium=tools&utm_campaign=server-icon-maker", true],
+      ["Hosted on ESN badge: A badge for your bot's README or website.", "https://esnoffical.com/badge/", false],
+      ["ESN status badge: Live ESN status and 30-day uptime badges for your site or README.", "https://status.esnoffical.com/?utm_source=esnoffical&utm_medium=tools&utm_campaign=esn-status-badge#sub-h", true],
+      ["ESN Guardian security badge: For Discord servers that score A or A+ on the security grade.", "https://guardian.esnoffical.com/guardian/badge?utm_source=esnoffical&utm_medium=tools&utm_campaign=esn-guardian-security-badge", true],
+      ["ESN SMP server banner: Copy-paste ESN SMP banners in HTML, Markdown and BBCode.", "https://smp.esnoffical.com/widget?utm_source=esnoffical&utm_medium=tools&utm_campaign=esn-smp-server-banner", true],
+      ["ES Tools: creator and gaming browser utilities", "/estools", false],
+      ["All ESN docs tools on one page", "https://docs.esnoffical.com/tools.html?utm_source=esnoffical&utm_medium=tools&utm_campaign=docs-tools", true],
+  ],
+  cta: ["Host your Discord bot or Minecraft server on ESN — bot hosting from $0.50/month", "https://panel.esnoffical.com/plans?utm_source=esnoffical&utm_medium=tools&utm_campaign=tools-hub", true],
+};
+
 const GUIDES={
   "host-discord-bot-24-7":{
     title:"How to host a Discord bot 24/7 (cheaply)",
@@ -229,16 +265,35 @@ export function GuidesHubPage(){
   const articles=Object.entries(GUIDES)
   const news=[['Release Center','Current website, SMP, Arcade, network, store, and security updates.','/updates'],['Network Activity','Recent ESN platform milestones plus local route activity.','/activity'],["What's New",'A quick view of major features added to the current ESN website.','/whatsnew'],['Network Changelog','Interactive change history across ESN systems.','/changelog']]
   return <><Hero eyebrow="ESN GUIDES + NEWS" title="Guides from ESN." copy="Connection steps, creator tips, Discord setup advice, and links to current ESN updates."/>
-    <section className="section"><div className="shell"><div className="section-heading"><div><span className="eyebrow">EVERGREEN GUIDES</span><h2>Answers people can actually use.</h2></div></div><div className="visibility-guide-grid">{articles.map(([slug,item])=><Link to={'/guides/'+slug} key={slug}><span>{item.category}</span><h2>{item.title}</h2><p>{item.description}</p><small>Updated {item.updated}</small><em>Read guide ↗</em></Link>)}</div></div></section>
+    <section className="section"><div className="shell"><div className="section-heading"><div><span className="eyebrow">EVERGREEN GUIDES</span><h2>Answers people can actually use.</h2></div></div><div className="visibility-guide-grid">{articles.map(([slug,item])=><Link to={'/guides/'+slug} key={slug}><span>{item.category}</span><h2>{item.title}</h2><p>{item.description}</p><small>Updated {item.updated}</small><em>Read guide ↗</em></Link>)}</div><p>More step-by-step guides and fixes are in the <a href="https://docs.esnoffical.com/guides.html?utm_source=esnoffical&utm_medium=guide&utm_campaign=docs-guides">ESN docs guide library</a>, and Discord server security guides are on <a href="https://guardian.esnoffical.com/?utm_source=esnoffical&utm_medium=guide&utm_campaign=guardian-guides">ESN Guardian</a>.</p></div></section>
     <section className="section dark-section"><div className="shell"><div className="section-heading"><div><span className="eyebrow">ESN NEWS + RELEASES</span><h2>See what changed recently.</h2></div></div><div className="visibility-news-grid">{news.map(([title,copy,to])=><Link to={to} key={to}><strong>{title}</strong><p>{copy}</p><span>Open ↗</span></Link>)}</div></div></section></>
+}
+
+function GuideContent({ article, tools = false }) {
+  const renderLink = ([label, to, external]) => external
+    ? <a href={to} target="_blank" rel="noreferrer" key={to}>{label} ↗</a>
+    : <Link to={to.startsWith('https://esnoffical.com/') ? to.slice('https://esnoffical.com'.length) : to} key={to}>{label} ↗</Link>
+  const ranges = [[0, 5], [5, 8], [8, 14], [14, 19]]
+  return <><Hero eyebrow={tools ? 'ESN TOOLS' : article.category} title={article.title} copy={article.intro || article.description}>
+    {!tools && <div className="visibility-article-meta"><span>Updated {article.updated}</span><span>ESN SYSTEMS</span><span>ACCOUNT-FREE</span></div>}
+  </Hero>
+    <article className={'section visibility-article' + (tools ? ' esn-tools-hub' : '')}><div className="shell visibility-article-shell">
+      {article.sections.map(([title, copy], index) => <section key={title}><span>{String(index + 1).padStart(2, '0')}</span><div><h2>{title}</h2><p>{copy}</p>
+        {tools && <ul className="esn-tool-links">{article.links.slice(...ranges[index]).map((link) => <li key={link[1]}>{renderLink(link)}</li>)}</ul>}
+      </div></section>)}
+      <aside><span className="eyebrow">NEXT STEPS</span><div>{(tools ? [article.links[19], article.cta] : article.links).map(renderLink)}</div></aside>
+    </div></article></>
 }
 
 export function GuideArticlePage(){
   const {slug}=useParams()
   const article=GUIDES[slug]
   if(!article)return <Hero eyebrow="ESN GUIDES" title="Guide not found." copy="Open the ESN Guides Center to browse current articles."/>
-  return <><Hero eyebrow={article.category} title={article.title} copy={article.description}><div className="visibility-article-meta"><span>Updated {article.updated}</span><span>ESN SYSTEMS</span><span>ACCOUNT-FREE</span></div></Hero>
-    <article className="section visibility-article"><div className="shell visibility-article-shell">{article.sections.map(([title,copy],index)=><section key={title}><span>{String(index+1).padStart(2,'0')}</span><div><h2>{title}</h2><p>{copy}</p></div></section>)}<aside><span className="eyebrow">NEXT STEPS</span><div>{article.links.map(([label,to,external])=>external?<a href={to} target="_blank" rel="noreferrer" key={to}>{label} ↗</a>:<Link to={to} key={to}>{label} ↗</Link>)}</div></aside></div></article></>
+  return <GuideContent article={article}/>
+}
+
+export function ToolsPage(){
+  return <GuideContent article={TOOLS_PAGE} tools/>
 }
 
 const BADGES=[
@@ -259,7 +314,7 @@ export function BadgePage(){
       const md='[![Hosted on ESN]('+src+')]('+BADGE_LINK+')'
       const htmlCode='<a href="'+BADGE_LINK+'" target="_blank" rel="noopener"><img src="'+src+'" alt="Hosted on ESN" width="'+w+'" height="'+h+'"></a>'
       return <article className="esn-badge-item" key={file}><div className="esn-badge-preview"><span className="eyebrow">{label}</span><img src={'/badge/'+file} alt="Hosted on ESN" width={w} height={h} loading="lazy"/></div><BadgeSnippet label="Markdown (GitHub README, top.gg, Discord bot pages)" code={md}/><BadgeSnippet label="HTML (websites)" code={htmlCode}/></article>})}</div></section>
-    <section className="section dark-section"><div className="shell visibility-related"><div><span className="eyebrow">GOOD TO KNOW</span><h2>Use it freely.</h2><p>The badges are plain SVG files, so they stay sharp at any size and load fast. Use the light version on light backgrounds and the dark version on dark ones. Please only use them for projects that are actually hosted on ESN.</p></div><div><a href="https://panel.esnoffical.com/plans" target="_blank" rel="noreferrer">Host your project on ESN<span>↗</span></a><Link to="/guides/host-discord-bot-24-7">How to host a Discord bot 24/7<span>↗</span></Link><a href="https://docs.esnoffical.com" target="_blank" rel="noreferrer">Hosting docs<span>↗</span></a></div></div></section></>
+    <section className="section dark-section"><div className="shell visibility-related"><div><span className="eyebrow">GOOD TO KNOW</span><h2>Use it freely.</h2><p>The badges are plain SVG files, so they stay sharp at any size and load fast. Use the light version on light backgrounds and the dark version on dark ones. Please only use them for projects that are actually hosted on ESN.</p></div><div><a href="https://panel.esnoffical.com/plans" target="_blank" rel="noreferrer">Host your project on ESN<span>↗</span></a><Link to="/guides/host-discord-bot-24-7">How to host a Discord bot 24/7<span>↗</span></Link><a href="https://docs.esnoffical.com" target="_blank" rel="noreferrer">Hosting docs<span>↗</span></a></div></div></section><div className="shell"><p>More badges and tools: <Link to="/tools/">ESN tools</Link></p></div></>
 }
 
 export function BrandAuthorityPage(){

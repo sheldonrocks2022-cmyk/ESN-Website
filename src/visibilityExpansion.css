@@ -17,3 +17,8 @@
 .esn-badge-snippet button{padding:5px 12px;border-radius:999px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.06);color:inherit;font:inherit;font-size:.7rem;cursor:pointer}
 .esn-badge-snippet pre{margin:0;padding:10px;border-radius:12px;background:rgba(0,0,0,.35);overflow-x:auto;white-space:pre-wrap;word-break:break-all;font-size:.66rem;line-height:1.5}
 @media(max-width:850px){.esn-badge-item{grid-template-columns:1fr}}
+
+.esn-tools-hub .visibility-article-shell>section>div{min-width:0}
+.esn-tool-links{padding-left:20px;display:grid;gap:14px}
+.esn-tool-links a{overflow-wrap:anywhere;line-height:1.7}
+.esn-tools-hub aside a{max-width:100%;overflow-wrap:anywhere}

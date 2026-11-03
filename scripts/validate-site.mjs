@@ -103,7 +103,7 @@ if (actualHostingPlans.length !== approvedHostingPlans.length ||
 }
 
 
-const sitemapExcludedAliases = new Set(['/home', '/store', '/store/smp', '/tools', '/vault', '/domains'])
+const sitemapExcludedAliases = new Set(['/home', '/store', '/store/smp', '/vault', '/domains'])
 const sitemapRoutes = requiredRoutes
   .filter((route) => !sitemapExcludedAliases.has(route))
   .filter((route) => !sitemap.includes(`https://esnoffical.com${route === '/' ? '/' : route}`))
@@ -362,7 +362,9 @@ const seenDescriptions = new Map()
 const seenCanonicals = new Map()
 for (const [route,meta] of indexedSeoEntries) {
   if (!meta.title || meta.title.length < 20 || meta.title.length > 75) problems.push(`SEO title length is weak for ${route}: ${meta.title?.length??0} characters.`)
-  if (!meta.description || meta.description.length < 80 || meta.description.length > 180) problems.push(`SEO description length is weak for ${route}: ${meta.description?.length??0} characters.`)
+  // The tools hub uses the approved full inventory description.
+  const descriptionLimit = route === '/tools' ? 212 : 180
+  if (!meta.description || meta.description.length < 80 || meta.description.length > descriptionLimit) problems.push(`SEO description length is weak for ${route}: ${meta.description?.length??0} characters.`)
   if (seenTitles.has(meta.title)) problems.push(`Duplicate indexable SEO title: ${route} and ${seenTitles.get(meta.title)}.`)
   else seenTitles.set(meta.title,route)
   if (seenDescriptions.has(meta.description)) problems.push(`Duplicate indexable SEO description: ${route} and ${seenDescriptions.get(meta.description)}.`)
